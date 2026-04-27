@@ -12,14 +12,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
 import com.hathway.medbuddy.components.GlucoseList
 import com.hathway.medbuddy.components.AddGlucoseRecordDialog
-import com.hathway.medbuddy.data.GlucoseRecord
 import com.hathway.medbuddy.data.UserGlucoseRecord
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*

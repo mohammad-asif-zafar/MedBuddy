@@ -14,6 +14,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.data.TimePeriod
 import com.hathway.medbuddy.data.UserGlucoseRecord
 import com.hathway.medbuddy.data.userGlucoseRecords
 import java.text.SimpleDateFormat
@@ -219,16 +220,6 @@ fun AddGlucoseRecordDialog(
     }
 }
 
-enum class TimePeriod(val displayName: String) {
-    FASTING("Fasting (before breakfast)"),
-    BEFORE_BREAKFAST("Before Breakfast"),
-    AFTER_BREAKFAST("After Breakfast"),
-    BEFORE_LUNCH("Before Lunch"),
-    AFTER_LUNCH("After Lunch"),
-    BEFORE_DINNER("Before Dinner"),
-    AFTER_DINNER("After Dinner"),
-    BEDTIME("Bedtime")
-}
 
 private fun formatDate(date: Date): String {
     val formatter = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
