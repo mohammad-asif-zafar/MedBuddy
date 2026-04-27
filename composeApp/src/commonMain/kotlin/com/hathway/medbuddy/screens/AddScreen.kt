@@ -21,19 +21,9 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Helper function to parse date strings for sorting
-private fun parseDate(dateString: String): Date {
-    val format = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
-    return try {
-        format.parse(dateString) ?: Date()
-    } catch (e: Exception) {
-        Date()
-    }
-}
-
 @Composable
 fun AddScreen(
-    repository: Any? = null // Using Any for now to avoid import issues
+    repository: com.hathway.medbuddy.repository.IGlucoseRepository? = null
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -41,35 +31,26 @@ fun AddScreen(
     
     // Use database if available, otherwise fall back to demo data
     var records by remember { mutableStateOf(emptyList<com.hathway.medbuddy.data.GlucoseRecord>()) }
-    
+    println("AddScreen:Record list:" + records.size + "-" + records.toString())
+
     // Load initial data
     LaunchedEffect(Unit) {
         if (repository != null) {
             // Database integration will be handled in Android implementation
             coroutineScope.launch {
                 try {
-                    // This will be handled by Android-specific implementation
-                    @Suppress("UNCHECKED_CAST")
-                    val dbRecords = (repository as suspend () -> List<com.hathway.medbuddy.data.GlucoseRecord>).invoke()
+                    val dbRecords = repository.getAllRecords()
                     // Sort by date descending (latest first) - database already does this, but ensure UI consistency
                     records = dbRecords
                     println("AddScreen: Loaded ${dbRecords.size} records from database")
                 } catch (e: Exception) {
-                    // Fall back to demo data if database fails
-                    val demoRecords = com.hathway.medbuddy.data.glucoseDemoList.sortedByDescending { record ->
-                        parseDate(record.date)
-                    }
-                    records = demoRecords
-                    println("AddScreen: Using demo data, ${demoRecords.size} records")
+                    println("AddScreen: Error loading database records: ${e.message}")
+                    records = emptyList()
                 }
             }
         } else {
-            // Fall back to demo data - sort by date descending (latest first)
-            val demoRecords = com.hathway.medbuddy.data.glucoseDemoList.sortedByDescending { record ->
-                parseDate(record.date)
-            }
-            records = demoRecords
-            println("AddScreen: Using demo data (no repository), ${demoRecords.size} records")
+            println("AddScreen: No repository available - showing empty list")
+            records = emptyList()
         }
     }
     
@@ -78,12 +59,12 @@ fun AddScreen(
         if (repository != null) {
             coroutineScope.launch {
                 try {
-                    @Suppress("UNCHECKED_CAST")
-                    val dbRecords = (repository as suspend () -> List<com.hathway.medbuddy.data.GlucoseRecord>).invoke()
+                    val dbRecords = repository.getAllRecords()
                     records = dbRecords
                     println("AddScreen: Refreshed data, ${dbRecords.size} records")
                 } catch (e: Exception) {
                     println("AddScreen: Error refreshing data: ${e.message}")
+                    records = emptyList()
                 }
             }
         }
@@ -125,29 +106,31 @@ fun AddScreen(
                     // Save to database
                     coroutineScope.launch {
                         try {
-                            // This will be handled by Android-specific implementation
-                            @Suppress("UNCHECKED_CAST")
-                            val insertFunction = repository as suspend (String, Int?, Int?, Int?, Int?) -> Unit
-                            insertFunction(
-                                newRecord.date,
-                                if (newRecord.timePeriod == "Fasting") newRecord.value else null,
-                                if (newRecord.timePeriod == "After Breakfast") newRecord.value else null,
-                                if (newRecord.timePeriod == "After Lunch") newRecord.value else null,
-                                if (newRecord.timePeriod == "After Dinner") newRecord.value else null
-                            )
-                            println("AddScreen: Record saved successfully, refreshing data...")
-                            // Trigger data refresh
-                            refreshTrigger++
+                            // Check if time period already exists for this date
+                            val hasExistingPeriod = repository.hasTimePeriodForDate(newRecord.date, newRecord.timePeriod)
+                            
+                            if (hasExistingPeriod) {
+                                println("AddScreen: Time period '${newRecord.timePeriod}' already exists for date ${newRecord.date}")
+                                // Show notification to user - record not saved
+                            } else {
+                                repository.insertRecord(
+                                    newRecord.date,
+                                    if (newRecord.timePeriod == "Fasting") newRecord.value else null,
+                                    if (newRecord.timePeriod == "Before Breakfast" || newRecord.timePeriod == "After Breakfast") newRecord.value else null,
+                                    if (newRecord.timePeriod == "Before Lunch" || newRecord.timePeriod == "After Lunch") newRecord.value else null,
+                                    if (newRecord.timePeriod == "Before Dinner" || newRecord.timePeriod == "After Dinner" || newRecord.timePeriod == "Bedtime") newRecord.value else null
+                                )
+                                println("AddScreen: Record saved successfully, refreshing data...")
+                                // Trigger data refresh
+                                refreshTrigger++
+                            }
                         } catch (e: Exception) {
                             println("AddScreen: Error saving record: ${e.message}")
-                            // Fall back to in-memory if database fails
-                            com.hathway.medbuddy.data.userGlucoseRecords.add(newRecord)
+                            // No fallback - record not saved if database fails
                         }
                     }
                 } else {
-                    // Save to in-memory list
-                    com.hathway.medbuddy.data.userGlucoseRecords.add(newRecord)
-                    println("AddScreen: Record saved to in-memory list")
+                    println("AddScreen: No repository available - record not saved")
                 }
                 showAddDialog = false
             }

@@ -86,16 +86,26 @@ fun AddGlucoseRecordDialog(
                                 fontWeight = FontWeight.Medium
                             )
                         }
-                        Text(
-                            text = "📅",
-                            style = MaterialTheme.typography.headlineMedium
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "change",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = "📅",
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                        }
                     }
                 }
                 
-                // Date Picker Dialog
+                // Native Date Picker Dialog
                 if (showDatePicker) {
-                    DatePickerDialog(
+                    NativeDatePickerDialog(
                         onDateSelected = { newDate ->
                             selectedDate = newDate
                             showDatePicker = false

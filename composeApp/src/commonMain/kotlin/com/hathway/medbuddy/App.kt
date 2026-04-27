@@ -15,7 +15,7 @@ import com.hathway.medbuddy.ui.MedBuddyTheme
 @Composable
 @Preview
 fun App(
-    repository: Any? = null
+    repository: com.hathway.medbuddy.repository.IGlucoseRepository? = null
 ) {
     val navigationViewModel = viewModel<NavigationViewModel>()
     val currentDestination by navigationViewModel.currentDestination.collectAsState()
