@@ -37,7 +37,7 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
     
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE)
-        insertDemoData(db)
+        // Demo data removed - only user-inserted data will be shown
     }
     
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
