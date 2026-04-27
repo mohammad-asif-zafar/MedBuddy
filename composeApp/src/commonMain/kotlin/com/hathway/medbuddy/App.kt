@@ -14,27 +14,29 @@ import com.hathway.medbuddy.ui.MedBuddyTheme
 
 @Composable
 @Preview
-fun App() {
+fun App(
+    repository: Any? = null
+) {
+    val navigationViewModel = viewModel<NavigationViewModel>()
+    val currentDestination by navigationViewModel.currentDestination.collectAsState()
+
     MedBuddyTheme {
-        val navigationViewModel: NavigationViewModel = viewModel()
-        
         Scaffold(
             bottomBar = {
-                BottomNavigationBar(navigationViewModel = navigationViewModel)
+                BottomNavigationBar(
+                    navigationViewModel = navigationViewModel
+                )
             }
         ) { paddingValues ->
-            val currentDestination by navigationViewModel.currentDestination.collectAsState()
-            
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
+                    .padding(paddingValues)
             ) {
                 when (currentDestination) {
                     NavigationDestination.HOME -> HomeScreen()
                     NavigationDestination.SEARCH -> SearchScreen()
-                    NavigationDestination.ADD -> AddScreen()
+                    NavigationDestination.ADD -> AddScreen(repository = repository)
                     NavigationDestination.NOTIFICATIONS -> NotificationsScreen()
                     NavigationDestination.PROFILE -> ProfileScreen()
                 }

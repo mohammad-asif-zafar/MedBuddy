@@ -54,9 +54,13 @@ fun AddGlucoseRecordDialog(
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
                 
-                // Date Display (non-editable)
+                // Date Picker
+                var showDatePicker by remember { mutableStateOf(false) }
+                
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showDatePicker = true },
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     )
@@ -86,6 +90,18 @@ fun AddGlucoseRecordDialog(
                             style = MaterialTheme.typography.headlineMedium
                         )
                     }
+                }
+                
+                // Date Picker Dialog
+                if (showDatePicker) {
+                    DatePickerDialog(
+                        onDateSelected = { newDate ->
+                            selectedDate = newDate
+                            showDatePicker = false
+                        },
+                        onDismiss = { showDatePicker = false },
+                        initialDate = selectedDate
+                    )
                 }
                 
                 Spacer(modifier = Modifier.height(24.dp))

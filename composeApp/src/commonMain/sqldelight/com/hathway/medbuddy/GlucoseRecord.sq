@@ -1,0 +1,25 @@
+CREATE TABLE GlucoseRecord (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    fasting INTEGER,
+    breakfast INTEGER,
+    lunch INTEGER,
+    dinner INTEGER,
+    created_at INTEGER NOT NULL
+);
+
+selectAll:
+SELECT * FROM GlucoseRecord ORDER BY date ASC;
+
+selectByDate:
+SELECT * FROM GlucoseRecord WHERE date = ? LIMIT 1;
+
+insert:
+INSERT INTO GlucoseRecord (date, fasting, breakfast, lunch, dinner, created_at)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM GlucoseRecord WHERE id = ?;
+
+selectAllSortedByDate:
+SELECT * FROM GlucoseRecord ORDER BY date ASC;
