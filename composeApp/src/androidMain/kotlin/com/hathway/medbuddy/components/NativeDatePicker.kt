@@ -2,30 +2,32 @@ package com.hathway.medbuddy.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import java.util.Date
-import java.util.Calendar
+import kotlinx.datetime.LocalDate
 
 @Composable
 actual fun NativeDatePickerDialog(
-    onDateSelected: (Date) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
-    initialDate: Date
+    initialDate: LocalDate
 ) {
     val context = LocalContext.current
-    
-    val calendar = Calendar.getInstance()
-    calendar.time = initialDate
-    
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-    
+
+    val year = initialDate.year
+    val month = initialDate.monthNumber - 1 // Android month = 0-based
+    val day = initialDate.dayOfMonth
+
     android.app.DatePickerDialog(
         context,
         { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-            val selectedCalendar = Calendar.getInstance()
-            selectedCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
-            onDateSelected(selectedCalendar.time)
+
+            // ✅ Convert directly to LocalDate
+            val selectedDate = LocalDate(
+                year = selectedYear,
+                monthNumber = selectedMonth + 1,
+                dayOfMonth = selectedDayOfMonth
+            )
+
+            onDateSelected(selectedDate)
         },
         year,
         month,

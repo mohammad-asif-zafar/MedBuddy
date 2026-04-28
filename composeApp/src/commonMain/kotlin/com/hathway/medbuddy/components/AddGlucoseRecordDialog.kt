@@ -1,24 +1,35 @@
 package com.hathway.medbuddy.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.hathway.medbuddy.data.GlucoseRecord
 import com.hathway.medbuddy.data.TimePeriod
 import com.hathway.medbuddy.data.UserGlucoseRecord
-import com.hathway.medbuddy.data.userGlucoseRecords
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,8 +37,10 @@ fun AddGlucoseRecordDialog(
     onDismiss: () -> Unit,
     onSave: (UserGlucoseRecord) -> Unit
 ) {
-    var selectedDate by remember { mutableStateOf(Date()) }
-    var selectedTimePeriod by remember { mutableStateOf(TimePeriod.FASTING) }
+    var selectedDate by remember {
+        mutableStateOf(LocalDate(2026, 4, 29))
+    }
+    var selectedTimePeriod by remember { mutableStateOf(TimePeriod.BEFORE_BREAKFAST) }
     var glucoseValue by remember { mutableStateOf("") }
     
     Dialog(onDismissRequest = onDismiss) {
@@ -118,72 +131,19 @@ fun AddGlucoseRecordDialog(
                 Spacer(modifier = Modifier.height(24.dp))
                 
                 // Time Period Dropdown
-                var expanded by remember { mutableStateOf(false) }
-                
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    OutlinedTextField(
-                        value = selectedTimePeriod.displayName,
-                        onValueChange = { },
-                        readOnly = true,
-                        label = { Text("Select Time Period") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        )
-                    )
-                    
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        TimePeriod.values().forEach { period ->
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = period.displayName,
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                },
-                                onClick = {
-                                    selectedTimePeriod = period
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-                
+                TimePeriodDropdown(
+                    selected = selectedTimePeriod,
+                    onSelected = { selectedTimePeriod = it }
+                )
+
                 Spacer(modifier = Modifier.height(24.dp))
                 
                 // Glucose Value Input
-                OutlinedTextField(
+                GlucoseInputField(
                     value = glucoseValue,
-                    onValueChange = { glucoseValue = it.filter { it.isDigit() } },
-                    label = { Text("Glucose Level (mg/dL)") },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                    ),
-                    supportingText = {
-                        Text(
-                            text = "Enter your glucose reading for ${selectedTimePeriod.displayName.lowercase()}",
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                        )
-                    }
+                    onValueChange = { glucoseValue = it },
+                    timePeriod = selectedTimePeriod
                 )
-                
                 Spacer(modifier = Modifier.height(24.dp))
                 
                 // Buttons
@@ -204,26 +164,24 @@ fun AddGlucoseRecordDialog(
                     }
                     
                     // Save Button
-                    Button(
+                    val glucoseInt = glucoseValue.toIntOrNull()
+                    val isValid = glucoseInt != null && glucoseInt > 0
+
+                    PrimaryButton(
+                        text = "Save",
                         onClick = {
-                            val newRecord = UserGlucoseRecord(
+                            val record = UserGlucoseRecord(
                                 date = formatDate(selectedDate),
-                                timePeriod = selectedTimePeriod.displayName,
-                                value = glucoseValue.toIntOrNull() ?: 0
+                                timePeriod = selectedTimePeriod.name,
+                                value = glucoseInt!!
                             )
-                            userGlucoseRecords.add(newRecord)
-                            onSave(newRecord)
-                            onDismiss() // Dismiss dialog immediately after save
+
+                            onSave(record)   // single source of truth
+                            onDismiss()
                         },
                         modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        enabled = glucoseValue.isNotBlank()
-                    ) {
-                        Text("Save")
-                    }
+                        enabled = isValid
+                    )
                 }
             }
         }
@@ -231,24 +189,7 @@ fun AddGlucoseRecordDialog(
 }
 
 
-private fun formatDate(date: Date): String {
-    val formatter = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
-    return formatter.format(date)
-}
-
-private fun createGlucoseRecord(
-    date: String,
-    timePeriod: TimePeriod,
-    value: Int?
-): GlucoseRecord {
-    return when (timePeriod) {
-        TimePeriod.FASTING -> GlucoseRecord(date, value, null, null, null)
-        TimePeriod.BEFORE_BREAKFAST -> GlucoseRecord(date, null, value, null, null)
-        TimePeriod.AFTER_BREAKFAST -> GlucoseRecord(date, null, value, null, null)
-        TimePeriod.BEFORE_LUNCH -> GlucoseRecord(date, null, null, value, null)
-        TimePeriod.AFTER_LUNCH -> GlucoseRecord(date, null, null, value, null)
-        TimePeriod.BEFORE_DINNER -> GlucoseRecord(date, null, null, null, value)
-        TimePeriod.AFTER_DINNER -> GlucoseRecord(date, null, null, null, value)
-        TimePeriod.BEDTIME -> GlucoseRecord(date, null, null, null, value)
-    }
+fun formatDate(date: LocalDate): String {
+    val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
+    return "${date.dayOfMonth} $month ${date.year}"
 }

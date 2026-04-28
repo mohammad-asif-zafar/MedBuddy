@@ -18,8 +18,6 @@ import com.hathway.medbuddy.components.GlucoseList
 import com.hathway.medbuddy.components.AddGlucoseRecordDialog
 import com.hathway.medbuddy.data.UserGlucoseRecord
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun AddScreen(

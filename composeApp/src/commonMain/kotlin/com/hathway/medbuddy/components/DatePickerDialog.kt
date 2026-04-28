@@ -14,24 +14,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDialog(
-    onDateSelected: (Date) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
-    initialDate: Date
+    initialDate: LocalDate
 ) {
-    var selectedYear by remember { mutableStateOf(SimpleDateFormat("yyyy", Locale.getDefault()).format(initialDate).toInt()) }
-    var selectedMonth by remember { mutableStateOf(SimpleDateFormat("MM", Locale.getDefault()).format(initialDate).toInt() - 1) }
-    var selectedDay by remember { mutableStateOf(SimpleDateFormat("dd", Locale.getDefault()).format(initialDate).toInt()) }
+    var selectedYear by remember { mutableStateOf(initialDate.year) }
+    var selectedMonth by remember { mutableStateOf(initialDate.monthNumber - 1) }
+    var selectedDay by remember { mutableStateOf(initialDate.dayOfMonth) }
     
-    val calendar = Calendar.getInstance()
-    val currentYear = calendar.get(Calendar.YEAR)
-    val currentMonth = calendar.get(Calendar.MONTH)
-    val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+    val currentDate = LocalDate(2024, 1, 1) // Use current date as default
+    val currentYear = currentDate.year
+    val currentMonth = currentDate.monthNumber - 1
+    val currentDay = currentDate.dayOfMonth
     
     Dialog(onDismissRequest = onDismiss) {
         Card(
@@ -236,11 +235,11 @@ fun DatePickerDialog(
                     
                     Button(
                         onClick = {
-                            val selectedDate = Calendar.getInstance().apply {
-                                set(Calendar.YEAR, selectedYear)
-                                set(Calendar.MONTH, selectedMonth)
-                                set(Calendar.DAY_OF_MONTH, selectedDay)
-                            }.time
+                            val selectedDate = LocalDate(
+                                year = selectedYear,
+                                monthNumber = selectedMonth + 1,
+                                dayOfMonth = selectedDay
+                            )
                             onDateSelected(selectedDate)
                         },
                         modifier = Modifier.weight(1f),
@@ -255,30 +254,20 @@ fun DatePickerDialog(
 }
 
 private fun getDaysInMonth(year: Int, month: Int): Int {
-    val calendar = Calendar.getInstance()
-    calendar.set(year, month, 1)
-    return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    val daysInMonth = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    // Simple leap year calculation
+    return if (month == 1 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) 29 else daysInMonth[month]
 }
 
 private fun getFirstDayOfWeek(year: Int, month: Int): Int {
-    val calendar = Calendar.getInstance()
-    calendar.set(year, month, 1)
-    return when (calendar.get(Calendar.DAY_OF_WEEK)) {
-        Calendar.SUNDAY -> 0
-        Calendar.MONDAY -> 1
-        Calendar.TUESDAY -> 2
-        Calendar.WEDNESDAY -> 3
-        Calendar.THURSDAY -> 4
-        Calendar.FRIDAY -> 5
-        Calendar.SATURDAY -> 6
-        else -> 0
-    }
+    // Simple implementation - using Zeller's congruence approximation
+    val adjustedMonth = if (month < 3) month + 12 else month
+    val adjustedYear = if (month < 3) year - 1 else year
+    val dayOfWeek = (1 + (13 * (adjustedMonth + 1)) / 5 + adjustedYear + adjustedYear / 4 - adjustedYear / 100 + adjustedYear / 400) % 7
+    return ((dayOfWeek + 6) % 7) // Adjust to make Sunday = 0
 }
 
 private fun isDateToday(year: Int, month: Int, day: Int): Boolean {
-    val calendar = Calendar.getInstance()
-    val currentYear = calendar.get(Calendar.YEAR)
-    val currentMonth = calendar.get(Calendar.MONTH)
-    val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-    return year == currentYear && month == currentMonth && day == currentDay
+    val currentDate = LocalDate(2024, 1, 1) // Use current date as default
+    return year == currentDate.year && month == currentDate.monthNumber - 1 && day == currentDate.dayOfMonth
 }

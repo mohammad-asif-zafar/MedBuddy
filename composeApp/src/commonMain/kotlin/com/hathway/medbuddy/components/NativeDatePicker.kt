@@ -1,11 +1,11 @@
 package com.hathway.medbuddy.components
 
 import androidx.compose.runtime.Composable
-import java.util.Date
+import kotlinx.datetime.LocalDate
 
 @Composable
 expect fun NativeDatePickerDialog(
-    onDateSelected: (Date) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
-    initialDate: Date
+    initialDate: LocalDate
 )

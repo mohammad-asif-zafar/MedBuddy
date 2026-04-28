@@ -1,9 +1,5 @@
 package com.hathway.medbuddy.data
 
-import androidx.compose.ui.autofill.ContentDataType.Companion.Date
-import java.text.SimpleDateFormat
-import java.util.*
-
 data class GlucoseRecord(
     val date: String,
     val fasting: Int?,
@@ -20,13 +16,3 @@ data class UserGlucoseRecord(
 
 // User-added glucose records (empty initially)
 val userGlucoseRecords = mutableListOf<UserGlucoseRecord>()
-
-// Helper function to parse date strings for sorting
-private fun parseDemoDate(dateString: String): Date {
-    val format = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
-    return try {
-        format.parse(dateString) ?: Date()
-    } catch (e: Exception) {
-        Date()
-    }
-}
