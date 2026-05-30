@@ -1,139 +1,117 @@
 package com.hathway.medbuddy.glucose_screen
 
-
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.data.GlucoseRecord
+import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 @Composable
 fun GlucoseRecordHistory(
     records: List<GlucoseRecord>
 ) {
-
-    if (records.isEmpty()) {
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "No glucose records found"
-            )
-        }
-
-        return
-    }
-
     var selectedDate by remember {
-        mutableStateOf(records.firstOrNull()?.date ?: "")
+        mutableStateOf(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date)
     }
+    var showCalendar by remember { mutableStateOf(false) }
 
     val selectedRecord = records.firstOrNull {
-        it.date == selectedDate
-    } ?: return
+        parseDisplayDate(it.date) == selectedDate
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-
-        Text(
-            text = "Glucose Journal",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(16.dp)
-        )
-
-      //  val currentDate = LocalDate.parse(selectedDate)
-
-        Text(
-            text = selectedDate,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 16.dp))
-        WeekDateSelector(
-            dates = records.map {
-                parseDisplayDate(it.date)
+        // Date Navigation Header
+        DateNavigationHeader(
+            selectedDate = selectedDate,
+            onPreviousDay = {
+                selectedDate = selectedDate.minus(1, DateTimeUnit.DAY)
             },
-            selectedDate = parseDisplayDate(selectedDate),
-            onDateSelected = {
-                selectedDate =
-                    "${it.dayOfMonth} ${it.month.name.lowercase().replaceFirstChar { c -> c.uppercase() }} ${it.year}"
+            onNextDay = {
+                selectedDate = selectedDate.plus(1, DateTimeUnit.DAY)
+            },
+            onDateClick = {
+                showCalendar = true
             }
         )
 
-        Spacer(Modifier.height(16.dp))
-
-        val readings = listOfNotNull(
-            selectedRecord.beforeBreakfast,
-            selectedRecord.afterBreakfast,
-            selectedRecord.beforeLunch,
-            selectedRecord.afterLunch,
-            selectedRecord.beforeDinner,
-            selectedRecord.afterDinner,
-            selectedRecord.bedtime
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
         )
 
-        //DailySummaryCard(readings)
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(Modifier.height(16.dp))
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-
-            glucoseItem(
-                "Before Breakfast", selectedRecord.beforeBreakfast
-            )
-
-            glucoseItem(
-                "After Breakfast", selectedRecord.afterBreakfast
-            )
-
-            glucoseItem(
-                "Before Lunch", selectedRecord.beforeLunch
-            )
-
-            glucoseItem(
-                "After Lunch", selectedRecord.afterLunch
-            )
-
-            glucoseItem(
-                "Before Dinner", selectedRecord.beforeDinner
-            )
-
-            glucoseItem(
-                "After Dinner", selectedRecord.afterDinner
-            )
-
-            glucoseItem(
-                "Bedtime", selectedRecord.bedtime
-            )
+        // Content
+        if (selectedRecord != null) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                glucoseItem("Before Breakfast", selectedRecord.beforeBreakfast)
+                glucoseItem("After Breakfast", selectedRecord.afterBreakfast)
+                glucoseItem("Before Lunch", selectedRecord.beforeLunch)
+                glucoseItem("After Lunch", selectedRecord.afterLunch)
+                glucoseItem("Before Dinner", selectedRecord.beforeDinner)
+                glucoseItem("After Dinner", selectedRecord.afterDinner)
+                glucoseItem("Bedtime", selectedRecord.bedtime)
+            }
+        } else {
+            EmptyDayContent()
         }
+    }
+
+    // Full-screen calendar sheet
+    if (showCalendar) {
+        FullScreenCalendarSheet(
+            selectedDate = selectedDate,
+            records = records,
+            onDateSelected = {
+                selectedDate = it
+                showCalendar = false
+            },
+            onDismiss = {
+                showCalendar = false
+            }
+        )
     }
 }
 
@@ -152,94 +130,314 @@ fun LazyListScope.glucoseItem(
     }
 }
 
-
 @Composable
-fun DateSelector(
-    dates: List<String>, selectedDate: String, onDateSelected: (String) -> Unit
+fun DateNavigationHeader(
+    selectedDate: LocalDate,
+    onPreviousDay: () -> Unit,
+    onNextDay: () -> Unit,
+    onDateClick: () -> Unit
 ) {
+    val dayName = selectedDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
+    val monthName = selectedDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
 
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        // Previous day button
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clickable { onPreviousDay() },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "<",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
 
-        items(dates) { date ->
+        // Date display (clickable to open calendar)
+        Box(
+            modifier = Modifier
+                .clickable { onDateClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "$dayName, ${selectedDate.dayOfMonth} $monthName ${selectedDate.year}",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
 
-            val isSelected = date == selectedDate
+        // Next day button
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clickable { onNextDay() },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = ">",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
 
-            Card(
-                modifier = Modifier.width(60.dp).clickable {
-                    onDateSelected(date)
-                }, colors = CardDefaults.cardColors(
-                    containerColor = if (isSelected) Color(0xFF3A7AFE)
-                    else Color.White
-                )
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FullScreenCalendarSheet(
+    selectedDate: LocalDate,
+    records: List<GlucoseRecord>,
+    onDateSelected: (LocalDate) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val coroutineScope = rememberCoroutineScope()
+
+    var currentMonth by remember { mutableStateOf(selectedDate) }
+
+    val daysWithRecords = remember(records, currentMonth) {
+        records.mapNotNull {
+            try {
+                parseDisplayDate(it.date)
+            } catch (e: Exception) {
+                null
+            }
+        }.filter {
+            it.year == currentMonth.year && it.month == currentMonth.month
+        }.map { it.dayOfMonth }.toSet()
+    }
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            // Month navigation
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Box(
-                    modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            currentMonth = currentMonth.minus(1, DateTimeUnit.MONTH)
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-
                     Text(
-                        text = date.takeLast(2), color = if (isSelected) Color.White
-                        else Color.Black, fontWeight = FontWeight.Bold, fontSize = 18.sp
+                        text = "<",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
+
+                Text(
+                    text = "${currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${currentMonth.year}",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            currentMonth = currentMonth.plus(1, DateTimeUnit.MONTH)
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = ">",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Calendar grid
+            CalendarGrid(
+                currentMonth = currentMonth,
+                selectedDate = selectedDate,
+                daysWithRecords = daysWithRecords,
+                onDateSelected = { date ->
+                    onDateSelected(date)
+                    coroutineScope.launch {
+                        sheetState.hide()
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Calendar legend
+            CalendarLegend()
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+fun CalendarGrid(
+    currentMonth: LocalDate,
+    selectedDate: LocalDate,
+    daysWithRecords: Set<Int>,
+    onDateSelected: (LocalDate) -> Unit
+) {
+    val firstDayOfMonth = LocalDate(currentMonth.year, currentMonth.month, 1)
+    val lastDayOfMonth = firstDayOfMonth.plus(1, DateTimeUnit.MONTH).minus(1, DateTimeUnit.DAY)
+    val startDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7 // 0 = Sunday
+
+    val daysInMonth = lastDayOfMonth.dayOfMonth
+
+    // Day headers
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        listOf("S", "M", "T", "W", "T", "F", "S").forEach { day ->
+            Text(
+                text = day,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray,
+                modifier = Modifier.weight(1f),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    // Calendar days
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(7),
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        // Empty cells for days before the first day of the month
+        items(startDayOfWeek) {
+            Spacer(modifier = Modifier.aspectRatio(1f))
+        }
+
+        // Days of the month
+        items((1..daysInMonth).toList()) { day ->
+            val date = LocalDate(currentMonth.year, currentMonth.month, day)
+            val hasRecord = day in daysWithRecords
+            val isSelected = date == selectedDate
+
+            CalendarDayCell(
+                day = day,
+                hasRecord = hasRecord,
+                isSelected = isSelected,
+                onClick = { onDateSelected(date) }
+            )
+        }
+    }
+}
+
+@Composable
+fun CalendarDayCell(
+    day: Int,
+    hasRecord: Boolean,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .aspectRatio(1f)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                        CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = day.toString(),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        } else if (hasRecord) {
+            Text(
+                text = day.toString(),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            )
+        } else {
+            Canvas(
+                modifier = Modifier.size(36.dp)
+            ) {
+                drawLine(
+                    color = Color.LightGray,
+                    start = Offset(0f, size.height),
+                    end = Offset(size.width, 0f),
+                    strokeWidth = 3f
+                )
             }
         }
     }
 }
 
 @Composable
-fun DailySummaryCard(
-    readings: List<Int>
-) {
-
-    val avg = if (readings.isNotEmpty()) readings.average().toInt()
-    else 0
-
-    val high = readings.maxOrNull() ?: 0
-    val low = readings.minOrNull() ?: 0
-
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(24.dp)
+fun CalendarLegend() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(20.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-            SummaryItem("Avg", avg)
-            SummaryItem("High", high)
-            SummaryItem("Low", low)
-        }
+        LegendItem("/", "No record")
+        LegendItem("15", "Has record")
+        LegendItem("[16]", "Selected")
     }
 }
 
 @Composable
-fun SummaryItem(
-    label: String, value: Int
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+fun LegendItem(symbol: String, label: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-
         Text(
-            text = value.toString(), fontWeight = FontWeight.Bold, fontSize = 24.sp
+            text = symbol,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Medium
         )
-
         Text(
-            text = label, color = Color.Gray
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Gray
         )
     }
 }
+
 
 @Composable
 fun GlucoseReadingCard(
-    label: String,
-    value: Int
+    label: String, value: Int
 ) {
 
     val (status, color) = when {
@@ -276,9 +474,7 @@ fun GlucoseReadingCard(
                 )
 
                 Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(color, CircleShape)
+                    modifier = Modifier.size(10.dp).background(color, CircleShape)
                 )
             }
 
@@ -295,9 +491,7 @@ fun GlucoseReadingCard(
                 ) {
 
                     Text(
-                        text = value.toString(),
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold
+                        text = value.toString(), fontSize = 32.sp, fontWeight = FontWeight.Bold
                     )
 
                     Spacer(Modifier.width(6.dp))
@@ -310,73 +504,9 @@ fun GlucoseReadingCard(
                 }
 
                 Text(
-                    text = status,
-                    color = color,
-                    fontWeight = FontWeight.SemiBold
+                    text = status, color = color, fontWeight = FontWeight.SemiBold
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun DateChip(
-    dayName: String, dayNumber: String, selected: Boolean, onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier.width(68.dp).height(96.dp).clickable(onClick = onClick),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (selected) Color(0xFF3A7AFE)
-            else Color.White
-        )
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Text(
-                text = dayName,
-                fontSize = 12.sp,
-                color = if (selected) Color.White.copy(alpha = .8f)
-                else Color.Gray
-            )
-
-            Spacer(Modifier.height(4.dp))
-
-            Text(
-                text = dayNumber,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (selected) Color.White
-                else Color.Black
-            )
-        }
-    }
-}
-
-@Composable
-fun WeekDateSelector(
-    dates: List<LocalDate>, selectedDate: LocalDate, onDateSelected: (LocalDate) -> Unit
-) {
-
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
-    ) {
-
-        items(dates) { date ->
-            val dayLabel =
-                date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
-            DateChip(
-                dayName = dayLabel,
-                dayNumber = date.dayOfMonth.toString(),
-                selected = date == selectedDate,
-                onClick = {
-                    onDateSelected(date)
-                })
         }
     }
 }
@@ -405,4 +535,124 @@ fun parseDisplayDate(date: String): LocalDate {
     }
 
     return LocalDate(year, month, day)
+}
+
+@Composable
+fun MonthCalendar(
+    selectedDay: Int, daysWithRecords: Set<Int>, onDaySelected: (Int) -> Unit
+) {
+
+    val days = (1..31).map {
+
+        CalendarDay(
+            day = it, hasRecord = it in daysWithRecords, isSelected = it == selectedDay
+        )
+    }
+
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        shape = MaterialTheme.shapes.extraLarge,
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+
+            Text(
+                text = "May 2026",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "S   M   T   W   T   F   S",
+                color = Color.Gray,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(7)
+            ) {
+
+                items(days) { day ->
+
+                    CalendarDayCell(
+                        day = day, onClick = {
+                            onDaySelected(day.day)
+                        })
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CalendarDayCell(
+    day: CalendarDay, onClick: () -> Unit
+) {
+
+    Box(
+        modifier = Modifier.aspectRatio(1f).clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+
+        if (day.isSelected) {
+            Box(
+                modifier = Modifier.size(42.dp).background(
+                    Color(0xFF3A7AFE), CircleShape
+                )
+            )
+        }
+
+        if (!day.hasRecord) {
+
+            Canvas(
+                modifier = Modifier.size(36.dp)
+            ) {
+                drawLine(
+                    color = Color.LightGray,
+                    start = Offset(0f, size.height),
+                    end = Offset(size.width, 0f),
+                    strokeWidth = 4f
+                )
+            }
+        }
+
+        Text(
+            text = day.day.toString(), color = if (day.isSelected) Color.White
+            else Color.Black, fontWeight = if (day.isSelected) FontWeight.Bold
+            else FontWeight.Normal
+        )
+    }
+}
+
+data class CalendarDay(
+    val day: Int, val hasRecord: Boolean, val isSelected: Boolean = false
+)
+@Composable
+fun EmptyDayContent() {
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment =
+            Alignment.CenterHorizontally,
+        verticalArrangement =
+            Arrangement.Center
+    ) {
+
+        Text(
+            text = "📅",
+            fontSize = 64.sp
+        )
+
+        Spacer(
+            Modifier.height(16.dp)
+        )
+
+        Text(
+            text = "No glucose records for this day",
+            color = Color.Gray
+        )
+    }
 }
