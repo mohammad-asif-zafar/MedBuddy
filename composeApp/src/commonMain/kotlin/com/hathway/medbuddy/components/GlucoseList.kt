@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import com.hathway.medbuddy.ui.utils.getGlucoseStatus
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -99,30 +100,40 @@ fun ExpandableDateSection(
                 .fillMaxWidth()
                 .clickable { onToggleExpanded() },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = date,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    fontWeight = FontWeight.Bold,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
-                )
-                
+                ) {
+                    Text(
+                        text = "📅",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                    Text(
+                        text = date,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
                 // Expand/Collapse Icon
                 Text(
                     text = if (isExpanded) "▼" else "▶",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.padding(end = 8.dp)
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -140,17 +151,19 @@ fun ExpandableDateSection(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(12.dp)
                 ) {
                     // Before Breakfast (Fasting)
                     record.beforeBreakfast?.let { value ->
                         GlucoseReadingRow(
                             timePeriod = "Before Breakfast",
                             value = value,
-                            showDivider = record.afterBreakfast != null || record.beforeLunch != null || record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
+                            showDivider = record.afterBreakfast != null || record.beforeLunch != null || record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null,
+                            timePeriodEnum = "BEFORE_BREAKFAST"
                         )
                     }
 
@@ -159,7 +172,8 @@ fun ExpandableDateSection(
                         GlucoseReadingRow(
                             timePeriod = "After Breakfast",
                             value = value,
-                            showDivider = record.beforeLunch != null || record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
+                            showDivider = record.beforeLunch != null || record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null,
+                            timePeriodEnum = "AFTER_BREAKFAST"
                         )
                     }
 
@@ -168,7 +182,8 @@ fun ExpandableDateSection(
                         GlucoseReadingRow(
                             timePeriod = "Before Lunch",
                             value = value,
-                            showDivider = record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
+                            showDivider = record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null,
+                            timePeriodEnum = "BEFORE_LUNCH"
                         )
                     }
 
@@ -177,7 +192,8 @@ fun ExpandableDateSection(
                         GlucoseReadingRow(
                             timePeriod = "After Lunch",
                             value = value,
-                            showDivider = record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
+                            showDivider = record.beforeDinner != null || record.afterDinner != null || record.bedtime != null,
+                            timePeriodEnum = "AFTER_LUNCH"
                         )
                     }
 
@@ -186,7 +202,8 @@ fun ExpandableDateSection(
                         GlucoseReadingRow(
                             timePeriod = "Before Dinner",
                             value = value,
-                            showDivider = record.afterDinner != null || record.bedtime != null
+                            showDivider = record.afterDinner != null || record.bedtime != null,
+                            timePeriodEnum = "BEFORE_DINNER"
                         )
                     }
 
@@ -195,7 +212,8 @@ fun ExpandableDateSection(
                         GlucoseReadingRow(
                             timePeriod = "After Dinner",
                             value = value,
-                            showDivider = record.bedtime != null
+                            showDivider = record.bedtime != null,
+                            timePeriodEnum = "AFTER_DINNER"
                         )
                     }
 
@@ -204,7 +222,8 @@ fun ExpandableDateSection(
                         GlucoseReadingRow(
                             timePeriod = "Bedtime",
                             value = value,
-                            showDivider = false
+                            showDivider = false,
+                            timePeriodEnum = "BEDTIME"
                         )
                     }
                 }
@@ -217,13 +236,16 @@ fun ExpandableDateSection(
 private fun GlucoseReadingRow(
     timePeriod: String,
     value: Int,
-    showDivider: Boolean
+    showDivider: Boolean,
+    timePeriodEnum: String
 ) {
+    val status = getGlucoseStatus(value, timePeriodEnum)
+
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp),
+                .padding(vertical = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -235,26 +257,36 @@ private fun GlucoseReadingRow(
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.weight(1f)
             )
-            
-            // Glucose Value
-            Text(
-                text = "${value} mg/dL",
-                style = MaterialTheme.typography.bodyLarge,
-                color = getGlucoseValueColor(value),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.End
-            )
+
+            // Glucose Value and Status
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "${value} mg/dL",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = status.color,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.End
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = status.emoji,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
-        
+
         // Add separator if needed
         if (showDivider) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             HorizontalDivider(
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
                 thickness = 1.dp
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }

@@ -18,6 +18,7 @@ import com.hathway.medbuddy.components.GlucoseList
 import com.hathway.medbuddy.components.AddGlucoseRecordDialog
 import com.hathway.medbuddy.data.UserGlucoseRecord
 import com.hathway.medbuddy.data.TimePeriod
+import com.hathway.medbuddy.glucose_screen.GlucoseRecordHistory
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,7 +75,8 @@ fun AddScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        GlucoseList(records = records)
+       // GlucoseList(records = records)
+        GlucoseRecordHistory(records = records)
         
         // Floating Action Button
         Box(

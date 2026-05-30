@@ -29,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.data.TimePeriod
 import com.hathway.medbuddy.data.UserGlucoseRecord
+// ✅ Clean Multiplatform Datetime Imports
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,12 +41,18 @@ fun AddGlucoseRecordDialog(
     onDismiss: () -> Unit,
     onSave: (UserGlucoseRecord) -> Unit
 ) {
+    // ✅ Dynamically fetches the current local device date on initialization
+    val currentDeviceDate = remember {
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }
+
+    // ✅ Initial state is now bound directly to the live device date
     var selectedDate by remember {
-        mutableStateOf(LocalDate(2026, 4, 29))
+        mutableStateOf(currentDeviceDate)
     }
     var selectedTimePeriod by remember { mutableStateOf(TimePeriod.BEFORE_BREAKFAST) }
     var glucoseValue by remember { mutableStateOf("") }
-    
+
     Dialog(onDismissRequest = onDismiss) {
         Card(
             modifier = Modifier
@@ -67,10 +77,10 @@ fun AddGlucoseRecordDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
-                
+
                 // Date Picker
                 var showDatePicker by remember { mutableStateOf(false) }
-                
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -115,7 +125,7 @@ fun AddGlucoseRecordDialog(
                         }
                     }
                 }
-                
+
                 // Native Date Picker Dialog
                 if (showDatePicker) {
                     NativeDatePickerDialog(
@@ -127,9 +137,9 @@ fun AddGlucoseRecordDialog(
                         initialDate = selectedDate
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(24.dp))
-                
+
                 // Time Period Dropdown
                 TimePeriodDropdown(
                     selected = selectedTimePeriod,
@@ -137,7 +147,7 @@ fun AddGlucoseRecordDialog(
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
-                
+
                 // Glucose Value Input
                 GlucoseInputField(
                     value = glucoseValue,
@@ -145,7 +155,7 @@ fun AddGlucoseRecordDialog(
                     timePeriod = selectedTimePeriod
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-                
+
                 // Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -157,12 +167,11 @@ fun AddGlucoseRecordDialog(
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder
+                        )
                     ) {
                         Text("Cancel")
                     }
-                    
+
                     // Save Button
                     val glucoseInt = glucoseValue.toIntOrNull()
                     val isValid = glucoseInt != null && glucoseInt > 0
@@ -188,8 +197,7 @@ fun AddGlucoseRecordDialog(
     }
 }
 
-
 fun formatDate(date: LocalDate): String {
     val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
-    return "${date.dayOfMonth} $month ${date.year}"
+    return "${date.dayOfMonth} $month ${date.year}" // Note: changed from .day to .dayOfMonth to match kotlinx.datetime
 }
