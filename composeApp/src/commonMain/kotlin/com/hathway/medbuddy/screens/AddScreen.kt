@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.hathway.medbuddy.components.GlucoseList
 import com.hathway.medbuddy.components.AddGlucoseRecordDialog
 import com.hathway.medbuddy.data.UserGlucoseRecord
+import com.hathway.medbuddy.data.TimePeriod
 import kotlinx.coroutines.launch
 
 @Composable
@@ -104,24 +105,81 @@ fun AddScreen(
                     // Save to database
                     coroutineScope.launch {
                         try {
-                            // Check if time period already exists for this date
-                            val hasExistingPeriod = repository.hasTimePeriodForDate(newRecord.date, newRecord.timePeriod)
-                            
-                            if (hasExistingPeriod) {
-                                println("AddScreen: Time period '${newRecord.timePeriod}' already exists for date ${newRecord.date}")
-                                // Show notification to user - record not saved
+                            // Get existing record for this date
+                            val existingRecords = repository.getAllRecords()
+                            val existingRecord = existingRecords.find { it.date == newRecord.date }
+
+                            // Map time period to database field
+                            val timePeriodEnum = TimePeriod.values().find { it.name == newRecord.timePeriod }
+
+                            // Preserve existing values and update only the specific time period
+                            val beforeBreakfast: Int? = existingRecord?.beforeBreakfast
+                            val afterBreakfast: Int? = existingRecord?.afterBreakfast
+                            val beforeLunch: Int? = existingRecord?.beforeLunch
+                            val afterLunch: Int? = existingRecord?.afterLunch
+                            val beforeDinner: Int? = existingRecord?.beforeDinner
+                            val afterDinner: Int? = existingRecord?.afterDinner
+                            val bedtime: Int? = existingRecord?.bedtime
+
+                            val updatedBeforeBreakfast: Int? = when (timePeriodEnum) {
+                                TimePeriod.BEFORE_BREAKFAST -> newRecord.value
+                                else -> beforeBreakfast
+                            }
+                            val updatedAfterBreakfast: Int? = when (timePeriodEnum) {
+                                TimePeriod.AFTER_BREAKFAST -> newRecord.value
+                                else -> afterBreakfast
+                            }
+                            val updatedBeforeLunch: Int? = when (timePeriodEnum) {
+                                TimePeriod.BEFORE_LUNCH -> newRecord.value
+                                else -> beforeLunch
+                            }
+                            val updatedAfterLunch: Int? = when (timePeriodEnum) {
+                                TimePeriod.AFTER_LUNCH -> newRecord.value
+                                else -> afterLunch
+                            }
+                            val updatedBeforeDinner: Int? = when (timePeriodEnum) {
+                                TimePeriod.BEFORE_DINNER -> newRecord.value
+                                else -> beforeDinner
+                            }
+                            val updatedAfterDinner: Int? = when (timePeriodEnum) {
+                                TimePeriod.AFTER_DINNER -> newRecord.value
+                                else -> afterDinner
+                            }
+                            val updatedBedtime: Int? = when (timePeriodEnum) {
+                                TimePeriod.BEDTIME -> newRecord.value
+                                else -> bedtime
+                            }
+
+                            if (existingRecord != null) {
+                                println("AddScreen: Record exists for date ${newRecord.date} - updating with new time period")
+                                // Update existing record with merged values
+                                repository.updateRecord(
+                                    newRecord.date,
+                                    beforeBreakfast = updatedBeforeBreakfast,
+                                    afterBreakfast = updatedAfterBreakfast,
+                                    beforeLunch = updatedBeforeLunch,
+                                    afterLunch = updatedAfterLunch,
+                                    beforeDinner = updatedBeforeDinner,
+                                    afterDinner = updatedAfterDinner,
+                                    bedtime = updatedBedtime
+                                )
+                                println("AddScreen: Record updated successfully, refreshing data...")
                             } else {
+                                // Insert new record
                                 repository.insertRecord(
                                     newRecord.date,
-                                    if (newRecord.timePeriod == "Fasting") newRecord.value else null,
-                                    if (newRecord.timePeriod == "Before Breakfast" || newRecord.timePeriod == "After Breakfast") newRecord.value else null,
-                                    if (newRecord.timePeriod == "Before Lunch" || newRecord.timePeriod == "After Lunch") newRecord.value else null,
-                                    if (newRecord.timePeriod == "Before Dinner" || newRecord.timePeriod == "After Dinner" || newRecord.timePeriod == "Bedtime") newRecord.value else null
+                                    beforeBreakfast = updatedBeforeBreakfast,
+                                    afterBreakfast = updatedAfterBreakfast,
+                                    beforeLunch = updatedBeforeLunch,
+                                    afterLunch = updatedAfterLunch,
+                                    beforeDinner = updatedBeforeDinner,
+                                    afterDinner = updatedAfterDinner,
+                                    bedtime = updatedBedtime
                                 )
-                                println("AddScreen: Record saved successfully, refreshing data...")
-                                // Trigger data refresh
-                                refreshTrigger++
+                                println("AddScreen: Record inserted successfully, refreshing data...")
                             }
+                            // Trigger data refresh
+                            refreshTrigger++
                         } catch (e: Exception) {
                             println("AddScreen: Error saving record: ${e.message}")
                             // No fallback - record not saved if database fails

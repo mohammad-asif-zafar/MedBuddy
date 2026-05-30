@@ -3,28 +3,25 @@ package com.hathway.medbuddy
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.medbuddy.navigation.*
+import com.hathway.medbuddy.navigation_content.HomeContent
 import com.hathway.medbuddy.screens.*
 import com.hathway.medbuddy.ui.MedBuddyTheme
 
 @Composable
-@Preview
 fun App(
     repository: com.hathway.medbuddy.repository.IGlucoseRepository? = null
 ) {
-    val navigationViewModel = viewModel<NavigationViewModel>()
-    val currentDestination by navigationViewModel.currentDestination.collectAsState()
+    // For now, we'll use a simple state instead of viewModel
+    val currentDestination = remember { mutableStateOf(NavigationDestination.HOME) }
 
     MedBuddyTheme {
         Scaffold(
             bottomBar = {
-                BottomNavigationBar(
-                    navigationViewModel = navigationViewModel
+                SimpleBottomNavigationBar(
+                    currentDestination = currentDestination.value,
+                    onDestinationSelected = { currentDestination.value = it }
                 )
             }
         ) { paddingValues ->
@@ -33,8 +30,9 @@ fun App(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                when (currentDestination) {
-                    NavigationDestination.HOME -> HomeScreen()
+                when (currentDestination.value) {
+                   // NavigationDestination.HOME -> HomeScreen()
+                    NavigationDestination.HOME -> HomeContent()
                     NavigationDestination.SEARCH -> SearchScreen()
                     NavigationDestination.ADD -> AddScreen(repository = repository)
                     NavigationDestination.NOTIFICATIONS -> NotificationsScreen()

@@ -11,7 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -65,15 +65,15 @@ fun GlucoseList(records: List<GlucoseRecord>) {
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(
+                itemsIndexed(
                     items = records,
-                    key = { it.date }
-                ) { record ->
+                    key = { index, _ -> "${records[index].date}-$index" }
+                ) { _, record ->
                     ExpandableDateSection(
                         date = record.date,
                         record = record,
                         isExpanded = expandedStates[record.date] ?: false,
-                        onToggleExpanded = { 
+                        onToggleExpanded = {
                             expandedStates[record.date] = !(expandedStates[record.date] ?: false)
                         }
                     )
@@ -145,37 +145,64 @@ fun ExpandableDateSection(
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    // Fasting
-                    record.fasting?.let { value ->
+                    // Before Breakfast (Fasting)
+                    record.beforeBreakfast?.let { value ->
                         GlucoseReadingRow(
-                            timePeriod = "Fasting",
+                            timePeriod = "Before Breakfast",
                             value = value,
-                            showDivider = record.breakfast != null || record.lunch != null || record.dinner != null
+                            showDivider = record.afterBreakfast != null || record.beforeLunch != null || record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
                         )
                     }
-                    
-                    // Breakfast
-                    record.breakfast?.let { value ->
+
+                    // After Breakfast
+                    record.afterBreakfast?.let { value ->
                         GlucoseReadingRow(
                             timePeriod = "After Breakfast",
                             value = value,
-                            showDivider = record.lunch != null || record.dinner != null
+                            showDivider = record.beforeLunch != null || record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
                         )
                     }
-                    
-                    // Lunch
-                    record.lunch?.let { value ->
+
+                    // Before Lunch
+                    record.beforeLunch?.let { value ->
+                        GlucoseReadingRow(
+                            timePeriod = "Before Lunch",
+                            value = value,
+                            showDivider = record.afterLunch != null || record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
+                        )
+                    }
+
+                    // After Lunch
+                    record.afterLunch?.let { value ->
                         GlucoseReadingRow(
                             timePeriod = "After Lunch",
                             value = value,
-                            showDivider = record.dinner != null
+                            showDivider = record.beforeDinner != null || record.afterDinner != null || record.bedtime != null
                         )
                     }
-                    
-                    // Dinner
-                    record.dinner?.let { value ->
+
+                    // Before Dinner
+                    record.beforeDinner?.let { value ->
+                        GlucoseReadingRow(
+                            timePeriod = "Before Dinner",
+                            value = value,
+                            showDivider = record.afterDinner != null || record.bedtime != null
+                        )
+                    }
+
+                    // After Dinner
+                    record.afterDinner?.let { value ->
                         GlucoseReadingRow(
                             timePeriod = "After Dinner",
+                            value = value,
+                            showDivider = record.bedtime != null
+                        )
+                    }
+
+                    // Bedtime
+                    record.bedtime?.let { value ->
+                        GlucoseReadingRow(
+                            timePeriod = "Bedtime",
                             value = value,
                             showDivider = false
                         )

@@ -1,34 +1,32 @@
 package com.hathway.medbuddy.navigation
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BottomNavigationBar(
-    navigationViewModel: NavigationViewModel
+fun SimpleBottomNavigationBar(
+    currentDestination: NavigationDestination,
+    onDestinationSelected: (NavigationDestination) -> Unit
 ) {
-    val currentDestination by navigationViewModel.currentDestination.collectAsState()
-
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         NavigationDestination.values().forEach { destination ->
             if (destination.isFloatingActionButton) {
                 FloatingActionButton(
-                    onClick = { navigationViewModel.navigateTo(destination) },
+                    onClick = { onDestinationSelected(destination) },
                     containerColor = MaterialTheme.colorScheme.primary,
                     shape = CircleShape,
                     modifier = Modifier.padding(horizontal = 8.dp)
@@ -49,7 +47,7 @@ fun BottomNavigationBar(
                     },
                     selected = currentDestination == destination,
                     onClick = {
-                        navigationViewModel.navigateTo(destination)
+                        onDestinationSelected(destination)
                     },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,

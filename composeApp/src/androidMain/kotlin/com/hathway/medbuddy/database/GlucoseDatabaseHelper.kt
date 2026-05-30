@@ -9,29 +9,35 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
     
     companion object {
         private const val DATABASE_NAME = "glucose.db"
-        private const val DATABASE_VERSION = 1
-        
+        private const val DATABASE_VERSION = 3
+
         private const val TABLE_GLUCOSE_RECORDS = "glucose_records"
         private const val COLUMN_ID = "id"
         private const val COLUMN_DATE = "date"
-        private const val COLUMN_FASTING = "fasting"
-        private const val COLUMN_BREAKFAST = "breakfast"
-        private const val COLUMN_LUNCH = "lunch"
-        private const val COLUMN_DINNER = "dinner"
+        private const val COLUMN_BEFORE_BREAKFAST = "before_breakfast"
+        private const val COLUMN_AFTER_BREAKFAST = "after_breakfast"
+        private const val COLUMN_BEFORE_LUNCH = "before_lunch"
+        private const val COLUMN_AFTER_LUNCH = "after_lunch"
+        private const val COLUMN_BEFORE_DINNER = "before_dinner"
+        private const val COLUMN_AFTER_DINNER = "after_dinner"
+        private const val COLUMN_BEDTIME = "bedtime"
         private const val COLUMN_CREATED_AT = "created_at"
-        
+
         private const val CREATE_TABLE = """
             CREATE TABLE $TABLE_GLUCOSE_RECORDS (
                 $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_DATE TEXT NOT NULL,
-                $COLUMN_FASTING INTEGER,
-                $COLUMN_BREAKFAST INTEGER,
-                $COLUMN_LUNCH INTEGER,
-                $COLUMN_DINNER INTEGER,
+                $COLUMN_BEFORE_BREAKFAST INTEGER,
+                $COLUMN_AFTER_BREAKFAST INTEGER,
+                $COLUMN_BEFORE_LUNCH INTEGER,
+                $COLUMN_AFTER_LUNCH INTEGER,
+                $COLUMN_BEFORE_DINNER INTEGER,
+                $COLUMN_AFTER_DINNER INTEGER,
+                $COLUMN_BEDTIME INTEGER,
                 $COLUMN_CREATED_AT INTEGER NOT NULL
             )
         """
-        
+
         private const val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_GLUCOSE_RECORDS"
     }
     
@@ -45,7 +51,7 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         onCreate(db)
     }
     
-    private fun insertDemoData(db: SQLiteDatabase) {
+/*    private fun insertDemoData(db: SQLiteDatabase) {
         val currentTime = System.currentTimeMillis()
         val demoRecords = listOf(
             "9 Jan" to listOf(185, 180, 158, 140),
@@ -95,55 +101,175 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
             stmt.execute()
             stmt.close()
         }
-    }
+    }*/
     
     fun getAllRecords(): List<GlucoseRecord> {
         val records = mutableListOf<GlucoseRecord>()
         val db = readableDatabase
         val cursor = db.query(
             TABLE_GLUCOSE_RECORDS,
-            arrayOf(COLUMN_DATE, COLUMN_FASTING, COLUMN_BREAKFAST, COLUMN_LUNCH, COLUMN_DINNER),
+            arrayOf(
+                COLUMN_DATE,
+                COLUMN_BEFORE_BREAKFAST,
+                COLUMN_AFTER_BREAKFAST,
+                COLUMN_BEFORE_LUNCH,
+                COLUMN_AFTER_LUNCH,
+                COLUMN_BEFORE_DINNER,
+                COLUMN_AFTER_DINNER,
+                COLUMN_BEDTIME
+            ),
             null, null, null, null,
             "$COLUMN_DATE DESC"
         )
-        
+
         cursor?.use {
             while (it.moveToNext()) {
                 val date = it.getString(it.getColumnIndexOrThrow(COLUMN_DATE))
-                val fasting = it.getInt(it.getColumnIndexOrThrow(COLUMN_FASTING))
-                val breakfast = it.getInt(it.getColumnIndexOrThrow(COLUMN_BREAKFAST))
-                val lunch = it.getInt(it.getColumnIndexOrThrow(COLUMN_LUNCH))
-                val dinner = it.getInt(it.getColumnIndexOrThrow(COLUMN_DINNER))
-                
+                val beforeBreakfast = it.getInt(it.getColumnIndexOrThrow(COLUMN_BEFORE_BREAKFAST))
+                val afterBreakfast = it.getInt(it.getColumnIndexOrThrow(COLUMN_AFTER_BREAKFAST))
+                val beforeLunch = it.getInt(it.getColumnIndexOrThrow(COLUMN_BEFORE_LUNCH))
+                val afterLunch = it.getInt(it.getColumnIndexOrThrow(COLUMN_AFTER_LUNCH))
+                val beforeDinner = it.getInt(it.getColumnIndexOrThrow(COLUMN_BEFORE_DINNER))
+                val afterDinner = it.getInt(it.getColumnIndexOrThrow(COLUMN_AFTER_DINNER))
+                val bedtime = it.getInt(it.getColumnIndexOrThrow(COLUMN_BEDTIME))
+
                 records.add(
                     GlucoseRecord(
                         date = date,
-                        fasting = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_FASTING))) null else fasting,
-                        breakfast = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_BREAKFAST))) null else breakfast,
-                        lunch = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_LUNCH))) null else lunch,
-                        dinner = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_DINNER))) null else dinner
+                        beforeBreakfast = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_BEFORE_BREAKFAST))) null else beforeBreakfast,
+                        afterBreakfast = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_AFTER_BREAKFAST))) null else afterBreakfast,
+                        beforeLunch = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_BEFORE_LUNCH))) null else beforeLunch,
+                        afterLunch = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_AFTER_LUNCH))) null else afterLunch,
+                        beforeDinner = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_BEFORE_DINNER))) null else beforeDinner,
+                        afterDinner = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_AFTER_DINNER))) null else afterDinner,
+                        bedtime = if (it.isNull(it.getColumnIndexOrThrow(COLUMN_BEDTIME))) null else bedtime
                     )
                 )
             }
         }
-        
+
         return records
     }
     
-    fun insertRecord(date: String, fasting: Int?, breakfast: Int?, lunch: Int?, dinner: Int?) {
+    fun insertRecord(
+        date: String,
+        beforeBreakfast: Int?,
+        afterBreakfast: Int?,
+        beforeLunch: Int?,
+        afterLunch: Int?,
+        beforeDinner: Int?,
+        afterDinner: Int?,
+        bedtime: Int?
+    ) {
         val db = writableDatabase
         val currentTime = System.currentTimeMillis()
-        
+
         val stmt = db.compileStatement(
-            "INSERT INTO $TABLE_GLUCOSE_RECORDS ($COLUMN_DATE, $COLUMN_FASTING, $COLUMN_BREAKFAST, $COLUMN_LUNCH, $COLUMN_DINNER, $COLUMN_CREATED_AT) VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO $TABLE_GLUCOSE_RECORDS ($COLUMN_DATE, $COLUMN_BEFORE_BREAKFAST, $COLUMN_AFTER_BREAKFAST, $COLUMN_BEFORE_LUNCH, $COLUMN_AFTER_LUNCH, $COLUMN_BEFORE_DINNER, $COLUMN_AFTER_DINNER, $COLUMN_BEDTIME, $COLUMN_CREATED_AT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         )
         stmt.bindString(1, date)
-        stmt.bindLong(2, fasting?.toLong() ?: 0)
-        stmt.bindLong(3, breakfast?.toLong() ?: 0)
-        stmt.bindLong(4, lunch?.toLong() ?: 0)
-        stmt.bindLong(5, dinner?.toLong() ?: 0)
-        stmt.bindLong(6, currentTime)
+
+        if (beforeBreakfast != null) {
+            stmt.bindLong(2, beforeBreakfast.toLong())
+        } else {
+            stmt.bindNull(2)
+        }
+
+        if (afterBreakfast != null) {
+            stmt.bindLong(3, afterBreakfast.toLong())
+        } else {
+            stmt.bindNull(3)
+        }
+
+        if (beforeLunch != null) {
+            stmt.bindLong(4, beforeLunch.toLong())
+        } else {
+            stmt.bindNull(4)
+        }
+
+        if (afterLunch != null) {
+            stmt.bindLong(5, afterLunch.toLong())
+        } else {
+            stmt.bindNull(5)
+        }
+
+        if (beforeDinner != null) {
+            stmt.bindLong(6, beforeDinner.toLong())
+        } else {
+            stmt.bindNull(6)
+        }
+
+        if (afterDinner != null) {
+            stmt.bindLong(7, afterDinner.toLong())
+        } else {
+            stmt.bindNull(7)
+        }
+
+        if (bedtime != null) {
+            stmt.bindLong(8, bedtime.toLong())
+        } else {
+            stmt.bindNull(8)
+        }
+
+        stmt.bindLong(9, currentTime)
         stmt.execute()
         stmt.close()
+    }
+
+    fun updateRecord(
+        date: String,
+        beforeBreakfast: Int?,
+        afterBreakfast: Int?,
+        beforeLunch: Int?,
+        afterLunch: Int?,
+        beforeDinner: Int?,
+        afterDinner: Int?,
+        bedtime: Int?
+    ) {
+        val db = writableDatabase
+        val currentTime = System.currentTimeMillis()
+
+        // Build the update SQL dynamically based on which values are provided
+        // Only update fields that are not null - preserve existing values for null fields
+        val updates = mutableListOf<String>()
+        val args = mutableListOf<Any>()
+
+        if (beforeBreakfast != null) {
+            updates.add("$COLUMN_BEFORE_BREAKFAST = ?")
+            args.add(beforeBreakfast.toLong())
+        }
+        if (afterBreakfast != null) {
+            updates.add("$COLUMN_AFTER_BREAKFAST = ?")
+            args.add(afterBreakfast.toLong())
+        }
+        if (beforeLunch != null) {
+            updates.add("$COLUMN_BEFORE_LUNCH = ?")
+            args.add(beforeLunch.toLong())
+        }
+        if (afterLunch != null) {
+            updates.add("$COLUMN_AFTER_LUNCH = ?")
+            args.add(afterLunch.toLong())
+        }
+        if (beforeDinner != null) {
+            updates.add("$COLUMN_BEFORE_DINNER = ?")
+            args.add(beforeDinner.toLong())
+        }
+        if (afterDinner != null) {
+            updates.add("$COLUMN_AFTER_DINNER = ?")
+            args.add(afterDinner.toLong())
+        }
+        if (bedtime != null) {
+            updates.add("$COLUMN_BEDTIME = ?")
+            args.add(bedtime.toLong())
+        }
+
+        if (updates.isNotEmpty()) {
+            updates.add("$COLUMN_CREATED_AT = ?")
+            args.add(currentTime)
+            args.add(date)
+
+            val sql = "UPDATE $TABLE_GLUCOSE_RECORDS SET ${updates.joinToString(", ")} WHERE $COLUMN_DATE = ?"
+            db.execSQL(sql, args.toTypedArray())
+        }
     }
 }

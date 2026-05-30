@@ -14,7 +14,7 @@ enum class TimePeriod(
 }
 fun getGlucoseRange(period: TimePeriod): Pair<Int, Int> {
     return when (period) {
-        TimePeriod.BEFORE_BREAKFAST -> 80 to 130
+        TimePeriod.BEFORE_BREAKFAST -> 70 to 100
         TimePeriod.AFTER_BREAKFAST -> 80 to 180
         TimePeriod.BEFORE_LUNCH -> 80 to 130
         TimePeriod.AFTER_LUNCH -> 80 to 180

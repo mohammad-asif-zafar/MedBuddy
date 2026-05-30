@@ -2,10 +2,13 @@ package com.hathway.medbuddy.data
 
 data class GlucoseRecord(
     val date: String,
-    val fasting: Int?,
-    val breakfast: Int?,
-    val lunch: Int?,
-    val dinner: Int?
+    val beforeBreakfast: Int?,
+    val afterBreakfast: Int?,
+    val beforeLunch: Int?,
+    val afterLunch: Int?,
+    val beforeDinner: Int?,
+    val afterDinner: Int?,
+    val bedtime: Int?
 )
 
 data class UserGlucoseRecord(
