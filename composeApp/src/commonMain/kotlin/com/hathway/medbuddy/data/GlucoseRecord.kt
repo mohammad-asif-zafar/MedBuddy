@@ -1,6 +1,7 @@
 package com.hathway.medbuddy.data
 
 data class GlucoseRecord(
+    val id : String = "1",
     val date: String,
     val beforeBreakfast: Int?,
     val afterBreakfast: Int?,
