@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "578170508820",
+    "firebase_url": "https://medbuddy-4873d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "medbuddy-4873d",
+    "storage_bucket": "medbuddy-4873d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578170508820:android:395903dac4c76f3577f901",
+        "android_client_info": {
+          "package_name": "com.hathway.medbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Wn8Dhgx_j2YkcGcWNfz_YZbH7c1GSVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

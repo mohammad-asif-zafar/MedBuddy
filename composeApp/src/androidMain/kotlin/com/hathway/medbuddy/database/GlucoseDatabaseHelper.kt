@@ -51,58 +51,6 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         onCreate(db)
     }
     
-/*    private fun insertDemoData(db: SQLiteDatabase) {
-        val currentTime = System.currentTimeMillis()
-        val demoRecords = listOf(
-            "9 Jan" to listOf(185, 180, 158, 140),
-            "10 Jan" to listOf(140, 137, 144, null),
-            "11 Jan" to listOf(156, 196, 178, 100),
-            "12 Jan" to listOf(130, 178, 195, 170),
-            "13 Jan" to listOf(140, 147, 125, 132),
-            "14 Jan" to listOf(153, 168, null, null),
-            "15 Jan" to listOf(141, 187, 165, 147),
-            "16 Jan" to listOf(146, 232, 136, 125),
-            "17 Jan" to listOf(187, 125, 113, 156),
-            "18 Jan" to listOf(157, 129, 55, 140),
-            "19 Jan" to listOf(237, 217, 186, 153),
-            "20 Jan" to listOf(175, 184, 147, null),
-            "21 Jan" to listOf(165, 193, 131, null),
-            "22 Jan" to listOf(170, 191, 157, 185),
-            "23 Jan" to listOf(182, 187, 138, null),
-            "24 Jan" to listOf(187, 211, 208, 147),
-            "25 Jan" to listOf(152, 185, 165, 179),
-            "26 Jan" to listOf(225, 164, 191, 185),
-            "27 Jan" to listOf(137, 210, 131, 205),
-            "28 Jan" to listOf(176, 185, 203, 195),
-            "29 Jan" to listOf(223, 186, 164, 203),
-            "30 Jan" to listOf(164, 182, 139, 207),
-            "31 Jan" to listOf(182, 208, 168, null),
-            "1 Feb" to listOf(140, 234, 275, null),
-            "2 Feb" to listOf(161, 207, 164, 200),
-            "3 Feb" to listOf(177, 223, 193, 207),
-            "4 Feb" to listOf(179, 189, 168, null),
-            "5 Feb" to listOf(153, 213, 197, null),
-            "6 Feb" to listOf(145, null, null, null),
-            "7 Feb" to listOf(157, 205, 192, null),
-            "8 Feb" to listOf(146, null, null, 205),
-            "9 Feb" to listOf(145, null, null, 187)
-        )
-        
-        demoRecords.forEach { (date, values) ->
-            val stmt = db.compileStatement(
-                "INSERT INTO $TABLE_GLUCOSE_RECORDS ($COLUMN_DATE, $COLUMN_FASTING, $COLUMN_BREAKFAST, $COLUMN_LUNCH, $COLUMN_DINNER, $COLUMN_CREATED_AT) VALUES (?, ?, ?, ?, ?, ?)"
-            )
-            stmt.bindString(1, date)
-            stmt.bindLong(2, values[0]?.toLong() ?: 0)
-            stmt.bindLong(3, values[1]?.toLong() ?: 0)
-            stmt.bindLong(4, values[2]?.toLong() ?: 0)
-            stmt.bindLong(5, values[3]?.toLong() ?: 0)
-            stmt.bindLong(6, currentTime)
-            stmt.execute()
-            stmt.close()
-        }
-    }*/
-    
     fun getAllRecords(): List<GlucoseRecord> {
         val records = mutableListOf<GlucoseRecord>()
         val db = readableDatabase
