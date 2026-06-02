@@ -164,7 +164,10 @@ fun AddScreen(
                                     afterLunch = updatedAfterLunch,
                                     beforeDinner = updatedBeforeDinner,
                                     afterDinner = updatedAfterDinner,
-                                    bedtime = updatedBedtime
+                                    bedtime = updatedBedtime,
+                                    time = newRecord.time,
+                                    mealType = newRecord.mealType,
+                                    notes = newRecord.notes
                                 )
                                 println("AddScreen: Record updated successfully, refreshing data...")
                             } else {
@@ -177,7 +180,10 @@ fun AddScreen(
                                     afterLunch = updatedAfterLunch,
                                     beforeDinner = updatedBeforeDinner,
                                     afterDinner = updatedAfterDinner,
-                                    bedtime = updatedBedtime
+                                    bedtime = updatedBedtime,
+                                    time = newRecord.time,
+                                    mealType = newRecord.mealType,
+                                    notes = newRecord.notes
                                 )
                                 println("AddScreen: Record inserted successfully, refreshing data...")
                             }

@@ -16,6 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,12 +47,22 @@ fun AddGlucoseRecordDialog(
         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     }
 
+    // ✅ Get current device time
+    val currentDeviceTime = remember {
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
+    }
+    val currentTimeString = remember(currentDeviceTime) {
+        "${currentDeviceTime.hour}:${String.format("%02d", currentDeviceTime.minute)}"
+    }
+
     // ✅ Initial state is now bound directly to the live device date
     var selectedDate by remember {
         mutableStateOf(currentDeviceDate)
     }
     var selectedTimePeriod by remember { mutableStateOf(TimePeriod.BEFORE_BREAKFAST) }
     var glucoseValue by remember { mutableStateOf("") }
+    var time by remember { mutableStateOf(currentTimeString) }
+    var notes by remember { mutableStateOf("") }
 
     Dialog(onDismissRequest = onDismiss) {
         Card(
@@ -154,6 +165,27 @@ fun AddGlucoseRecordDialog(
                     onValueChange = { glucoseValue = it },
                     timePeriod = selectedTimePeriod
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Time Input (auto-populated with device time)
+                OutlinedTextField(
+                    value = time,
+                    onValueChange = { time = it },
+                    label = { Text("Time (device time)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    readOnly = true
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Notes Input
+                OutlinedTextField(
+                    value = notes,
+                    onValueChange = { notes = it },
+                    label = { Text("Notes (optional)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Buttons
@@ -182,7 +214,10 @@ fun AddGlucoseRecordDialog(
                             val record = UserGlucoseRecord(
                                 date = formatDate(selectedDate),
                                 timePeriod = selectedTimePeriod.name,
-                                value = glucoseInt!!
+                                value = glucoseInt!!,
+                                time = time,
+                                mealType = selectedTimePeriod.name,
+                                notes = notes
                             )
 
                             onSave(record)   // single source of truth

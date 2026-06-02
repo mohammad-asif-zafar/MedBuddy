@@ -14,7 +14,10 @@ interface IGlucoseRepository {
         afterLunch: Int?,
         beforeDinner: Int?,
         afterDinner: Int?,
-        bedtime: Int?
+        bedtime: Int?,
+        time: String = "",
+        mealType: String = "",
+        notes: String = ""
     )
 
     suspend fun updateRecord(
@@ -25,7 +28,10 @@ interface IGlucoseRepository {
         afterLunch: Int?,
         beforeDinner: Int?,
         afterDinner: Int?,
-        bedtime: Int?
+        bedtime: Int?,
+        time: String = "",
+        mealType: String = "",
+        notes: String = ""
     )
     suspend fun hasTimePeriodForDate(date: String, timePeriod: String): Boolean
 }
