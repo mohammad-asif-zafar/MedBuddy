@@ -16,6 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.home.presentation_layer.vm.MainViewModel
 
+
+/*MainScreen(
+viewModel = MainViewModel()
+)*/
 @Composable
 fun MainScreen(
     viewModel: MainViewModel

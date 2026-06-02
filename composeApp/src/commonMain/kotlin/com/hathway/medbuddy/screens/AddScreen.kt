@@ -19,11 +19,12 @@ import com.hathway.medbuddy.components.AddGlucoseRecordDialog
 import com.hathway.medbuddy.data.UserGlucoseRecord
 import com.hathway.medbuddy.data.TimePeriod
 import com.hathway.medbuddy.glucose_screen.GlucoseRecordHistory
+import com.hathway.medbuddy.repository.IGlucoseRepository
 import kotlinx.coroutines.launch
 
 @Composable
 fun AddScreen(
-    repository: com.hathway.medbuddy.repository.IGlucoseRepository? = null
+    repository: IGlucoseRepository? = null
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()

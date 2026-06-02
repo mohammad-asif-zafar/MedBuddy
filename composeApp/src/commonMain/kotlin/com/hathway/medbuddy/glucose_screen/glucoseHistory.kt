@@ -389,16 +389,11 @@ fun CalendarDayCell(
                 fontWeight = FontWeight.Medium
             )
         } else {
-            Canvas(
-                modifier = Modifier.size(36.dp)
-            ) {
-                drawLine(
-                    color = Color.LightGray,
-                    start = Offset(0f, size.height),
-                    end = Offset(size.width, 0f),
-                    strokeWidth = 3f
-                )
-            }
+            Text(
+                text = day.toString(),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                fontWeight = FontWeight.Normal
+            )
         }
     }
 }
@@ -409,7 +404,7 @@ fun CalendarLegend() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        LegendItem("/", "No record")
+        LegendItem("15", "No record")
         LegendItem("15", "Has record")
         LegendItem("[16]", "Selected")
     }
