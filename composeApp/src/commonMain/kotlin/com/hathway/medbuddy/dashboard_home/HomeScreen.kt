@@ -34,6 +34,8 @@ fun HomeScreen(
             PatientGreetingCard(
                 greeting = uiState.greeting,
                 patientName = uiState.patientName,
+                patientEmail = uiState.patientEmail,
+                patientPhotoUrl = uiState.patientPhotoUrl,
                 condition = uiState.condition
             )
         }

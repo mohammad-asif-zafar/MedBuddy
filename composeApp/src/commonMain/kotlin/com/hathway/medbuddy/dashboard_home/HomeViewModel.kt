@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.data.GlucoseRecord
 import com.hathway.medbuddy.repository.IGlucoseRepository
+import com.hathway.medbuddy.FirebaseManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -15,14 +17,19 @@ import kotlinx.datetime.toLocalDateTime
 
 data class HomeUiState(
     val isLoading: Boolean = true,
-    val patientName: String = "Shagufta Zafar",
+
+    val patientName: String = "",
+    val patientEmail: String = "",
+    val patientPhotoUrl: String = "",
+    val greeting: String = "Good Morning",
+
     val condition: String = "Type 2 Diabetes",
     val todayGlucose: Int? = null,
     val glucoseStatus: GlucoseStatus = GlucoseStatus.Normal,
     val recordedTime: String = "",
     val sevenDayAverage: Int = 0,
     val hbA1cEstimate: Double = 0.0,
-    val greeting: String = "",
+
     val doctorName: String = "Dr. Sumit Gulla ",
     val doctorSpecialty: String = "Endocrinologist",
     val nextVisitDate: String = "15 Jun 2026",
@@ -56,19 +63,15 @@ data class Medication(
     val mealType: String = ""// Before Breakfast, After Lunch, etc.
 )
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val repository: IGlucoseRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    private var repository: IGlucoseRepository? = null
-
-    fun setRepository(repository: IGlucoseRepository) {
-        this.repository = repository
-        loadData()
-    }
-
     init {
+        loadCurrentUser()
         loadData()
     }
 
@@ -77,7 +80,7 @@ class HomeViewModel : ViewModel() {
             _uiState.value = _uiState.value.copy(isLoading = true)
 
             try {
-                val records = repository?.getAllRecords() ?: emptyList()
+                val records = repository.getAllRecords()
                 val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                 val todayDateString = formatDate(today)
 
@@ -133,21 +136,23 @@ class HomeViewModel : ViewModel() {
                 val insight = "Glucose is 15% lower than last week"
                 val insightEmoji = "📈"
 
-                _uiState.value = HomeUiState(
-                    isLoading = false,
-                    todayGlucose = todayGlucose,
-                    glucoseStatus = glucoseStatus,
-                    recordedTime = recordedTime,
-                    sevenDayAverage = sevenDayAverage,
-                    hbA1cEstimate = hbA1cEstimate,
-                    greeting = greeting,
-                    highestGlucose = highestGlucose,
-                    lowestGlucose = lowestGlucose,
-                    recentRecords = recentRecords,
-                    medications = medications,
-                    insight = insight,
-                    insightEmoji = insightEmoji
-                )
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false,
+                        todayGlucose = todayGlucose,
+                        glucoseStatus = glucoseStatus,
+                        recordedTime = recordedTime,
+                        sevenDayAverage = sevenDayAverage,
+                        hbA1cEstimate = hbA1cEstimate,
+                        greeting = greeting,
+                        highestGlucose = highestGlucose,
+                        lowestGlucose = lowestGlucose,
+                        recentRecords = recentRecords,
+                        medications = medications,
+                        insight = insight,
+                        insightEmoji = insightEmoji
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
@@ -261,4 +266,20 @@ class HomeViewModel : ViewModel() {
 
         return kotlinx.datetime.LocalDate(year, month, day)
     }
+
+    private fun loadCurrentUser() {
+        
+        val user = FirebaseManager.currentUser
+
+        _uiState.update {
+
+            it.copy(
+                patientName = user?.displayName ?: "Patient",
+                patientEmail = user?.email ?: "",
+                patientPhotoUrl = user?.photoUrl ?: ""
+            )
+        }
+
+    }
 }
+

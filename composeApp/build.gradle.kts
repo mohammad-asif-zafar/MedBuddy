@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -41,11 +40,12 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
 
-            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:34.14.0"))
+            implementation(project.dependencies.platform(libs.firebase.bom))
 
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.storage)
+            implementation(libs.play.services.auth)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.kotlinx.datetime)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

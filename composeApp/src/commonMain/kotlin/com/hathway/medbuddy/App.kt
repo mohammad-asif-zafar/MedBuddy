@@ -32,7 +32,9 @@ fun App(
             ) {
                 when (currentDestination.value) {
                    // NavigationDestination.HOME -> HomeScreen()
-                    NavigationDestination.HOME -> HomeContent()
+                    NavigationDestination.HOME -> {
+                        repository?.let { HomeContent(it) }
+                    }
                     NavigationDestination.SEARCH -> SearchScreen()
                     NavigationDestination.ADD -> AddScreen(repository = repository)
                     NavigationDestination.NOTIFICATIONS -> NotificationsScreen()
