@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.data
+package com.hathway.medbuddy.domain.model
 
 enum class TimePeriod(
     val displayName: String,

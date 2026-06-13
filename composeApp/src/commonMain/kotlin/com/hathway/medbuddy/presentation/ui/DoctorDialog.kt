@@ -39,7 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.presentation.components.profile_components.AppointmentDateCard
-import com.hathway.medbuddy.profile.DoctorInfo
+import com.hathway.medbuddy.domain.model.DoctorInfo
 
 @Composable
 fun DoctorDialog(

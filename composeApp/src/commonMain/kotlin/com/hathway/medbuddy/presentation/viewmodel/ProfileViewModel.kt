@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.FirebaseManager
 import com.hathway.medbuddy.presentation.ui_state.ProfileUiState
-import com.hathway.medbuddy.profile.DoctorInfo
+import com.hathway.medbuddy.domain.model.DoctorInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,11 +1,12 @@
-package com.hathway.medbuddy.repository
+package com.hathway.medbuddy.data.repository
 
 import android.content.Context
 import android.util.Log
-import com.hathway.medbuddy.FirebaseSyncService
-import com.hathway.medbuddy.SyncManager
+import com.hathway.medbuddy.data.remote.FirebaseSyncService
+import com.hathway.medbuddy.data.remote.SyncManager
 import com.hathway.medbuddy.database.GlucoseDatabaseHelper
-import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

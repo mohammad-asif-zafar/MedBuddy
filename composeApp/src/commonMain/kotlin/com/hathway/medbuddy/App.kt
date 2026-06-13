@@ -4,11 +4,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.hathway.medbuddy.navigation.*
-import com.hathway.medbuddy.navigation_content.HomeContent
-import com.hathway.medbuddy.navigation_content.ProfileContent
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.presentation.navigation.NavigationDestination
+import com.hathway.medbuddy.presentation.navigation.SimpleBottomNavigationBar
+import com.hathway.medbuddy.presentation.navigation_content.HomeContent
+import com.hathway.medbuddy.presentation.navigation_content.ProfileContent
 import com.hathway.medbuddy.presentation.ui.AddScreen
-import com.hathway.medbuddy.repository.IGlucoseRepository
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable

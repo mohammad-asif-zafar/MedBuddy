@@ -3,7 +3,7 @@ package com.hathway.medbuddy.database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.domain.model.GlucoseRecord
 
 class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     

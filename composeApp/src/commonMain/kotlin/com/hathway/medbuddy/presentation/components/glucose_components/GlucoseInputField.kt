@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import com.hathway.medbuddy.data.TimePeriod
-import com.hathway.medbuddy.data.getGlucoseRange
+import com.hathway.medbuddy.domain.model.TimePeriod
+import com.hathway.medbuddy.domain.model.getGlucoseRange
 
 @Composable
 fun GlucoseInputField(

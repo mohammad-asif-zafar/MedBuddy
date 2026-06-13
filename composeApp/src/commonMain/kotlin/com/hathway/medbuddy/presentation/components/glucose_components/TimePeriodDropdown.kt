@@ -1,7 +1,7 @@
 package com.hathway.medbuddy.presentation.components.glucose_components
 
 import androidx.compose.runtime.Composable
-import com.hathway.medbuddy.data.TimePeriod
+import com.hathway.medbuddy.domain.model.TimePeriod
 
 @Composable
 fun TimePeriodDropdown(

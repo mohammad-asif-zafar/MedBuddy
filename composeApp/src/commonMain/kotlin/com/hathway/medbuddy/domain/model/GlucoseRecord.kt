@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.data
+package com.hathway.medbuddy.domain.model
 
 data class GlucoseRecord(
     val id : String = "1",

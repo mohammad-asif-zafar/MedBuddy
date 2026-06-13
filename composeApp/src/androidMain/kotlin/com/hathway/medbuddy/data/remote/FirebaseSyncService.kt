@@ -1,9 +1,10 @@
-package com.hathway.medbuddy
+package com.hathway.medbuddy.data.remote
 
 import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.FirebaseManager
+import com.hathway.medbuddy.domain.model.GlucoseRecord
 import kotlinx.coroutines.tasks.await
 
 class FirebaseSyncService(private val context: Context) {

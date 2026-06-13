@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
 import com.hathway.medbuddy.presentation.components.glucose_components.AddGlucoseRecordDialog
-import com.hathway.medbuddy.data.GlucoseRecord
-import com.hathway.medbuddy.data.UserGlucoseRecord
-import com.hathway.medbuddy.data.TimePeriod
-import com.hathway.medbuddy.glucose_screen.GlucoseRecordHistory
-import com.hathway.medbuddy.repository.IGlucoseRepository
+import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.domain.model.UserGlucoseRecord
+import com.hathway.medbuddy.domain.model.TimePeriod
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.presentation.components.glucose_components.GlucoseRecordHistory
 import kotlinx.coroutines.launch
 
 @Composable

@@ -1,6 +1,6 @@
-package com.hathway.medbuddy.repository
+package com.hathway.medbuddy.domain.repository
 
-import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.domain.model.GlucoseRecord
 
 interface IGlucoseRepository {
 

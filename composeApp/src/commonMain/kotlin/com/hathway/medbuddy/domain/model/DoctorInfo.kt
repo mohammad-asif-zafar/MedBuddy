@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.profile
+package com.hathway.medbuddy.domain.model
 
 data class DoctorInfo(
     val doctorName: String = "",

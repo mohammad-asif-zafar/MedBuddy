@@ -1,10 +1,11 @@
-package com.hathway.medbuddy
+package com.hathway.medbuddy.data.remote
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

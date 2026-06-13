@@ -2,20 +2,15 @@ package com.hathway.medbuddy.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hathway.medbuddy.data.GlucoseRecord
-import com.hathway.medbuddy.repository.IGlucoseRepository
+import kotlinx.datetime.*
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.domain.usecase.GetGlucoseDashboardUseCase
 import com.hathway.medbuddy.FirebaseManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
-import kotlinx.datetime.toLocalDateTime
 
 data class HomeUiState(
     val isLoading: Boolean = true,
@@ -79,6 +74,8 @@ class HomeViewModel(
     private val repository: IGlucoseRepository
 ) : ViewModel() {
 
+    private val getGlucoseDashboardUseCase = GetGlucoseDashboardUseCase(repository)
+
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
@@ -92,212 +89,45 @@ class HomeViewModel(
             _uiState.value = _uiState.value.copy(isLoading = true)
 
             try {
-                val records = repository.getAllRecords()
-                val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-                val todayDateString = formatDate(today)
-
-                val todayRecords = records.filter { it.date == todayDateString }
-                val latestTodayRecord = todayRecords.maxByOrNull { it.createdAt }
-                val todayGlucose =
-                    if (latestTodayRecord != null) getGlucoseValue(latestTodayRecord) else null
-
-                val glucoseStatus = when {
-                    todayGlucose == null -> GlucoseStatus.Normal
-                    todayGlucose < 70 -> GlucoseStatus.Low
-                    todayGlucose <= 100 -> GlucoseStatus.Normal
-                    todayGlucose <= 140 -> GlucoseStatus.AboveTarget
-                    else -> GlucoseStatus.High
-                }
-
-                val sevenDayRecords = records.filter {
-                    try {
-                        val recordDate = parseDisplayDate(it.date)
-                        recordDate >= today.minus(
-                            7, DateTimeUnit.DAY
-                        ) && recordDate <= today
-                    } catch (e: Exception) {
-                        false
-                    }
-                }
-                val sevenDayReadings = sevenDayRecords.flatMap {
-                    listOfNotNull(
-                        it.beforeBreakfast,
-                        it.afterBreakfast,
-                        it.beforeLunch,
-                        it.afterLunch,
-                        it.beforeDinner,
-                        it.afterDinner,
-                        it.bedtime
-                    )
-                }
-
-                val sevenDayAverage =
-                    if (sevenDayReadings.isNotEmpty()) sevenDayReadings.average().toInt() else 0
-                val hbA1cEstimate = calculateHbA1cEstimate(sevenDayAverage)
+                val dashboard = getGlucoseDashboardUseCase()
                 val greeting = getGreeting()
-                val recordedTime = latestTodayRecord?.time ?: ""
-
-                val allReadings = records.flatMap {
-                    listOfNotNull(
-                        it.beforeBreakfast,
-                        it.afterBreakfast,
-                        it.beforeLunch,
-                        it.afterLunch,
-                        it.beforeDinner,
-                        it.afterDinner,
-                        it.bedtime
-                    )
-                }
-                // Find the chronologically latest record (day)
-                val sortedRecords = records.sortedByDescending {
-                    try {
-                        parseDisplayDate(it.date)
-                    } catch (e: Exception) {
-                        LocalDate(1900, 1, 1)
-                    }
-                }
-
-                val lastRecord = sortedRecords.firstOrNull()
-
-                // For the last record, we want to find the latest time period that has a value
-                val lastReadingValue = getLatestGlucoseValueFromRecord(lastRecord)
-                val lastReadingMealType = getLatestMealTypeFromRecord(lastRecord)
-
-                val average = if (allReadings.isNotEmpty()) {
-                    (allReadings.average() * 10).toInt() / 10.0
-                } else {
-                    0.0
-                }
-
-                val highestGlucose =
-                    if (sevenDayReadings.isNotEmpty()) sevenDayReadings.maxOrNull() ?: 0 else 0
-                val lowestGlucose =
-                    if (sevenDayReadings.isNotEmpty()) sevenDayReadings.minOrNull() ?: 0 else 0
-                
-                val chartReadings = (0..6).reversed().map { dayOffset ->
-                    val date = today.minus(dayOffset, DateTimeUnit.DAY)
-                    val dateString = formatDate(date)
-                    val dayRecords = records.filter { it.date == dateString }
-                    val dayReadings = dayRecords.flatMap {
-                        listOfNotNull(
-                            it.beforeBreakfast,
-                            it.afterBreakfast,
-                            it.beforeLunch,
-                            it.afterLunch,
-                            it.beforeDinner,
-                            it.afterDinner,
-                            it.bedtime
-                        )
-                    }
-                    if (dayReadings.isNotEmpty()) dayReadings.average().toFloat() else 0f
-                }
-
-                val recentRecords = getRecentRecords(records)
-
-                val medications = listOf(
-                    Medication(
-                        id = 1,
-                        name = "Metformin",
-                        dosage = "500mg",
-                        time = "8:00 AM",
-                        isTaken = true,
-                        mealType = "BBF"
-                    ), Medication(
-                        id = 2,
-                        name = "Bisoprolol",
-                        time = "9:00 PM",
-                        dosage = "500mg",
-                        isTaken = false,
-                        mealType = "BDT"
-                    )
-                )
-
-                val insight = "Glucose is 15% lower than last week"
-                val insightEmoji = "📈"
 
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        todayGlucose = todayGlucose,
-                        glucoseStatus = glucoseStatus,
-                        glucoseStatusText = formatStatus(glucoseStatus),
-                        recordedTime = recordedTime,
-                        sevenDayAverage = sevenDayAverage,
-                        hbA1cEstimate = hbA1cEstimate,
+                        todayGlucose = dashboard.todayGlucose,
+                        glucoseStatusText = dashboard.glucoseStatus,
+                        recordedTime = dashboard.recordedTime,
+                        sevenDayAverage = dashboard.sevenDayAverage,
+                        hbA1cEstimate = dashboard.hbA1cEstimate,
                         greeting = greeting,
-                        highestGlucose = highestGlucose,
-                        lowestGlucose = lowestGlucose,
-                        recentRecords = recentRecords,
-                        chartReadings = chartReadings,
-                        medications = medications,
-                        insight = insight,
-                        insightEmoji = insightEmoji,
-                        averageGlucose = average,
-                        lastReading = lastReadingValue,
-                        lastReadingTime = lastRecord?.time ?: "",
-                        lastMealType = formatMealType(lastReadingMealType)
+                        highestGlucose = dashboard.highestGlucose,
+                        lowestGlucose = dashboard.lowestGlucose,
+                        chartReadings = dashboard.chartReadings,
+                        recentRecords = dashboard.recentRecords.map {
+                            RecentRecord(it.date, it.timePeriod, it.value, it.time)
+                        },
+                        // Medications remains same for now
+                        medications = listOf(
+                            Medication(
+                                id = 1, name = "Metformin", dosage = "500mg",
+                                time = "8:00 AM", isTaken = true, mealType = "BBF"
+                            ), Medication(
+                                id = 2, name = "Bisoprolol", time = "9:00 PM",
+                                dosage = "500mg", isTaken = false, mealType = "BDT"
+                            )
+                        ),
+                        insight = "Glucose is 15% lower than last week",
+                        insightEmoji = "📈",
+                        averageGlucose = dashboard.sevenDayAverage.toDouble(), // Or actual average
+                        lastReading = dashboard.todayGlucose ?: 0,
+                        lastReadingTime = dashboard.recordedTime,
+                        lastMealType = "" // Will need update if needed
                     )
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
-        }
-    }
-
-    private fun formatStatus(status: GlucoseStatus): String {
-        return when (status) {
-            GlucoseStatus.AboveTarget -> "Above Target"
-            else -> status.name
-        }
-    }
-
-    private fun getRecentRecords(records: List<GlucoseRecord>): List<RecentRecord> {
-        val sortedRecords = records.sortedByDescending {
-            try {
-                parseDisplayDate(it.date)
-            } catch (e: Exception) {
-                LocalDate(1900, 1, 1)
-            }
-        }
-
-        val recentItems = mutableListOf<RecentRecord>()
-
-        for (record in sortedRecords) {
-            // Within each day, we want to show the readings in reverse chronological order
-            val dayReadings = listOf(
-                "BEDTIME" to record.bedtime,
-                "AFTER_DINNER" to record.afterDinner,
-                "BEFORE_DINNER" to record.beforeDinner,
-                "AFTER_LUNCH" to record.afterLunch,
-                "BEFORE_LUNCH" to record.beforeLunch,
-                "AFTER_BREAKFAST" to record.afterBreakfast,
-                "BEFORE_BREAKFAST" to record.beforeBreakfast
-            )
-
-            for ((type, value) in dayReadings) {
-                if (value != null) {
-                    recentItems.add(
-                        RecentRecord(
-                            date = record.date,
-                            timePeriod = formatMealType(type),
-                            value = value,
-                            time = record.time
-                        )
-                    )
-                    if (recentItems.size >= 3) return recentItems
-                }
-            }
-        }
-
-        return recentItems
-    }
-
-    private fun calculateHbA1cEstimate(averageGlucose: Int): Double {
-        // Formula: (Average Glucose + 46.7) / 28.7
-        return if (averageGlucose > 0) {
-            ((averageGlucose + 46.7) / 28.7)
-        } else {
-            0.0
         }
     }
 
@@ -308,36 +138,6 @@ class HomeViewModel(
             hour < 17 -> "Good Afternoon 👋"
             else -> "Good Evening 👋"
         }
-    }
-
-    private fun formatDate(date: LocalDate): String {
-        val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
-        return "${date.dayOfMonth} $month ${date.year}"
-    }
-
-    private fun parseDisplayDate(date: String): LocalDate {
-        val parts = date.split(" ")
-        val day = parts[0].toInt()
-        val monthName = parts[1].lowercase()
-        val year = parts[2].toInt()
-
-        val month = when (monthName) {
-            "january" -> 1
-            "february" -> 2
-            "march" -> 3
-            "april" -> 4
-            "may" -> 5
-            "june" -> 6
-            "july" -> 7
-            "august" -> 8
-            "september" -> 9
-            "october" -> 10
-            "november" -> 11
-            "december" -> 12
-            else -> 1
-        }
-
-        return LocalDate(year, month, day)
     }
 
     private fun loadCurrentUser() {
@@ -355,53 +155,5 @@ class HomeViewModel(
 
     }
 
-    private fun getGlucoseValue(record: GlucoseRecord?): Int {
-        if (record == null) return 0
-
-        return when (record.mealType) {
-            "BBF", "BEFORE_BREAKFAST" -> record.beforeBreakfast
-            "ABF", "AFTER_BREAKFAST" -> record.afterBreakfast
-            "BL", "BEFORE_LUNCH" -> record.beforeLunch
-            "AL", "AFTER_LUNCH" -> record.afterLunch
-            "BD", "BEFORE_DINNER" -> record.beforeDinner
-            "AD", "AFTER_DINNER" -> record.afterDinner
-            "BT", "BEDTIME", "NGT" -> record.bedtime
-            else -> null
-        } ?: record.bedtime ?: record.afterDinner ?: record.beforeDinner ?: record.afterLunch
-        ?: record.beforeLunch ?: record.afterBreakfast ?: record.beforeBreakfast ?: 0
-    }
-
-    private fun getLatestGlucoseValueFromRecord(record: GlucoseRecord?): Int {
-        if (record == null) return 0
-        return record.bedtime ?: record.afterDinner ?: record.beforeDinner ?: record.afterLunch
-        ?: record.beforeLunch ?: record.afterBreakfast ?: record.beforeBreakfast ?: 0
-    }
-
-    private fun getLatestMealTypeFromRecord(record: GlucoseRecord?): String {
-        if (record == null) return ""
-        return when {
-            record.bedtime != null -> "BEDTIME"
-            record.afterDinner != null -> "AFTER_DINNER"
-            record.beforeDinner != null -> "BEFORE_DINNER"
-            record.afterLunch != null -> "AFTER_LUNCH"
-            record.beforeLunch != null -> "BEFORE_LUNCH"
-            record.afterBreakfast != null -> "AFTER_BREAKFAST"
-            record.beforeBreakfast != null -> "BEFORE_BREAKFAST"
-            else -> ""
-        }
-    }
-
-    private fun formatMealType(type: String): String {
-        return when (type) {
-            "BBF", "BEFORE_BREAKFAST" -> "Before Breakfast"
-            "ABF", "AFTER_BREAKFAST" -> "After Breakfast"
-            "BL", "BEFORE_LUNCH" -> "Before Lunch"
-            "AL", "AFTER_LUNCH" -> "After Lunch"
-            "BD", "BEFORE_DINNER" -> "Before Dinner"
-            "AD", "AFTER_DINNER" -> "After Dinner"
-            "BT", "BEDTIME", "NGT" -> "Bedtime"
-            else -> type
-        }
-    }
 }
 

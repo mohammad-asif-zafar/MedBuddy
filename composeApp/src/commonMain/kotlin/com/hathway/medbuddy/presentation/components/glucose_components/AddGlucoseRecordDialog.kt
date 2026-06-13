@@ -32,8 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.hathway.medbuddy.data.TimePeriod
-import com.hathway.medbuddy.data.UserGlucoseRecord
+import com.hathway.medbuddy.domain.model.TimePeriod
+import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone

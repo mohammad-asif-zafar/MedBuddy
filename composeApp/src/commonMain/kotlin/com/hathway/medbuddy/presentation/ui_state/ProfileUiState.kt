@@ -1,6 +1,6 @@
 package com.hathway.medbuddy.presentation.ui_state
 
-import com.hathway.medbuddy.profile.DoctorInfo
+import com.hathway.medbuddy.domain.model.DoctorInfo
 
 data class ProfileUiState(
 

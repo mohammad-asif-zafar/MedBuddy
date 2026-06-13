@@ -1,6 +1,6 @@
 package com.hathway.medbuddy
 
-import com.hathway.medbuddy.profile.DoctorInfo
+import com.hathway.medbuddy.domain.model.DoctorInfo
 
 expect object FirebaseManager {
     val currentUser: CurrentUser?

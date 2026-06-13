@@ -12,7 +12,8 @@ import com.google.android.gms.common.api.ApiException
 import com.hathway.medbuddy.google_manager.GoogleAuthUiClient
 import com.hathway.medbuddy.presentation.ui.LoadingScreen
 import com.hathway.medbuddy.presentation.ui.LoginScreen
-import com.hathway.medbuddy.repository.GlucoseRepository
+import com.hathway.medbuddy.data.remote.FirebaseSyncService
+import com.hathway.medbuddy.data.repository.GlucoseRepository
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

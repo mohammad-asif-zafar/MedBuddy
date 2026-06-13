@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.navigation
+package com.hathway.medbuddy.presentation.navigation
 
 enum class NavigationDestination(
     val title: String,

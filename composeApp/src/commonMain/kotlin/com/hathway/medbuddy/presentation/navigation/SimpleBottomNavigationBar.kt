@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.navigation
+package com.hathway.medbuddy.presentation.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape

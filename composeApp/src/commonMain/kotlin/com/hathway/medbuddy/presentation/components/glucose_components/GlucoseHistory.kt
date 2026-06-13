@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.glucose_screen
+package com.hathway.medbuddy.presentation.components.glucose_components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.data.GlucoseRecord
+import com.hathway.medbuddy.domain.model.GlucoseRecord
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
