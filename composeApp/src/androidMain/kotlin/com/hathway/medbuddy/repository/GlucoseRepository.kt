@@ -21,7 +21,7 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
 
         // Fetch from Firebase and merge
         try {
-            val firebaseRecords = firebaseSyncService.fetchRecordsFromFirebase("")
+            val firebaseRecords = firebaseSyncService.fetchRecordsFromFirebase()
             Log.d("GlucoseRepository", "Fetched ${firebaseRecords.size} records from Firebase")
 
             // Merge records by date, preferring Firebase data if it exists

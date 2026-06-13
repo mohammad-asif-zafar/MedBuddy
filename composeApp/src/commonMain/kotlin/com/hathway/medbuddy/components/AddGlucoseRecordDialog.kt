@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -30,11 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.data.TimePeriod
 import com.hathway.medbuddy.data.UserGlucoseRecord
-// ✅ Clean Multiplatform Datetime Imports
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,44 +69,57 @@ fun AddGlucoseRecordDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            colors = CardDefaults.cardColors(
+            modifier = Modifier.fillMaxWidth().padding(16.dp), colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             )
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp)
+                modifier = Modifier.fillMaxWidth().padding(24.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Title
-                Text(
-                    text = "Add Glucose Record",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 24.dp)
-                )
+                // Header with Gradient background
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = "Add Glucose Record",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Text(
+                            text = "Track your glucose reading",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    IconButton(
+                        onClick = onDismiss
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close, contentDescription = "Close dialog"
+                        )
+                    }
+                }
 
                 // Date Picker
                 var showDatePicker by remember { mutableStateOf(false) }
 
                 Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showDatePicker = true },
+                    modifier = Modifier.fillMaxWidth().clickable { showDatePicker = true },
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     )
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -130,8 +146,7 @@ fun AddGlucoseRecordDialog(
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(
-                                text = "📅",
-                                style = MaterialTheme.typography.headlineMedium
+                                text = "📅", style = MaterialTheme.typography.headlineMedium
                             )
                         }
                     }
@@ -141,11 +156,9 @@ fun AddGlucoseRecordDialog(
                 if (showDatePicker) {
                     NativeDatePickerDialog(
                         onDateSelected = { newDate ->
-                            selectedDate = newDate
-                            showDatePicker = false
-                        },
-                        onDismiss = { showDatePicker = false },
-                        initialDate = selectedDate
+                        selectedDate = newDate
+                        showDatePicker = false
+                    }, onDismiss = { showDatePicker = false }, initialDate = selectedDate
                     )
                 }
 
@@ -153,9 +166,7 @@ fun AddGlucoseRecordDialog(
 
                 // Time Period Dropdown
                 TimePeriodDropdown(
-                    selected = selectedTimePeriod,
-                    onSelected = { selectedTimePeriod = it }
-                )
+                    selected = selectedTimePeriod, onSelected = { selectedTimePeriod = it })
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -209,8 +220,7 @@ fun AddGlucoseRecordDialog(
                     val isValid = glucoseInt != null && glucoseInt > 0
 
                     PrimaryButton(
-                        text = "Save",
-                        onClick = {
+                        text = "Save", onClick = {
                             val record = UserGlucoseRecord(
                                 date = formatDate(selectedDate),
                                 timePeriod = selectedTimePeriod.name,
@@ -222,9 +232,7 @@ fun AddGlucoseRecordDialog(
 
                             onSave(record)   // single source of truth
                             onDismiss()
-                        },
-                        modifier = Modifier.weight(1f),
-                        enabled = isValid
+                        }, modifier = Modifier.weight(1f), enabled = isValid
                     )
                 }
             }

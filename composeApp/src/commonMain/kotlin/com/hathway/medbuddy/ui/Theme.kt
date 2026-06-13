@@ -21,30 +21,33 @@ private val LightColorScheme = lightColorScheme(
     onSurface = OnSurface,
 
     error = Error,
-    onError = OnError
-)
+    onError = OnError,
+
+    secondaryContainer = Color(0xFFCCFBF1),
+    outline = Border,
+    primaryContainer = Color(0xFFEFF6FF),
+    onPrimaryContainer = Color(0xFF1E3A8A),
+
+    surfaceVariant = Color(0xFFF1F5F9),
+    onSurfaceVariant = Color(0xFF64748B),
+
+    )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Primary,
-    onPrimary = OnPrimary,
+    primary = Primary, onPrimary = OnPrimary,
 
-    secondary = Secondary,
-    onSecondary = OnSecondary,
+    secondary = Secondary, onSecondary = OnSecondary,
 
-    background = Color(0xFF121212),
-    onBackground = Color(0xFFE0E0E0),
+    background = Color(0xFF0F172A), onBackground = Color(0xFFF8FAFC),
 
-    surface = Color(0xFF1E1E1E),
-    onSurface = Color(0xFFE0E0E0),
+    surface = Color(0xFF1E293B), onSurface = Color(0xFFF8FAFC),
 
-    error = Error,
-    onError = OnError
+    error = Error, onError = OnError
 )
 
 @Composable
 fun MedBuddyTheme(
-    darkTheme: Boolean = false,
-    content: @Composable () -> Unit
+    darkTheme: Boolean = false, content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) {
         DarkColorScheme
@@ -53,7 +56,6 @@ fun MedBuddyTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        content = content
+        colorScheme = colorScheme, content = content
     )
 }

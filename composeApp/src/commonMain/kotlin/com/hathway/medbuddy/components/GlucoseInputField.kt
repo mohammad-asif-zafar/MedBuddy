@@ -29,8 +29,7 @@ fun GlucoseInputField(
     val isNormal = glucoseInt != null && glucoseInt in min..max
 
     OutlinedTextField(
-        value = value,
-        onValueChange = { it ->
+        value = value, onValueChange = { it ->
             val filtered = it.filter { it.isDigit() }.take(3)
             onValueChange(filtered)
         },
@@ -53,8 +52,7 @@ fun GlucoseInputField(
                 isHigh -> Color(0xFFEF4444)
                 isNormal -> Color(0xFF10B981)
                 else -> MaterialTheme.colorScheme.primary
-            },
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+            }, unfocusedBorderColor = MaterialTheme.colorScheme.outline
         ),
 
         supportingText = {
@@ -62,16 +60,18 @@ fun GlucoseInputField(
                 glucoseInt == null -> {
                     Text("Target: $min–$max mg/dL")
                 }
+
                 isLow -> {
                     Text("Low ⚠ ($glucoseInt)", color = Color(0xFF3B82F6))
                 }
+
                 isHigh -> {
                     Text("High ⚠ ($glucoseInt)", color = Color(0xFFEF4444))
                 }
+
                 isNormal -> {
                     Text("Normal ✓", color = Color(0xFF10B981))
                 }
             }
-        }
-    )
+        })
 }

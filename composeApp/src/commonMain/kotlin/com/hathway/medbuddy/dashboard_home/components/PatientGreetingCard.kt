@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 
 @Composable
 fun PatientGreetingCard(
@@ -27,51 +30,60 @@ fun PatientGreetingCard(
     patientPhotoUrl: String = "",
     condition: String
 ) {
+
     Row(
-        modifier = Modifier.padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.padding(
+            horizontal = 4.dp, vertical = 12.dp
+        ), verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(modifier = Modifier.weight(1f)) {
+
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+
             Text(
                 text = greeting,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary
             )
+
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = patientName,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
             )
-            if (patientEmail.isNotEmpty()) {
-                Text(
-                    text = patientEmail,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-            }
-            Text(
-                text = condition,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
+
         }
 
-        // Avatar Placeholder (since Coil is not added yet)
-        Box(
-            modifier = Modifier
-                .size(60.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = if (patientName.isNotEmpty()) patientName.first().uppercase() else "P",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+        Spacer(modifier = Modifier.padding(4.dp))
+
+        if (patientPhotoUrl.isNotEmpty()) {
+
+            AsyncImage(
+                model = patientPhotoUrl,
+                contentDescription = null,
+                modifier = Modifier.size(72.dp).clip(CircleShape),
+                contentScale = ContentScale.Crop
             )
+
+        } else {
+
+            Box(
+                modifier = Modifier.size(72.dp).clip(CircleShape).background(
+                    MaterialTheme.colorScheme.primaryContainer
+                ), contentAlignment = Alignment.Center
+            ) {
+
+                Text(
+                    text = patientName.firstOrNull()?.uppercase() ?: "P",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
         }
     }
 }

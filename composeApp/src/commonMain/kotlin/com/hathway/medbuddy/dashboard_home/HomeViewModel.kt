@@ -26,6 +26,7 @@ data class HomeUiState(
     val condition: String = "Type 2 Diabetes",
     val todayGlucose: Int? = null,
     val glucoseStatus: GlucoseStatus = GlucoseStatus.Normal,
+    val glucoseStatusText: String = "Normal",
     val recordedTime: String = "",
     val sevenDayAverage: Int = 0,
     val hbA1cEstimate: Double = 0.0,
@@ -42,7 +43,14 @@ data class HomeUiState(
     val recentRecords: List<RecentRecord> = emptyList(),
     val medications: List<Medication> = emptyList(),
     val insight: String = "",
-    val insightEmoji: String = ""
+    val insightEmoji: String = "",
+
+    val averageGlucose: Double = 0.0,
+    val glucoseTrend: Double = 0.0,
+
+    val lastReading: Int = 0,
+    val lastReadingTime: String = "",
+    val lastMealType: String = ""
 )
 
 enum class GlucoseStatus {
@@ -50,7 +58,7 @@ enum class GlucoseStatus {
 }
 
 data class RecentRecord(
-    val date: String, val timePeriod: String, val value: Int
+    val date: String, val timePeriod: String, val value: Int, val time: String
 )
 
 data class Medication(
@@ -84,8 +92,10 @@ class HomeViewModel(
                 val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                 val todayDateString = formatDate(today)
 
-                val todayRecord = records.firstOrNull { it.date == todayDateString }
-                val todayGlucose = todayRecord?.beforeBreakfast
+                val todayRecords = records.filter { it.date == todayDateString }
+                val latestTodayRecord = todayRecords.maxByOrNull { it.createdAt }
+                val todayGlucose =
+                    if (latestTodayRecord != null) getGlucoseValue(latestTodayRecord) else null
 
                 val glucoseStatus = when {
                     todayGlucose == null -> GlucoseStatus.Normal
@@ -95,10 +105,33 @@ class HomeViewModel(
                     else -> GlucoseStatus.High
                 }
 
-                val sevenDayAverage = calculateSevenDayAverage(records, today)
+                val sevenDayRecords = records.filter {
+                    try {
+                        val recordDate = parseDisplayDate(it.date)
+                        recordDate >= today.minus(
+                            7, kotlinx.datetime.DateTimeUnit.DAY
+                        ) && recordDate <= today
+                    } catch (e: Exception) {
+                        false
+                    }
+                }
+                val sevenDayReadings = sevenDayRecords.flatMap {
+                    listOfNotNull(
+                        it.beforeBreakfast,
+                        it.afterBreakfast,
+                        it.beforeLunch,
+                        it.afterLunch,
+                        it.beforeDinner,
+                        it.afterDinner,
+                        it.bedtime
+                    )
+                }
+
+                val sevenDayAverage =
+                    if (sevenDayReadings.isNotEmpty()) sevenDayReadings.average().toInt() else 0
                 val hbA1cEstimate = calculateHbA1cEstimate(sevenDayAverage)
                 val greeting = getGreeting()
-                val recordedTime = "7:45 AM"
+                val recordedTime = latestTodayRecord?.time ?: ""
 
                 val allReadings = records.flatMap {
                     listOfNotNull(
@@ -111,8 +144,31 @@ class HomeViewModel(
                         it.bedtime
                     )
                 }
-                val highestGlucose = allReadings.maxOrNull() ?: 0
-                val lowestGlucose = allReadings.minOrNull() ?: 0
+                // Find the chronologically latest record (day)
+                val sortedRecords = records.sortedByDescending {
+                    try {
+                        parseDisplayDate(it.date)
+                    } catch (e: Exception) {
+                        kotlinx.datetime.LocalDate(1900, 1, 1)
+                    }
+                }
+
+                val lastRecord = sortedRecords.firstOrNull()
+
+                // For the last record, we want to find the latest time period that has a value
+                val lastReadingValue = getLatestGlucoseValueFromRecord(lastRecord)
+                val lastReadingMealType = getLatestMealTypeFromRecord(lastRecord)
+
+                val average = if (allReadings.isNotEmpty()) {
+                    (allReadings.average() * 10).toInt() / 10.0
+                } else {
+                    0.0
+                }
+
+                val highestGlucose =
+                    if (sevenDayReadings.isNotEmpty()) sevenDayReadings.maxOrNull() ?: 0 else 0
+                val lowestGlucose =
+                    if (sevenDayReadings.isNotEmpty()) sevenDayReadings.minOrNull() ?: 0 else 0
                 val recentRecords = getRecentRecords(records)
 
                 val medications = listOf(
@@ -136,11 +192,12 @@ class HomeViewModel(
                 val insight = "Glucose is 15% lower than last week"
                 val insightEmoji = "📈"
 
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         isLoading = false,
                         todayGlucose = todayGlucose,
                         glucoseStatus = glucoseStatus,
+                        glucoseStatusText = formatStatus(glucoseStatus),
                         recordedTime = recordedTime,
                         sevenDayAverage = sevenDayAverage,
                         hbA1cEstimate = hbA1cEstimate,
@@ -150,7 +207,11 @@ class HomeViewModel(
                         recentRecords = recentRecords,
                         medications = medications,
                         insight = insight,
-                        insightEmoji = insightEmoji
+                        insightEmoji = insightEmoji,
+                        averageGlucose = average,
+                        lastReading = lastReadingValue,
+                        lastReadingTime = lastRecord?.time ?: "",
+                        lastMealType = formatMealType(lastReadingMealType)
                     )
                 }
             } catch (e: Exception) {
@@ -159,64 +220,52 @@ class HomeViewModel(
         }
     }
 
-    private fun getRecentRecords(records: List<GlucoseRecord>): List<RecentRecord> {
-        return records.take(3).map { record ->
-            val timePeriod = when {
-                record.beforeBreakfast != null -> "BBF"
-                record.afterBreakfast != null -> "ABF"
-                record.beforeLunch != null -> "BL"
-                record.afterLunch != null -> "AL"
-                record.beforeDinner != null -> "BD"
-                record.afterDinner != null -> "AD"
-                record.bedtime != null -> "BT"
-                else -> "N/A"
-            }
-            val value = when (timePeriod) {
-                "BBF" -> record.beforeBreakfast
-                "ABF" -> record.afterBreakfast
-                "BL" -> record.beforeLunch
-                "AL" -> record.afterLunch
-                "BD" -> record.beforeDinner
-                "AD" -> record.afterDinner
-                "BT" -> record.bedtime
-                else -> null
-            }
-            RecentRecord(
-                date = record.date, timePeriod = timePeriod, value = value ?: 0
-            )
+    private fun formatStatus(status: GlucoseStatus): String {
+        return when (status) {
+            GlucoseStatus.AboveTarget -> "Above Target"
+            else -> status.name
         }
     }
 
-    private fun calculateSevenDayAverage(
-        records: List<GlucoseRecord>, today: kotlinx.datetime.LocalDate
-    ): Int {
-        val sevenDaysAgo = today.minus(7, kotlinx.datetime.DateTimeUnit.DAY)
-        val recentRecords = records.filter {
+    private fun getRecentRecords(records: List<GlucoseRecord>): List<RecentRecord> {
+        val sortedRecords = records.sortedByDescending {
             try {
-                val recordDate = parseDisplayDate(it.date)
-                recordDate >= sevenDaysAgo && recordDate <= today
+                parseDisplayDate(it.date)
             } catch (e: Exception) {
-                false
+                kotlinx.datetime.LocalDate(1900, 1, 1)
             }
         }
 
-        val allReadings = recentRecords.flatMap {
-            listOfNotNull(
-                it.beforeBreakfast,
-                it.afterBreakfast,
-                it.beforeLunch,
-                it.afterLunch,
-                it.beforeDinner,
-                it.afterDinner,
-                it.bedtime
+        val recentItems = mutableListOf<RecentRecord>()
+
+        for (record in sortedRecords) {
+            // Within each day, we want to show the readings in reverse chronological order
+            val dayReadings = listOf(
+                "BEDTIME" to record.bedtime,
+                "AFTER_DINNER" to record.afterDinner,
+                "BEFORE_DINNER" to record.beforeDinner,
+                "AFTER_LUNCH" to record.afterLunch,
+                "BEFORE_LUNCH" to record.beforeLunch,
+                "AFTER_BREAKFAST" to record.afterBreakfast,
+                "BEFORE_BREAKFAST" to record.beforeBreakfast
             )
+
+            for ((type, value) in dayReadings) {
+                if (value != null) {
+                    recentItems.add(
+                        RecentRecord(
+                            date = record.date,
+                            timePeriod = formatMealType(type),
+                            value = value,
+                            time = record.time
+                        )
+                    )
+                    if (recentItems.size >= 3) return recentItems
+                }
+            }
         }
 
-        return if (allReadings.isNotEmpty()) {
-            allReadings.average().toInt()
-        } else {
-            0
-        }
+        return recentItems
     }
 
     private fun calculateHbA1cEstimate(averageGlucose: Int): Double {
@@ -268,7 +317,7 @@ class HomeViewModel(
     }
 
     private fun loadCurrentUser() {
-        
+
         val user = FirebaseManager.currentUser
 
         _uiState.update {
@@ -280,6 +329,55 @@ class HomeViewModel(
             )
         }
 
+    }
+
+    private fun getGlucoseValue(record: GlucoseRecord?): Int {
+        if (record == null) return 0
+
+        return when (record.mealType) {
+            "BBF", "BEFORE_BREAKFAST" -> record.beforeBreakfast
+            "ABF", "AFTER_BREAKFAST" -> record.afterBreakfast
+            "BL", "BEFORE_LUNCH" -> record.beforeLunch
+            "AL", "AFTER_LUNCH" -> record.afterLunch
+            "BD", "BEFORE_DINNER" -> record.beforeDinner
+            "AD", "AFTER_DINNER" -> record.afterDinner
+            "BT", "BEDTIME", "NGT" -> record.bedtime
+            else -> null
+        } ?: record.bedtime ?: record.afterDinner ?: record.beforeDinner ?: record.afterLunch
+        ?: record.beforeLunch ?: record.afterBreakfast ?: record.beforeBreakfast ?: 0
+    }
+
+    private fun getLatestGlucoseValueFromRecord(record: GlucoseRecord?): Int {
+        if (record == null) return 0
+        return record.bedtime ?: record.afterDinner ?: record.beforeDinner ?: record.afterLunch
+        ?: record.beforeLunch ?: record.afterBreakfast ?: record.beforeBreakfast ?: 0
+    }
+
+    private fun getLatestMealTypeFromRecord(record: GlucoseRecord?): String {
+        if (record == null) return ""
+        return when {
+            record.bedtime != null -> "BEDTIME"
+            record.afterDinner != null -> "AFTER_DINNER"
+            record.beforeDinner != null -> "BEFORE_DINNER"
+            record.afterLunch != null -> "AFTER_LUNCH"
+            record.beforeLunch != null -> "BEFORE_LUNCH"
+            record.afterBreakfast != null -> "AFTER_BREAKFAST"
+            record.beforeBreakfast != null -> "BEFORE_BREAKFAST"
+            else -> ""
+        }
+    }
+
+    private fun formatMealType(type: String): String {
+        return when (type) {
+            "BBF", "BEFORE_BREAKFAST" -> "Before Breakfast"
+            "ABF", "AFTER_BREAKFAST" -> "After Breakfast"
+            "BL", "BEFORE_LUNCH" -> "Before Lunch"
+            "AL", "AFTER_LUNCH" -> "After Lunch"
+            "BD", "BEFORE_DINNER" -> "Before Dinner"
+            "AD", "AFTER_DINNER" -> "After Dinner"
+            "BT", "BEDTIME", "NGT" -> "Bedtime"
+            else -> type
+        }
     }
 }
 

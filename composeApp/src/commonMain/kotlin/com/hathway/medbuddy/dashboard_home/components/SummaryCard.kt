@@ -17,28 +17,36 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SummaryCard(
-    label: String, value: String, modifier: Modifier = Modifier
+    title: String, value: String, modifier: Modifier = Modifier
 ) {
+
     Card(
-        modifier = modifier, shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(
+        modifier = modifier, shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ), elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         )
     ) {
+
         Column(
-            modifier = Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(16.dp)
         ) {
+
             Text(
-                text = label,
+                text = title,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Spacer(modifier = Modifier.height(4.dp))
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
             Text(
                 text = value,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

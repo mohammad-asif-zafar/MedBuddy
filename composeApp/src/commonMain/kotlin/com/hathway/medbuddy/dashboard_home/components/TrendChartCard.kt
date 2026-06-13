@@ -1,12 +1,7 @@
 package com.hathway.medbuddy.dashboard_home.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -15,11 +10,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TrendChartCard() {
+fun TrendChartCard(
+    readings: List<Float>,
+    average: Double,
+    highest: Double,
+    lowest: Double
+) {
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
@@ -27,31 +32,116 @@ fun TrendChartCard() {
             containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = 4.dp
         )
     ) {
+
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
+
             Text(
-                text = "Last 7 Days",
+                text = "📈 Glucose Trend",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            // Placeholder for sparkline chart
-            Box(
-                modifier = Modifier.fillMaxWidth().height(100.dp).background(
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-                    RoundedCornerShape(12.dp)
-                ), contentAlignment = Alignment.Center
+
+            Text(
+                text = "Last 7 Days",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "📈 Trend Chart Coming Soon",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+
+                TrendMetric(
+                    title = "Avg",
+                    value = average.toInt().toString()
+                )
+
+                TrendMetric(
+                    title = "High",
+                    value = highest.toInt().toString()
+                )
+
+                TrendMetric(
+                    title = "Low",
+                    value = lowest.toInt().toString()
                 )
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            GlucoseLineChart(
+                readings = readings
+            )
+        }
+    }
+}
+
+@Composable
+private fun GlucoseLineChart(
+    readings: List<Float>
+) {
+
+    if (readings.isEmpty()) return
+
+    val lineColor = MaterialTheme.colorScheme.primary
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(140.dp)
+    ) {
+
+        val maxValue = readings.maxOrNull() ?: 1f
+        val minValue = readings.minOrNull() ?: 0f
+        val range = (maxValue - minValue).takeIf { it > 0 } ?: 1f
+
+        val stepX = size.width / (readings.size - 1)
+
+        val path = Path()
+
+        readings.forEachIndexed { index, value ->
+
+            val x = index * stepX
+
+            val y = size.height -
+                    ((value - minValue) / range) * size.height
+
+            if (index == 0) {
+                path.moveTo(x, y)
+            } else {
+                path.lineTo(x, y)
+            }
+        }
+
+        drawPath(
+            path = path,
+            color = lineColor,
+            style = Stroke(
+                width = 6f,
+                cap = StrokeCap.Round
+            )
+        )
+
+        readings.forEachIndexed { index, value ->
+
+            val x = index * stepX
+
+            val y = size.height -
+                    ((value - minValue) / range) * size.height
+
+            drawCircle(
+                color = lineColor,
+                radius = 8f,
+                center = Offset(x, y)
+            )
         }
     }
 }

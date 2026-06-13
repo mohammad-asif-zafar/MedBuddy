@@ -1,27 +1,32 @@
 package com.hathway.medbuddy.dashboard_home.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
+enum class InsightType {
+    POSITIVE, WARNING, ALERT
+}
 
 @Composable
 fun QuickInsightsCard(
-    insight: String, insightEmoji: String
+    insight: String, insightEmoji: String, insightTitle: String, insightType: InsightType
 ) {
+
+    val chipColor = when (insightType) {
+        InsightType.POSITIVE -> MaterialTheme.colorScheme.primary
+        InsightType.WARNING -> MaterialTheme.colorScheme.secondary
+        InsightType.ALERT -> MaterialTheme.colorScheme.error
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
@@ -32,26 +37,129 @@ fun QuickInsightsCard(
             defaultElevation = 2.dp
         )
     ) {
+
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxWidth().padding(20.dp), verticalAlignment = Alignment.Top
         ) {
-            Text(
-                text = insightEmoji, fontSize = 28.sp
+
+            Surface(
+                modifier = Modifier.size(52.dp),
+                shape = CircleShape,
+                color = chipColor.copy(alpha = 0.12f)
+            ) {
+
+                Box(
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = insightEmoji
+                    )
+                }
+            }
+
+            Spacer(
+                modifier = Modifier.width(16.dp)
             )
-            Column {
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+
+                Text(
+                    text = insightTitle,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Spacer(
+                    modifier = Modifier.height(6.dp)
+                )
+
                 Text(
                     text = insight,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = "👍 Good improvement",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuickInsightsCardPositivePreview() {
+
+    MaterialTheme {
+
+        Box(
+            modifier = Modifier.padding(16.dp)
+        ) {
+
+            QuickInsightsCard(
+                insightTitle = "Glucose Stable",
+                insight = "Your average glucose decreased by 12% compared to last week.",
+                insightEmoji = "📈",
+                insightType = InsightType.POSITIVE
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuickInsightsCardWarningPreview() {
+
+    MaterialTheme {
+
+        Box(
+            modifier = Modifier.padding(16.dp)
+        ) {
+
+            QuickInsightsCard(
+                insightTitle = "High Readings",
+                insight = "3 readings exceeded your target range this week.",
+                insightEmoji = "⚠️",
+                insightType = InsightType.WARNING
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuickInsightsCardAlertPreview() {
+
+    MaterialTheme {
+
+        Box(
+            modifier = Modifier.padding(16.dp)
+        ) {
+
+            QuickInsightsCard(
+                insightTitle = "Low Glucose Alert",
+                insight = "You recorded 2 low glucose events in the last 24 hours.",
+                insightEmoji = "🚨",
+                insightType = InsightType.ALERT
+            )
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun QuickInsightsCardPreview() {
+
+    MaterialTheme {
+
+        Box(
+            modifier = Modifier.padding(16.dp)
+        ) {
+
+            QuickInsightsCard(
+                insightTitle = "Glucose Stable",
+                insight = "Your average glucose decreased by 12% compared to last week.",
+                insightEmoji = "📈",
+                insightType = InsightType.POSITIVE
+            )
         }
     }
 }

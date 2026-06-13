@@ -6,8 +6,6 @@ enum class NavigationDestination(
     val isFloatingActionButton: Boolean = false
 ) {
     HOME("Home", "🏠"),
-    SEARCH("Search", "🔍"),
     ADD("Add", "+", isFloatingActionButton = true),
-    NOTIFICATIONS("Notifications", "🔔"),
     PROFILE("Profile", "👤")
 }

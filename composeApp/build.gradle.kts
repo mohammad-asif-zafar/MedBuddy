@@ -34,10 +34,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.material.icons.extended)
-            implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
 
             implementation(project.dependencies.platform(libs.firebase.bom))
@@ -53,7 +50,10 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.kotlinx.datetime)
-
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+            implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.4")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

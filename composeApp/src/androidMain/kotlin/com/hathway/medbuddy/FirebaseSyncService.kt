@@ -58,7 +58,7 @@ class FirebaseSyncService(private val context: Context) {
         return successCount
     }
 
-    suspend fun fetchRecordsFromFirebase(userId: String): List<GlucoseRecord> {
+    suspend fun fetchRecordsFromFirebase(): List<GlucoseRecord> {
         return try {
 
             val userId = getCurrentUserId()
