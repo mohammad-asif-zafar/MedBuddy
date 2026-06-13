@@ -30,6 +30,13 @@ class MainActivity : ComponentActivity() {
 
         googleAuthUiClient = GoogleAuthUiClient(this)
 
+        // Listen for Auth State Changes (Handles Logout)
+        FirebaseManager.auth.addAuthStateListener { auth ->
+            if (auth.currentUser == null) {
+                authState.value = AuthState.Login
+            }
+        }
+
         // Auto Login
         if (FirebaseManager.auth.currentUser != null) {
 
