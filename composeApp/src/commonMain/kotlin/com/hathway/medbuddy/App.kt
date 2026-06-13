@@ -7,9 +7,9 @@ import androidx.compose.ui.Modifier
 import com.hathway.medbuddy.navigation.*
 import com.hathway.medbuddy.navigation_content.HomeContent
 import com.hathway.medbuddy.navigation_content.ProfileContent
+import com.hathway.medbuddy.presentation.ui.AddScreen
 import com.hathway.medbuddy.repository.IGlucoseRepository
-import com.hathway.medbuddy.screens.*
-import com.hathway.medbuddy.ui.MedBuddyTheme
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
 fun App(

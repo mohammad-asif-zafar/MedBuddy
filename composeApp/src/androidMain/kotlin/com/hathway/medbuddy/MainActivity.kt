@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.hathway.medbuddy.google_manager.GoogleAuthUiClient
-import com.hathway.medbuddy.profile.setup.LoadingScreen
-import com.hathway.medbuddy.profile.setup.LoginScreen
+import com.hathway.medbuddy.presentation.ui.LoadingScreen
+import com.hathway.medbuddy.presentation.ui.LoginScreen
 import com.hathway.medbuddy.repository.GlucoseRepository
 import kotlinx.coroutines.launch
 
@@ -66,12 +66,9 @@ class MainActivity : ComponentActivity() {
             when (authState.value) {
 
                 AuthState.Login -> {
-
                     LoginScreen(
                         errorMessage = errorMessage.value, onGoogleSignInClick = {
-
                             errorMessage.value = null
-
                             launcher.launch(
                                 googleAuthUiClient.getSignInIntent()
                             )
