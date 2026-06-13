@@ -5,13 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.FirebaseManager
 import com.hathway.medbuddy.presentation.ui_state.ProfileUiState
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.repository.IDoctorRepository
+import com.hathway.medbuddy.domain.usecase.GetDoctorUseCase
+import com.hathway.medbuddy.domain.usecase.SaveDoctorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(
+    private val doctorRepository: IDoctorRepository? = null
+) : ViewModel() {
+
+    private val getDoctorUseCase = doctorRepository?.let { GetDoctorUseCase(it) }
+    private val saveDoctorUseCase = doctorRepository?.let { SaveDoctorUseCase(it) }
 
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> =
@@ -50,7 +58,7 @@ class ProfileViewModel : ViewModel() {
 
                 if (userId.isEmpty()) return@launch
 
-                val doctorInfo = FirebaseManager.getDoctorInfo(userId)
+                val doctorInfo = getDoctorUseCase?.invoke(userId) ?: DoctorInfo()
 
                 _uiState.update {
                     it.copy(
@@ -81,7 +89,7 @@ class ProfileViewModel : ViewModel() {
 
                 if (userId.isEmpty()) return@launch
 
-                FirebaseManager.saveDoctorInfo(userId, doctorInfo)
+                saveDoctorUseCase?.invoke(userId, doctorInfo)
 
                 _uiState.update {
 

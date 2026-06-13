@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.database
+package com.hathway.medbuddy.data.local
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

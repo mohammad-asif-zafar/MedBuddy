@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import com.hathway.medbuddy.presentation.navigation.SimpleBottomNavigationBar
 import com.hathway.medbuddy.presentation.navigation_content.HomeContent
@@ -14,7 +15,8 @@ import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
 fun App(
-    repository: IGlucoseRepository? = null
+    repository: IGlucoseRepository? = null,
+    doctorRepository: IDoctorRepository? = null
 ) {
     // For now, we'll use a simple state instead of viewModel
     val currentDestination = remember { mutableStateOf(NavigationDestination.HOME) }
@@ -36,7 +38,7 @@ fun App(
                     }
 
                     NavigationDestination.ADD -> AddScreen(repository = repository)
-                    NavigationDestination.PROFILE -> ProfileContent()
+                    NavigationDestination.PROFILE -> ProfileContent(doctorRepository)
                 }
             }
         }

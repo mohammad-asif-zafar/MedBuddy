@@ -1,10 +1,12 @@
 package com.hathway.medbuddy.domain.usecase
 
-import com.hathway.medbuddy.FirebaseManager
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.repository.IDoctorRepository
 
-class GetDoctorUseCase {
+class GetDoctorUseCase(
+    private val repository: IDoctorRepository
+) {
     suspend operator fun invoke(userId: String): DoctorInfo {
-        return FirebaseManager.getDoctorInfo(userId)
+        return repository.getDoctorInfo(userId)
     }
 }

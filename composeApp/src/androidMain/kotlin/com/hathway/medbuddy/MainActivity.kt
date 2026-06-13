@@ -13,6 +13,7 @@ import com.hathway.medbuddy.google_manager.GoogleAuthUiClient
 import com.hathway.medbuddy.presentation.ui.LoadingScreen
 import com.hathway.medbuddy.presentation.ui.LoginScreen
 import com.hathway.medbuddy.data.remote.FirebaseSyncService
+import com.hathway.medbuddy.data.repository.DoctorRepository
 import com.hathway.medbuddy.data.repository.GlucoseRepository
 import kotlinx.coroutines.launch
 
@@ -83,8 +84,9 @@ class MainActivity : ComponentActivity() {
                 AuthState.Home -> {
 
                     val repository = GlucoseRepository(this)
+                    val doctorRepository = DoctorRepository()
 
-                    App(repository)
+                    App(repository, doctorRepository)
                 }
             }
         }
