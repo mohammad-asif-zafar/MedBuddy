@@ -27,6 +27,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -59,18 +60,13 @@ fun GlucoseRecordHistory(
         modifier = Modifier.fillMaxSize()
     ) {
         // Date Navigation Header
-        DateNavigationHeader(
-            selectedDate = selectedDate,
-            onPreviousDay = {
-                selectedDate = selectedDate.minus(1, DateTimeUnit.DAY)
-            },
-            onNextDay = {
-                selectedDate = selectedDate.plus(1, DateTimeUnit.DAY)
-            },
-            onDateClick = {
-                showCalendar = true
-            }
-        )
+        DateNavigationHeader(selectedDate = selectedDate, onPreviousDay = {
+            selectedDate = selectedDate.minus(1, DateTimeUnit.DAY)
+        }, onNextDay = {
+            selectedDate = selectedDate.plus(1, DateTimeUnit.DAY)
+        }, onDateClick = {
+            showCalendar = true
+        })
 
         HorizontalDivider(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -101,17 +97,12 @@ fun GlucoseRecordHistory(
 
     // Full-screen calendar sheet
     if (showCalendar) {
-        FullScreenCalendarSheet(
-            selectedDate = selectedDate,
-            records = records,
-            onDateSelected = {
-                selectedDate = it
-                showCalendar = false
-            },
-            onDismiss = {
-                showCalendar = false
-            }
-        )
+        FullScreenCalendarSheet(selectedDate = selectedDate, records = records, onDateSelected = {
+            selectedDate = it
+            showCalendar = false
+        }, onDismiss = {
+            showCalendar = false
+        })
     }
 }
 
@@ -137,21 +128,18 @@ fun DateNavigationHeader(
     onNextDay: () -> Unit,
     onDateClick: () -> Unit
 ) {
-    val dayName = selectedDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
+    val dayName =
+        selectedDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
     val monthName = selectedDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Previous day button
         Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clickable { onPreviousDay() },
+            modifier = Modifier.size(40.dp).clickable { onPreviousDay() },
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -163,9 +151,7 @@ fun DateNavigationHeader(
 
         // Date display (clickable to open calendar)
         Box(
-            modifier = Modifier
-                .clickable { onDateClick() },
-            contentAlignment = Alignment.Center
+            modifier = Modifier.clickable { onDateClick() }, contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "$dayName, ${selectedDate.dayOfMonth} $monthName ${selectedDate.year}",
@@ -177,9 +163,7 @@ fun DateNavigationHeader(
 
         // Next day button
         Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clickable { onNextDay() },
+            modifier = Modifier.size(40.dp).clickable { onNextDay() },
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -222,9 +206,7 @@ fun FullScreenCalendarSheet(
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
         ) {
             // Month navigation
             Row(
@@ -233,12 +215,9 @@ fun FullScreenCalendarSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable {
-                            currentMonth = currentMonth.minus(1, DateTimeUnit.MONTH)
-                        },
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.size(40.dp).clickable {
+                        currentMonth = currentMonth.minus(1, DateTimeUnit.MONTH)
+                    }, contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "<",
@@ -248,18 +227,16 @@ fun FullScreenCalendarSheet(
                 }
 
                 Text(
-                    text = "${currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${currentMonth.year}",
+                    text = "${
+                    currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
+                } ${currentMonth.year}",
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                    fontWeight = FontWeight.Bold)
 
                 Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable {
-                            currentMonth = currentMonth.plus(1, DateTimeUnit.MONTH)
-                        },
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.size(40.dp).clickable {
+                        currentMonth = currentMonth.plus(1, DateTimeUnit.MONTH)
+                    }, contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = ">",
@@ -281,8 +258,7 @@ fun FullScreenCalendarSheet(
                     coroutineScope.launch {
                         sheetState.hide()
                     }
-                }
-            )
+                })
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -309,8 +285,7 @@ fun CalendarGrid(
 
     // Day headers
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         listOf("S", "M", "T", "W", "T", "F", "S").forEach { day ->
             Text(
@@ -347,39 +322,27 @@ fun CalendarGrid(
                 day = day,
                 hasRecord = hasRecord,
                 isSelected = isSelected,
-                onClick = { onDateSelected(date) }
-            )
+                onClick = { onDateSelected(date) })
         }
     }
 }
 
 @Composable
 fun CalendarDayCell(
-    day: Int,
-    hasRecord: Boolean,
-    isSelected: Boolean,
-    onClick: () -> Unit
+    day: Int, hasRecord: Boolean, isSelected: Boolean, onClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .aspectRatio(1f)
-            .clickable { onClick() },
+        modifier = Modifier.aspectRatio(1f).clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         if (isSelected) {
             Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        CircleShape
-                    ),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.size(40.dp).background(
+                    MaterialTheme.colorScheme.primary, CircleShape
+                ), contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = day.toString(),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    text = day.toString(), color = Color.White, fontWeight = FontWeight.Bold
                 )
             }
         } else if (hasRecord) {
@@ -400,31 +363,42 @@ fun CalendarDayCell(
 
 @Composable
 fun CalendarLegend() {
+
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        LegendItem("15", "No record")
-        LegendItem("15", "Has record")
-        LegendItem("[16]", "Selected")
+
+        LegendItem(
+            color = MaterialTheme.colorScheme.surfaceVariant, label = "No Record"
+        )
+
+        LegendItem(
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f), label = "Has Record"
+        )
+
+        LegendItem(
+            color = MaterialTheme.colorScheme.primary, label = "Selected"
+        )
     }
 }
 
 @Composable
-fun LegendItem(symbol: String, label: String) {
+fun LegendItem(
+    color: Color, label: String
+) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Text(
-            text = symbol,
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium
+
+        Box(
+            modifier = Modifier.size(12.dp).clip(CircleShape).background(color)
         )
+
         Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray
+            text = label, style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -625,20 +599,18 @@ fun CalendarDayCell(
 data class CalendarDay(
     val day: Int, val hasRecord: Boolean, val isSelected: Boolean = false
 )
+
 @Composable
 fun EmptyDayContent() {
 
     Column(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment =
-            Alignment.CenterHorizontally,
-        verticalArrangement =
-            Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
 
         Text(
-            text = "📅",
-            fontSize = 64.sp
+            text = "📅", fontSize = 64.sp
         )
 
         Spacer(
@@ -646,8 +618,7 @@ fun EmptyDayContent() {
         )
 
         Text(
-            text = "No glucose records for this day",
-            color = Color.Gray
+            text = "No glucose records for this day", color = Color.Gray
         )
     }
 }

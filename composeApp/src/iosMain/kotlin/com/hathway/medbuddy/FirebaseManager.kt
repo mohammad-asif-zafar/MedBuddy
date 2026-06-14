@@ -7,4 +7,7 @@ actual object FirebaseManager {
     actual fun signOut() {}
     actual suspend fun getDoctorInfo(userId: String): DoctorInfo = DoctorInfo()
     actual suspend fun saveDoctorInfo(userId: String, doctorInfo: DoctorInfo) {}
+    actual suspend fun getUserProfile(userId: String): CurrentUser? = null
+    actual suspend fun saveUserProfile(userId: String, name: String, age: String, weight: String, bloodType: String) {}
+    actual suspend fun updateProfilePicture(userId: String, imageBytes: ByteArray): String? = null
 }

@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import androidx.compose.material3.CircularProgressIndicator
 
 @Composable
 fun ProfileHeaderCard(
@@ -38,7 +39,9 @@ fun ProfileHeaderCard(
     age: String,
     weight: String,
     bloodType: String,
-    onEditPhotoClick: () -> Unit = {}
+    isLoading: Boolean = false,
+    onEditPhotoClick: () -> Unit = {},
+    onEditProfileClick: () -> Unit = {}
 ) {
 
     Card(
@@ -60,7 +63,12 @@ fun ProfileHeaderCard(
                 contentAlignment = Alignment.BottomEnd
             ) {
 
-                if (photoUrl.isNotBlank()) {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(96.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                } else if (photoUrl.isNotBlank()) {
 
                     AsyncImage(
                         model = photoUrl,
@@ -110,11 +118,30 @@ fun ProfileHeaderCard(
                 modifier = Modifier.height(16.dp)
             )
 
-            Text(
-                text = name,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit Profile",
+                    modifier = Modifier
+                        .size(18.dp)
+                        .clickable {
+                            onEditProfileClick()
+                        },
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
 
             if (email.isNotBlank()) {
 

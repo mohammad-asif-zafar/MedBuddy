@@ -43,12 +43,15 @@ kotlin {
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.storage)
             implementation(libs.play.services.auth)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.uiToolingPreview)
+            implementation(libs.compose.materialIconsExtended)
+            implementation(libs.compose.materialIconsCore)
             implementation(libs.kotlinx.datetime)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -56,6 +59,17 @@ kotlin {
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.4")
             implementation(compose.components.resources)
 
+        }
+        val iosMain by creating {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

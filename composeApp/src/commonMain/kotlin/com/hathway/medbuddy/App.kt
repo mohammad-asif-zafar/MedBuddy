@@ -32,7 +32,6 @@ fun App(
                 modifier = Modifier.fillMaxSize().padding(paddingValues)
             ) {
                 when (currentDestination.value) {
-                    // NavigationDestination.HOME -> HomeScreen()
                     NavigationDestination.HOME -> {
                         repository?.let { HomeContent(it) }
                     }
