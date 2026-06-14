@@ -34,28 +34,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
-import kotlinx.datetime.Clock
+import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddGlucoseRecordDialog(
     onDismiss: () -> Unit,
-    onSave: (UserGlucoseRecord) -> Unit
+    onSave: (UserGlucoseRecord) -> Unit,
 ) {
     // ✅ Dynamically fetches the current local device date on initialization
     val currentDeviceDate = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        getNowLocalDateTime().date
     }
 
     // ✅ Get current device time
     val currentDeviceTime = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
+        getNowLocalDateTime().time
     }
     val currentTimeString = remember(currentDeviceTime) {
-        "${currentDeviceTime.hour}:${String.format("%02d", currentDeviceTime.minute)}"
+        val hour = currentDeviceTime.hour
+        val minute = currentDeviceTime.minute
+        val minuteStr = if (minute < 10) "0$minute" else minute.toString()
+        "$hour:$minuteStr"
     }
 
     // ✅ Initial state is now bound directly to the live device date
@@ -88,13 +93,13 @@ fun AddGlucoseRecordDialog(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = "Add Glucose Record",
+                            text = stringResource(Res.string.add_glucose_record_title),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "Track your glucose reading",
+                            text = stringResource(Res.string.track_glucose_reading_desc),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -104,7 +109,8 @@ fun AddGlucoseRecordDialog(
                         onClick = onDismiss
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Close, contentDescription = "Close dialog"
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(Res.string.close_dialog)
                         )
                     }
                 }
@@ -125,7 +131,7 @@ fun AddGlucoseRecordDialog(
                     ) {
                         Column {
                             Text(
-                                text = "Date",
+                                text = stringResource(Res.string.date),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                             )
@@ -140,13 +146,14 @@ fun AddGlucoseRecordDialog(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "change",
+                                text = stringResource(Res.string.change),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(
-                                text = "📅", style = MaterialTheme.typography.headlineMedium
+                                text = stringResource(Res.string.calendar_emoji),
+                                style = MaterialTheme.typography.headlineMedium
                             )
                         }
                     }
@@ -182,7 +189,7 @@ fun AddGlucoseRecordDialog(
                 OutlinedTextField(
                     value = time,
                     onValueChange = { time = it },
-                    label = { Text("Time (device time)") },
+                    label = { Text(stringResource(Res.string.time_device_time)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     readOnly = true
@@ -193,7 +200,7 @@ fun AddGlucoseRecordDialog(
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    label = { Text("Notes (optional)") },
+                    label = { Text(stringResource(Res.string.notes_optional)) },
                     modifier = Modifier.fillMaxWidth(),
                     maxLines = 3
                 )
@@ -212,7 +219,7 @@ fun AddGlucoseRecordDialog(
                             contentColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(Res.string.cancel))
                     }
 
                     // Save Button
@@ -220,7 +227,7 @@ fun AddGlucoseRecordDialog(
                     val isValid = glucoseInt != null && glucoseInt > 0
 
                     PrimaryButton(
-                        text = "Save", onClick = {
+                        text = stringResource(Res.string.save), onClick = {
                             val record = UserGlucoseRecord(
                                 date = formatDate(selectedDate),
                                 timePeriod = selectedTimePeriod.name,

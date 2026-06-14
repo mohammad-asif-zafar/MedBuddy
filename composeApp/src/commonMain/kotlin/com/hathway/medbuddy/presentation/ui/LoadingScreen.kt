@@ -17,9 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.medbuddy_logo
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoadingScreen() {
@@ -58,13 +58,13 @@ fun LoadingScreen() {
             )
 
             Text(
-                text = "Loading MedBuddy",
+                text = stringResource(Res.string.loading_medbuddy),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
 
             Text(
-                text = "Preparing your glucose dashboard",
+                text = stringResource(Res.string.preparing_dashboard),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

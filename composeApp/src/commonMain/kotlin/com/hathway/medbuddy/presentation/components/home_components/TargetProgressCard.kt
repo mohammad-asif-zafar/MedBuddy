@@ -17,6 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
+
 @Composable
 fun TargetProgressCard(
     targetProgress: Int, targetReadings: Int, totalTargetReadings: Int
@@ -40,7 +43,7 @@ fun TargetProgressCard(
         ) {
 
             Text(
-                text = "🎯 Target Range",
+                text = stringResource(Res.string.target_range),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -66,7 +69,7 @@ fun TargetProgressCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "$targetReadings of $totalTargetReadings readings were within target range",
+                text = stringResource(Res.string.readings_within_target, targetReadings, totalTargetReadings),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -82,12 +85,13 @@ fun TargetProgressCard(
     }
 }
 
+@Composable
 private fun getTargetMessage(progress: Int): String {
     return when {
-        progress >= 90 -> "Excellent control this period 🎉"
-        progress >= 75 -> "You're doing well. Keep it up 👍"
-        progress >= 50 -> "Improving steadily 📈"
-        else -> "Let's work toward more readings in range 💪"
+        progress >= 90 -> stringResource(Res.string.target_excellent)
+        progress >= 75 -> stringResource(Res.string.target_good)
+        progress >= 50 -> stringResource(Res.string.target_improving)
+        else -> stringResource(Res.string.target_work)
     }
 }
 

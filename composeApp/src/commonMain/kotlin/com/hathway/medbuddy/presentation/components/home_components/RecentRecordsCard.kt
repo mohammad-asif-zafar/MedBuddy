@@ -19,11 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.viewmodel.RecentRecord
+import org.jetbrains.compose.resources.stringResource
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.no_glucose_readings
+import medbuddy.composeapp.generated.resources.recent_readings
+import medbuddy.composeapp.generated.resources.view_all
 
 @Composable
 fun RecentRecordsCard(
-    recentRecords: List<RecentRecord>,
-    onViewAllClick: () -> Unit = {}
+    recentRecords: List<RecentRecord>, onViewAllClick: () -> Unit = {}
 ) {
 
     Card(
@@ -42,12 +46,11 @@ fun RecentRecordsCard(
         ) {
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
                 Text(
-                    text = "Recent Readings",
+                    text = stringResource(Res.string.recent_readings),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -55,7 +58,7 @@ fun RecentRecordsCard(
                 TextButton(
                     onClick = onViewAllClick
                 ) {
-                    Text("View All")
+                    Text(stringResource(Res.string.view_all))
                 }
             }
 
@@ -64,7 +67,7 @@ fun RecentRecordsCard(
             if (recentRecords.isEmpty()) {
 
                 Text(
-                    text = "No glucose readings available",
+                    text = stringResource(Res.string.no_glucose_readings),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 

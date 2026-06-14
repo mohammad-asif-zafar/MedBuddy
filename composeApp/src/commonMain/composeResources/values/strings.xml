@@ -1,0 +1,187 @@
+<resources>
+    <string name="glucose_target">Target: %1$d–%2$d mg/dL</string>
+    <string name="glucose_low">Low ⚠ (%1$d)</string>
+    <string name="glucose_high">High ⚠ (%1$d)</string>
+    <string name="glucose_normal">Normal ✓</string>
+
+    <string name="time_period_label">%1$s (%2$s)</string>
+
+    <string name="current_glucose">Current Glucose</string>
+    <string name="glucose_unit">mg/dL</string>
+
+    <string name="last_reading">Last Reading</string>
+
+    <string name="trend_up">%1$s %2$s mg/dL from yesterday</string>
+    <string name="trend_down">%1$s %2$s mg/dL from yesterday</string>
+
+    <string name="status_high">High</string>
+    <string name="status_low">Low</string>
+    <string name="status_in_range">In Range</string>
+
+    <string name="reading_value">%1$s mg/dL</string>
+    <string name="reading_details">%1$s • %2$s</string>
+    <string name="glucose_trend">📈 Glucose Trend</string>
+    <string name="last_7_days">Last 7 Days</string>
+
+    <string name="average_short">Avg</string>
+    <string name="high_short">High</string>
+    <string name="low_short">Low</string>
+
+    <string name="average">Average</string>
+    <string name="highest">Highest</string>
+    <string name="lowest">Lowest</string>
+
+    <string name="hba1c">HbA1c</string>
+    <string name="not_available">N/A</string>
+    <string name="hba1c_percentage">%1$s%%</string>
+
+    <string name="recent_readings">Recent Readings</string>
+    <string name="view_all">View All</string>
+    <string name="no_glucose_readings">No glucose readings available</string>
+
+    <string name="add_glucose_reading">Add Glucose Reading</string>
+    <string name="add_reading">Add Reading</string>
+    <string name="add_glucose_record_title">Add Glucose Record</string>
+    <string name="track_glucose_reading_desc">Track your glucose reading</string>
+    <string name="close_dialog">Close dialog</string>
+    <string name="date">Date</string>
+    <string name="change">change</string>
+    <string name="time_device_time">Time (device time)</string>
+    <string name="notes_optional">Notes (optional)</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+    <!-- Navigation -->
+    <string name="previous_day">Previous Day</string>
+    <string name="next_day">Next Day</string>
+    <string name="prev_symbol">&lt;</string>
+    <string name="next_symbol">&gt;</string>
+
+    <!-- Calendar -->
+    <string name="calendar_days_header">May 2026</string>
+    <string name="sun_short">S</string>
+    <string name="mon_short">M</string>
+    <string name="tue_short">T</string>
+    <string name="wed_short">W</string>
+    <string name="thu_short">T</string>
+    <string name="fri_short">F</string>
+    <string name="sat_short">S</string>
+
+    <!-- Legend -->
+    <string name="no_record">No Record</string>
+    <string name="has_record">Has Record</string>
+    <string name="selected">Selected</string>
+
+    <!-- Glucose -->
+    <string name="low">Low</string>
+    <string name="normal">Normal</string>
+    <string name="high">High</string>
+
+    <!-- Meal Times -->
+    <string name="before_breakfast">Before Breakfast</string>
+    <string name="after_breakfast">After Breakfast</string>
+    <string name="before_lunch">Before Lunch</string>
+    <string name="after_lunch">After Lunch</string>
+    <string name="before_dinner">Before Dinner</string>
+    <string name="after_dinner">After Dinner</string>
+    <string name="bedtime">Bedtime</string>
+
+    <!-- Short Meal Times -->
+    <string name="before_breakfast_short">BBF</string>
+    <string name="after_breakfast_short">ABF</string>
+    <string name="before_lunch_short">BL</string>
+    <string name="after_lunch_short">AL</string>
+    <string name="before_dinner_short">BD</string>
+    <string name="after_dinner_short">AD</string>
+    <string name="bedtime_short">NGT</string>
+
+    <!-- Empty State -->
+    <string name="calendar_emoji">📅</string>
+    <string name="no_glucose_records_day">No glucose records for this day</string>
+
+    <string name="calendar_month_year">%1$s %2$d</string>
+    <string name="date_display_format">%1$d %2$s %3$d</string>
+
+    <!-- Profile -->
+    <string name="profile_default_initial">P</string>
+    <string name="edit_photo">Edit Photo</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="blood">Blood</string>
+    <string name="age">Age</string>
+    <string name="weight">Weight</string>
+
+    <!-- Doctor Info Card -->
+    <string name="no_doctor_info">No doctor information available</string>
+    <string name="add_doctor_info_desc">Add your doctor details to track appointments and healthcare information.</string>
+    <string name="edit_doctor_info">Edit Doctor Information</string>
+    <string name="add_doctor_info">Add Doctor Information</string>
+
+    <!-- Doctor Dialog -->
+    <string name="profile_details">Profile Details</string>
+    <string name="doctor_information">Doctor Information</string>
+    <string name="close">Close</string>
+    <string name="general_information">General Information</string>
+    <string name="doctor_name">Doctor Name</string>
+    <string name="doctor_name_placeholder">e.g. Dr. Sumit Gulla</string>
+    <string name="role_title">Role / Title</string>
+    <string name="role_title_placeholder">e.g. Primary Physician</string>
+    <string name="practice_details">Practice Details</string>
+    <string name="speciality">Speciality</string>
+    <string name="speciality_placeholder">e.g. Endocrinologist</string>
+    <string name="medical_center">Medical Center</string>
+    <string name="medical_center_placeholder">e.g. City Care Hospital</string>
+    <string name="follow_up">Follow-up</string>
+    <string name="discard">Discard</string>
+    <string name="save_info">Save Info</string>
+
+    <!-- Edit Profile Dialog -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="name">Name</string>
+    <string name="weight_kg">Weight (kg)</string>
+    <string name="blood_type">Blood Type</string>
+
+    <string name="personal_health_details">Personal Health Details</string>
+
+    <!-- Status Info -->
+    <string name="above_target">Above Target</string>
+
+    <!-- Loading Screen -->
+    <string name="loading_medbuddy">Loading MedBuddy</string>
+    <string name="preparing_dashboard">Preparing your glucose dashboard</string>
+
+    <!-- Login Screen -->
+    <string name="medbuddy">MedBuddy</string>
+    <string name="smart_glucose_care">Smart Glucose Care</string>
+    <string name="login_description">Track glucose levels, monitor trends and stay in control of your health.</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="secure_signin_powered_by_google">Secure sign-in powered by Google</string>
+
+    <!-- Time Period Dropdown -->
+    <string name="select_time_period">Select Time Period</string>
+
+    <!-- Home Components -->
+    <string name="target_range">🎯 Target Range</string>
+    <string name="readings_within_target">%1$d of %2$d readings were within target range</string>
+    <string name="target_excellent">Excellent control this period 🎉</string>
+    <string name="target_good">You\'re doing well. Keep it up 👍</string>
+    <string name="target_improving">Improving steadily 📈</string>
+    <string name="target_work">Let\'s work toward more readings in range 💪</string>
+    <string name="greeting_morning">Good Morning 👋</string>
+    <string name="greeting_afternoon">Good Afternoon 👋</string>
+    <string name="greeting_evening">Good Evening 👋</string>
+    <string name="insight_lower">Glucose is 15% lower than last week</string>
+    <string name="patient">Patient</string>
+
+    <!-- Appointment -->
+    <string name="next_appointment_label">Next Appointment</string>
+    <string name="select_appointment_date">Select Appointment Date</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Errors -->
+    <string name="failed_upload_photo">Failed to upload photo</string>
+
+</resources>

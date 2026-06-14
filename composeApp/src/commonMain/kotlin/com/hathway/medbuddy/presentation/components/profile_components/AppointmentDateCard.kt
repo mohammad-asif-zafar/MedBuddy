@@ -27,6 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
+
 @Composable
 fun AppointmentDateCard(
     appointmentDate: String, onClick: () -> Unit
@@ -49,7 +52,7 @@ fun AppointmentDateCard(
             Column {
 
                 Text(
-                    text = "Next Appointment",
+                    text = stringResource(Res.string.next_appointment_label),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                 )
@@ -60,7 +63,7 @@ fun AppointmentDateCard(
 
                 Text(
                     text = appointmentDate.ifBlank {
-                        "Select Appointment Date"
+                        stringResource(Res.string.select_appointment_date)
                     },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
@@ -92,7 +95,7 @@ fun AppointmentDateCard(
                     )
 
                     Text(
-                        text = "Change", style = MaterialTheme.typography.labelMedium
+                        text = stringResource(Res.string.change), style = MaterialTheme.typography.labelMedium
                     )
                 }
             }

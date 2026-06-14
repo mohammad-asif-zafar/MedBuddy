@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import medbuddy.composeapp.generated.resources.*
 
 @Composable
 fun HealthSummaryGrid(
@@ -21,14 +23,18 @@ fun HealthSummaryGrid(
         ) {
 
             SummaryCard(
-                title = "Average",
-                value = if (average > 0) average.toString() else "N/A",
-                modifier = Modifier.weight(1f)
+                title = stringResource(Res.string.average), value = if (average > 0) {
+                    average.toString()
+                } else {
+                    stringResource(Res.string.not_available)
+                }, modifier = Modifier.weight(1f)
             )
-
             SummaryCard(
-                title = "HbA1c", value = if (hbA1c > 0) "${"%.1f".format(hbA1c)}%"
-                else "N/A", modifier = Modifier.weight(1f)
+                title = stringResource(Res.string.hba1c), value = if (hbA1c > 0) {
+                    "${((hbA1c * 10).toInt() / 10.0)}%"
+                } else {
+                    stringResource(Res.string.not_available)
+                }, modifier = Modifier.weight(1f)
             )
         }
 
@@ -37,15 +43,19 @@ fun HealthSummaryGrid(
         ) {
 
             SummaryCard(
-                title = "Highest",
-                value = if (highest > 0) highest.toString() else "N/A",
-                modifier = Modifier.weight(1f)
+                title = stringResource(Res.string.highest), value = if (highest > 0) {
+                    highest.toString()
+                } else {
+                    stringResource(Res.string.not_available)
+                }, modifier = Modifier.weight(1f)
             )
 
             SummaryCard(
-                title = "Lowest",
-                value = if (lowest > 0) lowest.toString() else "N/A",
-                modifier = Modifier.weight(1f)
+                title = stringResource(Res.string.lowest), value = if (lowest > 0) {
+                    lowest.toString()
+                } else {
+                    stringResource(Res.string.not_available)
+                }, modifier = Modifier.weight(1f)
             )
         }
     }

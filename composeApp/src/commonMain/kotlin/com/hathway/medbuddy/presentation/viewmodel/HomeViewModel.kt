@@ -6,11 +6,14 @@ import kotlinx.datetime.*
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseDashboardUseCase
 import com.hathway.medbuddy.FirebaseManager
+import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.getString
 
 data class HomeUiState(
     val isLoading: Boolean = true,
@@ -117,12 +120,12 @@ class HomeViewModel(
                                 dosage = "500mg", isTaken = false, mealType = "BDT"
                             )
                         ),
-                        insight = "Glucose is 15% lower than last week",
+                        insight = getString(Res.string.insight_lower),
                         insightEmoji = "📈",
                         averageGlucose = dashboard.sevenDayAverage.toDouble(), // Or actual average
                         lastReading = dashboard.todayGlucose ?: 0,
                         lastReadingTime = dashboard.recordedTime,
-                        lastMealType = "" // Will need update if needed
+                        lastMealType = dashboard.mealType
                     )
                 }
             } catch (e: Exception) {
@@ -131,12 +134,12 @@ class HomeViewModel(
         }
     }
 
-    private fun getGreeting(): String {
-        val hour = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).hour
+    private suspend fun getGreeting(): String {
+        val hour = getNowLocalDateTime().hour
         return when {
-            hour < 12 -> "Good Morning 👋"
-            hour < 17 -> "Good Afternoon 👋"
-            else -> "Good Evening 👋"
+            hour < 12 -> getString(Res.string.greeting_morning)
+            hour < 17 -> getString(Res.string.greeting_afternoon)
+            else -> getString(Res.string.greeting_evening)
         }
     }
 
@@ -154,6 +157,5 @@ class HomeViewModel(
         }
 
     }
-
 }
 

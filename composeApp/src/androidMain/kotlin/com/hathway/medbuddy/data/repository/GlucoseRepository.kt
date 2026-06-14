@@ -32,14 +32,17 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
             // Update local database with merged records
             mergedRecords.forEach { record ->
                 databaseHelper.updateRecord(
-                    record.date,
-                    record.beforeBreakfast,
-                    record.afterBreakfast,
-                    record.beforeLunch,
-                    record.afterLunch,
-                    record.beforeDinner,
-                    record.afterDinner,
-                    record.bedtime
+                    date = record.date,
+                    beforeBreakfast = record.beforeBreakfast,
+                    afterBreakfast = record.afterBreakfast,
+                    beforeLunch = record.beforeLunch,
+                    afterLunch = record.afterLunch,
+                    beforeDinner = record.beforeDinner,
+                    afterDinner = record.afterDinner,
+                    bedtime = record.bedtime,
+                    time = record.time,
+                    mealType = record.mealType,
+                    notes = record.notes,
                 )
             }
 
@@ -145,17 +148,38 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
     private fun mergeRecords(localRecords: List<GlucoseRecord>, firebaseRecords: List<GlucoseRecord>): List<GlucoseRecord> {
         val mergedMap = mutableMapOf<String, GlucoseRecord>()
 
-        // Add local records
-        localRecords.forEach { record ->
-            mergedMap[record.date] = record
+        fun combine(existing: GlucoseRecord?, new: GlucoseRecord): GlucoseRecord {
+            if (existing == null) return new
+            
+            val isNewer = new.createdAt >= existing.createdAt
+            
+            return GlucoseRecord(
+                id = if (isNewer) new.id else existing.id,
+                date = existing.date,
+                // If new is newer, prefer its values if not null. 
+                // If new is older, only take its values if existing's values are null.
+                beforeBreakfast = if (isNewer) (new.beforeBreakfast ?: existing.beforeBreakfast) else (existing.beforeBreakfast ?: new.beforeBreakfast),
+                afterBreakfast = if (isNewer) (new.afterBreakfast ?: existing.afterBreakfast) else (existing.afterBreakfast ?: new.afterBreakfast),
+                beforeLunch = if (isNewer) (new.beforeLunch ?: existing.beforeLunch) else (existing.beforeLunch ?: new.beforeLunch),
+                afterLunch = if (isNewer) (new.afterLunch ?: existing.afterLunch) else (existing.afterLunch ?: new.afterLunch),
+                beforeDinner = if (isNewer) (new.beforeDinner ?: existing.beforeDinner) else (existing.beforeDinner ?: new.beforeDinner),
+                afterDinner = if (isNewer) (new.afterDinner ?: existing.afterDinner) else (existing.afterDinner ?: new.afterDinner),
+                bedtime = if (isNewer) (new.bedtime ?: existing.bedtime) else (existing.bedtime ?: new.bedtime),
+                time = if (isNewer && new.time.isNotEmpty()) new.time else existing.time,
+                mealType = if (isNewer && new.mealType.isNotEmpty()) new.mealType else existing.mealType,
+                notes = if (isNewer && new.notes.isNotEmpty()) new.notes else existing.notes,
+                createdAt = if (isNewer) new.createdAt else existing.createdAt
+            )
         }
 
-        // Merge Firebase records, preferring Firebase data if it exists
+        // Add local records
+        localRecords.forEach { record ->
+            mergedMap[record.date] = combine(mergedMap[record.date], record)
+        }
+
+        // Merge Firebase records
         firebaseRecords.forEach { firebaseRecord ->
-            val existing = mergedMap[firebaseRecord.date]
-            if (existing == null || firebaseRecord.createdAt > existing.createdAt) {
-                mergedMap[firebaseRecord.date] = firebaseRecord
-            }
+            mergedMap[firebaseRecord.date] = combine(mergedMap[firebaseRecord.date], firebaseRecord)
         }
 
         return mergedMap.values.toList()

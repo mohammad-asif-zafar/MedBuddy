@@ -10,8 +10,8 @@ import kotlinx.coroutines.tasks.await
 class FirebaseSyncService(private val context: Context) {
 
     private val firestore = FirebaseFirestore.getInstance()
-    private  val USERS_COLLECTION = "MedBuddy_users"
-    suspend fun syncRecordToFirebase(record: GlucoseRecord, userId: String): Boolean {
+    private val usersCollection = "MedBuddy_users"
+    suspend fun syncRecordToFirebase(record: GlucoseRecord): Boolean {
         return try {
             val userId = getCurrentUserId()
             if (userId.isEmpty()) {
@@ -32,10 +32,10 @@ class FirebaseSyncService(private val context: Context) {
                 "afterLunch" to record.afterLunch,
                 "beforeDinner" to record.beforeDinner,
                 "afterDinner" to record.afterDinner,
-                "bedtime" to record.bedtime
+                "bedtime" to record.bedtime,
             )
 
-            firestore.collection(USERS_COLLECTION)
+            firestore.collection(usersCollection)
                 .document(userId)
                 .collection("glucose_records")
                 .add(recordData)
@@ -49,10 +49,10 @@ class FirebaseSyncService(private val context: Context) {
         }
     }
 
-    suspend fun syncAllRecordsToFirebase(records: List<GlucoseRecord>, userId: String): Int {
+    suspend fun syncAllRecordsToFirebase(records: List<GlucoseRecord>): Int {
         var successCount = 0
         records.forEach { record ->
-            if (syncRecordToFirebase(record, userId)) {
+            if (syncRecordToFirebase(record)) {
                 successCount++
             }
         }
@@ -73,7 +73,7 @@ class FirebaseSyncService(private val context: Context) {
             createUserIfNotExists()
 
             val snapshot = firestore
-                .collection("MedBuddy_users")
+                .collection(usersCollection)
                 .document(userId)
                 .collection("glucose_records")
                 .get()
@@ -133,7 +133,7 @@ class FirebaseSyncService(private val context: Context) {
 
         if (userId.isEmpty()) return
 
-        val userRef = firestore.collection("MedBuddy_users")
+        val userRef = firestore.collection(usersCollection)
             .document(userId)
 
         val snapshot = userRef.get().await()

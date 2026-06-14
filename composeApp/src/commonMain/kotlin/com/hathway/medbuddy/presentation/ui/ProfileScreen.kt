@@ -21,6 +21,9 @@ import com.hathway.medbuddy.presentation.components.profile_components.ProfileHe
 import com.hathway.medbuddy.presentation.components.profile_components.SectionHeader
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
 import com.hathway.medbuddy.presentation.viewmodel.ProfileViewModel
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.personal_health_details
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 expect fun ProfileImagePicker(onImagePicked: (ByteArray) -> Unit): () -> Unit
@@ -60,7 +63,9 @@ fun ProfileScreen(
         // Section Title
         item {
             SectionHeader(
-                title = "Personal Health Details", icon = Icons.Default.MedicalServices
+                title = stringResource(
+                    Res.string.personal_health_details
+                ), icon = Icons.Default.MedicalServices
             )
         }
 
@@ -77,7 +82,7 @@ fun ProfileScreen(
                 })
         }
 
-        // Settings / Logout Section
+        // Settings  Logout Section
         item {
             SettingsSection(onPreferencesClick = {}, onLogoutClick = { viewModel.logout() })
         }

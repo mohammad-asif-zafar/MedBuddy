@@ -67,7 +67,7 @@ class SyncManager(context: Context) {
 
                 while (syncQueue.isNotEmpty()) {
                     val record = syncQueue.removeAt(0)
-                    val success = firebaseSyncService.syncRecordToFirebase(record, userId)
+                    val success = firebaseSyncService.syncRecordToFirebase(record)
                     if (success) {
                         successCount++
                     } else {

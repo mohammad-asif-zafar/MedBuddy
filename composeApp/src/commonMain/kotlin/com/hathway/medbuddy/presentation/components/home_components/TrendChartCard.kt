@@ -15,13 +15,12 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import medbuddy.composeapp.generated.resources.*
 
 @Composable
 fun TrendChartCard(
-    readings: List<Float>,
-    average: Double,
-    highest: Double,
-    lowest: Double
+    readings: List<Float>, average: Double, highest: Double, lowest: Double
 ) {
 
     Card(
@@ -40,13 +39,13 @@ fun TrendChartCard(
         ) {
 
             Text(
-                text = "📈 Glucose Trend",
+                text = stringResource(Res.string.glucose_trend),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
 
             Text(
-                text = "Last 7 Days",
+                text = stringResource(Res.string.last_7_days),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -54,23 +53,21 @@ fun TrendChartCard(
             Spacer(modifier = Modifier.height(20.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
                 TrendMetric(
-                    title = "Avg",
+                    title = stringResource(Res.string.average_short),
                     value = average.toInt().toString()
                 )
 
                 TrendMetric(
-                    title = "High",
+                    title = stringResource(Res.string.high_short),
                     value = highest.toInt().toString()
                 )
 
                 TrendMetric(
-                    title = "Low",
-                    value = lowest.toInt().toString()
+                    title = stringResource(Res.string.low_short), value = lowest.toInt().toString()
                 )
             }
 
@@ -93,9 +90,7 @@ private fun GlucoseLineChart(
     val lineColor = MaterialTheme.colorScheme.primary
 
     Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(140.dp)
+        modifier = Modifier.fillMaxWidth().height(140.dp)
     ) {
 
         val maxValue = readings.maxOrNull() ?: 1f
@@ -110,8 +105,7 @@ private fun GlucoseLineChart(
 
             val x = index * stepX
 
-            val y = size.height -
-                    ((value - minValue) / range) * size.height
+            val y = size.height - ((value - minValue) / range) * size.height
 
             if (index == 0) {
                 path.moveTo(x, y)
@@ -121,11 +115,8 @@ private fun GlucoseLineChart(
         }
 
         drawPath(
-            path = path,
-            color = lineColor,
-            style = Stroke(
-                width = 6f,
-                cap = StrokeCap.Round
+            path = path, color = lineColor, style = Stroke(
+                width = 6f, cap = StrokeCap.Round
             )
         )
 
@@ -133,13 +124,10 @@ private fun GlucoseLineChart(
 
             val x = index * stepX
 
-            val y = size.height -
-                    ((value - minValue) / range) * size.height
+            val y = size.height - ((value - minValue) / range) * size.height
 
             drawCircle(
-                color = lineColor,
-                radius = 8f,
-                center = Offset(x, y)
+                color = lineColor, radius = 8f, center = Offset(x, y)
             )
         }
     }

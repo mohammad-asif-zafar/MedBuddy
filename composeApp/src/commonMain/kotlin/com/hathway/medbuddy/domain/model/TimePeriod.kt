@@ -1,16 +1,13 @@
 package com.hathway.medbuddy.domain.model
 
-enum class TimePeriod(
-    val displayName: String,
-    val shortName: String
-) {
-    BEFORE_BREAKFAST("Before Breakfast", "BBF"),
-    AFTER_BREAKFAST("After Breakfast", "ABF"),
-    BEFORE_LUNCH("Before Lunch", "BL"),
-    AFTER_LUNCH("After Lunch", "AL"),
-    BEFORE_DINNER("Before Dinner", "BD"),
-    AFTER_DINNER("After Dinner", "AD"),
-    BEDTIME("Bedtime", "NGT")
+enum class TimePeriod {
+    BEFORE_BREAKFAST,
+    AFTER_BREAKFAST,
+    BEFORE_LUNCH,
+    AFTER_LUNCH,
+    BEFORE_DINNER,
+    AFTER_DINNER,
+    BEDTIME
 }
 fun getGlucoseRange(period: TimePeriod): Pair<Int, Int> {
     return when (period) {

@@ -22,7 +22,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+            isStatic = false
         }
     }
     
@@ -60,7 +60,9 @@ kotlin {
             implementation(compose.components.resources)
 
         }
+        val commonMain by getting
         val iosMain by creating {
+            dependsOn(commonMain)
             dependencies {
                 implementation(libs.ktor.client.darwin)
             }
