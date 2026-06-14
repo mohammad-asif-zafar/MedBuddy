@@ -16,16 +16,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.components.profile_components.DoctorInformationCard
+import com.hathway.medbuddy.presentation.components.profile_components.EditProfileDialog
 import com.hathway.medbuddy.presentation.components.profile_components.ProfileHeaderCard
 import com.hathway.medbuddy.presentation.components.profile_components.SectionHeader
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
 import com.hathway.medbuddy.presentation.viewmodel.ProfileViewModel
 
 @Composable
+expect fun ProfileImagePicker(onImagePicked: (ByteArray) -> Unit): () -> Unit
+
+@Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val pickImage = ProfileImagePicker { bytes ->
+        viewModel.updateProfilePicture(bytes)
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
@@ -37,19 +44,17 @@ fun ProfileScreen(
                 name = uiState.name,
                 email = uiState.email,
                 photoUrl = uiState.photoUrl,
-                age = "45",
-                weight = "65",
-                bloodType = "AB",
+                age = uiState.age,
+                weight = uiState.weight,
+                bloodType = uiState.bloodType,
+                isLoading = uiState.isLoading,
                 onEditPhotoClick = {
-                    // open image picker
-                }
+                    pickImage()
+                },
+                onEditProfileClick = {
+                    viewModel.showProfileDialog()
+                })
 
-                /*           age = uiState.age,
-                   weight = uiState.weight,
-                   bloodType = uiState.bloodType,
-                   onEditPhotoClick = {
-                       // open image picker
-                   }*/)
         }
 
         // Section Title
@@ -89,5 +94,21 @@ fun ProfileScreen(
             doctorInfo = uiState.doctorInfo,
             onDismiss = { viewModel.hideDoctorDialog() },
             onSave = { viewModel.saveDoctor(it) })
+    }
+
+    if (uiState.showProfileDialog) {
+        EditProfileDialog(
+            name = uiState.name,
+            age = uiState.age,
+            weight = uiState.weight,
+            bloodType = uiState.bloodType,
+            onDismiss = {
+                viewModel.hideProfileDialog()
+            },
+            onSave = { name, age, weight, bloodType ->
+                viewModel.saveProfile(
+                    name, age, weight, bloodType
+                )
+            })
     }
 }

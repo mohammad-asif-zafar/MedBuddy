@@ -25,6 +25,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
@@ -40,6 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.presentation.components.profile_components.AppointmentDateCard
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.model.UserGlucoseRecord
+import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
+import com.hathway.medbuddy.presentation.components.glucose_components.formatDate
 
 @Composable
 fun DoctorDialog(
@@ -197,8 +201,8 @@ fun DoctorDialog(
                         ) {
                             Text("Discard", fontWeight = FontWeight.Bold)
                         }
-
-                        Button(
+                        PrimaryButton(
+                            text = "Save Info",
                             onClick = {
                                 onSave(
                                     DoctorInfo(
@@ -210,15 +214,9 @@ fun DoctorDialog(
                                     )
                                 )
                             },
-                            modifier = Modifier.weight(1f).height(54.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary
-                            ),
-                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
-                        ) {
-                            Text("Save Info", fontWeight = FontWeight.Bold)
-                        }
+                            modifier = Modifier.weight(1f),
+                            enabled = true
+                        )
                     }
                 }
             }

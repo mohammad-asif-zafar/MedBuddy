@@ -3,6 +3,7 @@ package com.hathway.medbuddy.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.FirebaseManager
+import com.hathway.medbuddy.CurrentUser
 import com.hathway.medbuddy.presentation.ui_state.ProfileUiState
 import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
@@ -22,8 +23,7 @@ class ProfileViewModel(
     private val saveDoctorUseCase = doctorRepository?.let { SaveDoctorUseCase(it) }
 
     private val _uiState = MutableStateFlow(ProfileUiState())
-    val uiState: StateFlow<ProfileUiState> =
-        _uiState.asStateFlow()
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
     init {
         loadUser()
@@ -38,12 +38,25 @@ class ProfileViewModel(
 
         val user = FirebaseManager.currentUser
 
-        _uiState.update {
+        updateUiState(user)
 
+        viewModelScope.launch {
+            val updatedUser = FirebaseManager.getUserProfile(getCurrentUserId())
+            if (updatedUser != null) {
+                updateUiState(updatedUser)
+            }
+        }
+    }
+
+    private fun updateUiState(user: CurrentUser?) {
+        _uiState.update {
             it.copy(
                 name = user?.displayName ?: "",
                 email = user?.email ?: "",
-                photoUrl = user?.photoUrl ?: ""
+                photoUrl = user?.photoUrl ?: "",
+                age = user?.age ?: "",
+                weight = user?.weight ?: "",
+                bloodType = user?.bloodType ?: ""
             )
         }
     }
@@ -94,8 +107,7 @@ class ProfileViewModel(
                 _uiState.update {
 
                     it.copy(
-                        doctorInfo = doctorInfo,
-                        showDoctorDialog = false
+                        doctorInfo = doctorInfo, showDoctorDialog = false
                     )
                 }
 
@@ -129,7 +141,81 @@ class ProfileViewModel(
     }
 
     fun logout() {
-
         FirebaseManager.signOut()
+    }
+
+    fun showProfileDialog() {
+        _uiState.update {
+            it.copy(showProfileDialog = true)
+        }
+    }
+
+    fun hideProfileDialog() {
+        _uiState.update {
+            it.copy(showProfileDialog = false)
+        }
+    }
+
+    fun saveProfile(
+        name: String, age: String, weight: String, bloodType: String
+    ) {
+        viewModelScope.launch {
+            try {
+                val userId = getCurrentUserId()
+                if (userId.isEmpty()) return@launch
+
+                FirebaseManager.saveUserProfile(userId, name, age, weight, bloodType)
+
+                _uiState.update {
+                    it.copy(
+                        name = name,
+                        age = age,
+                        weight = weight,
+                        bloodType = bloodType,
+                        showProfileDialog = false
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = e.message
+                    )
+                }
+            }
+        }
+    }
+
+    fun updateProfilePicture(imageBytes: ByteArray) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val userId = getCurrentUserId()
+                if (userId.isEmpty()) return@launch
+
+                val newPhotoUrl = FirebaseManager.updateProfilePicture(userId, imageBytes)
+                if (newPhotoUrl != null) {
+                    _uiState.update {
+                        it.copy(
+                            photoUrl = newPhotoUrl,
+                            isLoading = false
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Failed to upload photo"
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = e.message
+                    )
+                }
+            }
+        }
     }
 }

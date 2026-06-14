@@ -8,17 +8,12 @@ import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseUseCase
 import com.hathway.medbuddy.domain.usecase.SaveGlucoseUseCase
+import com.hathway.medbuddy.presentation.ui_state.AddUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-data class AddUiState(
-    val records: List<GlucoseRecord> = emptyList(),
-    val isLoading: Boolean = false,
-    val showAddDialog: Boolean = false
-)
 
 class AddViewModel(
     private val repository: IGlucoseRepository? = null

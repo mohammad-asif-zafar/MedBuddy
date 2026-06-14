@@ -8,6 +8,9 @@ data class ProfileUiState(
     val name: String = "",
     val email: String = "",
     val photoUrl: String = "",
+    val age: String = "",
+    val weight: String = "",
+    val bloodType: String = "",
 
     // Doctor Information
     val doctorInfo: DoctorInfo = DoctorInfo(),
@@ -17,5 +20,7 @@ data class ProfileUiState(
     val showDoctorDialog: Boolean = false,
 
     // Error Handling
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+
+    val showProfileDialog: Boolean = false
 )

@@ -136,17 +136,38 @@ class FirebaseSyncService(private val context: Context) {
         val userRef = firestore.collection("MedBuddy_users")
             .document(userId)
 
-        if (!userRef.get().await().exists()) {
+        val snapshot = userRef.get().await()
+        val prefs = context.getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+
+        if (!snapshot.exists()) {
 
             val user = FirebaseManager.auth.currentUser
 
-            userRef.set(
-                mapOf(
-                    "name" to (user?.displayName ?: ""),
-                    "email" to (user?.email ?: ""),
-                    "createdAt" to System.currentTimeMillis()
-                )
-            ).await()
+            val userData = mapOf(
+                "name" to (user?.displayName ?: ""),
+                "email" to (user?.email ?: ""),
+                "photoUrl" to (user?.photoUrl?.toString() ?: ""),
+                "createdAt" to System.currentTimeMillis()
+            )
+
+            userRef.set(userData).await()
+
+            // Save to local prefs
+            prefs.edit().apply {
+                putString("name", user?.displayName ?: "")
+                putString("photoUrl", user?.photoUrl?.toString() ?: "")
+                apply()
+            }
+        } else {
+            // User exists, sync Firestore data to local prefs
+            prefs.edit().apply {
+                putString("name", snapshot.getString("name"))
+                putString("age", snapshot.getString("age"))
+                putString("weight", snapshot.getString("weight"))
+                putString("bloodType", snapshot.getString("bloodType"))
+                putString("photoUrl", snapshot.getString("photoUrl"))
+                apply()
+            }
         }
     }
     private fun getCurrentUserId(): String {
