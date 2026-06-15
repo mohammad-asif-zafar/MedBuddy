@@ -1,16 +1,22 @@
 package com.hathway.medbuddy
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import com.hathway.medbuddy.presentation.navigation.SimpleBottomNavigationBar
+import com.hathway.medbuddy.presentation.navigation_content.AddContent
+import com.hathway.medbuddy.presentation.navigation_content.HistoryContent
 import com.hathway.medbuddy.presentation.navigation_content.HomeContent
 import com.hathway.medbuddy.presentation.navigation_content.ProfileContent
-import com.hathway.medbuddy.presentation.ui.AddScreen
+import com.hathway.medbuddy.presentation.navigation_content.ReportsContent
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
@@ -35,8 +41,9 @@ fun App(
                     NavigationDestination.HOME -> {
                         repository?.let { HomeContent(it) }
                     }
-
-                    NavigationDestination.ADD -> AddScreen(repository = repository)
+                    NavigationDestination.HISTORY -> HistoryContent(repository)
+                    NavigationDestination.ADD -> AddContent(repository = repository)
+                    NavigationDestination.REPORTS -> ReportsContent(repository)
                     NavigationDestination.PROFILE -> ProfileContent(doctorRepository)
                 }
             }

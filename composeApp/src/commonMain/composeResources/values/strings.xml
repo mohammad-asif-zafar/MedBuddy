@@ -45,7 +45,7 @@
     <string name="track_glucose_reading_desc">Track your glucose reading</string>
     <string name="close_dialog">Close dialog</string>
     <string name="date">Date</string>
-    <string name="change">change</string>
+    <string name="change">Change</string>
     <string name="time_device_time">Time (device time)</string>
     <string name="notes_optional">Notes (optional)</string>
     <string name="cancel">Cancel</string>
@@ -180,6 +180,8 @@
     <string name="nav_home">Home</string>
     <string name="nav_add">Add</string>
     <string name="nav_profile">Profile</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_history">History</string>
 
     <!-- Errors -->
     <string name="failed_upload_photo">Failed to upload photo</string>

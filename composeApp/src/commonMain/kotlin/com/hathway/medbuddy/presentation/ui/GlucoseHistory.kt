@@ -1,4 +1,4 @@
-package com.hathway.medbuddy.presentation.components.glucose_components
+package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,10 +11,14 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -31,9 +35,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.coroutines.launch
 import kotlinx.datetime.*
@@ -42,7 +48,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun GlucoseRecordHistory(
-    records: List<GlucoseRecord>
+    records: List<GlucoseRecord>, viewModel: AddViewModel
 ) {
     var selectedDate by remember {
         mutableStateOf(getNowLocalDateTime().date)
@@ -53,6 +59,28 @@ fun GlucoseRecordHistory(
         parseDisplayDate(it.date) == selectedDate
     }
 
+    Box(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+    ) {
+        // GlucoseRecordHistory(records = uiState.records)
+
+        // Floating Action Button
+        ExtendedFloatingActionButton(onClick = {
+            viewModel.onShowDialog()
+        }, modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp), icon = {
+            Icon(
+                imageVector = Icons.Default.Add, contentDescription = stringResource(
+                    Res.string.add_glucose_reading
+                )
+            )
+        }, text = {
+            Text(
+                stringResource(
+                    Res.string.add_reading
+                )
+            )
+        })
+    }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -234,8 +262,8 @@ fun FullScreenCalendarSheet(
 
                 Text(
                     text = "${
-                        currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
-                    } ${currentMonth.year}",
+                    currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
+                } ${currentMonth.year}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold)
 
@@ -309,7 +337,7 @@ fun CalendarGrid(
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Gray,
                 modifier = Modifier.weight(1f),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -386,11 +414,13 @@ fun CalendarLegend() {
     ) {
 
         LegendItem(
-            color = MaterialTheme.colorScheme.surfaceVariant, label = stringResource(Res.string.no_record)
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            label = stringResource(Res.string.no_record)
         )
 
         LegendItem(
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f), label = stringResource(Res.string.has_record)
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+            label = stringResource(Res.string.has_record)
         )
 
         LegendItem(
