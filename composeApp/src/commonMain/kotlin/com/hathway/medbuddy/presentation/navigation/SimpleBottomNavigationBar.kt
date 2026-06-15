@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SimpleBottomNavigationBar(
@@ -22,6 +24,12 @@ fun SimpleBottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         NavigationDestination.values().forEach { destination ->
+            val label = when (destination) {
+                NavigationDestination.HOME -> stringResource(Res.string.nav_home)
+                NavigationDestination.ADD -> stringResource(Res.string.nav_add)
+                NavigationDestination.PROFILE -> stringResource(Res.string.nav_profile)
+            }
+
             if (destination.isFloatingActionButton) {
                 FloatingActionButton(
                     onClick = { onDestinationSelected(destination) },
@@ -43,6 +51,7 @@ fun SimpleBottomNavigationBar(
                             style = MaterialTheme.typography.bodyLarge
                         )
                     },
+                    label = { Text(label) },
                     selected = currentDestination == destination,
                     onClick = {
                         onDestinationSelected(destination)

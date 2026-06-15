@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.getString
+
 class ProfileViewModel(
     private val doctorRepository: IDoctorRepository? = null
 ) : ViewModel() {
@@ -204,7 +207,7 @@ class ProfileViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "Failed to upload photo"
+                            errorMessage = getString(Res.string.failed_upload_photo)
                         )
                     }
                 }

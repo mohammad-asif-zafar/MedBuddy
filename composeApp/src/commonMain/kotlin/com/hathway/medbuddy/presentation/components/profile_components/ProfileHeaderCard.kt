@@ -30,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.compose.material3.CircularProgressIndicator
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ProfileHeaderCard(
@@ -86,7 +88,7 @@ fun ProfileHeaderCard(
                     ) {
 
                         Text(
-                            text = name.firstOrNull()?.uppercase() ?: "P",
+                            text = name.firstOrNull()?.uppercase() ?: stringResource(Res.string.profile_default_initial),
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -106,7 +108,7 @@ fun ProfileHeaderCard(
 
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit Photo",
+                            contentDescription = stringResource(Res.string.edit_photo),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(16.dp)
                         )
@@ -133,7 +135,7 @@ fun ProfileHeaderCard(
 
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Profile",
+                    contentDescription = stringResource(Res.string.edit_profile),
                     modifier = Modifier
                         .size(18.dp)
                         .clickable {
@@ -166,15 +168,15 @@ fun ProfileHeaderCard(
             ) {
 
                 ProfileStatCard(
-                    title = "Blood", value = bloodType, modifier = Modifier.weight(1f)
+                    title = stringResource(Res.string.blood), value = bloodType, modifier = Modifier.weight(1f)
                 )
 
                 ProfileStatCard(
-                    title = "Age", value = age, modifier = Modifier.weight(1f)
+                    title = stringResource(Res.string.age), value = age, modifier = Modifier.weight(1f)
                 )
 
                 ProfileStatCard(
-                    title = "Weight", value = weight, modifier = Modifier.weight(1f)
+                    title = stringResource(Res.string.weight), value = weight, modifier = Modifier.weight(1f)
                 )
             }
         }

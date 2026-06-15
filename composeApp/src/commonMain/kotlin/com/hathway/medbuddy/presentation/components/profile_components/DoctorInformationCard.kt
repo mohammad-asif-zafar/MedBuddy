@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DoctorInformationCard(
@@ -136,7 +138,7 @@ fun DoctorInformationCard(
             } else {
 
                 Text(
-                    text = "No doctor information available",
+                    text = stringResource(Res.string.no_doctor_info),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -146,7 +148,7 @@ fun DoctorInformationCard(
                 )
 
                 Text(
-                    text = "Add your doctor details to track appointments and healthcare information.",
+                    text = stringResource(Res.string.add_doctor_info_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -175,8 +177,8 @@ fun DoctorInformationCard(
                 )
 
                 Text(
-                    text = if (hasDoctorInfo) "Edit Doctor Information"
-                    else "Add Doctor Information"
+                    text = if (hasDoctorInfo) stringResource(Res.string.edit_doctor_info)
+                    else stringResource(Res.string.add_doctor_info)
                 )
             }
         }

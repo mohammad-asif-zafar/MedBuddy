@@ -2,7 +2,10 @@ package com.hathway.medbuddy.domain.usecase
 
 import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.datetime.*
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.getString
 
 data class GlucoseDashboard(
     val todayGlucose: Int?,
@@ -13,6 +16,7 @@ data class GlucoseDashboard(
     val lowestGlucose: Int,
     val chartReadings: List<Float>,
     val recordedTime: String,
+    val mealType: String,
     val recentRecords: List<DashboardRecentRecord>
 )
 
@@ -28,7 +32,7 @@ class GetGlucoseDashboardUseCase(
 ) {
     suspend operator fun invoke(): GlucoseDashboard {
         val records = repository.getAllRecords()
-        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val today = getNowLocalDateTime().date
         val todayDateString = formatDate(today)
 
         val todayRecords = records.filter { it.date == todayDateString }
@@ -36,11 +40,11 @@ class GetGlucoseDashboardUseCase(
         val todayGlucose = if (latestTodayRecord != null) getGlucoseValue(latestTodayRecord) else null
 
         val glucoseStatus = when {
-            todayGlucose == null -> "Normal"
-            todayGlucose < 70 -> "Low"
-            todayGlucose <= 100 -> "Normal"
-            todayGlucose <= 140 -> "Above Target"
-            else -> "High"
+            todayGlucose == null -> getString(Res.string.normal)
+            todayGlucose < 70 -> getString(Res.string.low)
+            todayGlucose <= 100 -> getString(Res.string.normal)
+            todayGlucose <= 140 -> getString(Res.string.above_target)
+            else -> getString(Res.string.high)
         }
 
         val sevenDayRecords = records.filter {
@@ -89,11 +93,12 @@ class GetGlucoseDashboardUseCase(
             lowestGlucose = lowestGlucose,
             chartReadings = chartReadings,
             recordedTime = recordedTime,
+            mealType = formatMealType(latestTodayRecord?.mealType ?: ""),
             recentRecords = recentRecords
         )
     }
 
-    private fun getRecentRecords(records: List<GlucoseRecord>): List<DashboardRecentRecord> {
+    private suspend fun getRecentRecords(records: List<GlucoseRecord>): List<DashboardRecentRecord> {
         val sortedRecords = records.sortedByDescending {
             try { parseDisplayDate(it.date) } catch (e: Exception) { LocalDate(1900, 1, 1) }
         }
@@ -108,7 +113,9 @@ class GetGlucoseDashboardUseCase(
                 "AFTER_BREAKFAST" to record.afterBreakfast,
                 "BEFORE_BREAKFAST" to record.beforeBreakfast
             )
-            for ((type, value) in dayReadings) {
+            for (item in dayReadings) {
+                val type = item.first
+                val value = item.second
                 if (value != null) {
                     recentItems.add(
                         DashboardRecentRecord(
@@ -159,15 +166,15 @@ class GetGlucoseDashboardUseCase(
         ?: record.beforeLunch ?: record.afterBreakfast ?: record.beforeBreakfast ?: 0
     }
 
-    private fun formatMealType(type: String): String {
+    private suspend fun formatMealType(type: String): String {
         return when (type) {
-            "BBF", "BEFORE_BREAKFAST" -> "Before Breakfast"
-            "ABF", "AFTER_BREAKFAST" -> "After Breakfast"
-            "BL", "BEFORE_LUNCH" -> "Before Lunch"
-            "AL", "AFTER_LUNCH" -> "After Lunch"
-            "BD", "BEFORE_DINNER" -> "Before Dinner"
-            "AD", "AFTER_DINNER" -> "After Dinner"
-            "BT", "BEDTIME", "NGT" -> "Bedtime"
+            "BBF", "BEFORE_BREAKFAST" -> getString(Res.string.before_breakfast)
+            "ABF", "AFTER_BREAKFAST" -> getString(Res.string.after_breakfast)
+            "BL", "BEFORE_LUNCH" -> getString(Res.string.before_lunch)
+            "AL", "AFTER_LUNCH" -> getString(Res.string.after_lunch)
+            "BD", "BEFORE_DINNER" -> getString(Res.string.before_dinner)
+            "AD", "AFTER_DINNER" -> getString(Res.string.after_dinner)
+            "BT", "BEDTIME", "NGT" -> getString(Res.string.bedtime)
             else -> type
         }
     }

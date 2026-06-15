@@ -1,5 +1,7 @@
 package com.hathway.medbuddy.domain.model
 
+import com.hathway.medbuddy.util.getNowEpochMillis
+
 data class GlucoseRecord(
     val id : String = "1",
     val date: String,
@@ -14,7 +16,7 @@ data class GlucoseRecord(
     val time: String = "",
     val mealType: String = "",
     val notes: String = "",
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = getNowEpochMillis()
 )
 
 data class UserGlucoseRecord(

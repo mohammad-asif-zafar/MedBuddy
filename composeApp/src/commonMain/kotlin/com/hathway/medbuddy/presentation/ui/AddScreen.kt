@@ -14,6 +14,10 @@ import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.presentation.components.glucose_components.AddGlucoseRecordDialog
 import com.hathway.medbuddy.presentation.components.glucose_components.GlucoseRecordHistory
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.add_glucose_reading
+import medbuddy.composeapp.generated.resources.add_reading
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AddScreen(
@@ -22,43 +26,36 @@ fun AddScreen(
     val viewModel: AddViewModel = viewModel {
         AddViewModel(repository)
     }
-    
+
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
     ) {
         GlucoseRecordHistory(records = uiState.records)
 
         // Floating Action Button
-        ExtendedFloatingActionButton(
-            onClick = {
-                viewModel.onShowDialog()
-            },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Glucose Reading"
+        ExtendedFloatingActionButton(onClick = {
+            viewModel.onShowDialog()
+        }, modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp), icon = {
+            Icon(
+                imageVector = Icons.Default.Add, contentDescription = stringResource(
+                    Res.string.add_glucose_reading
                 )
-            },
-            text = {
-                Text("Add Reading")
-            }
-        )
+            )
+        }, text = {
+            Text(
+                stringResource(
+                    Res.string.add_reading
+                )
+            )
+        })
     }
 
     // Add Glucose Record Dialog
     if (uiState.showAddDialog) {
-        AddGlucoseRecordDialog(
-            onDismiss = { viewModel.onDismissDialog() },
-            onSave = { newRecord ->
-                viewModel.saveRecord(newRecord)
-            }
-        )
+        AddGlucoseRecordDialog(onDismiss = { viewModel.onDismissDialog() }, onSave = { newRecord ->
+            viewModel.saveRecord(newRecord)
+        })
     }
 }

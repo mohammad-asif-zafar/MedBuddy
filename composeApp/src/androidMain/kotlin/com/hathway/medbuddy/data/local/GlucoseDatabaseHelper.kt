@@ -49,7 +49,6 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
     
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE)
-        // Demo data removed - only user-inserted data will be shown
     }
     
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -131,6 +130,17 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         notes: String = ""
     ) {
         val db = writableDatabase
+        
+        // Check if record exists for this date to avoid duplicates
+        val cursor = db.query(TABLE_GLUCOSE_RECORDS, arrayOf(COLUMN_ID), "$COLUMN_DATE = ?", arrayOf(date), null, null, null)
+        val exists = cursor != null && cursor.moveToFirst()
+        cursor?.close()
+
+        if (exists) {
+            updateRecord(date, beforeBreakfast, afterBreakfast, beforeLunch, afterLunch, beforeDinner, afterDinner, bedtime, time, mealType, notes)
+            return
+        }
+
         val currentTime = System.currentTimeMillis()
 
         val stmt = db.compileStatement(
@@ -138,47 +148,13 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         )
         stmt.bindString(1, date)
 
-        if (beforeBreakfast != null) {
-            stmt.bindLong(2, beforeBreakfast.toLong())
-        } else {
-            stmt.bindNull(2)
-        }
-
-        if (afterBreakfast != null) {
-            stmt.bindLong(3, afterBreakfast.toLong())
-        } else {
-            stmt.bindNull(3)
-        }
-
-        if (beforeLunch != null) {
-            stmt.bindLong(4, beforeLunch.toLong())
-        } else {
-            stmt.bindNull(4)
-        }
-
-        if (afterLunch != null) {
-            stmt.bindLong(5, afterLunch.toLong())
-        } else {
-            stmt.bindNull(5)
-        }
-
-        if (beforeDinner != null) {
-            stmt.bindLong(6, beforeDinner.toLong())
-        } else {
-            stmt.bindNull(6)
-        }
-
-        if (afterDinner != null) {
-            stmt.bindLong(7, afterDinner.toLong())
-        } else {
-            stmt.bindNull(7)
-        }
-
-        if (bedtime != null) {
-            stmt.bindLong(8, bedtime.toLong())
-        } else {
-            stmt.bindNull(8)
-        }
+        if (beforeBreakfast != null) stmt.bindLong(2, beforeBreakfast.toLong()) else stmt.bindNull(2)
+        if (afterBreakfast != null) stmt.bindLong(3, afterBreakfast.toLong()) else stmt.bindNull(3)
+        if (beforeLunch != null) stmt.bindLong(4, beforeLunch.toLong()) else stmt.bindNull(4)
+        if (afterLunch != null) stmt.bindLong(5, afterLunch.toLong()) else stmt.bindNull(5)
+        if (beforeDinner != null) stmt.bindLong(6, beforeDinner.toLong()) else stmt.bindNull(6)
+        if (afterDinner != null) stmt.bindLong(7, afterDinner.toLong()) else stmt.bindNull(7)
+        if (bedtime != null) stmt.bindLong(8, bedtime.toLong()) else stmt.bindNull(8)
 
         stmt.bindString(9, time)
         stmt.bindString(10, mealType)
@@ -204,53 +180,20 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         val db = writableDatabase
         val currentTime = System.currentTimeMillis()
 
-        // Build the update SQL dynamically based on which values are provided
-        // Only update fields that are not null - preserve existing values for null fields
         val updates = mutableListOf<String>()
         val args = mutableListOf<Any>()
 
-        if (beforeBreakfast != null) {
-            updates.add("$COLUMN_BEFORE_BREAKFAST = ?")
-            args.add(beforeBreakfast.toLong())
-        }
-        if (afterBreakfast != null) {
-            updates.add("$COLUMN_AFTER_BREAKFAST = ?")
-            args.add(afterBreakfast.toLong())
-        }
-        if (beforeLunch != null) {
-            updates.add("$COLUMN_BEFORE_LUNCH = ?")
-            args.add(beforeLunch.toLong())
-        }
-        if (afterLunch != null) {
-            updates.add("$COLUMN_AFTER_LUNCH = ?")
-            args.add(afterLunch.toLong())
-        }
-        if (beforeDinner != null) {
-            updates.add("$COLUMN_BEFORE_DINNER = ?")
-            args.add(beforeDinner.toLong())
-        }
-        if (afterDinner != null) {
-            updates.add("$COLUMN_AFTER_DINNER = ?")
-            args.add(afterDinner.toLong())
-        }
-        if (bedtime != null) {
-            updates.add("$COLUMN_BEDTIME = ?")
-            args.add(bedtime.toLong())
-        }
+        if (beforeBreakfast != null) { updates.add("$COLUMN_BEFORE_BREAKFAST = ?"); args.add(beforeBreakfast.toLong()) }
+        if (afterBreakfast != null) { updates.add("$COLUMN_AFTER_BREAKFAST = ?"); args.add(afterBreakfast.toLong()) }
+        if (beforeLunch != null) { updates.add("$COLUMN_BEFORE_LUNCH = ?"); args.add(beforeLunch.toLong()) }
+        if (afterLunch != null) { updates.add("$COLUMN_AFTER_LUNCH = ?"); args.add(afterLunch.toLong()) }
+        if (beforeDinner != null) { updates.add("$COLUMN_BEFORE_DINNER = ?"); args.add(beforeDinner.toLong()) }
+        if (afterDinner != null) { updates.add("$COLUMN_AFTER_DINNER = ?"); args.add(afterDinner.toLong()) }
+        if (bedtime != null) { updates.add("$COLUMN_BEDTIME = ?"); args.add(bedtime.toLong()) }
 
-        // Always update Firebase fields if provided
-        if (time.isNotEmpty()) {
-            updates.add("$COLUMN_TIME = ?")
-            args.add(time)
-        }
-        if (mealType.isNotEmpty()) {
-            updates.add("$COLUMN_MEAL_TYPE = ?")
-            args.add(mealType)
-        }
-        if (notes.isNotEmpty()) {
-            updates.add("$COLUMN_NOTES = ?")
-            args.add(notes)
-        }
+        if (time.isNotEmpty()) { updates.add("$COLUMN_TIME = ?"); args.add(time) }
+        if (mealType.isNotEmpty()) { updates.add("$COLUMN_MEAL_TYPE = ?"); args.add(mealType) }
+        if (notes.isNotEmpty()) { updates.add("$COLUMN_NOTES = ?"); args.add(notes) }
 
         if (updates.isNotEmpty()) {
             updates.add("$COLUMN_CREATED_AT = ?")

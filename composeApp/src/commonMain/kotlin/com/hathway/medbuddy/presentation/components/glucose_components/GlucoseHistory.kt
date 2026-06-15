@@ -34,21 +34,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.*
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun GlucoseRecordHistory(
     records: List<GlucoseRecord>
 ) {
     var selectedDate by remember {
-        mutableStateOf(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date)
+        mutableStateOf(getNowLocalDateTime().date)
     }
     var showCalendar by remember { mutableStateOf(false) }
 
@@ -77,18 +74,26 @@ fun GlucoseRecordHistory(
 
         // Content
         if (selectedRecord != null) {
+            val beforeBreakfastLabel = stringResource(Res.string.before_breakfast)
+            val afterBreakfastLabel = stringResource(Res.string.after_breakfast)
+            val beforeLunchLabel = stringResource(Res.string.before_lunch)
+            val afterLunchLabel = stringResource(Res.string.after_lunch)
+            val beforeDinnerLabel = stringResource(Res.string.before_dinner)
+            val afterDinnerLabel = stringResource(Res.string.after_dinner)
+            val bedtimeLabel = stringResource(Res.string.bedtime)
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                glucoseItem("Before Breakfast", selectedRecord.beforeBreakfast)
-                glucoseItem("After Breakfast", selectedRecord.afterBreakfast)
-                glucoseItem("Before Lunch", selectedRecord.beforeLunch)
-                glucoseItem("After Lunch", selectedRecord.afterLunch)
-                glucoseItem("Before Dinner", selectedRecord.beforeDinner)
-                glucoseItem("After Dinner", selectedRecord.afterDinner)
-                glucoseItem("Bedtime", selectedRecord.bedtime)
+                glucoseItem(beforeBreakfastLabel, selectedRecord.beforeBreakfast)
+                glucoseItem(afterBreakfastLabel, selectedRecord.afterBreakfast)
+                glucoseItem(beforeLunchLabel, selectedRecord.beforeLunch)
+                glucoseItem(afterLunchLabel, selectedRecord.afterLunch)
+                glucoseItem(beforeDinnerLabel, selectedRecord.beforeDinner)
+                glucoseItem(afterDinnerLabel, selectedRecord.afterDinner)
+                glucoseItem(bedtimeLabel, selectedRecord.bedtime)
             }
         } else {
             EmptyDayContent()
@@ -128,6 +133,7 @@ fun DateNavigationHeader(
     onNextDay: () -> Unit,
     onDateClick: () -> Unit
 ) {
+    // need to chnage for other languages
     val dayName =
         selectedDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
     val monthName = selectedDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
@@ -143,7 +149,7 @@ fun DateNavigationHeader(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "<",
+                text = stringResource(Res.string.prev_symbol),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -167,7 +173,7 @@ fun DateNavigationHeader(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = ">",
+                text = stringResource(Res.string.next_symbol),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -220,7 +226,7 @@ fun FullScreenCalendarSheet(
                     }, contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "<",
+                        text = stringResource(Res.string.prev_symbol),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -228,8 +234,8 @@ fun FullScreenCalendarSheet(
 
                 Text(
                     text = "${
-                    currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
-                } ${currentMonth.year}",
+                        currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
+                    } ${currentMonth.year}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold)
 
@@ -239,7 +245,7 @@ fun FullScreenCalendarSheet(
                     }, contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = ">",
+                        text = stringResource(Res.string.next_symbol),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -279,15 +285,25 @@ fun CalendarGrid(
 ) {
     val firstDayOfMonth = LocalDate(currentMonth.year, currentMonth.month, 1)
     val lastDayOfMonth = firstDayOfMonth.plus(1, DateTimeUnit.MONTH).minus(1, DateTimeUnit.DAY)
-    val startDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7 // 0 = Sunday
+    val startDayOfWeek = (firstDayOfMonth.dayOfWeek.ordinal + 1) % 7 // 0 = Sunday
 
     val daysInMonth = lastDayOfMonth.dayOfMonth
+
+    val weekDays = listOf(
+        stringResource(Res.string.sun_short),
+        stringResource(Res.string.mon_short),
+        stringResource(Res.string.tue_short),
+        stringResource(Res.string.wed_short),
+        stringResource(Res.string.thu_short),
+        stringResource(Res.string.fri_short),
+        stringResource(Res.string.sat_short)
+    )
 
     // Day headers
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        listOf("S", "M", "T", "W", "T", "F", "S").forEach { day ->
+        weekDays.forEach { day ->
             Text(
                 text = day,
                 style = MaterialTheme.typography.bodySmall,
@@ -370,15 +386,15 @@ fun CalendarLegend() {
     ) {
 
         LegendItem(
-            color = MaterialTheme.colorScheme.surfaceVariant, label = "No Record"
+            color = MaterialTheme.colorScheme.surfaceVariant, label = stringResource(Res.string.no_record)
         )
 
         LegendItem(
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f), label = "Has Record"
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f), label = stringResource(Res.string.has_record)
         )
 
         LegendItem(
-            color = MaterialTheme.colorScheme.primary, label = "Selected"
+            color = MaterialTheme.colorScheme.primary, label = stringResource(Res.string.selected)
         )
     }
 }
@@ -410,9 +426,9 @@ fun GlucoseReadingCard(
 ) {
 
     val (status, color) = when {
-        value < 70 -> "Low" to Color(0xFFE53935)
-        value <= 140 -> "Normal" to Color(0xFF34C759)
-        else -> "High" to Color(0xFFFF9500)
+        value < 70 -> stringResource(Res.string.low) to Color(0xFFE53935)
+        value <= 140 -> stringResource(Res.string.normal) to Color(0xFF34C759)
+        else -> stringResource(Res.string.high) to Color(0xFFFF9500)
     }
 
     Card(
@@ -466,7 +482,7 @@ fun GlucoseReadingCard(
                     Spacer(Modifier.width(6.dp))
 
                     Text(
-                        text = "mg/dL",
+                        text = stringResource(Res.string.glucose_unit),
                         color = Color.Gray,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
@@ -529,16 +545,30 @@ fun MonthCalendar(
         ) {
 
             Text(
-                text = "May 2026",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+                text = stringResource(
+                    Res.string.calendar_days_header
+                ), color = Color.Gray, modifier = Modifier.padding(top = 16.dp)
             )
 
-            Text(
-                text = "S   M   T   W   T   F   S",
-                color = Color.Gray,
-                modifier = Modifier.padding(top = 16.dp)
+            val weekDays = listOf(
+                stringResource(Res.string.sun_short),
+                stringResource(Res.string.mon_short),
+                stringResource(Res.string.tue_short),
+                stringResource(Res.string.wed_short),
+                stringResource(Res.string.thu_short),
+                stringResource(Res.string.fri_short),
+                stringResource(Res.string.sat_short)
             )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                weekDays.forEach { day ->
+                    Text(
+                        text = day, color = Color.Gray, modifier = Modifier.weight(1f)
+                    )
+                }
+            }
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(7)
@@ -610,7 +640,7 @@ fun EmptyDayContent() {
     ) {
 
         Text(
-            text = "📅", fontSize = 64.sp
+            text = stringResource(Res.string.calendar_emoji), fontSize = 64.sp
         )
 
         Spacer(
@@ -618,7 +648,9 @@ fun EmptyDayContent() {
         )
 
         Text(
-            text = "No glucose records for this day", color = Color.Gray
+            text = stringResource(
+                Res.string.no_glucose_records_day
+            ), color = Color.Gray
         )
     }
 }

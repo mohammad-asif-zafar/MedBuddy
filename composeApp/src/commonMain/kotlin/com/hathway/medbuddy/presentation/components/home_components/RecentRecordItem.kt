@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.hathway.medbuddy.presentation.viewmodel.RecentRecord
 
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
+
 @Composable
 fun RecentRecordItem(
     record: RecentRecord
@@ -29,7 +32,7 @@ fun RecentRecordItem(
         Column {
 
             Text(
-                text = "${record.value} mg/dL",
+                text = "${record.value} ${stringResource(Res.string.glucose_unit)}",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
@@ -44,9 +47,9 @@ fun RecentRecordItem(
 
         Text(
             text = when {
-                record.value < 70 -> "Low"
-                record.value > 180 -> "High"
-                else -> "Normal"
+                record.value < 70 -> stringResource(Res.string.low)
+                record.value > 180 -> stringResource(Res.string.high)
+                else -> stringResource(Res.string.normal)
             }, color = statusColor, fontWeight = FontWeight.SemiBold
         )
     }

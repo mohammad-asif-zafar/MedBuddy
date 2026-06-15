@@ -81,21 +81,6 @@ fun HomeScreen(
                 modifier = Modifier.height(6.dp)
             )
         }
-
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

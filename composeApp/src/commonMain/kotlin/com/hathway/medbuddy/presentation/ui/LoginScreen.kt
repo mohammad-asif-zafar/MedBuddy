@@ -21,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.medbuddy_logo
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoginScreen(
@@ -58,7 +58,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = "MedBuddy",
+                text = stringResource(Res.string.medbuddy),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -68,7 +68,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = "Smart Glucose Care",
+                text = stringResource(Res.string.smart_glucose_care),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -78,7 +78,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = "Track glucose levels, monitor trends and stay in control of your health.",
+                text = stringResource(Res.string.login_description),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -114,7 +114,8 @@ fun LoginScreen(
             ) {
 
                 Text(
-                    text = "Continue with Google", style = MaterialTheme.typography.titleMedium
+                    text = stringResource(Res.string.continue_with_google),
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
 
@@ -123,7 +124,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = "Secure sign-in powered by Google",
+                text = stringResource(Res.string.secure_signin_powered_by_google),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

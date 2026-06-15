@@ -15,8 +15,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.presentation.theme.Danger
+import com.hathway.medbuddy.presentation.theme.Secondary
 import com.hathway.medbuddy.presentation.theme.Success
 import com.hathway.medbuddy.presentation.theme.Warning
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.current_glucose
+import medbuddy.composeapp.generated.resources.glucose_unit
+import medbuddy.composeapp.generated.resources.last_reading
+import medbuddy.composeapp.generated.resources.reading_details
+import medbuddy.composeapp.generated.resources.reading_value
+import medbuddy.composeapp.generated.resources.status_high
+import medbuddy.composeapp.generated.resources.status_in_range
+import medbuddy.composeapp.generated.resources.status_low
+import medbuddy.composeapp.generated.resources.trend_up
+import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
 @Composable
@@ -31,8 +43,9 @@ fun BloodGlucoseCard(
 ) {
 
     val statusColor = when (status.lowercase()) {
-        "high" -> Warning
-        "low" -> Danger
+        stringResource(Res.string.status_high) -> Warning
+        stringResource(Res.string.status_low) -> Danger
+        stringResource(Res.string.status_in_range) -> Success
         else -> Success
     }
 
@@ -73,7 +86,7 @@ fun BloodGlucoseCard(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = "Current Glucose",
+                        text = stringResource(Res.string.current_glucose),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
@@ -98,7 +111,7 @@ fun BloodGlucoseCard(
             )
 
             Text(
-                text = "mg/dL",
+                text = stringResource(Res.string.glucose_unit),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -121,7 +134,9 @@ fun BloodGlucoseCard(
 
             // Trend
             Text(
-                text = "$trendArrow ${abs(trend)} mg/dL from yesterday",
+                text = stringResource(
+                    Res.string.trend_up, trendArrow, abs(trend)
+                ),
                 color = statusColor,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium
@@ -137,7 +152,7 @@ fun BloodGlucoseCard(
 
             // Last Reading
             Text(
-                text = "Last Reading",
+                text = stringResource(Res.string.last_reading),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -145,13 +160,15 @@ fun BloodGlucoseCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "$lastReading mg/dL",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                text = stringResource(
+                    Res.string.reading_value, lastReading
+                ), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "$lastReadingTime • $lastMealType",
+                text = stringResource(
+                    Res.string.reading_details, lastReadingTime, lastMealType
+                ),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Work
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,12 +43,12 @@ import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
 import com.hathway.medbuddy.presentation.components.glucose_components.formatDate
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DoctorDialog(
-    doctorInfo: DoctorInfo,
-    onDismiss: () -> Unit,
-    onSave: (DoctorInfo) -> Unit
+    doctorInfo: DoctorInfo, onDismiss: () -> Unit, onSave: (DoctorInfo) -> Unit
 ) {
     var doctorName by remember { mutableStateOf(doctorInfo.doctorName) }
     var doctorType by remember { mutableStateOf(doctorInfo.doctorType) }
@@ -59,24 +58,18 @@ fun DoctorDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
             shape = RoundedCornerShape(32.dp),
             color = MaterialTheme.colorScheme.surface,
             tonalElevation = 6.dp
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
             ) {
                 // Modern Header with Primary Container color
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .padding(24.dp)
+                    modifier = Modifier.fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.primaryContainer).padding(24.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -85,24 +78,27 @@ fun DoctorDialog(
                     ) {
                         Column {
                             Text(
-                                text = "Profile Details",
+                                text = stringResource(Res.string.profile_details),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                             )
                             Text(
-                                text = "Doctor Information",
+                                text = stringResource(Res.string.doctor_information),
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                         IconButton(
-                            onClick = onDismiss,
-                            modifier = Modifier.background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f), CircleShape)
+                            onClick = onDismiss, modifier = Modifier.background(
+                                MaterialTheme.colorScheme.surface.copy(
+                                    alpha = 0.5f
+                                ), CircleShape
+                            )
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Close",
+                                contentDescription = stringResource(Res.string.close),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
@@ -115,7 +111,7 @@ fun DoctorDialog(
                 ) {
                     // Group 1: Identity
                     Text(
-                        text = "General Information",
+                        text = stringResource(Res.string.general_information),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -125,24 +121,24 @@ fun DoctorDialog(
                     DoctorInputField(
                         value = doctorName,
                         onValueChange = { doctorName = it },
-                        label = "Doctor Name",
+                        label = stringResource(Res.string.doctor_name),
                         icon = Icons.Default.Person,
-                        placeholder = "e.g. Dr. Sumit Gulla"
+                        placeholder = stringResource(Res.string.doctor_name_placeholder)
                     )
 
                     DoctorInputField(
                         value = doctorType,
                         onValueChange = { doctorType = it },
-                        label = "Role / Title",
+                        label = stringResource(Res.string.role_title),
                         icon = Icons.Default.Badge,
-                        placeholder = "e.g. Primary Physician"
+                        placeholder = stringResource(Res.string.role_title_placeholder)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     // Group 2: Medical Details
                     Text(
-                        text = "Practice Details",
+                        text = stringResource(Res.string.practice_details),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -152,24 +148,24 @@ fun DoctorDialog(
                     DoctorInputField(
                         value = speciality,
                         onValueChange = { speciality = it },
-                        label = "Speciality",
+                        label = stringResource(Res.string.speciality),
                         icon = Icons.Default.Work,
-                        placeholder = "e.g. Endocrinologist"
+                        placeholder = stringResource(Res.string.speciality_placeholder)
                     )
 
                     DoctorInputField(
                         value = hospital,
                         onValueChange = { hospital = it },
-                        label = "Medical Center",
+                        label = stringResource(Res.string.medical_center),
                         icon = Icons.Default.Business,
-                        placeholder = "e.g. City Care Hospital"
+                        placeholder = stringResource(Res.string.medical_center_placeholder)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     // Group 3: Schedule
                     Text(
-                        text = "Follow-up",
+                        text = stringResource(Res.string.follow_up),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -181,11 +177,9 @@ fun DoctorDialog(
                     }
 
                     AppointmentDateCard(
-                        appointmentDate = nextAppointment,
-                        onClick = {
+                        appointmentDate = nextAppointment, onClick = {
                             showDatePicker = true
-                        }
-                    )
+                        })
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -199,11 +193,10 @@ fun DoctorDialog(
                             modifier = Modifier.weight(1f).height(54.dp),
                             shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text("Discard", fontWeight = FontWeight.Bold)
+                            Text(stringResource(Res.string.discard), fontWeight = FontWeight.Bold)
                         }
                         PrimaryButton(
-                            text = "Save Info",
-                            onClick = {
+                            text = stringResource(Res.string.save_info), onClick = {
                                 onSave(
                                     DoctorInfo(
                                         doctorName = doctorName,
@@ -213,9 +206,7 @@ fun DoctorDialog(
                                         nextAppointment = nextAppointment
                                     )
                                 )
-                            },
-                            modifier = Modifier.weight(1f),
-                            enabled = true
+                            }, modifier = Modifier.weight(1f), enabled = true
                         )
                     }
                 }
@@ -236,7 +227,11 @@ fun DoctorInputField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)) },
+        placeholder = {
+            Text(
+                placeholder, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            )
+        },
         leadingIcon = {
             Icon(
                 imageVector = icon,

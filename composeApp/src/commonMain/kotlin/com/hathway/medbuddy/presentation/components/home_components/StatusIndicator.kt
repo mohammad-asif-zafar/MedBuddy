@@ -15,15 +15,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.presentation.viewmodel.GlucoseStatus
 
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
+
 @Composable
 fun StatusIndicator(
     status: GlucoseStatus
 ) {
     val statusInfo = when (status) {
-        GlucoseStatus.Low -> Triple("🔴", "Low", Color(0xFFE53935))
-        GlucoseStatus.Normal -> Triple("🟢", "Normal", Color(0xFF34C759))
-        GlucoseStatus.AboveTarget -> Triple("🟡", "Above Target", Color(0xFFFF9500))
-        GlucoseStatus.High -> Triple("🔴", "High", Color(0xFFE53935))
+        GlucoseStatus.Low -> Triple("🔴", stringResource(Res.string.low), Color(0xFFE53935))
+        GlucoseStatus.Normal -> Triple("🟢", stringResource(Res.string.normal), Color(0xFF34C759))
+        GlucoseStatus.AboveTarget -> Triple("🟡", stringResource(Res.string.above_target), Color(0xFFFF9500))
+        GlucoseStatus.High -> Triple("🔴", stringResource(Res.string.high), Color(0xFFE53935))
     }
 
     Column(
