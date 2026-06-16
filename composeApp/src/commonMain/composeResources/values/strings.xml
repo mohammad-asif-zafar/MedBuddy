@@ -41,7 +41,7 @@
 
     <string name="add_glucose_reading">Add Glucose Reading</string>
     <string name="add_reading">Add Reading</string>
-    <string name="add_glucose_record_title">Add Glucose Record</string>
+    <string name="add_glucose_record_title">Add Glucose Reading</string>
     <string name="track_glucose_reading_desc">Track your glucose reading</string>
     <string name="close_dialog">Close dialog</string>
     <string name="date">Date</string>
@@ -49,7 +49,8 @@
     <string name="time_device_time">Time (device time)</string>
     <string name="notes_optional">Notes (optional)</string>
     <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
+    <string name="saving">Saving...</string>
+    <string name="save_reading">Save Reading</string>
 
     <!-- Navigation -->
     <string name="previous_day">Previous Day</string>

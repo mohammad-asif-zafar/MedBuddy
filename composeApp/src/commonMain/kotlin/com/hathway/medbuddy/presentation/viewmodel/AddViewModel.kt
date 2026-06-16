@@ -1,5 +1,7 @@
 package com.hathway.medbuddy.presentation.viewmodel
 
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.domain.model.GlucoseRecord
@@ -28,32 +30,32 @@ class AddViewModel(
     init {
         loadRecords()
     }
-
+    fun resetSuccess() {
+        _uiState.update {
+            it.copy(saveSuccess = false)
+        }
+    }
     fun loadRecords() {
         if (repository == null) return
-        
+
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update {
+                it.copy(
+                    isSaving = true, saveSuccess = false, isLoading = true
+                )
+            }
             try {
                 val records = getGlucoseUseCase?.invoke() ?: emptyList()
-                _uiState.update { it.copy(records = records, isLoading = false) }
+                _uiState.update { it.copy(records = records, isLoading = false,  isSaving = false, saveSuccess = true,) }
             } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false) }
+                _uiState.update { it.copy(isLoading = false,  isSaving = false) }
             }
         }
     }
 
-    fun onShowDialog() {
-        _uiState.update { it.copy(showAddDialog = true) }
-    }
-
-    fun onDismissDialog() {
-        _uiState.update { it.copy(showAddDialog = false) }
-    }
-
     fun saveRecord(newRecord: UserGlucoseRecord) {
         if (repository == null) return
-        
+
         viewModelScope.launch {
             try {
                 saveGlucoseUseCase?.invoke(
@@ -70,7 +72,6 @@ class AddViewModel(
                     notes = newRecord.notes
                 )
                 loadRecords()
-                onDismissDialog()
             } catch (e: Exception) {
                 // Handle error
             }

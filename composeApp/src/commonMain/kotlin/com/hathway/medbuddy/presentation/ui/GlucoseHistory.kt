@@ -13,16 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,17 +25,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.coroutines.launch
 import kotlinx.datetime.*
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.material.icons.outlined.Bedtime
+import androidx.compose.material.icons.outlined.Coffee
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.SoupKitchen
+import androidx.compose.material.icons.outlined.WbSunny
 
 @Composable
 fun GlucoseRecordHistory(
@@ -65,21 +63,23 @@ fun GlucoseRecordHistory(
         // GlucoseRecordHistory(records = uiState.records)
 
         // Floating Action Button
-        ExtendedFloatingActionButton(onClick = {
-            viewModel.onShowDialog()
-        }, modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp), icon = {
-            Icon(
-                imageVector = Icons.Default.Add, contentDescription = stringResource(
-                    Res.string.add_glucose_reading
+        ExtendedFloatingActionButton(
+            onClick = {},
+            modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Add, contentDescription = stringResource(
+                        Res.string.add_glucose_reading
+                    )
                 )
-            )
-        }, text = {
-            Text(
-                stringResource(
-                    Res.string.add_reading
+            },
+            text = {
+                Text(
+                    stringResource(
+                        Res.string.add_reading
+                    )
                 )
-            )
-        })
+            })
     }
     Column(
         modifier = Modifier.fillMaxSize()
@@ -450,6 +450,177 @@ fun LegendItem(
 }
 
 
+// Define a structured configuration payload matching your dataset
+data class GlucoseCardState(
+    val timePeriod: TimePeriod, val titleLabel: String,     // e.g., "Before Breakfast (BBF)"
+    val value: Int, val timeString: String,     // e.g., "07:57 AM"
+    val icon: ImageVector, val iconContainerColor: Color, val iconTint: Color
+)
+
+
+@Composable
+fun GlucoseReadingCard(
+    label: String, value: Int
+) {
+    // 1. Parse configuration matching the exact UI design pattern from the label string
+    val isAfterMeal = label.contains("After", ignoreCase = true) || label.contains(
+        "(AL)", ignoreCase = true
+    ) || label.contains("(ABF)", ignoreCase = true)
+    val isBedtime =
+        label.contains("Bed", ignoreCase = true) || label.contains("(BT)", ignoreCase = true)
+
+    val (minTarget, maxTarget) = if (isAfterMeal || isBedtime) 70 to 140 else 70 to 100
+
+    // Determine status metadata parameters
+    val (statusText, statusColor) = when {
+        value < minTarget -> "Low" to Color(0xFFE53935)       // Red
+        value > maxTarget -> "High" to Color(0xFFFF9500)      // Orange
+        else -> "In Range" to Color(0xFF1B5E20)                     // Dark Green
+    }
+
+    // 2. Resolve contextual assets dynamically (Icons, background tints, and simulated mock times)
+    val (icon, iconBgColor, iconTint, timeMock) = when {
+        label.contains("Breakfast") || label.contains("BBF") || label.contains("ABF") -> {
+            if (isAfterMeal) {
+                RowAssets(Icons.Outlined.Coffee, Color(0xFFE8F5E9), Color(0xFF2E7D32), "09:15 AM")
+            } else {
+                RowAssets(
+                    Icons.Outlined.LightMode, Color(0xFFFFF3E0), Color(0xFFEF6C00), "07:57 AM"
+                )
+            }
+        }
+
+        label.contains("Lunch") || label.contains("BL") || label.contains("AL") -> {
+            if (isAfterMeal) {
+                RowAssets(
+                    Icons.Outlined.SoupKitchen, Color(0xFFFFF3E0), Color(0xFFD84315), "02:02 PM"
+                )
+            } else {
+                RowAssets(Icons.Outlined.WbSunny, Color(0xFFFFF8E1), Color(0xFFFBC02D), "12:30 PM")
+            }
+        }
+
+        label.contains("Dinner") || label.contains("BD") -> {
+            RowAssets(Icons.Outlined.SoupKitchen, Color(0xFFE8EAF6), Color(0xFF283593), "07:00 PM")
+        }
+
+        else -> { // Bedtime / Default fallback
+            RowAssets(Icons.Outlined.Bedtime, Color(0xFFEDE7F6), Color(0xFF4527A0), "10:30 PM")
+        }
+    }
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.Top
+        ) {
+            // Context Graphic Block Frame
+            Box(
+                modifier = Modifier.size(46.dp).background(iconBgColor, RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = iconTint
+                )
+            }
+
+            Spacer(modifier = Modifier.width(14.dp))
+
+            // Text Metadata Frame Node
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                // Row 1: Header Text Info Slot
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A1A1A)
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(
+                            text = timeMock,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray
+                        )
+                        Box(
+                            modifier = Modifier.size(8.dp).background(statusColor, CircleShape)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                // Row 2: Metrics Baseline-aligned layout
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Row(verticalAlignment = Alignment.Bottom) {
+                        Text(
+                            text = value.toString(),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF1A1A1A),
+                            modifier = Modifier.alignByBaseline()
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "mg/dL",
+                            fontSize = 13.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.alignByBaseline()
+                        )
+                    }
+
+                    Text(
+                        text = statusText,
+                        color = statusColor,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Row 3: Guidelines Context Node
+                Text(
+                    text = "Target: $minTarget–$maxTarget mg/dL",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+    }
+}
+
+// Internal data wrapper to cleanly map layout graphics inside the card component
+private data class RowAssets(
+    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val containerColor: Color,
+    val tint: Color,
+    val time: String
+)
+
+
+/*
 @Composable
 fun GlucoseReadingCard(
     label: String, value: Int
@@ -525,6 +696,7 @@ fun GlucoseReadingCard(
         }
     }
 }
+*/
 
 fun parseDisplayDate(date: String): LocalDate {
     // Simple parsing assuming format "d MMMM yyyy" like "9 April 2026"

@@ -1,6 +1,7 @@
 package com.hathway.medbuddy.presentation.components.glucose_components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.getGlucoseRange
 import com.hathway.medbuddy.presentation.theme.Danger
@@ -63,7 +65,11 @@ fun GlucoseInputField(
         },
 
         label = {
-            Text("$displayName ($shortName)")
+            Text(
+                "$displayName ($shortName)",
+                modifier = Modifier.padding(5.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
         },
 
         modifier = modifier.fillMaxWidth(),
