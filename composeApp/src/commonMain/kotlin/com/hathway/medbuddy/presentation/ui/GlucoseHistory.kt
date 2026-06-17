@@ -46,7 +46,8 @@ import androidx.compose.material.icons.outlined.WbSunny
 
 @Composable
 fun GlucoseRecordHistory(
-    records: List<GlucoseRecord>, viewModel: AddViewModel
+    records: List<GlucoseRecord>, viewModel: AddViewModel,
+    onNavigateToAdd: () -> Unit
 ) {
     var selectedDate by remember {
         mutableStateOf(getNowLocalDateTime().date)
@@ -56,77 +57,68 @@ fun GlucoseRecordHistory(
     val selectedRecord = records.firstOrNull {
         parseDisplayDate(it.date) == selectedDate
     }
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(onClick = {
+                onNavigateToAdd()
 
-    Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
-    ) {
-        // GlucoseRecordHistory(records = uiState.records)
-
-        // Floating Action Button
-        ExtendedFloatingActionButton(
-            onClick = {},
-            modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
-            icon = {
+            }, icon = {
                 Icon(
-                    imageVector = Icons.Default.Add, contentDescription = stringResource(
-                        Res.string.add_glucose_reading
-                    )
+                    Icons.Default.Add, contentDescription = null
                 )
-            },
-            text = {
-                Text(
-                    stringResource(
-                        Res.string.add_reading
-                    )
-                )
+            }, text = {
+                Text("+")
             })
-    }
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // Date Navigation Header
-        DateNavigationHeader(selectedDate = selectedDate, onPreviousDay = {
-            selectedDate = selectedDate.minus(1, DateTimeUnit.DAY)
-        }, onNextDay = {
-            selectedDate = selectedDate.plus(1, DateTimeUnit.DAY)
-        }, onDateClick = {
-            showCalendar = true
-        })
+        }) { padding ->
 
-        HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
-        )
+        Column(
+            modifier = Modifier.fillMaxSize().padding(padding)
+        ) {
+            // Date Navigation Header
+            DateNavigationHeader(selectedDate = selectedDate, onPreviousDay = {
+                selectedDate = selectedDate.minus(1, DateTimeUnit.DAY)
+            }, onNextDay = {
+                selectedDate = selectedDate.plus(1, DateTimeUnit.DAY)
+            }, onDateClick = {
+                showCalendar = true
+            })
 
-        Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+            )
 
-        // Content
-        if (selectedRecord != null) {
-            val beforeBreakfastLabel = stringResource(Res.string.before_breakfast)
-            val afterBreakfastLabel = stringResource(Res.string.after_breakfast)
-            val beforeLunchLabel = stringResource(Res.string.before_lunch)
-            val afterLunchLabel = stringResource(Res.string.after_lunch)
-            val beforeDinnerLabel = stringResource(Res.string.before_dinner)
-            val afterDinnerLabel = stringResource(Res.string.after_dinner)
-            val bedtimeLabel = stringResource(Res.string.bedtime)
+            Spacer(modifier = Modifier.height(16.dp))
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                glucoseItem(beforeBreakfastLabel, selectedRecord.beforeBreakfast)
-                glucoseItem(afterBreakfastLabel, selectedRecord.afterBreakfast)
-                glucoseItem(beforeLunchLabel, selectedRecord.beforeLunch)
-                glucoseItem(afterLunchLabel, selectedRecord.afterLunch)
-                glucoseItem(beforeDinnerLabel, selectedRecord.beforeDinner)
-                glucoseItem(afterDinnerLabel, selectedRecord.afterDinner)
-                glucoseItem(bedtimeLabel, selectedRecord.bedtime)
+            // Content
+            if (selectedRecord != null) {
+                val beforeBreakfastLabel = stringResource(Res.string.before_breakfast)
+                val afterBreakfastLabel = stringResource(Res.string.after_breakfast)
+                val beforeLunchLabel = stringResource(Res.string.before_lunch)
+                val afterLunchLabel = stringResource(Res.string.after_lunch)
+                val beforeDinnerLabel = stringResource(Res.string.before_dinner)
+                val afterDinnerLabel = stringResource(Res.string.after_dinner)
+                val bedtimeLabel = stringResource(Res.string.bedtime)
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    glucoseItem(beforeBreakfastLabel, selectedRecord.beforeBreakfast)
+                    glucoseItem(afterBreakfastLabel, selectedRecord.afterBreakfast)
+                    glucoseItem(beforeLunchLabel, selectedRecord.beforeLunch)
+                    glucoseItem(afterLunchLabel, selectedRecord.afterLunch)
+                    glucoseItem(beforeDinnerLabel, selectedRecord.beforeDinner)
+                    glucoseItem(afterDinnerLabel, selectedRecord.afterDinner)
+                    glucoseItem(bedtimeLabel, selectedRecord.bedtime)
+                }
+            } else {
+                EmptyDayContent()
             }
-        } else {
-            EmptyDayContent()
         }
     }
+
 
     // Full-screen calendar sheet
     if (showCalendar) {
@@ -142,11 +134,8 @@ fun GlucoseRecordHistory(
 fun LazyListScope.glucoseItem(
     label: String, value: Int?
 ) {
-
     if (value != null) {
-
         item {
-
             GlucoseReadingCard(
                 label = label, value = value
             )
@@ -161,7 +150,7 @@ fun DateNavigationHeader(
     onNextDay: () -> Unit,
     onDateClick: () -> Unit
 ) {
-    // need to chnage for other languages
+    // Need to Change for other languages
     val dayName =
         selectedDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
     val monthName = selectedDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
@@ -194,7 +183,6 @@ fun DateNavigationHeader(
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-
         // Next day button
         Box(
             modifier = Modifier.size(40.dp).clickable { onNextDay() },
@@ -262,8 +250,8 @@ fun FullScreenCalendarSheet(
 
                 Text(
                     text = "${
-                    currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
-                } ${currentMonth.year}",
+                        currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
+                    } ${currentMonth.year}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold)
 
@@ -433,7 +421,6 @@ fun CalendarLegend() {
 fun LegendItem(
     color: Color, label: String
 ) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -613,90 +600,12 @@ fun GlucoseReadingCard(
 
 // Internal data wrapper to cleanly map layout graphics inside the card component
 private data class RowAssets(
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val icon: ImageVector,
     val containerColor: Color,
     val tint: Color,
     val time: String
 )
 
-
-/*
-@Composable
-fun GlucoseReadingCard(
-    label: String, value: Int
-) {
-
-    val (status, color) = when {
-        value < 70 -> stringResource(Res.string.low) to Color(0xFFE53935)
-        value <= 140 -> stringResource(Res.string.normal) to Color(0xFF34C759)
-        else -> stringResource(Res.string.high) to Color(0xFFFF9500)
-    }
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
-    ) {
-
-        Column(
-            modifier = Modifier.padding(20.dp)
-        ) {
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Box(
-                    modifier = Modifier.size(10.dp).background(color, CircleShape)
-                )
-            }
-
-            Spacer(Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.Bottom
-                ) {
-
-                    Text(
-                        text = value.toString(), fontSize = 32.sp, fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(Modifier.width(6.dp))
-
-                    Text(
-                        text = stringResource(Res.string.glucose_unit),
-                        color = Color.Gray,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                }
-
-                Text(
-                    text = status, color = color, fontWeight = FontWeight.SemiBold
-                )
-            }
-        }
-    }
-}
-*/
 
 fun parseDisplayDate(date: String): LocalDate {
     // Simple parsing assuming format "d MMMM yyyy" like "9 April 2026"

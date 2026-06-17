@@ -8,14 +8,17 @@ import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.presentation.ui.GlucoseRecordHistory
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 
-
 @Composable
-fun HistoryContent(repository: IGlucoseRepository? = null) {
+fun HistoryContent(
+    repository: IGlucoseRepository? = null, onNavigateToAdd: () -> Unit = {}
+) {
     val viewModel: AddViewModel = viewModel {
         AddViewModel(repository)
     }
 
     val uiState by viewModel.uiState.collectAsState()
 
-    GlucoseRecordHistory(records = uiState.records,viewModel)
+    GlucoseRecordHistory(
+        records = uiState.records, viewModel = viewModel, onNavigateToAdd = onNavigateToAdd
+    )
 }

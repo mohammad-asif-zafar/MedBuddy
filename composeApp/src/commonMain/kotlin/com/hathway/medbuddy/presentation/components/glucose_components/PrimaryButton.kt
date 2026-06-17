@@ -1,7 +1,10 @@
 package com.hathway.medbuddy.presentation.components.glucose_components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -9,6 +12,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import medbuddy.composeapp.generated.resources.Res
@@ -35,25 +39,36 @@ fun PrimaryButton(
         shape = RoundedCornerShape(16.dp)
     ) {
 
-        if (saving) {
+        AnimatedContent(
+            targetState = saving
+        ) { loading ->
 
-            CircularProgressIndicator(
-                modifier = Modifier.size(18.dp),
-                strokeWidth = 2.dp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            if (loading) {
 
-            Spacer(
-                modifier = Modifier.size(8.dp)
-            )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
-            Text(text = stringResource(Res.string.saving))
-        } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
 
-            Text(
-                text = text
-            )
+                    Spacer(Modifier.width(8.dp))
+
+                    Text(text = stringResource(Res.string.saving))
+                }
+
+            } else {
+
+                Text(
+                    text = text
+                )
+            }
         }
+
+
     }
 
 }

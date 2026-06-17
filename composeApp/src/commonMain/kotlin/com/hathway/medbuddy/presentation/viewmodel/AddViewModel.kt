@@ -1,11 +1,7 @@
 package com.hathway.medbuddy.presentation.viewmodel
 
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hathway.medbuddy.domain.model.GlucoseRecord
-import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseUseCase
@@ -30,25 +26,23 @@ class AddViewModel(
     init {
         loadRecords()
     }
+
     fun resetSuccess() {
         _uiState.update {
             it.copy(saveSuccess = false)
         }
     }
+
     fun loadRecords() {
         if (repository == null) return
 
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    isSaving = true, saveSuccess = false, isLoading = true
-                )
-            }
+            _uiState.update { it.copy(isLoading = true) }
             try {
                 val records = getGlucoseUseCase?.invoke() ?: emptyList()
-                _uiState.update { it.copy(records = records, isLoading = false,  isSaving = false, saveSuccess = true,) }
+                _uiState.update { it.copy(records = records, isLoading = false) }
             } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false,  isSaving = false) }
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
@@ -57,6 +51,7 @@ class AddViewModel(
         if (repository == null) return
 
         viewModelScope.launch {
+            _uiState.update { it.copy(isSaving = true, saveSuccess = false) }
             try {
                 saveGlucoseUseCase?.invoke(
                     date = newRecord.date,
@@ -71,9 +66,19 @@ class AddViewModel(
                     mealType = newRecord.timePeriod,
                     notes = newRecord.notes
                 )
-                loadRecords()
+                
+                // Fetch updated records
+                val records = getGlucoseUseCase?.invoke() ?: emptyList()
+                
+                _uiState.update {
+                    it.copy(
+                        records = records,
+                        isSaving = false,
+                        saveSuccess = true
+                    )
+                }
             } catch (e: Exception) {
-                // Handle error
+                _uiState.update { it.copy(isSaving = false) }
             }
         }
     }

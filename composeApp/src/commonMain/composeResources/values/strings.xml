@@ -51,6 +51,7 @@
     <string name="cancel">Cancel</string>
     <string name="saving">Saving...</string>
     <string name="save_reading">Save Reading</string>
+    <string name="glucose_saved_success">Glucose reading saved successfully</string>
 
     <!-- Navigation -->
     <string name="previous_day">Previous Day</string>
@@ -159,6 +160,7 @@
 
     <!-- Time Period Dropdown -->
     <string name="select_time_period">Select Time Period</string>
+    <string name="time_period">Time Period</string>
 
     <!-- Home Components -->
     <string name="target_range">🎯 Target Range</string>
