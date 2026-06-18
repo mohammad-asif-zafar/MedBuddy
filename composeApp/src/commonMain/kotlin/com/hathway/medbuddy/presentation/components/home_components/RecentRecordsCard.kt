@@ -62,8 +62,6 @@ fun RecentRecordsCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
             if (recentRecords.isEmpty()) {
 
                 Text(

@@ -68,3 +68,7 @@ val Divider = Color(0xFFEAE7E0)
 
 val Error = Danger
 val OnError = Color.White
+
+val HeaderBackground = Color(0xFFF8F4EC)
+val BrandGreen = Color(0xFF4F6B35)
+val CardBorder = Color(0xFFE7E0D5)

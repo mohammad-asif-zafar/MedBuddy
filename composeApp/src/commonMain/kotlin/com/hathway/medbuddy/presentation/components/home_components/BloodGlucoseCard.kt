@@ -1,5 +1,6 @@
 package com.hathway.medbuddy.presentation.components.home_components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,148 +35,89 @@ import kotlin.math.abs
 
 @Composable
 fun BloodGlucoseCard(
-    average: Double,
-    trend: Double,
-    status: String,
-    lastReading: Double,
-    lastReadingTime: String,
-    lastMealType: String,
-    onClick: () -> Unit = {}
+    glucoseValue: Int, mealType: String, status: String, targetRange: String
 ) {
-
-    val statusColor = when (status.lowercase()) {
-        stringResource(Res.string.status_high) -> Warning
-        stringResource(Res.string.status_low) -> Danger
-        stringResource(Res.string.status_in_range) -> Success
-        else -> Success
-    }
-
-    val trendArrow = if (trend >= 0) "↑" else "↓"
-
+    println(status)
     Card(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
-        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+        border = BorderStroke(
+            1.dp, Color(0xFFE9E1D3)
         )
     ) {
 
-        Column(
-            modifier = Modifier.padding(20.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // Header
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.MonitorHeart,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(
-                        text = stringResource(Res.string.current_glucose),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.outline
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Main Value
-            Text(
-                text = average.toInt().toString(),
-                fontSize = 56.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            Text(
-                text = stringResource(Res.string.glucose_unit),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Status Chip
-            Surface(
-                color = statusColor.copy(alpha = 0.15f), shape = RoundedCornerShape(50)
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
 
                 Text(
-                    text = status, modifier = Modifier.padding(
-                        horizontal = 12.dp, vertical = 6.dp
-                    ), color = statusColor, fontWeight = FontWeight.SemiBold
+                    text = "Today's Glucose",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Spacer(Modifier.height(4.dp))
+
+                Text(
+                    text = mealType,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                Row(
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    Text(
+                        text = glucoseValue.toString(),
+                        fontSize = 48.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(Modifier.width(6.dp))
+
+                    Text(
+                        text = "mg/dL",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(Modifier.height(12.dp))
+
+                StatusChip(status)
+
+                Spacer(Modifier.height(12.dp))
+
+                Text(
+                    text = "Target: $targetRange",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Trend
-            Text(
-                text = stringResource(
-                    Res.string.trend_up, trendArrow, abs(trend)
-                ),
-                color = statusColor,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            HorizontalDivider(
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Last Reading
-            Text(
-                text = stringResource(Res.string.last_reading),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(
-                    Res.string.reading_value, lastReading
-                ), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = stringResource(
-                    Res.string.reading_details, lastReadingTime, lastMealType
-                ),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            GlucoseMeter(
+                value = glucoseValue, modifier = Modifier.padding(start = 16.dp)
             )
         }
+
+
     }
+
+
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -183,14 +126,14 @@ fun BloodGlucoseCardPreview() {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {
-            BloodGlucoseCard(
-                average = 7.4,
-                trend = 0.3,
-                status = "In Range",
-                lastReading = 8.2,
-                lastReadingTime = "4:59 PM",
-                lastMealType = "BFF"
-            )
+            /* BloodGlucoseCard(
+                 average = 7.4,
+                 trend = 0.3,
+                 status = "In Range",
+                 lastReading = 8.2,
+                 lastReadingTime = "4:59 PM",
+                 lastMealType = "BFF"
+             )*/
         }
     }
 }

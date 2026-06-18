@@ -78,6 +78,7 @@
     <string name="low">Low</string>
     <string name="normal">Normal</string>
     <string name="high">High</string>
+    <string name="good">Good</string>
 
     <!-- Meal Times -->
     <string name="before_breakfast">Before Breakfast</string>
@@ -169,9 +170,9 @@
     <string name="target_good">You\'re doing well. Keep it up 👍</string>
     <string name="target_improving">Improving steadily 📈</string>
     <string name="target_work">Let\'s work toward more readings in range 💪</string>
-    <string name="greeting_morning">Good Morning 👋</string>
-    <string name="greeting_afternoon">Good Afternoon 👋</string>
-    <string name="greeting_evening">Good Evening 👋</string>
+    <string name="greeting_morning">Good Morning, </string>
+    <string name="greeting_afternoon">Good Afternoon, </string>
+    <string name="greeting_evening">Good Evening, </string>
     <string name="insight_lower">Glucose is 15% lower than last week</string>
     <string name="patient">Patient</string>
 
