@@ -48,6 +48,7 @@ fun HomeScreen(
         Box(
             modifier = Modifier.fillMaxWidth().background(
                 Color(0xFFFEF9F0)
+
             )
         )
 
@@ -90,8 +91,6 @@ fun HomeScreen(
 
             }
             //  Section 3: Doctor Information
-            //1. Android only OR Compose Multiplatform?
-            //2. Can I use Vico library? (Yes/No)
             item {
                 TrendChartCard(
                     readings = uiState.dailyAverageReadings

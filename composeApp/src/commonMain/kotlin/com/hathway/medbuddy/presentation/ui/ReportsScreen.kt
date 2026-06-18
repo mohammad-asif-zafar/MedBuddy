@@ -1,53 +1,121 @@
 package com.hathway.medbuddy.presentation.ui
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.AccessTime
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.hathway.medbuddy.domain.model.TimePeriod
-import com.hathway.medbuddy.domain.model.UserGlucoseRecord
-import com.hathway.medbuddy.presentation.components.glucose_components.GlucoseInputField
-import com.hathway.medbuddy.presentation.components.glucose_components.NativeDatePickerDialog
-import com.hathway.medbuddy.presentation.components.glucose_components.TimePeriodDropdown
-import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
-import com.hathway.medbuddy.util.getNowLocalDateTime
+import com.hathway.medbuddy.presentation.components.reports_components.AverageGlucoseByTimeOfDay
+import com.hathway.medbuddy.presentation.components.reports_components.BestAndWorstDaysSection
+import com.hathway.medbuddy.presentation.components.reports_components.GlucoseTrendCard
+import com.hathway.medbuddy.presentation.components.reports_components.InsightsAndActionsFooter
+import com.hathway.medbuddy.presentation.components.reports_components.ReportsTopBarAndFilter
+import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
+import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
+import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeData
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReportScreen(
-    viewModel: AddViewModel, onBack: () -> Unit
+fun ReportsScreen(
+    onMenuClick: () -> Unit,
+    onCalendarClick: () -> Unit,
+    onExportPdf: () -> Unit,
+    onShareReport: () -> Unit
 ) {
+    // Shared brand palette config
+    val backgroundColor = Color(0xFFF7F7EE)
 
-    Text(text = "Reports Glucose")
+    // Dynamic Filter state tracking holder
+    var currentFilterRange by remember { mutableStateOf("30 Days") }
+
+    // Hardcoded static dataset values matching your reference visual breakdown profile
+    val simulatedTimeInRangeData = TimeInRangeData(inRangePct = 78f, highPct = 15f, lowPct = 7f)
+
+    // Insights text mapping dataset matching reports footer block
+    val reportInsightsList = remember {
+        listOf(
+            Icons.Default.CheckCircle to "Most of your readings are within the target range. Great job!",
+            Icons.Default.ArrowCircleUp to "After lunch readings tend to be higher than other times.",
+            Icons.Default.TrendingUp to "Average glucose improved by 8% compared to last 30 days.",
+            Icons.Default.CheckCircle to "No low glucose episodes in the last 7 days."
+        )
+    }
+
+    Scaffold(
+        topBar = {
+            ReportsTopBarAndFilter(
+                selectedFilter = currentFilterRange,
+                onFilterSelected = { currentFilterRange = it },
+                onMenuClick = onMenuClick,
+                onCalendarClick = onCalendarClick
+            )
+        }, containerColor = backgroundColor
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            contentPadding = PaddingValues(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(0.dp) // Handled via inner modular sub-paddings
+        ) {
+
+            // 1. High-Level Performance Matrix Grid
+            item {
+                SummaryMetricsSection(
+                    avgGlucose = 124, hba1c = 5.9, timeInRange = 78, totalReadings = 142
+                )
+            }
+
+            // 2. Custom Canvas Donut Time In Range Breakdown Card
+            item {
+                TimeInRangeCard(data = simulatedTimeInRangeData)
+            }
+
+            // 3. Optional Graph Section Placeholder
+            // item { GlucoseTrendGraphCard() }
+
+            // 4. Meal Segment Time of Day Analysis Matrix Block
+            item {
+                AverageGlucoseByTimeOfDay(
+                    beforeBreakfast = 95,
+                    afterBreakfast = 132,
+                    beforeLunch = 102,
+                    afterLunch = 148,
+                    beforeDinner = 110,
+                    bedtime = 120,
+                    afterDinner = 120
+                )
+            }
+            item {
+                GlucoseTrendCard()
+            }
+
+            // 5. High & Low Extremes Performance Highlights Block
+            item {
+                BestAndWorstDaysSection(
+                    bestDate = "12 June 2026",
+                    bestAvg = 89,
+                    worstDate = "5 June 2026",
+                    worstAvg = 242
+                )
+            }
+
+            // 6. Automated Insight List & Double Action Footer
+            item {
+                InsightsAndActionsFooter(
+                    insights = reportInsightsList,
+                    onExportPdf = onExportPdf,
+                    onShareReport = onShareReport
+                )
+            }
+
+            // Layout buffer space anchor at the bottom of the column screen track
+            item {
+                Spacer(modifier = Modifier.navigationBarsPadding().height(16.dp))
+            }
+        }
+    }
 }
 

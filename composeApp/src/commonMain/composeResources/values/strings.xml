@@ -79,6 +79,7 @@
     <string name="normal">Normal</string>
     <string name="high">High</string>
     <string name="good">Good</string>
+    <string name="ok">Ok</string>
 
     <!-- Meal Times -->
     <string name="before_breakfast">Before Breakfast</string>

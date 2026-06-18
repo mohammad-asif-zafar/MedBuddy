@@ -2,6 +2,7 @@ package com.hathway.medbuddy.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseUseCase
@@ -53,28 +54,34 @@ class AddViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true, saveSuccess = false) }
             try {
+                // 1. Look for an existing day's record to prevent overwriting other meals with null
+                val existingRecords = getGlucoseUseCase?.invoke() ?: emptyList()
+                val existingDayRecord = existingRecords.find { it.date == newRecord.date }
+
+                // 2. Safely merge the new reading value with existing daily fields
                 saveGlucoseUseCase?.invoke(
                     date = newRecord.date,
-                    beforeBreakfast = if (newRecord.timePeriod == "BEFORE_BREAKFAST") newRecord.value else null,
-                    afterBreakfast = if (newRecord.timePeriod == "AFTER_BREAKFAST") newRecord.value else null,
-                    beforeLunch = if (newRecord.timePeriod == "BEFORE_LUNCH") newRecord.value else null,
-                    afterLunch = if (newRecord.timePeriod == "AFTER_LUNCH") newRecord.value else null,
-                    beforeDinner = if (newRecord.timePeriod == "BEFORE_DINNER") newRecord.value else null,
-                    afterDinner = if (newRecord.timePeriod == "AFTER_DINNER") newRecord.value else null,
-                    bedtime = if (newRecord.timePeriod == "BEDTIME") newRecord.value else null,
+                    beforeBreakfast = if (newRecord.timePeriod == TimePeriod.BEFORE_BREAKFAST.name) newRecord.value else existingDayRecord?.beforeBreakfast,
+                    afterBreakfast = if (newRecord.timePeriod == TimePeriod.AFTER_BREAKFAST.name) newRecord.value else existingDayRecord?.afterBreakfast,
+                    beforeLunch = if (newRecord.timePeriod == TimePeriod.BEFORE_LUNCH.name) newRecord.value else existingDayRecord?.beforeLunch,
+                    afterLunch = if (newRecord.timePeriod == TimePeriod.AFTER_LUNCH.name) newRecord.value else existingDayRecord?.afterLunch,
+                    beforeDinner = if (newRecord.timePeriod == TimePeriod.BEFORE_DINNER.name) newRecord.value else existingDayRecord?.beforeDinner,
+                    afterDinner = if (newRecord.timePeriod == TimePeriod.AFTER_DINNER.name) newRecord.value else existingDayRecord?.afterDinner,
+                    bedtime = if (newRecord.timePeriod == TimePeriod.BEDTIME.name) newRecord.value else existingDayRecord?.bedtime,
                     time = newRecord.time,
                     mealType = newRecord.timePeriod,
                     notes = newRecord.notes
+                // Keep old notes if new ones are blank
                 )
-                
-                // Fetch updated records
-                val records = getGlucoseUseCase?.invoke() ?: emptyList()
-                
+
+                // 3. Re-load the updated list state to refresh UI
+                val updatedRecords = getGlucoseUseCase?.invoke() ?: emptyList()
+
                 _uiState.update {
                     it.copy(
-                        records = records,
+                        records = updatedRecords,
                         isSaving = false,
-                        saveSuccess = true
+                        saveSuccess = true // This will trigger your Composable's LaunchedEffect
                     )
                 }
             } catch (e: Exception) {
@@ -82,4 +89,5 @@ class AddViewModel(
             }
         }
     }
+
 }

@@ -33,7 +33,7 @@ fun SummaryCard(
         ), border = BorderStroke(
             1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.08f)
         ), elevation = CardDefaults.cardElevation(
-            defaultElevation = 0.dp
+            defaultElevation = 2.dp
         )
     ) {
 

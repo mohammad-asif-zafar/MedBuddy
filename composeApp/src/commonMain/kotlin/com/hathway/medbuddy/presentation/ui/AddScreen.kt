@@ -1,8 +1,10 @@
 package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,9 +21,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -31,6 +35,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,6 +47,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.presentation.components.glucose_components.GlucoseInputField
@@ -60,6 +68,7 @@ import medbuddy.composeapp.generated.resources.change
 import medbuddy.composeapp.generated.resources.date
 import medbuddy.composeapp.generated.resources.glucose_saved_success
 import medbuddy.composeapp.generated.resources.notes_optional
+import medbuddy.composeapp.generated.resources.ok
 import medbuddy.composeapp.generated.resources.save_reading
 import medbuddy.composeapp.generated.resources.time_device_time
 import medbuddy.composeapp.generated.resources.track_glucose_reading_desc
@@ -78,25 +87,69 @@ fun AddScreen(
     var time by remember { mutableStateOf(getCurrentTime12Hour()) }
     var notes by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
-    val uiState by viewModel.uiState.collectAsState()
-
-    val saveSuccessMessage = stringResource(Res.string.glucose_saved_success)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var showSuccessDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
+
             glucoseValue = ""
             notes = ""
             selectedDate = getNowLocalDateTime().date
             selectedTimePeriod = TimePeriod.BEFORE_BREAKFAST
             time = getCurrentTime12Hour()
-            
+            showSuccessDialog = true
             viewModel.resetSuccess()
-
-            snackbarHostState.showSnackbar(
-                message = saveSuccessMessage
-            )
         }
     }
+    // 1. Loading Dialog (Displays when uiState.isSaving is true)
+    if (uiState.isSaving) {
+        Dialog(
+            onDismissRequest = { /* Prevent dismissal while saving */ },
+            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        ) {
+            Box(
+                modifier = Modifier.size(100.dp).background(
+                        MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp)
+                    ), contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+
+// 2. Success Dialog (Displays after data is saved successfully)
+    if (showSuccessDialog) {
+        AlertDialog(
+            onDismissRequest = { showSuccessDialog = false },
+            title = {
+                Text(
+                    text = stringResource(Res.string.save_reading), // "Record Saved"
+                    style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(Res.string.glucose_saved_success), // "Your glucose reading has been successfully recorded."
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showSuccessDialog = false
+                    // Optional: Put navigation backstack pop code here if closing screen
+                    // navController.popBackStack()
+                }) {
+                    Text(text = stringResource(Res.string.ok)) // "OK"
+                }
+            },
+            shape = RoundedCornerShape(28.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
@@ -115,7 +168,6 @@ fun AddScreen(
                 Column(
                     modifier = Modifier.fillMaxWidth().weight(1f)
                         .verticalScroll(rememberScrollState()),
-                    // ✅ Spacing Engine: Handles all spacing cleanly between elements automatically
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -192,11 +244,12 @@ fun AddScreen(
                     if (showDatePicker) {
                         NativeDatePickerDialog(
                             onDateSelected = { newDate ->
-                                selectedDate = newDate
-                                showDatePicker = false
-                            }, onDismiss = { showDatePicker = false }, initialDate = selectedDate
+                            selectedDate = newDate
+                            showDatePicker = false
+                        }, onDismiss = { showDatePicker = false }, initialDate = selectedDate
                         )
                     }
+
 
                     // Inputs (No manual spacers needed anymore)
                     TimePeriodSelector(
@@ -253,7 +306,8 @@ fun AddScreen(
                     }
 
                     val glucoseInt = glucoseValue.toIntOrNull()
-                    val isValid = glucoseInt != null && glucoseInt > 0
+                    // ✅ UX Safety Guard: Don't allow saving if a save operation is already running
+                    val isValid = glucoseInt != null && glucoseInt > 0 && !uiState.isSaving
 
                     PrimaryButton(
                         text = stringResource(Res.string.save_reading),
@@ -261,15 +315,20 @@ fun AddScreen(
                         enabled = isValid,
                         modifier = Modifier.weight(1f).height(54.dp),
                         onClick = {
-                            val record = UserGlucoseRecord(
-                                date = formatDate(selectedDate),
-                                timePeriod = selectedTimePeriod.name,
-                                value = glucoseInt!!,
-                                time = time,
-                                mealType = selectedTimePeriod.name,
-                                notes = notes
-                            )
-                            viewModel.saveRecord(record)
+                            // Double check values safely
+                            glucoseInt?.let { validGlucose ->
+                                val record = UserGlucoseRecord(
+                                    // Tip: Consider saving raw ISO strings (e.g., selectedDate.toString())
+                                    // instead of localized formatted text to prevent query bugs later
+                                    date = formatDate(selectedDate),
+                                    timePeriod = selectedTimePeriod.name,
+                                    value = validGlucose,
+                                    time = time,
+                                    mealType = selectedTimePeriod.name,
+                                    notes = notes
+                                )
+                                viewModel.saveRecord(record)
+                            }
                         })
 
                 }
