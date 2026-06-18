@@ -22,6 +22,7 @@ import com.hathway.medbuddy.presentation.theme.Success
 import com.hathway.medbuddy.presentation.theme.Warning
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.current_glucose
+import medbuddy.composeapp.generated.resources.glucose_target
 import medbuddy.composeapp.generated.resources.glucose_unit
 import medbuddy.composeapp.generated.resources.last_reading
 import medbuddy.composeapp.generated.resources.reading_details
@@ -29,13 +30,15 @@ import medbuddy.composeapp.generated.resources.reading_value
 import medbuddy.composeapp.generated.resources.status_high
 import medbuddy.composeapp.generated.resources.status_in_range
 import medbuddy.composeapp.generated.resources.status_low
+import medbuddy.composeapp.generated.resources.today
+import medbuddy.composeapp.generated.resources.todays_glucose
 import medbuddy.composeapp.generated.resources.trend_up
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
 @Composable
 fun BloodGlucoseCard(
-    glucoseValue: Int, mealType: String, status: String, targetRange: String
+    glucoseValue: Int, mealType: String, status: String, minTarget: String, maxTarget: String
 ) {
     println(status)
     Card(
@@ -58,9 +61,8 @@ fun BloodGlucoseCard(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-
                 Text(
-                    text = "Today's Glucose",
+                    text = stringResource(Res.string.todays_glucose),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -88,7 +90,7 @@ fun BloodGlucoseCard(
                     Spacer(Modifier.width(6.dp))
 
                     Text(
-                        text = "mg/dL",
+                        text = stringResource(Res.string.glucose_unit),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -101,7 +103,11 @@ fun BloodGlucoseCard(
                 Spacer(Modifier.height(12.dp))
 
                 Text(
-                    text = "Target: $targetRange",
+                    text = stringResource(
+                        Res.string.glucose_target,
+                        minTarget,
+                        maxTarget
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

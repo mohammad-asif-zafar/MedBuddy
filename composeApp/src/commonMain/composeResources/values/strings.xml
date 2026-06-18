@@ -175,6 +175,8 @@
     <string name="greeting_evening">Good Evening, </string>
     <string name="insight_lower">Glucose is 15% lower than last week</string>
     <string name="patient">Patient</string>
+    <string name="today">Today</string>
+    <string name="todays_glucose">Today's Glucose</string>
 
     <!-- Appointment -->
     <string name="next_appointment_label">Next Appointment</string>

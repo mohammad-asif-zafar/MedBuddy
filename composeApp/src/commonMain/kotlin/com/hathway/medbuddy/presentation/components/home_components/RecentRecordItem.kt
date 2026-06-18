@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.hathway.medbuddy.domain.usecase.RecentReading
 import com.hathway.medbuddy.presentation.viewmodel.RecentRecord
 
 import medbuddy.composeapp.generated.resources.*
@@ -16,7 +17,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecentRecordItem(
-    record: RecentRecord
+    record: RecentReading
 ) {
 
     val statusColor = when {

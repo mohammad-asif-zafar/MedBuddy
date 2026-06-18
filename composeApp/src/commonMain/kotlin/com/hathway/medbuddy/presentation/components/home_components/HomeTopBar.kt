@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Notifications
@@ -15,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.medbuddy
 import org.jetbrains.compose.resources.stringResource
 
+/*
 @Composable
 fun HomeTopBar() {
 
@@ -49,6 +52,63 @@ fun HomeTopBar() {
             onClick = { }) {
             Icon(
                 Icons.Outlined.Notifications, contentDescription = null
+            )
+        }
+    }
+}*/
+
+@Composable
+fun MedBuddyTopBar(
+    title: String,
+    modifier: Modifier = Modifier,
+    leftIcon: ImageVector? = null,
+    rightIcon: ImageVector? = null,
+    onLeftClick: () -> Unit = {},
+    onRightClick: () -> Unit = {},
+    titleColor: Color = MaterialTheme.colorScheme.onSurface
+) {
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 8.dp,
+                vertical = 12.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        if (leftIcon != null) {
+            IconButton(
+                onClick = onLeftClick
+            ) {
+                Icon(
+                    imageVector = leftIcon,
+                    contentDescription = null
+                )
+            }
+        }
+
+        Text(
+            text = title,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = titleColor
+        )
+
+        if (rightIcon != null) {
+            IconButton(
+                onClick = onRightClick
+            ) {
+                Icon(
+                    imageVector = rightIcon,
+                    contentDescription = null
+                )
+            }
+        } else {
+            Spacer(
+                modifier = Modifier.width(48.dp)
             )
         }
     }

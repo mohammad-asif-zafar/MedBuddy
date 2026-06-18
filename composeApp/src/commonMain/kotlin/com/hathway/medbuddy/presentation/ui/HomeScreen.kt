@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,13 +19,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.presentation.components.home_components.BloodGlucoseCard
 import com.hathway.medbuddy.presentation.components.home_components.HealthSummaryGrid
-import com.hathway.medbuddy.presentation.components.home_components.HomeTopBar
+import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.home_components.PatientGreetingCard
 import com.hathway.medbuddy.presentation.components.home_components.RecentRecordsCard
 import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
 import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
+import com.hathway.medbuddy.util.calculateGlucoseTargets
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.medbuddy
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HomeScreen(
@@ -39,7 +47,7 @@ fun HomeScreen(
         // Header background
         Box(
             modifier = Modifier.fillMaxWidth().background(
-                Color(0xFFF8F4EC)
+                Color(0xFFFEF9F0)
             )
         )
 
@@ -50,38 +58,43 @@ fun HomeScreen(
 
             // Home Tool Bar
             item {
-                HomeTopBar()
+                MedBuddyTopBar(
+                    title = stringResource(Res.string.medbuddy),
+                    leftIcon = Icons.Default.Menu,
+                    rightIcon = Icons.Outlined.Notifications,
+                    onLeftClick = { },
+                    onRightClick = { },
+                    titleColor = Color(0xFF4F6B35)
+                )
             }
             // Section 1: Greeting with patient info
             item {
                 PatientGreetingCard(
-                    greeting = uiState.greeting,
-                    patientName = uiState.patientName
+                    greeting = uiState.greeting, patientName = uiState.patientName
                 )
             }
             //  Section 2:  Today's Glucose
             item {
+                val targetData = calculateGlucoseTargets(
+                    valueMgMl = uiState.lastReading.toDouble(),
+                    mealType = TimePeriod.BEFORE_BREAKFAST,
+                    hasDiabetes = true
+                )
                 BloodGlucoseCard(
                     glucoseValue = uiState.lastReading,
                     mealType = uiState.lastMealType,
-                    status =  uiState.glucoseStatusText,
-                    targetRange = "70-100 mg/dL"
+                    status = uiState.glucoseStatusText,
+                    minTarget = (targetData.minTarget * 100).toString(),
+                    maxTarget = (targetData.maxTarget * 100).toString()
                 )
 
             }
             //  Section 3: Doctor Information
-
             //1. Android only OR Compose Multiplatform?
             //2. Can I use Vico library? (Yes/No)
             item {
-                println("si"+uiState.chartReadings)
                 TrendChartCard(
-                    readings = uiState.chartReadings,
-                    average = uiState.sevenDayAverage.toDouble(),
-                    highest = uiState.highestGlucose.toDouble(),
-                    lowest = uiState.lowestGlucose.toDouble(),
-                    recentRecords = uiState.recentRecords
-
+                    readings = uiState.dailyAverageReadings
                 )
             }
             // Section 4: Health Summary (4 cards in grid)
@@ -95,9 +108,8 @@ fun HomeScreen(
             }
             // Section 6: Last 3 Records
             item {
-                println("size:"+uiState.recentRecords)
                 RecentRecordsCard(
-                    recentRecords = uiState.recentRecords
+                    recentRecords = uiState.last7Readings
                 )
             }
             // Section 7: bottom space

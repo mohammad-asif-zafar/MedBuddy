@@ -9,6 +9,15 @@ enum class TimePeriod {
     AFTER_DINNER,
     BEDTIME
 }
+data class ValidationResult(
+    val isInRange: Boolean, val targetMessage: String
+)
+
+data class GlucoseTarget(
+    val minTarget: Double, val maxTarget: Double, val statusText: String
+)
+
+
 fun getGlucoseRange(period: TimePeriod): Pair<Int, Int> {
     return when (period) {
         TimePeriod.BEFORE_BREAKFAST -> 70 to 100

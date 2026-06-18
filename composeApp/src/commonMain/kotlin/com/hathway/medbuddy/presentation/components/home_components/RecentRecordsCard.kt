@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.hathway.medbuddy.domain.usecase.RecentReading
 import com.hathway.medbuddy.presentation.viewmodel.RecentRecord
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.Res
@@ -27,7 +28,7 @@ import medbuddy.composeapp.generated.resources.view_all
 
 @Composable
 fun RecentRecordsCard(
-    recentRecords: List<RecentRecord>, onViewAllClick: () -> Unit = {}
+    recentRecords: List<RecentReading>, onViewAllClick: () -> Unit = {}
 ) {
 
     Card(

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -30,6 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -46,139 +49,152 @@ fun ProfileHeaderCard(
     onEditProfileClick: () -> Unit = {}
 ) {
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
 
-        Column(
-            modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFEBEEE4)
+            )
         ) {
 
-            Box(
-                contentAlignment = Alignment.BottomEnd
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 52.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(96.dp),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                } else if (photoUrl.isNotBlank()) {
-
-                    AsyncImage(
-                        model = photoUrl,
-                        contentDescription = null,
-                        modifier = Modifier.size(96.dp).clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-
-                } else {
-
-                    Box(
-                        modifier = Modifier.size(96.dp).clip(CircleShape).background(
-                            MaterialTheme.colorScheme.primaryContainer
-                        ), contentAlignment = Alignment.Center
-                    ) {
-
-                        Text(
-                            text = name.firstOrNull()?.uppercase() ?: stringResource(Res.string.profile_default_initial),
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-                }
-
-                Surface(
-                    modifier = Modifier.size(32.dp).clickable { onEditPhotoClick() },
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary
+                Box(
+                    contentAlignment = Alignment.BottomEnd
                 ) {
 
-                    Box(
-                        contentAlignment = Alignment.Center
+                    if (isLoading) {
+
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(120.dp)
+                        )
+
+                    } else if (photoUrl.isNotBlank()) {
+
+                        AsyncImage(
+                            model = photoUrl,
+                            contentDescription = null,
+                            modifier = Modifier.size(120.dp).clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+
+                    } else {
+
+                        Box(
+                            modifier = Modifier.size(120.dp).clip(CircleShape)
+                                .background(Color.White), contentAlignment = Alignment.Center
+                        ) {
+
+                            Text(
+                                text = name.firstOrNull()?.uppercase() ?: "A",
+                                fontSize = 42.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF4F6B35)
+                            )
+                        }
+                    }
+
+                    Surface(
+                        modifier = Modifier.size(38.dp).clickable { onEditPhotoClick() },
+                        shape = CircleShape,
+                        color = Color.White,
+                        shadowElevation = 6.dp
                     ) {
 
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = stringResource(Res.string.edit_photo),
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(16.dp)
-                        )
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ) {
+
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = Color(0xFF4F6B35)
+                            )
+                        }
                     }
                 }
-            }
 
-            Spacer(
-                modifier = Modifier.height(16.dp)
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
 
                 Text(
                     text = name,
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
-
-                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(Res.string.edit_profile),
-                    modifier = Modifier
-                        .size(18.dp)
-                        .clickable {
-                            onEditProfileClick()
-                        },
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            if (email.isNotBlank()) {
 
                 Spacer(
                     modifier = Modifier.height(4.dp)
                 )
 
                 Text(
-                    text = email,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = email, style = MaterialTheme.typography.bodyMedium, color = Color.Gray
                 )
             }
+        }
 
-            Spacer(
-                modifier = Modifier.height(20.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth().offset(y = (-38).dp).padding(horizontal = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+
+            ProfileInfoCard(
+                value = bloodType, title = "Blood Type", modifier = Modifier.weight(1f)
             )
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
+            ProfileInfoCard(
+                value = age, title = "Age", modifier = Modifier.weight(1f)
+            )
 
-                ProfileStatCard(
-                    title = stringResource(Res.string.blood), value = bloodType, modifier = Modifier.weight(1f)
-                )
+            ProfileInfoCard(
+                value = "$weight kg", title = "Weight", modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
 
-                ProfileStatCard(
-                    title = stringResource(Res.string.age), value = age, modifier = Modifier.weight(1f)
-                )
+@Composable
+fun ProfileInfoCard(
+    value: String, title: String, modifier: Modifier = Modifier
+) {
 
-                ProfileStatCard(
-                    title = stringResource(Res.string.weight), value = weight, modifier = Modifier.weight(1f)
-                )
-            }
+    Card(
+        modifier = modifier, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ), elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
+    ) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                text = value,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF264D35)
+            )
+
+            Spacer(
+                modifier = Modifier.height(2.dp)
+            )
+
+            Text(
+                text = title, fontSize = 12.sp, color = Color(0xFF264D35)
+            )
         }
     }
 }

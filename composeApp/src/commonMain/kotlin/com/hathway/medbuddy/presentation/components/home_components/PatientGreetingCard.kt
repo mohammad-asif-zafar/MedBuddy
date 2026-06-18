@@ -23,10 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.util.displayName
 import com.hathway.medbuddy.util.formatDisplayDate
-import com.hathway.medbuddy.util.getGreetingIcon
 import com.hathway.medbuddy.util.getGreetingIconImageVector
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import com.hathway.medbuddy.util.greetingIconColor
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.profile_details
+import medbuddy.composeapp.generated.resources.today
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PatientGreetingCard(
@@ -57,7 +60,7 @@ fun PatientGreetingCard(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = patientName.displayName()+"  ",
+                        text = patientName.displayName() + "  ",
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
@@ -75,7 +78,7 @@ fun PatientGreetingCard(
                 )
 
                 Text(
-                    text = "Today • ${
+                    text =  stringResource(Res.string.today)+" • ${
                         formatDisplayDate(getNowLocalDateTime().date)
                     }",
                     style = MaterialTheme.typography.bodySmall,

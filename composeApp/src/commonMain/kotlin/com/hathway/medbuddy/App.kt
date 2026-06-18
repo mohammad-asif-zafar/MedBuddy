@@ -41,7 +41,7 @@ fun App(
                     NavigationDestination.HOME -> {
                         repository?.let { HomeContent(it) }
                     }
-                    NavigationDestination.HISTORY -> HistoryContent(repository)
+                    NavigationDestination.HISTORY -> HistoryContent(repository,)
                     NavigationDestination.ADD -> AddContent(repository = repository)
                     NavigationDestination.REPORTS -> ReportsContent(repository)
                     NavigationDestination.PROFILE -> ProfileContent(doctorRepository)

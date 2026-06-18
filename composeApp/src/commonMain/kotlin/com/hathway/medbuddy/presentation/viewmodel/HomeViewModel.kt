@@ -2,10 +2,11 @@ package com.hathway.medbuddy.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.datetime.*
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseDashboardUseCase
 import com.hathway.medbuddy.FirebaseManager
+import com.hathway.medbuddy.domain.usecase.DailyAverageReading
+import com.hathway.medbuddy.domain.usecase.RecentReading
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,7 +53,9 @@ data class HomeUiState(
 
     val lastReading: Int = 0,
     val lastReadingTime: String = "",
-    val lastMealType: String = ""
+    val lastMealType: String = "",
+    val dailyAverageReadings: List<DailyAverageReading> = emptyList(),
+    val last7Readings: List<RecentReading> = emptyList()
 )
 
 enum class GlucoseStatus {
@@ -113,11 +116,19 @@ class HomeViewModel(
                         // Medications remains same for now
                         medications = listOf(
                             Medication(
-                                id = 1, name = "Metformin", dosage = "500mg",
-                                time = "8:00 AM", isTaken = true, mealType = "BBF"
+                                id = 1,
+                                name = "Metformin",
+                                dosage = "500mg",
+                                time = "8:00 AM",
+                                isTaken = true,
+                                mealType = "BBF"
                             ), Medication(
-                                id = 2, name = "Bisoprolol", time = "9:00 PM",
-                                dosage = "500mg", isTaken = false, mealType = "BDT"
+                                id = 2,
+                                name = "Bisoprolol",
+                                time = "9:00 PM",
+                                dosage = "500mg",
+                                isTaken = false,
+                                mealType = "BDT"
                             )
                         ),
                         insight = getString(Res.string.insight_lower),
@@ -125,7 +136,9 @@ class HomeViewModel(
                         averageGlucose = dashboard.sevenDayAverage.toDouble(), // Or actual average
                         lastReading = dashboard.todayGlucose ?: 0,
                         lastReadingTime = dashboard.recordedTime,
-                        lastMealType = dashboard.mealType
+                        lastMealType = dashboard.mealType,
+                        dailyAverageReadings = dashboard.dailyAverageReadings,
+                        last7Readings = dashboard.last7Readings
                     )
                 }
             } catch (e: Exception) {

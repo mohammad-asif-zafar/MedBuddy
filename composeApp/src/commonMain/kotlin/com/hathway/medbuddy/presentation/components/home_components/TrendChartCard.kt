@@ -17,17 +17,18 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.presentation.viewmodel.RecentRecord
-import org.jetbrains.compose.resources.stringResource
-import medbuddy.composeapp.generated.resources.*
+import com.hathway.medbuddy.domain.usecase.DailyAverageReading
+import com.hathway.medbuddy.domain.usecase.RecentReading
 
 @Composable
 fun TrendChartCard(
-    readings: List<Float>, average: Double, highest: Double, lowest: Double,  recentRecords: List<RecentRecord>
+    readings: List<DailyAverageReading>
 ) {
 
     Card(
-        shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
@@ -37,7 +38,9 @@ fun TrendChartCard(
         ) {
 
             Text(
-                text = "Glucose Trend (7 Days)", fontWeight = FontWeight.SemiBold
+                text = "Glucose Trend (7 Days)",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
             )
 
             Spacer(
@@ -52,69 +55,11 @@ fun TrendChartCard(
 }
 
 @Composable
-private fun GlucoseLineChart2(
-    readings: List<Float>
-) {
-
-    if (readings.isEmpty()) return
-
-    val lineColor = MaterialTheme.colorScheme.primary
-
-    Canvas(
-        modifier = Modifier.fillMaxWidth().height(140.dp)
-    ) {
-
-        val maxValue = readings.maxOrNull() ?: 1f
-        val minValue = readings.minOrNull() ?: 0f
-        val range = (maxValue - minValue).takeIf { it > 0 } ?: 1f
-
-        val stepX = size.width / (readings.size - 1)
-
-        val path = Path()
-
-        readings.forEachIndexed { index, value ->
-
-            val x = index * stepX
-
-            val y = size.height - ((value - minValue) / range) * size.height
-
-            if (index == 0) {
-                path.moveTo(x, y)
-            } else {
-                path.lineTo(x, y)
-            }
-        }
-
-        drawPath(
-            path = path, color = lineColor, style = Stroke(
-                width = 6f, cap = StrokeCap.Round
-            )
-        )
-
-        readings.forEachIndexed { index, value ->
-
-            val x = index * stepX
-
-            val y = size.height - ((value - minValue) / range) * size.height
-
-            drawCircle(
-                color = lineColor, radius = 8f, center = Offset(x, y)
-            )
-        }
-    }
-}
-
-
-@Composable
 fun GlucoseLineChart(
-    readings: List<Float>
+    readings: List<DailyAverageReading>
 ) {
 
     if (readings.isEmpty()) return
-
-    val labels = listOf(
-        "9 Jun", "10 Jun", "11 Jun", "12 Jun", "13 Jun", "14 Jun", "15 Jun"
-    )
 
     Column {
 
@@ -129,8 +74,10 @@ fun GlucoseLineChart(
                 return size.height - ((value - minY) / (maxY - minY)) * size.height
             }
 
-            // Grid Lines
-            listOf(0f, 50f, 100f, 150f, 200f).forEach { value ->
+            // Grid lines
+            listOf(
+                0f, 50f, 100f, 150f, 200f
+            ).forEach { value ->
 
                 val y = mapY(value)
 
@@ -142,7 +89,7 @@ fun GlucoseLineChart(
                 )
             }
 
-            // Target Zone 70-100
+            // Target zone 70-100
             val zoneTop = mapY(100f)
             val zoneBottom = mapY(70f)
 
@@ -158,10 +105,10 @@ fun GlucoseLineChart(
 
             val path = Path()
 
-            readings.forEachIndexed { index, value ->
+            readings.forEachIndexed { index, reading ->
 
                 val x = index * stepX
-                val y = mapY(value)
+                val y = mapY(reading.averageValue)
 
                 if (index == 0) {
                     path.moveTo(x, y)
@@ -176,10 +123,10 @@ fun GlucoseLineChart(
                 )
             )
 
-            readings.forEachIndexed { index, value ->
+            readings.forEachIndexed { index, reading ->
 
                 val x = index * stepX
-                val y = mapY(value)
+                val y = mapY(reading.averageValue)
 
                 drawCircle(
                     color = Color(0xFF2E7D32), radius = 5.dp.toPx(), center = Offset(x, y)
@@ -195,10 +142,12 @@ fun GlucoseLineChart(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
-            labels.forEach {
+            readings.forEach {
 
                 Text(
-                    text = it, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = it.date,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
