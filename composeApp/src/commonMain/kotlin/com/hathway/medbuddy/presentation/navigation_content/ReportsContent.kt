@@ -4,13 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.presentation.ui.ReportsScreen
-import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
+import com.hathway.medbuddy.presentation.viewmodel.ReportsViewModel
 
 @Composable
 fun ReportsContent(repository: IGlucoseRepository? = null) {
-    val viewModel: AddViewModel = viewModel {
-        AddViewModel(repository)
+    if (repository == null) return
+    
+    val viewModel: ReportsViewModel = viewModel {
+        ReportsViewModel(repository)
     }
 
-    ReportsScreen(onMenuClick = {}, onCalendarClick = {}, onExportPdf = {}, onShareReport = {})
+    ReportsScreen(
+        viewModel = viewModel,
+        onMenuClick = {},
+        onCalendarClick = {},
+        onExportPdf = {},
+        onShareReport = {}
+    )
 }

@@ -190,3 +190,8 @@ fun checkTargetRange(
         }
     }
 }
+// Add this simple helper utility function at the bottom or top of your file
+fun formatOneDecimal(value: Double): String {
+    val rounded = (value * 10).toInt() / 10.0
+    return rounded.toString()
+}

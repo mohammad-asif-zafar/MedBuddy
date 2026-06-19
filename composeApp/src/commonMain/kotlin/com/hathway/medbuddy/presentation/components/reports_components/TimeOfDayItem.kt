@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -32,10 +33,8 @@ import medbuddy.composeapp.generated.resources.*
 
 @Composable
 fun TimeOfDayItem(
-    modifier: Modifier = Modifier, // ✅ Added default modifier value for better reusability
-    label: String, value: Int, icon: ImageVector, iconColor: Color
+    modifier: Modifier = Modifier, label: String, value: Int, icon: ImageVector, iconColor: Color
 ) {
-    // ✅ Completely Dynamic Threshold Colors: Reads semantic tokens directly from active system palette
     val healthyColor = Primary
     val warningColor = Error
 
@@ -43,8 +42,10 @@ fun TimeOfDayItem(
     val valueDisplayColor = if (isHigh) warningColor else healthyColor
 
     Surface(
-        modifier = modifier.height(115.dp), shape = RoundedCornerShape(12.dp),
-        // ✅ Dynamic Theme Color: Swapped hardcoded white for your card surface token
+        // ✅ Added .shadow modifier for explicit 4.dp elevation control
+        modifier = modifier.height(115.dp)
+            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp)),
+        shape = RoundedCornerShape(12.dp),
         color = SurfaceVariant
     ) {
         Column(
@@ -62,7 +63,6 @@ fun TimeOfDayItem(
             Text(
                 text = label,
                 fontSize = 10.sp,
-                // ✅ Dynamic Theme Color: Adaptive desaturated text sub-labels
                 color = OnSurface,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
@@ -74,7 +74,7 @@ fun TimeOfDayItem(
                     text = "$value",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = valueDisplayColor // Fully theme dynamic threshold color
+                    color = valueDisplayColor
                 )
                 Text(
                     text = stringResource(Res.string.glucose_unit_mg_dl),
@@ -85,6 +85,7 @@ fun TimeOfDayItem(
         }
     }
 }
+
 
 // ==================== DOUBLE MULTIPLATFORM PREVIEW ENGINE ====================
 

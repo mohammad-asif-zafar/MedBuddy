@@ -194,7 +194,7 @@
     <string name="failed_upload_photo">Failed to upload photo</string>
 
 
-    <string name="summary_title_days">Summary (30 Days)</string>
+    <string name="summary_title_days">Summary (%1$s)</string>
     <string name="avg_glucose_title">Average Glucose</string>
     <string name="avg_glucose_unit">mg/dL</string>
     <string name="hba1c_title">HbA1c</string>
@@ -245,4 +245,15 @@
     <string name="insights_section_title">Insights</string>
     <string name="btn_export_pdf">Export PDF</string>
     <string name="btn_share_report">Share Report</string>
+
+    <!-- Screen Header Keys -->
+    <string name="reports_screen_title">Reports</string>
+    <string name="nav_menu_desc">Open navigation menu drawer</string>
+    <string name="reports_calendar_desc">Open calendar range picker</string>
+
+    <!-- Interactive Chips Filters Labels -->
+    <string name="filter_7_days">7 Days</string>
+    <string name="filter_30_days">30 Days</string>
+    <string name="filter_90_days">90 Days</string>
+    <string name="filter_custom">Custom</string>
 </resources>

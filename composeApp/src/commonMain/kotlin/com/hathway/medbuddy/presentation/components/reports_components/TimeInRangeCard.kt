@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.TimeInRangeData
 import com.hathway.medbuddy.presentation.theme.Error
 import com.hathway.medbuddy.presentation.theme.Primary
+import com.hathway.medbuddy.presentation.theme.PrimaryContainer
 import com.hathway.medbuddy.presentation.theme.Secondary
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
@@ -44,7 +45,7 @@ fun TimeInRangeCard(
         modifier = modifier.fillMaxWidth().padding(16.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = PrimaryContainer
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

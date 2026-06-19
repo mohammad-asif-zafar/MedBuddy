@@ -160,6 +160,8 @@ fun ProfileHeaderCard(
                 value = "$weight kg", title = "Weight", modifier = Modifier.weight(1f)
             )
         }
+        Spacer(modifier = Modifier.height(26.dp))
+
     }
 }
 

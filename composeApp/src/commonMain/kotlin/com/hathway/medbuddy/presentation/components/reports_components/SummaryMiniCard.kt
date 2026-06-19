@@ -26,51 +26,58 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+
 @Composable
 fun SummaryMiniCard(
-    modifier: Modifier = Modifier,
     title: String,
     value: String,
     subValue: String,
     valueColor: Color,
-    icon: ImageVector
+    icon: ImageVector,
+    modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = modifier.height(110.dp), shape = RoundedCornerShape(16.dp),
-        // ✅ Design System Fix: Uses dynamic surface color token instead of hardcoded white
-        color = MaterialTheme.colorScheme.surface
+    Card(
+        modifier = modifier.height(105.dp), // Increased slightly to prevent any text clipping
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            // ✅ FIX: Forces the column layout space to stretch full width so alignment works
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                icon,
+                imageVector = icon,
                 contentDescription = null,
-                tint = valueColor.copy(alpha = 0.7f),
-                modifier = Modifier.size(24.dp)
+                tint = valueColor.copy(alpha = 0.8f),
+                modifier = Modifier.size(18.dp)
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Text(
-                value, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = valueColor
+                text = value, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = valueColor
             )
-            if (subValue.isNotEmpty()) {
-                Text(
-                    subValue, fontSize = 11.sp,
-                    // ✅ Design System Fix: Uses semantic theme color for accessibility
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
             Text(
-                title,
-                fontSize = 11.sp,
+                text = subValue,
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                maxLines = 1
+            )
+            Spacer(modifier = Modifier.height(2.dp)) // Extra breathing space before title text layer
+            Text(
+                text = title,
+                fontSize = 10.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.Medium,
                 maxLines = 1
             )
         }
     }
 }
+
 
 // ==================== DUAL PREVIEW ENGINE ====================
 

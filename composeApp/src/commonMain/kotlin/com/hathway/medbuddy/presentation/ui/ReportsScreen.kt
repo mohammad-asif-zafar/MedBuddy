@@ -1,16 +1,28 @@
 package com.hathway.medbuddy.presentation.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.ArrowCircleUp
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.hathway.medbuddy.domain.model.TimeInRangeData
-import com.hathway.medbuddy.domain.usecase.DailyAverageReading
 import com.hathway.medbuddy.presentation.components.reports_components.AverageGlucoseByTimeOfDay
 import com.hathway.medbuddy.presentation.components.reports_components.BestAndWorstDaysSection
 import com.hathway.medbuddy.presentation.components.reports_components.InsightsAndActionsFooter
@@ -18,22 +30,20 @@ import com.hathway.medbuddy.presentation.components.reports_components.ReportsTo
 import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
 import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
 import com.hathway.medbuddy.presentation.components.reports_components.TrendChartCard
+import com.hathway.medbuddy.presentation.viewmodel.ReportsViewModel
 
 @Composable
 fun ReportsScreen(
+    viewModel: ReportsViewModel,
     onMenuClick: () -> Unit,
     onCalendarClick: () -> Unit,
     onExportPdf: () -> Unit,
     onShareReport: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     // Shared brand palette config
     val backgroundColor = Color(0xFFF7F7EE)
-
-    // Dynamic Filter state tracking holder
-    var currentFilterRange by remember { mutableStateOf("30 Days") }
-
-    // Hardcoded static dataset values matching your reference visual breakdown profile
-    val simulatedTimeInRangeData = TimeInRangeData(inRangePct = 78f, highPct = 15f, lowPct = 7f)
 
     // Insights text mapping dataset matching reports footer block
     val reportInsightsList = remember {
@@ -48,80 +58,81 @@ fun ReportsScreen(
     Scaffold(
         topBar = {
             ReportsTopBarAndFilter(
-                selectedFilter = currentFilterRange,
-                onFilterSelected = { currentFilterRange = it },
+                selectedFilter = uiState.selectedFilter,
+                onFilterSelected = { viewModel.onFilterSelected(it) },
                 onMenuClick = onMenuClick,
                 onCalendarClick = onCalendarClick
             )
         }, containerColor = backgroundColor
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp) // Handled via inner modular sub-paddings
-        ) {
-
-            // 1. High-Level Performance Matrix Grid
-            item {
-                SummaryMetricsSection(
-                    avgGlucose = 124, hba1c = 5.9, timeInRange = 78, totalReadings = 142
-                )
+        if (uiState.isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
             }
+        } else {
+            uiState.reportsData?.let { data ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(innerPadding),
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(0.dp) // Handled via inner modular sub-paddings
+                ) {
 
-            // 2. Custom Canvas Donut Time In Range Breakdown Card
-            item {
-                TimeInRangeCard(data = simulatedTimeInRangeData)
-            }
+                    // 1. High-Level Performance Matrix Grid
+                    item {
+                        SummaryMetricsSection(
+                            avgGlucose = data.avgGlucose,
+                            hba1c = data.hba1c,
+                            timeInRange = data.timeInRange,
+                            totalReadings = data.totalReadings,
+                            selectedFilterDays = uiState.selectedFilter,
+                        )
+                    }
 
-            // 3. Meal Segment Time of Day Analysis Matrix Block
-            item {
-                AverageGlucoseByTimeOfDay(
-                    beforeBreakfast = 95,
-                    afterBreakfast = 132,
-                    beforeLunch = 102,
-                    afterLunch = 148,
-                    beforeDinner = 110,
-                    bedtime = 120,
-                    afterDinner = 120
-                )
-            }
-            item {
-                // Pass a mock array list built directly inside your layout item scope
-                val readings = listOf(
-                    DailyAverageReading(date = "May 16", averageValue = 115f),
-                    DailyAverageReading(date = "May 19", averageValue = 100f),
-                    DailyAverageReading(date = "May 23", averageValue = 145f),
-                    DailyAverageReading(date = "May 27", averageValue = 115f),
-                    DailyAverageReading(date = "May 30", averageValue = 135f),
-                    DailyAverageReading(date = "Jun 05", averageValue = 90f),
-                    DailyAverageReading(date = "Jun 10", averageValue = 140f),
-                    DailyAverageReading(date = "Jun 15", averageValue = 154f)
-                )
-                TrendChartCard(readings = readings, modifier = Modifier)
-            }
+                    // 2. Custom Canvas Donut Time In Range Breakdown Card
+                    item {
+                        TimeInRangeCard(data = data.timeInRangeData)
+                    }
 
-            // 5. High & Low Extremes Performance Highlights Block
-            item {
-                BestAndWorstDaysSection(
-                    bestDate = "12 June 2026",
-                    bestAvg = 89,
-                    worstDate = "5 June 2026",
-                    worstAvg = 242
-                )
-            }
+                    // 3. Meal Segment Time of Day Analysis Matrix Block
+                    item {
+                        AverageGlucoseByTimeOfDay(
+                            beforeBreakfast = data.avgByTimeOfDay.beforeBreakfast,
+                            afterBreakfast = data.avgByTimeOfDay.afterBreakfast,
+                            beforeLunch = data.avgByTimeOfDay.beforeLunch,
+                            afterLunch = data.avgByTimeOfDay.afterLunch,
+                            beforeDinner = data.avgByTimeOfDay.beforeDinner,
+                            bedtime = data.avgByTimeOfDay.bedtime,
+                            afterDinner = data.avgByTimeOfDay.afterDinner
+                        )
+                    }
+                    item {
+                        TrendChartCard(readings = data.trendChartReadings, modifier = Modifier)
+                    }
 
-            // 6. Automated Insight List & Double Action Footer
-            item {
-                InsightsAndActionsFooter(
-                    insights = reportInsightsList,
-                    onExportPdf = onExportPdf,
-                    onShareReport = onShareReport
-                )
-            }
+                    // 5. High & Low Extremes Performance Highlights Block
+                    item {
+                        BestAndWorstDaysSection(
+                            bestDate = data.bestDate,
+                            bestAvg = data.bestAvg,
+                            worstDate = data.worstDate,
+                            worstAvg = data.worstAvg
+                        )
+                    }
 
-            // Layout buffer space anchor at the bottom of the column screen track
-            item {
-                Spacer(modifier = Modifier.navigationBarsPadding().height(8.dp))
+                    // 6. Automated Insight List & Double Action Footer
+                    item {
+                        InsightsAndActionsFooter(
+                            insights = reportInsightsList,
+                            onExportPdf = onExportPdf,
+                            onShareReport = onShareReport
+                        )
+                    }
+
+                    // Layout buffer space anchor at the bottom of the column screen track
+                    item {
+                        Spacer(modifier = Modifier.navigationBarsPadding().height(8.dp))
+                    }
+                }
             }
         }
     }
