@@ -1,6 +1,5 @@
 package com.hathway.medbuddy.presentation.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -10,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.hathway.medbuddy.domain.model.TimeInRangeData
 import com.hathway.medbuddy.presentation.components.reports_components.AverageGlucoseByTimeOfDay
 import com.hathway.medbuddy.presentation.components.reports_components.BestAndWorstDaysSection
 import com.hathway.medbuddy.presentation.components.reports_components.GlucoseTrendCard
@@ -17,7 +17,6 @@ import com.hathway.medbuddy.presentation.components.reports_components.InsightsA
 import com.hathway.medbuddy.presentation.components.reports_components.ReportsTopBarAndFilter
 import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
 import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
-import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeData
 
 @Composable
 fun ReportsScreen(
@@ -73,10 +72,7 @@ fun ReportsScreen(
                 TimeInRangeCard(data = simulatedTimeInRangeData)
             }
 
-            // 3. Optional Graph Section Placeholder
-            // item { GlucoseTrendGraphCard() }
-
-            // 4. Meal Segment Time of Day Analysis Matrix Block
+            // 3. Meal Segment Time of Day Analysis Matrix Block
             item {
                 AverageGlucoseByTimeOfDay(
                     beforeBreakfast = 95,

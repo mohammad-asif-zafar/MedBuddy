@@ -1,11 +1,20 @@
 package com.hathway.medbuddy.presentation.components.reports_components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,35 +25,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-// 1. Data model representation for chart segment slices
-data class TimeInRangeData(
-    val inRangePct: Float = 78f, val highPct: Float = 15f, val lowPct: Float = 7f
-)
+import com.hathway.medbuddy.domain.model.TimeInRangeData
+import com.hathway.medbuddy.presentation.theme.Error
+import com.hathway.medbuddy.presentation.theme.Primary
+import com.hathway.medbuddy.presentation.theme.Secondary
+import org.jetbrains.compose.resources.stringResource
+import medbuddy.composeapp.generated.resources.*
 
 @Composable
-fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
-    val brandCream = Color(0xFFF7F7EE)
-
-    // Segment segment hex values corresponding directly to the graphic design
-    val colorInRange = Color(0xFF1B5E20) // Deep forest green
-    val colorHigh = Color(0xFFFFA000)    // Amber orange
-    val colorLow = Color(0xFFD32F2F)     // Warning red
+fun TimeInRangeCard(
+    modifier: Modifier = Modifier, data: TimeInRangeData = TimeInRangeData()
+) {
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = modifier.fillMaxWidth().padding(16.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = brandCream)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Time In Range",
+                text = stringResource(Res.string.time_in_range_title),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -77,7 +85,7 @@ fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
 
                         // Draw Segment Slice 1: In Range (Green)
                         drawArc(
-                            color = colorInRange,
+                            color = Primary,
                             startAngle = currentStartAngle,
                             sweepAngle = sweepInRange,
                             useCenter = false,
@@ -89,7 +97,7 @@ fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
 
                         // Draw Segment Slice 2: High (Orange)
                         drawArc(
-                            color = colorHigh,
+                            color = Secondary,
                             startAngle = currentStartAngle,
                             sweepAngle = sweepHigh,
                             useCenter = false,
@@ -101,7 +109,7 @@ fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
 
                         // Draw Segment Slice 3: Low (Red)
                         drawArc(
-                            color = colorLow,
+                            color = Error,
                             startAngle = currentStartAngle,
                             sweepAngle = sweepLow,
                             useCenter = false,
@@ -117,13 +125,13 @@ fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
                             text = "${data.inRangePct.toInt()}%",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = Color.Black
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "In Range",
+                            text = stringResource(Res.string.legend_in_range),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -134,15 +142,19 @@ fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     LegendRowItem(
-                        color = colorInRange,
-                        label = "In Range",
+                        color = Primary,
+                        label = stringResource(Res.string.legend_in_range),
                         percentage = "${data.inRangePct.toInt()}%"
                     )
                     LegendRowItem(
-                        color = colorHigh, label = "High", percentage = "${data.highPct.toInt()}%"
+                        color = Secondary,
+                        label = stringResource(Res.string.legend_high),
+                        percentage = "${data.highPct.toInt()}%"
                     )
                     LegendRowItem(
-                        color = colorLow, label = "Low", percentage = "${data.lowPct.toInt()}%"
+                        color = Error,
+                        label = stringResource(Res.string.legend_low),
+                        percentage = "${data.lowPct.toInt()}%"
                     )
                 }
             }
@@ -150,29 +162,50 @@ fun TimeInRangeCard(data: TimeInRangeData = TimeInRangeData()) {
     }
 }
 
+@Preview(name = "Light Mode - Custom Warm Cream")
 @Composable
-fun LegendRowItem(color: Color, label: String, percentage: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.width(110.dp)
-    ) {
-        // Circle color accent status indicators
-        Box(
-            modifier = Modifier.size(10.dp)
-                .background(color = color, shape = RoundedCornerShape(50))
-        )
-
-        Text(
-            text = label, fontSize = 13.sp, color = Color.DarkGray, modifier = Modifier.weight(1f)
-        )
-
-        Text(
-            text = percentage,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            textAlign = TextAlign.End
+fun TimeInRangeCardCreamPreview() {
+    TimeInRangeMockTheme(darkTheme = false) {
+        TimeInRangeCard(
+            data = TimeInRangeData(
+                inRangePct = 75f, highPct = 15f, lowPct = 10f
+            )
         )
     }
+}
+
+@Preview(name = "Dark Mode - High Contrast Check")
+@Composable
+fun TimeInRangeCardDarkPreview() {
+    TimeInRangeMockTheme(darkTheme = true) {
+        TimeInRangeCard(
+            data = TimeInRangeData(
+                inRangePct = 75f, highPct = 15f, lowPct = 10f
+            )
+        )
+    }
+}
+
+/**
+ * Isolated visual theme container providing your exact cream and dark specifications.
+ */
+@Composable
+private fun TimeInRangeMockTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
+    val systemColorScheme = if (darkTheme) {
+        androidx.compose.material3.darkColorScheme(
+            surface = Color(0xFF1E1E1C),
+            surfaceVariant = Color(0xFF2B2B28), // Premium low-light charcoal-cream tone
+            onSurface = Color(0xFFF7F7EE),      // Custom clear warm off-white text
+            onSurfaceVariant = Color(0xFFE5E5DC) // Secondary desaturated labels
+        )
+    } else {
+        androidx.compose.material3.lightColorScheme(
+            surface = Color(0xFFFEF9F0),         // Your custom warm cream canvas background
+            surfaceVariant = Color(0xFFF7F7EE),  // Your custom warm cream card container hex
+            onSurface = Color(0xFF1A1A17),       // Crisp dark value text
+            onSurfaceVariant = Color(0xFF42423E) // Muted gray-cream label text
+        )
+    }
+
+    MaterialTheme(colorScheme = systemColorScheme, content = content)
 }

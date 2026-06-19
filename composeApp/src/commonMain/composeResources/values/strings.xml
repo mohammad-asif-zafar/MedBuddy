@@ -193,4 +193,32 @@
     <!-- Errors -->
     <string name="failed_upload_photo">Failed to upload photo</string>
 
+
+    <string name="summary_title_days">Summary (30 Days)</string>
+    <string name="avg_glucose_title">Average Glucose</string>
+    <string name="avg_glucose_unit">mg/dL</string>
+    <string name="hba1c_title">HbA1c</string>
+    <string name="hba1c_estimate">Estimate</string>
+    <string name="time_in_range_title">Time In Range</string>
+    <string name="total_readings_title">Total Readings</string>
+
+    <!-- LegendRowItem -->
+    <string name="legend_high">High</string>
+    <string name="legend_normal">Normal</string>
+    <string name="legend_low">Low</string>
+
+    <!-- TimeInRangeCard -->
+    <string name="legend_in_range">In Range</string>
+
+    <string name="glucose_unit_mg_dl">mg/dL</string>
+
+    <!-- AverageGlucoseByTimeOfDay -->
+    <string name="avg_glucose_time_of_day_title">Average Glucose by Time of Day</string>
+    <string name="tag_before_breakfast">BBF</string>
+    <string name="tag_after_breakfast">ABF</string>
+    <string name="tag_before_lunch">BL</string>
+    <string name="tag_after_lunch">AL</string>
+    <string name="tag_before_dinner">BD</string>
+    <string name="tag_after_dinner">AD</string>
+    <string name="tag_bedtime">BT</string>
 </resources>
