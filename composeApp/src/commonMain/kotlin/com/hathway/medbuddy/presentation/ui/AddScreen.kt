@@ -38,15 +38,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,6 +58,7 @@ import com.hathway.medbuddy.presentation.components.glucose_components.NativeDat
 import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
 import com.hathway.medbuddy.presentation.components.glucose_components.TimePeriodSelector
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
+import com.hathway.medbuddy.util.clearFocusOnTapOutside
 import com.hathway.medbuddy.util.getCurrentTime12Hour
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.datetime.LocalDate
@@ -110,8 +112,8 @@ fun AddScreen(
         ) {
             Box(
                 modifier = Modifier.size(100.dp).background(
-                        MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp)
-                    ), contentAlignment = Alignment.Center
+                    MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp)
+                ), contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary
@@ -126,7 +128,7 @@ fun AddScreen(
             onDismissRequest = { showSuccessDialog = false },
             title = {
                 Text(
-                    text = stringResource(Res.string.save_reading), // "Record Saved"
+                    text = stringResource(Res.string.save_reading),
                     style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold
                 )
             },
@@ -155,7 +157,8 @@ fun AddScreen(
             SnackbarHost(snackbarHostState)
         }) { padding ->
         Card(
-            modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp).fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp).fillMaxHeight()
+                .clearFocusOnTapOutside(),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(),
         ) {
@@ -240,16 +243,14 @@ fun AddScreen(
                             )
                         }
                     }
-
                     if (showDatePicker) {
                         NativeDatePickerDialog(
                             onDateSelected = { newDate ->
-                            selectedDate = newDate
-                            showDatePicker = false
-                        }, onDismiss = { showDatePicker = false }, initialDate = selectedDate
+                                selectedDate = newDate
+                                showDatePicker = false
+                            }, onDismiss = { showDatePicker = false }, initialDate = selectedDate
                         )
                     }
-
 
                     // Inputs (No manual spacers needed anymore)
                     TimePeriodSelector(
@@ -285,42 +286,61 @@ fun AddScreen(
                     )
                 }
 
-                // Fixed Buttons Footer
+                // 1. Get the keyboard controller handle at the top of your layout code scope
+                val keyboardController = LocalSoftwareKeyboardController.current
+
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Cancel / Reset Form Actions View
                     OutlinedButton(
                         onClick = {
+                            keyboardController?.hide() // ⌨️ Gracefully dismiss keyboard on cancel click
                             glucoseValue = ""
                             notes = ""
                             selectedDate = getNowLocalDateTime().date
                             selectedTimePeriod = TimePeriod.BEFORE_BREAKFAST
                             time = getCurrentTime12Hour()
                         },
+                        enabled = !uiState.isSaving,
                         modifier = Modifier.weight(1f).height(54.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = if (!uiState.isSaving) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline.copy(
+                                alpha = 0.12f
+                            )
+                        ),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.primary,
+                            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                        )
                     ) {
-                        Text(stringResource(Res.string.cancel))
+                        Text(
+                            text = stringResource(Res.string.cancel),
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = 0.5.sp
+                        )
                     }
 
                     val glucoseInt = glucoseValue.toIntOrNull()
-                    // ✅ UX Safety Guard: Don't allow saving if a save operation is already running
                     val isValid = glucoseInt != null && glucoseInt > 0 && !uiState.isSaving
 
+                    // Confirm Database Record Write Action
                     PrimaryButton(
                         text = stringResource(Res.string.save_reading),
                         saving = uiState.isSaving,
                         enabled = isValid,
                         modifier = Modifier.weight(1f).height(54.dp),
                         onClick = {
-                            // Double check values safely
+                            // ⌨️ Instantly dismisses soft-input panel layout before running back-end processing jobs
+                            keyboardController?.hide()
+
                             glucoseInt?.let { validGlucose ->
                                 val record = UserGlucoseRecord(
-                                    // Tip: Consider saving raw ISO strings (e.g., selectedDate.toString())
-                                    // instead of localized formatted text to prevent query bugs later
-                                    date = formatDate(selectedDate),
+                                    date = selectedDate.toString(),
                                     timePeriod = selectedTimePeriod.name,
                                     value = validGlucose,
                                     time = time,
@@ -330,7 +350,6 @@ fun AddScreen(
                                 viewModel.saveRecord(record)
                             }
                         })
-
                 }
             }
         }

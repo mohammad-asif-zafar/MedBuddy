@@ -3,6 +3,7 @@ package com.hathway.medbuddy.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.usecase.GetGlucoseDashboardUseCase
 import com.hathway.medbuddy.FirebaseManager
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
@@ -54,6 +55,7 @@ data class HomeUiState(
     val lastReading: Int = 0,
     val lastReadingTime: String = "",
     val lastMealType: String = "",
+    val lastMealPeriod: TimePeriod = TimePeriod.BEFORE_BREAKFAST,
     val dailyAverageReadings: List<DailyAverageReading> = emptyList(),
     val last7Readings: List<RecentReading> = emptyList()
 )
@@ -137,6 +139,7 @@ class HomeViewModel(
                         lastReading = dashboard.todayGlucose ?: 0,
                         lastReadingTime = dashboard.recordedTime,
                         lastMealType = dashboard.mealType,
+                        lastMealPeriod = dashboard.lastMealPeriod,
                         dailyAverageReadings = dashboard.dailyAverageReadings,
                         last7Readings = dashboard.last7Readings
                     )

@@ -2,6 +2,7 @@ package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -57,30 +58,31 @@ fun ProfileScreen(
             )
         }
 
-        // Profile Header Card
+        // Profile Header Card & Section Title (Grouped to manage overlapping offset)
         item {
-            ProfileHeaderCard(
-                name = uiState.name,
-                email = uiState.email,
-                photoUrl = uiState.photoUrl,
-                age = uiState.age,
-                weight = uiState.weight,
-                bloodType = uiState.bloodType,
-                isLoading = uiState.isLoading,
-                onEditPhotoClick = {
-                    viewModel.showProfileDialog()
-                },
-                onEditProfileClick = {
-                    viewModel.showProfileDialog()
-                })
-        }
+            Column(
+                verticalArrangement = Arrangement.spacedBy((-42).dp) // Tighter grouping to eliminate excessive gap
+            ) {
+                ProfileHeaderCard(
+                    name = uiState.name,
+                    email = uiState.email,
+                    photoUrl = uiState.photoUrl,
+                    age = uiState.age,
+                    weight = uiState.weight,
+                    bloodType = uiState.bloodType,
+                    isLoading = uiState.isLoading,
+                    onEditPhotoClick = {
+                        viewModel.showProfileDialog()
+                    },
+                    onEditProfileClick = {
+                        viewModel.showProfileDialog()
+                    })
 
-        // Section Title
-        item {
-            SectionHeader(
-                title = stringResource(Res.string.personal_health_details),
-                icon = Icons.Default.MedicalServices
-            )
+                SectionHeader(
+                    title = stringResource(Res.string.personal_health_details),
+                    icon = Icons.Default.MedicalServices
+                )
+            }
         }
 
         // Doctor Information Card

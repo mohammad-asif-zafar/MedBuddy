@@ -87,11 +87,23 @@ fun TimePeriod.getDisplayName(): String {
 }
 
 fun parseDisplayDate(date: String): LocalDate {
-    // Simple parsing assuming format "d MMMM yyyy" like "9 April 2026"
+    // 1. Instantly parse if the string matches standard ISO format (e.g., "2026-06-19")
+    if (date.contains("-")) {
+        return try {
+            LocalDate.parse(date)
+        } catch (e: Exception) {
+            // Fallback default token to protect your app from corrupted strings
+            LocalDate(2026, 1, 1)
+        }
+    }
+
+    // 2. Legacy parsing engine fallback for old strings (e.g., "9 April 2026")
     val parts = date.split(" ")
-    val day = parts[0].toInt()
+    if (parts.size < 3) return LocalDate(2026, 1, 1) // Layout structure safety guard
+
+    val day = parts[0].toIntOrNull() ?: 1
     val monthName = parts[1].lowercase()
-    val year = parts[2].toInt()
+    val year = parts[2].toIntOrNull() ?: 2026
 
     val month = when (monthName) {
         "january" -> 1
@@ -111,6 +123,7 @@ fun parseDisplayDate(date: String): LocalDate {
 
     return LocalDate(year, month, day)
 }
+
 
 fun calculateGlucoseTargets(
     valueMgMl: Double, mealType: TimePeriod, hasDiabetes: Boolean

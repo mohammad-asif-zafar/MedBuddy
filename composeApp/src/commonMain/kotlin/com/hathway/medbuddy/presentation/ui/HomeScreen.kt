@@ -43,7 +43,6 @@ fun HomeScreen(
             MaterialTheme.colorScheme.background
         )
     ) {
-
         // Header background
         Box(
             modifier = Modifier.fillMaxWidth().background(
@@ -76,9 +75,12 @@ fun HomeScreen(
             }
             //  Section 2:  Today's Glucose
             item {
+                // Determine the correct meal period enum safely
+                val currentPeriod = uiState.lastMealPeriod
+                
                 val targetData = calculateGlucoseTargets(
                     valueMgMl = uiState.lastReading.toDouble(),
-                    mealType = TimePeriod.BEFORE_BREAKFAST,
+                    mealType = currentPeriod,
                     hasDiabetes = true
                 )
                 BloodGlucoseCard(

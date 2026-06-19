@@ -1,6 +1,7 @@
 package com.hathway.medbuddy.domain.usecase
 
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
 import com.hathway.medbuddy.util.getNowLocalDateTime
@@ -19,6 +20,7 @@ data class GlucoseDashboard(
     val chartReadings: List<Float>,
     val recordedTime: String,
     val mealType: String,
+    val lastMealPeriod: TimePeriod,
     val recentRecords: List<DashboardRecentRecord>,
     val dailyAverageReadings: List<DailyAverageReading>,
     val last7Readings: List<RecentReading>
@@ -336,6 +338,8 @@ class GetGlucoseDashboardUseCase(
             mealType = formatMealType(
                 latestTodayRecord?.mealType ?: ""
             ),
+
+            lastMealPeriod = TimePeriod.fromString(latestTodayRecord?.mealType ?: ""),
 
             // Recent readings list
             recentRecords = recentRecords,

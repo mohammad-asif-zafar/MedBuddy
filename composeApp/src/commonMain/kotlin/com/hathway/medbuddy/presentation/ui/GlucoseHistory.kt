@@ -34,6 +34,7 @@ import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import com.hathway.medbuddy.util.parseDisplayDate
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import medbuddy.composeapp.generated.resources.Res
@@ -84,6 +85,7 @@ fun GlucoseRecordHistory(
         mutableStateOf(getNowLocalDateTime().date)
     }
     var showCalendar by remember { mutableStateOf(false) }
+
 
     val selectedRecord = records.firstOrNull {
         parseDisplayDate(it.date) == selectedDate

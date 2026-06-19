@@ -7,7 +7,27 @@ enum class TimePeriod {
     AFTER_LUNCH,
     BEFORE_DINNER,
     AFTER_DINNER,
-    BEDTIME
+    BEDTIME;
+
+    companion object {
+        fun fromString(type: String): TimePeriod {
+            return try {
+                valueOf(type.uppercase())
+            } catch (e: Exception) {
+                // Handle common abbreviations or fallbacks
+                when (type.uppercase()) {
+                    "BBF" -> BEFORE_BREAKFAST
+                    "ABF" -> AFTER_BREAKFAST
+                    "BL" -> BEFORE_LUNCH
+                    "AL" -> AFTER_LUNCH
+                    "BD" -> BEFORE_DINNER
+                    "AD" -> AFTER_DINNER
+                    "BT", "NGT" -> BEDTIME
+                    else -> BEFORE_BREAKFAST
+                }
+            }
+        }
+    }
 }
 data class ValidationResult(
     val isInRange: Boolean, val targetMessage: String

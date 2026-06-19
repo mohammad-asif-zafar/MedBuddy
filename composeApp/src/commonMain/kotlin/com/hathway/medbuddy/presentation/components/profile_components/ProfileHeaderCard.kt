@@ -62,7 +62,7 @@ fun ProfileHeaderCard(
         ) {
 
             Column(
-                modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 52.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 44.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
