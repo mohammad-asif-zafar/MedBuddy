@@ -10,13 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.domain.model.TimeInRangeData
+import com.hathway.medbuddy.domain.usecase.DailyAverageReading
 import com.hathway.medbuddy.presentation.components.reports_components.AverageGlucoseByTimeOfDay
 import com.hathway.medbuddy.presentation.components.reports_components.BestAndWorstDaysSection
-import com.hathway.medbuddy.presentation.components.reports_components.GlucoseTrendCard
 import com.hathway.medbuddy.presentation.components.reports_components.InsightsAndActionsFooter
 import com.hathway.medbuddy.presentation.components.reports_components.ReportsTopBarAndFilter
 import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
 import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
+import com.hathway.medbuddy.presentation.components.reports_components.TrendChartCard
 
 @Composable
 fun ReportsScreen(
@@ -85,7 +86,18 @@ fun ReportsScreen(
                 )
             }
             item {
-                GlucoseTrendCard()
+                // Pass a mock array list built directly inside your layout item scope
+                val readings = listOf(
+                    DailyAverageReading(date = "May 16", averageValue = 115f),
+                    DailyAverageReading(date = "May 19", averageValue = 100f),
+                    DailyAverageReading(date = "May 23", averageValue = 145f),
+                    DailyAverageReading(date = "May 27", averageValue = 115f),
+                    DailyAverageReading(date = "May 30", averageValue = 135f),
+                    DailyAverageReading(date = "Jun 05", averageValue = 90f),
+                    DailyAverageReading(date = "Jun 10", averageValue = 140f),
+                    DailyAverageReading(date = "Jun 15", averageValue = 154f)
+                )
+                TrendChartCard(readings = readings, modifier = Modifier)
             }
 
             // 5. High & Low Extremes Performance Highlights Block
@@ -109,7 +121,7 @@ fun ReportsScreen(
 
             // Layout buffer space anchor at the bottom of the column screen track
             item {
-                Spacer(modifier = Modifier.navigationBarsPadding().height(16.dp))
+                Spacer(modifier = Modifier.navigationBarsPadding().height(8.dp))
             }
         }
     }

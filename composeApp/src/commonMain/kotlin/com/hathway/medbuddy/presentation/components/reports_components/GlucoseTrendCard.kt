@@ -1,58 +1,81 @@
 package com.hathway.medbuddy.presentation.components.reports_components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ShowChart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
-
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.domain.usecase.DailyAverageReading
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.glucose_trend_title
+import medbuddy.composeapp.generated.resources.glucose_unit_mg_dl
+import medbuddy.composeapp.generated.resources.trend_chart_empty_desc
+import medbuddy.composeapp.generated.resources.trend_chart_empty_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun GlucoseTrendCard(
-    modifier: Modifier = Modifier, avgGlucose: Int = 124, points: List<TrendPoint> = listOf(
-        TrendPoint("May 16", 115),
-        TrendPoint("", 100),
-        TrendPoint("May 23", 145),
-        TrendPoint("", 115),
-        TrendPoint("May 30", 135),
-        TrendPoint("", 90),
-        TrendPoint("", 140),
-        TrendPoint("Jun 15", 154)
-    )
+fun TrendChartCard(
+    modifier: Modifier = Modifier,
+    readings: List<DailyAverageReading>
 ) {
-    val brandCream = Color(0xFFF7F7EE)
-    val brandGreen = Color(0xFF1B5E20)
-    val gridLineColor = Color.LightGray.copy(alpha = 0.4f)
+    // ✅ Dynamic Theme Colors
+    val brandGreen = MaterialTheme.colorScheme.primary
+    val gridLineColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
+    val cardBackground = MaterialTheme.colorScheme.surfaceVariant
+    val primaryTextColor = MaterialTheme.colorScheme.onSurface
+    val secondaryTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val innerDotRingColor = MaterialTheme.colorScheme.surface
 
-    // Core utility used to render text inside a Canvas block
+    // Calculate real dynamic average straight from the passed list safely
+    val calculatedAvg = remember(readings) {
+        if (readings.isEmpty()) 0 else readings.map { it.averageValue }.average().toInt()
+    }
+
     val textMeasurer = rememberTextMeasurer()
     val yAxisTextStyle = TextStyle(
-        color = Color.Gray, fontSize = 11.sp, fontWeight = FontWeight.Medium
+        color = secondaryTextColor,
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Medium
     )
 
     Card(
         modifier = modifier.fillMaxWidth().padding(16.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = brandCream)
+        colors = CardDefaults.cardColors(containerColor = cardBackground)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
+
             // Header Title Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -61,84 +84,124 @@ fun GlucoseTrendCard(
             ) {
                 Column {
                     Text(
-                        text = "Glucose Trend",
+                        text = stringResource(Res.string.glucose_trend_title),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black
+                        color = primaryTextColor
                     )
                     Text(
-                        text = "mg/dL", fontSize = 11.sp, color = Color.Gray
+                        text = stringResource(Res.string.glucose_unit_mg_dl),
+                        fontSize = 11.sp,
+                        color = secondaryTextColor
                     )
                 }
 
                 // Average Floating Pill Badge
-                Surface(
-                    shape = RoundedCornerShape(50), color = Color(0xFFE8F5E9)
-                ) {
-                    Text(
-                        text = "Avg $avgGlucose mg/dL",
-                        color = brandGreen,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                    )
+                if (readings.isNotEmpty()) {
+                    Surface(
+                        shape = RoundedCornerShape(50),
+                        color = brandGreen.copy(alpha = 0.12f)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.glucose_trend_title, calculatedAvg),
+                            color = brandGreen,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                        )
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            // ✅ Core Visual Conditional Engine
+            if (readings.isEmpty()) {
+                // Renders the functional Empty State template design block
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                        .padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ShowChart,
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(Res.string.trend_chart_empty_title),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(Res.string.trend_chart_empty_desc),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2
+                    )
+                }
+            } else {
+                // Graph Canvas Frame Rendering Layout View
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                        .padding(start = 32.dp, top = 16.dp)
+                ) {
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        val width = size.width
+                        val height = size.height
 
-            // Graph Layout Frame (Adds explicit left padding to clear room for Y-Axis Text labels)
-            Box(
-                modifier = Modifier.fillMaxWidth().height(160.dp).padding(start = 32.dp)
-            ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    val width = size.width
-                    val height = size.height
+                        val minY = 50f
+                        val maxY = 200f
+                        val yRange = maxY - minY
 
-                    val minY = 50f
-                    val maxY = 200f
-                    val yRange = maxY - minY
+                        fun getCanvasY(value: Float): Float {
+                            val percentage = (value - minY) / yRange
+                            return height - (percentage * height)
+                        }
 
-                    fun getCanvasY(value: Float): Float {
-                        val percentage = (value - minY) / yRange
-                        return height - (percentage * height)
-                    }
+                        // 1. Plot Y-Axis Reference Readouts & Guidelines
+                        val referenceValues = listOf(50f, 100f, 150f, 200f)
+                        referenceValues.forEach { refVal ->
+                            val yPos = getCanvasY(refVal)
 
-                    // 1. Draw Y-Axis Value Labels & Dashed Grid Guidelines
-                    val referenceValues = listOf(50f, 100f, 150f, 200f)
-                    referenceValues.forEach { refVal ->
-                        val yPos = getCanvasY(refVal)
-
-                        // Render the numbers text directly inside the canvas space tracker
-                        val textLayoutResult = textMeasurer.measure(
-                            text = refVal.toInt().toString(), style = yAxisTextStyle
-                        )
-
-                        // Draw numbers slightly offset to the left edge of the grid boundaries
-                        drawText(
-                            textLayoutResult = textLayoutResult, topLeft = Offset(
-                                x = -32.dp.toPx(), y = yPos - (textLayoutResult.size.height / 2f)
+                            val textLayoutResult = textMeasurer.measure(
+                                text = refVal.toInt().toString(),
+                                style = yAxisTextStyle
                             )
-                        )
 
-                        // Draw Grid Lines
-                        drawLine(
-                            color = gridLineColor,
-                            start = Offset(x = 0f, y = yPos),
-                            end = Offset(x = width, y = yPos),
-                            strokeWidth = 1.dp.toPx(),
-                            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-                        )
-                    }
+                            drawText(
+                                textLayoutResult = textLayoutResult,
+                                topLeft = Offset(
+                                    x = -32.dp.toPx(),
+                                    y = yPos - (textLayoutResult.size.height / 2f)
+                                )
+                            )
 
-                    // 2. Plotting Trend Lines
-                    if (points.isNotEmpty()) {
-                        val distanceX = width / (points.size - 1)
+                            drawLine(
+                                color = gridLineColor,
+                                start = Offset(x = 0f, y = yPos),
+                                end = Offset(x = width, y = yPos),
+                                strokeWidth = 1.dp.toPx(),
+                                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+                            )
+                        }
+
+                        // 2. Plotting Trend Lines and Vectors
+                        // Prevent division by zero if there is only 1 point
+                        val distanceX = if (readings.size > 1) width / (readings.size - 1) else width
                         val linePath = Path()
 
-                        points.forEachIndexed { index, point ->
+                        readings.forEachIndexed { index, point ->
                             val currentX = index * distanceX
-                            val currentY = getCanvasY(point.glucoseValue.toFloat())
+                            val currentY = getCanvasY(point.averageValue)
 
                             if (index == 0) {
                                 linePath.moveTo(currentX, currentY)
@@ -147,59 +210,33 @@ fun GlucoseTrendCard(
                             }
                         }
 
-                        // Draw Stroke Pathway using verified parameters
                         drawPath(
-                            path = linePath, color = brandGreen, style = Stroke(
-                                width = 3.dp.toPx(),
-                                cap = StrokeCap.Round // Parameter name is strictly 'cap'
-                            )
+                            path = linePath,
+                            color = brandGreen,
+                            style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                         )
 
-                        // Draw Endpoint Circles
-                        points.forEachIndexed { index, point ->
+                        // 3. Draw Endpoint Tracking Rings
+                        readings.forEachIndexed { index, point ->
                             val currentX = index * distanceX
-                            val currentY = getCanvasY(point.glucoseValue.toFloat())
+                            val currentY = getCanvasY(point.averageValue)
 
+                            // Outer ring using theme color
                             drawCircle(
                                 color = brandGreen,
-                                radius = 4.dp.toPx(),
+                                radius = 5.dp.toPx(),
                                 center = Offset(currentX, currentY)
                             )
+                            // Inner core using surface background token
                             drawCircle(
-                                color = Color.White,
-                                radius = 2.dp.toPx(),
+                                color = innerDotRingColor,
+                                radius = 2.5.dp.toPx(),
                                 center = Offset(currentX, currentY)
                             )
                         }
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 3. Horizontal X-Axis Text Labels Row
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(start = 32.dp), // Offsets starting position to line up with graph track
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                points.forEach { point ->
-                    if (point.dateLabel.isNotEmpty()) {
-                        Text(
-                            text = point.dateLabel,
-                            fontSize = 11.sp,
-                            color = Color.Gray,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
-            }
         }
     }
 }
-
-
-data class TrendPoint(
-    val dateLabel: String, // e.g., "May 16"
-    val glucoseValue: Int  // e.g., 120
-)

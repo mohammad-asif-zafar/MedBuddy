@@ -221,4 +221,28 @@
     <string name="tag_before_dinner">BD</string>
     <string name="tag_after_dinner">AD</string>
     <string name="tag_bedtime">BT</string>
+
+    <string name="glucose_trend_title">Glucose Trend</string>
+    <!-- Dynamic argument injection structure for our average badge pill -->
+    <string name="avg_glucose_pill_format">Avg %1$d mg/dL</string>
+    <string name="trend_chart_empty_title">No Readings Yet</string>
+    <string name="trend_chart_empty_desc">Start logging your blood glucose to view your 30-day health trends here.</string>
+    <string name="glucose_value_format">%1$d </string>
+
+    <!-- Existing Strings -->
+    <string name="best_and_worst_days_title">Best &amp; Worst Days</string>
+    <string name="label_best_day">Best Day</string>
+    <string name="label_worst_day">Worst Day</string>
+
+    <!-- New Tooltip Dialog Strings -->
+    <string name="info_button_desc">Read metric calculation rules</string>
+    <string name="tooltip_dialog_title">How calculation works</string>
+    <string name="tooltip_dialog_best_desc"><b>Best Day:</b> Represents the calendar day showing your most stable average glucose readings sitting nearest to your optimal targets (70–140 mg/dL).</string>
+    <string name="tooltip_dialog_worst_desc"><b>Worst Day:</b> Tracks the day that experienced severe glycemic variability or the highest sustained out-of-range averages.</string>
+    <string name="btn_dismiss">Got it</string>
+
+    <!-- Insights and Actions Strings -->
+    <string name="insights_section_title">Insights</string>
+    <string name="btn_export_pdf">Export PDF</string>
+    <string name="btn_share_report">Share Report</string>
 </resources>

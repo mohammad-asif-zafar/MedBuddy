@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.Primary
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
 
@@ -41,22 +42,18 @@ fun AverageGlucoseByTimeOfDay(
     bedtime: Int
 ) {
     // ✅ Dynamic Icon Tones: Adaptive accents that automatically shift properties based on layout themes
-    val sunIconColor =
-        if (MaterialTheme.colorScheme.primary == Color(0xFF81C784)) Color(0xFFFFB74D) else Color(
-            0xFFFFA000
-        )
-    val lunchIconColor =
-        if (MaterialTheme.colorScheme.primary == Color(0xFF81C784)) Color(0xFF64B5F6) else Color(
-            0xFF1976D2
-        )
-    val twilightIconColor =
-        if (MaterialTheme.colorScheme.primary == Color(0xFF81C784)) Color(0xFFBA68C8) else Color(
-            0xFF7B1FA2
-        )
-    val nightIconColor =
-        if (MaterialTheme.colorScheme.primary == Color(0xFF81C784)) Color(0xFF9FA8DA) else Color(
-            0xFF303F9F
-        )
+    val sunIconColor = if (Primary == Color(0xFF81C784)) Color(0xFFFFB74D) else Color(
+        0xFFFFA000
+    )
+    val lunchIconColor = if (Primary == Color(0xFF81C784)) Color(0xFF64B5F6) else Color(
+        0xFF1976D2
+    )
+    val twilightIconColor = if (Primary == Color(0xFF81C784)) Color(0xFFBA68C8) else Color(
+        0xFF7B1FA2
+    )
+    val nightIconColor = if (Primary == Color(0xFF81C784)) Color(0xFF9FA8DA) else Color(
+        0xFF303F9F
+    )
 
     Card(
         modifier = modifier.fillMaxWidth().padding(16.dp),
