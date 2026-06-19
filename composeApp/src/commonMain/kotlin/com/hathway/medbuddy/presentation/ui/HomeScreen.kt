@@ -19,11 +19,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.hathway.medbuddy.domain.model.TimePeriod
-import com.hathway.medbuddy.presentation.components.home_components.BloodGlucoseCard
 import com.hathway.medbuddy.presentation.components.home_components.HealthSummaryGrid
+import com.hathway.medbuddy.presentation.components.home_components.IntegratedGlucoseCardSection
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
-import com.hathway.medbuddy.presentation.components.home_components.PatientGreetingCard
 import com.hathway.medbuddy.presentation.components.home_components.RecentRecordsCard
 import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
 import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
@@ -68,29 +66,24 @@ fun HomeScreen(
                 )
             }
             // Section 1: Greeting with patient info
-            item {
-                PatientGreetingCard(
-                    greeting = uiState.greeting, patientName = uiState.patientName
-                )
-            }
             //  Section 2:  Today's Glucose
             item {
                 // Determine the correct meal period enum safely
                 val currentPeriod = uiState.lastMealPeriod
-                
                 val targetData = calculateGlucoseTargets(
                     valueMgMl = uiState.lastReading.toDouble(),
                     mealType = currentPeriod,
                     hasDiabetes = true
                 )
-                BloodGlucoseCard(
+                IntegratedGlucoseCardSection(
+                    greeting = uiState.greeting,
+                    patientName = uiState.patientName,
                     glucoseValue = uiState.lastReading,
                     mealType = uiState.lastMealType,
                     status = uiState.glucoseStatusText,
                     minTarget = (targetData.minTarget * 100).toString(),
                     maxTarget = (targetData.maxTarget * 100).toString()
                 )
-
             }
             //  Section 3: Doctor Information
             item {

@@ -1,13 +1,19 @@
 package com.hathway.medbuddy.presentation.components.home_components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.MonitorHeart
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,25 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.presentation.theme.Danger
-import com.hathway.medbuddy.presentation.theme.Secondary
-import com.hathway.medbuddy.presentation.theme.Success
-import com.hathway.medbuddy.presentation.theme.Warning
 import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.current_glucose
 import medbuddy.composeapp.generated.resources.glucose_target
 import medbuddy.composeapp.generated.resources.glucose_unit
-import medbuddy.composeapp.generated.resources.last_reading
-import medbuddy.composeapp.generated.resources.reading_details
-import medbuddy.composeapp.generated.resources.reading_value
-import medbuddy.composeapp.generated.resources.status_high
-import medbuddy.composeapp.generated.resources.status_in_range
-import medbuddy.composeapp.generated.resources.status_low
-import medbuddy.composeapp.generated.resources.today
 import medbuddy.composeapp.generated.resources.todays_glucose
-import medbuddy.composeapp.generated.resources.trend_up
 import org.jetbrains.compose.resources.stringResource
-import kotlin.math.abs
 
 @Composable
 fun BloodGlucoseCard(
@@ -45,19 +37,17 @@ fun BloodGlucoseCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            // ✅ Set to an absolute white color or use surface token depending on your setup
+            containerColor = Color.White
         ),
-        border = BorderStroke(
-            1.dp, Color(0xFFE9E1D3)
-        )
+        // ✅ Removed the border stroke entirely to match the flat reference style
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-
         Row(
             modifier = Modifier.fillMaxWidth().padding(20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -80,7 +70,6 @@ fun BloodGlucoseCard(
                 Row(
                     verticalAlignment = Alignment.Bottom
                 ) {
-
                     Text(
                         text = glucoseValue.toString(),
                         fontSize = 48.sp,
@@ -104,9 +93,7 @@ fun BloodGlucoseCard(
 
                 Text(
                     text = stringResource(
-                        Res.string.glucose_target,
-                        minTarget,
-                        maxTarget
+                        Res.string.glucose_target, minTarget, maxTarget
                     ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -117,11 +104,7 @@ fun BloodGlucoseCard(
                 value = glucoseValue, modifier = Modifier.padding(start = 16.dp)
             )
         }
-
-
     }
-
-
 }
 
 
@@ -132,14 +115,13 @@ fun BloodGlucoseCardPreview() {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {
-            /* BloodGlucoseCard(
-                 average = 7.4,
-                 trend = 0.3,
-                 status = "In Range",
-                 lastReading = 8.2,
-                 lastReadingTime = "4:59 PM",
-                 lastMealType = "BFF"
-             )*/
+            BloodGlucoseCard(
+                status = "In Range",
+                glucoseValue = 7,
+                mealType ="BFF",
+                minTarget ="121",
+                maxTarget ="121"
+            )
         }
     }
 }
