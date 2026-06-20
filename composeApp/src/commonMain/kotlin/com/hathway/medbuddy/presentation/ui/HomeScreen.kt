@@ -24,8 +24,6 @@ import com.hathway.medbuddy.presentation.components.home_components.IntegratedGl
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.home_components.RecentRecordsCard
 import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
-import com.hathway.medbuddy.presentation.theme.LightBackground
-import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
 import com.hathway.medbuddy.util.calculateGlucoseTargets
 import medbuddy.composeapp.generated.resources.Res

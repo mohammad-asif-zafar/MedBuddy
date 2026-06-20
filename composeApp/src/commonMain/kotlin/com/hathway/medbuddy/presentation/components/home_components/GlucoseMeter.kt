@@ -13,9 +13,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.presentation.theme.Danger
-import com.hathway.medbuddy.presentation.theme.Success
-import com.hathway.medbuddy.presentation.theme.Warning
+import com.hathway.medbuddy.presentation.theme.StatusLow
+import com.hathway.medbuddy.presentation.theme.StatusInRange
+import com.hathway.medbuddy.presentation.theme.StatusHigh
 
 @Composable
 fun GlucoseMeter(
@@ -43,14 +43,14 @@ fun GlucoseMeter(
             Box(
                 modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 12.dp)
                     .width(12.dp).height(70.dp).clip(RoundedCornerShape(50))
-                    .background(Success.copy(alpha = 0.2f))
+                    .background(StatusInRange.copy(alpha = 0.2f))
             )
 
             // Indicator
             val indicatorColor = when {
-                value < 70 -> Danger
-                value > 140 -> Warning
-                else -> Success
+                value < 70 -> StatusLow
+                value > 140 -> StatusHigh
+                else -> StatusInRange
             }
 
             Box(
@@ -76,11 +76,4 @@ fun GlucoseMeter(
             }
         }
     }
-}
-
-private fun valueToOffset(
-    value: Float, minValue: Float, maxValue: Float, meterHeight: Float
-): Float {
-    val progress = ((value - minValue) / (maxValue - minValue)).coerceIn(0f, 1f)
-    return (1f - progress) * meterHeight
 }

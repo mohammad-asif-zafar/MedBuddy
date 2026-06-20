@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.presentation.theme.TextSecondary
+import com.hathway.medbuddy.presentation.theme.DangerContainer
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.calendar_emoji
 import medbuddy.composeapp.generated.resources.no_glucose_records_day
@@ -44,7 +44,7 @@ fun EmptyDayContent() {
         Text(
             text = stringResource(
                 Res.string.no_glucose_records_day
-            ), color = TextSecondary
+            ), color = DangerContainer
         )
     }
 }

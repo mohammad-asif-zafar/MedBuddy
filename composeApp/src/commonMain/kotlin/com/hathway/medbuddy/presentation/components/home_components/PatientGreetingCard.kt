@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.util.displayName
@@ -155,22 +154,5 @@ fun IntegratedGlucoseCardSection(
                 }
             }
         }
-    }
-}
-
-
-@Composable
-@Preview
-fun PatientGreetingCardPreview() {
-    MaterialTheme {
-        IntegratedGlucoseCardSection(
-            greeting = "Good Afternoon",
-            patientName = "Shagufta Zafar",
-            status = "In Range",
-            glucoseValue = 7,
-            mealType = "BFF",
-            minTarget = "121",
-            maxTarget = "121"
-        )
     }
 }

@@ -2,16 +2,7 @@ package com.hathway.medbuddy.presentation.components.reports_components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,28 +13,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.TimeInRangeData
 import com.hathway.medbuddy.presentation.theme.*
-import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TimeInRangeCard(
     modifier: Modifier = Modifier, data: TimeInRangeData = TimeInRangeData()
 ) {
+    val statusInRangeColor = StatusInRange
+    val statusHighColor = StatusHigh
+    val statusLowColor = StatusLow
 
     Card(
-        modifier = modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
+        modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MiniCardBackground
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         border = BorderStroke(
             width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
@@ -55,7 +47,7 @@ fun TimeInRangeCard(
                 text = stringResource(Res.string.time_in_range_title),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -65,7 +57,7 @@ fun TimeInRangeCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Donut Chart Wheel Stacked Area Container Box
+                // Donut Chart Wheel
                 Box(
                     modifier = Modifier.size(130.dp), contentAlignment = Alignment.Center
                 ) {
@@ -84,9 +76,9 @@ fun TimeInRangeCard(
 
                         var currentStartAngle = -90f
 
-                        // Draw Segment Slice 1: In Range (Green)
+                        // Slice 1: In Range
                         drawArc(
-                            color = Primary,
+                            color = statusInRangeColor,
                             startAngle = currentStartAngle,
                             sweepAngle = sweepInRange,
                             useCenter = false,
@@ -96,9 +88,9 @@ fun TimeInRangeCard(
                         )
                         currentStartAngle += sweepInRange
 
-                        // Draw Segment Slice 2: High (Orange)
+                        // Slice 2: High
                         drawArc(
-                            color = Secondary,
+                            color = statusHighColor,
                             startAngle = currentStartAngle,
                             sweepAngle = sweepHigh,
                             useCenter = false,
@@ -108,9 +100,9 @@ fun TimeInRangeCard(
                         )
                         currentStartAngle += sweepHigh
 
-                        // Draw Segment Slice 3: Low (Red)
+                        // Slice 3: Low
                         drawArc(
-                            color = Error,
+                            color = statusLowColor,
                             startAngle = currentStartAngle,
                             sweepAngle = sweepLow,
                             useCenter = false,
@@ -141,17 +133,17 @@ fun TimeInRangeCard(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     LegendRowItem(
-                        color = Primary,
+                        color = statusInRangeColor,
                         label = stringResource(Res.string.legend_in_range),
                         percentage = "${data.inRangePct.toInt()}%"
                     )
                     LegendRowItem(
-                        color = Secondary,
+                        color = statusHighColor,
                         label = stringResource(Res.string.legend_high),
                         percentage = "${data.highPct.toInt()}%"
                     )
                     LegendRowItem(
-                        color = Error,
+                        color = statusLowColor,
                         label = stringResource(Res.string.legend_low),
                         percentage = "${data.lowPct.toInt()}%"
                     )
@@ -159,49 +151,4 @@ fun TimeInRangeCard(
             }
         }
     }
-}
-
-@Preview(name = "Light Mode - Custom Warm Cream")
-@Composable
-fun TimeInRangeCardCreamPreview() {
-    TimeInRangeMockTheme(darkTheme = false) {
-        TimeInRangeCard(
-            data = TimeInRangeData(
-                inRangePct = 75f, highPct = 15f, lowPct = 10f
-            )
-        )
-    }
-}
-
-@Preview(name = "Dark Mode - High Contrast Check")
-@Composable
-fun TimeInRangeCardDarkPreview() {
-    TimeInRangeMockTheme(darkTheme = true) {
-        TimeInRangeCard(
-            data = TimeInRangeData(
-                inRangePct = 75f, highPct = 15f, lowPct = 10f
-            )
-        )
-    }
-}
-
-@Composable
-private fun TimeInRangeMockTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
-    val systemColorScheme = if (darkTheme) {
-        androidx.compose.material3.darkColorScheme(
-            surface = PreviewSurfaceDark,
-            surfaceVariant = PreviewSurfaceVariantDark,
-            onSurface = PreviewSurfaceVariantCream,
-            onSurfaceVariant = PreviewOnSurfaceDark
-        )
-    } else {
-        androidx.compose.material3.lightColorScheme(
-            surface = LightBackground,
-            surfaceVariant = PreviewSurfaceVariantCream,
-            onSurface = Color(0xFF1A1A17),
-            onSurfaceVariant = Color(0xFF42423E)
-        )
-    }
-
-    MaterialTheme(colorScheme = systemColorScheme, content = content)
 }

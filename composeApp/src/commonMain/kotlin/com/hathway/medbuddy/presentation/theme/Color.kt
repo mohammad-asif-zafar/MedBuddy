@@ -57,11 +57,6 @@ val TextGreen = Color(0xFF264D35)
 val MorningAmber = Color(0xFFF59E0B)
 val AfternoonOrange = Color(0xFFFB923C)
 val EveningIndigo = Color(0xFF6366F1)
-val ChartGridLine = Color.LightGray.copy(alpha = 0.2f)
-val ChartFillStart = Color(0xFF1B5E20).copy(alpha = 0.15f)
-val ChartAlertLine = Color(0xFF1B5E20).copy(alpha = 0.4f)
-val TextSecondary = Color.Gray
-val TextPrimary = Color.Black
 val StatusLow = Color(0xFFE53935)
 val StatusHigh = Color(0xFFFF9500)
 val StatusInRange = Color(0xFF1B5E20)
@@ -80,37 +75,12 @@ val CardBackgroundCream = Color(0xFFFDF9F2)
 val TextDark = Color(0xFF1C1B1F)
 val TextSecondaryMuted = Color(0xFF79747E)
 
-val PreviewSurfaceDark = Color(0xFF1E1E1C)
-val PreviewSurfaceVariantDark = Color(0xFF2B2B28)
-val PreviewOnSurfaceDark = Color(0xFFE6E6E1)
-val PreviewOnSurfaceVariantDark = Color(0xFFB0B0AA)
-
-val PreviewSurfaceCream = Color(0xFFFCFCF9)
-val PreviewOnSurfaceCream = Color(0xFF1C1B12)
-val PreviewSurfaceVariantCream = Color(0xFFF7F7EE)
-val PreviewOnSurfaceVariantCream = Color(0xFF5A5950)
-
-// ========================
-// Status Containers
-// ========================
-
 val SuccessContainer = Color(0xFFE8F5EC)
 val WarningContainer = Color(0xFFFFF4E5)
 val DangerContainer = Color(0xFFFDECEC)
 
-// ========================
-// Borders
-// ========================
-
 val Border = Color(0xFFE4E0D8)
 val Divider = Color(0xFFF6F2F2)
-
-// ========================
-// Error
-// ========================
-
-val Error = Danger
-val OnError = Color.White
 
 val HeaderBackground = Color(0xFFF8F4EC)
 val BrandGreen = Color(0xFF4F6B35)

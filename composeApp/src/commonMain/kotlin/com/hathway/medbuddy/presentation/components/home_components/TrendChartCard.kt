@@ -1,15 +1,7 @@
 package com.hathway.medbuddy.presentation.components.home_components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
@@ -65,11 +58,13 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
 
     val textMeasurer = rememberTextMeasurer()
     val yAxisTextStyle = TextStyle(
-        color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp, fontWeight = FontWeight.Medium
+        color = MaterialTheme.colorScheme.onSurfaceVariant, 
+        fontSize = 10.sp, 
+        fontWeight = FontWeight.Medium
     )
 
     val chartLineColor = MaterialTheme.colorScheme.primary
-    val gridLineColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
+    val gridLineColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     val circleInnerColor = MaterialTheme.colorScheme.surface
 
     Column {
@@ -148,7 +143,7 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                         }
                     }
 
-                    // 4. Fill Area Gradient Shading Layer Beneath the Smooth Path Track
+                    // 4. Fill Area Gradient Shading Layer
                     val fillPath = Path().apply {
                         addPath(strokePath)
                         lineTo(connectionPointsList.last().x, height)
@@ -172,7 +167,7 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                         style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                     )
 
-                    // 6. Anchor Dot Highlights Overlay matching exactly the layout junctions
+                    // 6. Anchor Dot Highlights
                     connectionPointsList.forEach { point ->
                         drawCircle(
                             color = chartLineColor, radius = 5.dp.toPx(), center = point
@@ -187,7 +182,7 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // 7. Horizontal X-Axis Text Date Label Row Section Tracking
+        // 7. Horizontal X-Axis Text Date Label Row
         Row(
             modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween

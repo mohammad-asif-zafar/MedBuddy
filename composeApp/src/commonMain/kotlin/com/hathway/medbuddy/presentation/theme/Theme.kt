@@ -8,55 +8,50 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.hathway.medbuddy.ThemeMode
 
-// 1. Define your custom app background and surface tokens
-val LightSurface = Color(0xFFFFFFFF)    // Pure white for components layered on top
-
 private val LightColorScheme = lightColorScheme(
-    primary = Primary, onPrimary = OnPrimary,
-
-    secondary = Secondary, onSecondary = OnSecondary,
-
-    // 2. Assign your background token here
-    background = LightBackground, onBackground = OnBackground,
-
-    // 3. Assign your component surface layer here
-    surface = LightSurface, onSurface = OnSurface,
-
-    error = Error, onError = OnError,
-
-    primaryContainer = PrimaryContainer, onPrimaryContainer = OnPrimaryContainer,
-
-    secondaryContainer = SecondaryContainer, onSecondaryContainer = OnSecondaryContainer,
-
-    surfaceVariant = SurfaceVariant, onSurfaceVariant = OnSurfaceVariant,
-
+    primary = Primary,
+    onPrimary = OnPrimary,
+    primaryContainer = PrimaryContainer,
+    onPrimaryContainer = OnPrimaryContainer,
+    secondary = Secondary,
+    onSecondary = OnSecondary,
+    secondaryContainer = SecondaryContainer,
+    onSecondaryContainer = OnSecondaryContainer,
+    background = LightBackground,
+    onBackground = OnBackground,
+    surface = Color.White,
+    onSurface = OnSurface,
+    surfaceVariant = SurfaceVariant,
+    onSurfaceVariant = OnSurfaceVariant,
     outline = Border,
-
+    errorContainer = DangerContainer
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF5CC17D), onPrimary = Color(0xFF06210F),
-
-    secondary = Color(0xFF8AA694), onSecondary = Color(0xFF0E1611),
-
-    background = Color(0xFF0F1720), onBackground = Color(0xFFF5F5F3),
-
-    surface = Color(0xFF18212B), onSurface = Color(0xFFF5F5F3),
-
-    primaryContainer = Color(0xFF183A28), onPrimaryContainer = Color(0xFFD8F4E1),
-
-    secondaryContainer = Color(0xFF1F2B24), onSecondaryContainer = Color(0xFFD7E6DB),
-
-    surfaceVariant = Color(0xFF24303A), onSurfaceVariant = Color(0xFFAAB4BE),
-
+    primary = Color(0xFF5CC17D),
+    onPrimary = Color(0xFF06210F),
+    primaryContainer = Color(0xFF183A28),
+    onPrimaryContainer = Color(0xFFD8F4E1),
+    secondary = Color(0xFF8AA694),
+    onSecondary = Color(0xFF0E1611),
+    secondaryContainer = Color(0xFF1F2B24),
+    onSecondaryContainer = Color(0xFFD7E6DB),
+    background = Color(0xFF0F1720),
+    onBackground = Color(0xFFF5F5F3),
+    surface = Color(0xFF18212B),
+    onSurface = Color(0xFFF5F5F3),
+    surfaceVariant = Color(0xFF24303A),
+    onSurfaceVariant = Color(0xFFAAB4BE),
     outline = Color(0xFF33404B),
-
-    error = Color(0xFFF87171), onError = Color(0xFF2B0A0A)
+    error = Color(0xFFF87171),
+    onError = Color(0xFF2B0A0A),
+    errorContainer = Color(0xFF4C1C1C)
 )
 
 @Composable
 fun MedBuddyTheme(
-    themeMode: ThemeMode = ThemeMode.SYSTEM, content: @Composable () -> Unit
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    content: @Composable () -> Unit
 ) {
     val darkTheme = when (themeMode) {
         ThemeMode.LIGHT -> false
@@ -64,6 +59,7 @@ fun MedBuddyTheme(
         ThemeMode.SYSTEM -> isSystemInDarkTheme()
     }
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme, content = content
+        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        content = content
     )
 }

@@ -37,9 +37,6 @@ import medbuddy.composeapp.generated.resources.nav_menu_desc
 import medbuddy.composeapp.generated.resources.reports_calendar_desc
 import medbuddy.composeapp.generated.resources.reports_screen_title
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ReportsTopBarAndFilter(

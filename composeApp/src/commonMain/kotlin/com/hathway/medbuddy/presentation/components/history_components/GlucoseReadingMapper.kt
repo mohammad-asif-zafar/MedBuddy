@@ -44,72 +44,63 @@ object GlucoseReadingMapper {
 
         val (statusText, statusColor) = when {
             value < minTarget -> "Low" to StatusLow
-
             value > maxTarget -> "High" to StatusHigh
-
             else -> "In Range" to StatusInRange
         }
 
         val (icon, bgColor, iconTint) = when {
-
-            label.contains("Breakfast", true) || label.contains(
-                "BBF", true
-            ) || label.contains("ABF", true) -> {
-
+            label.contains("Breakfast", true) || label.contains("BBF", true) || label.contains("ABF", true) -> {
                 if (isAfterMeal) {
                     Triple(
                         Icons.Outlined.Coffee, 
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f), 
+                        MaterialTheme.colorScheme.primaryContainer, 
                         MaterialTheme.colorScheme.primary
                     )
                 } else {
                     Triple(
                         Icons.Outlined.LightMode, 
-                        Color(0xFFFFF3E0).copy(alpha = 0.2f), // Amber accent
-                        Color(0xFFEF6C00)
+                        MaterialTheme.colorScheme.secondaryContainer, 
+                        MaterialTheme.colorScheme.secondary
                     )
                 }
             }
 
-            label.contains("Lunch", true) || label.contains("BL", true) || label.contains(
-                "AL", true
-            ) -> {
-
+            label.contains("Lunch", true) || label.contains("BL", true) || label.contains("AL", true) -> {
                 if (isAfterMeal) {
                     Triple(
                         Icons.Outlined.SoupKitchen, 
-                        Color(0xFFFFF3E0).copy(alpha = 0.2f), 
-                        Color(0xFFD84315)
+                        MaterialTheme.colorScheme.primaryContainer, 
+                        MaterialTheme.colorScheme.primary
                     )
                 } else {
                     Triple(
                         Icons.Outlined.WbSunny, 
-                        Color(0xFFFFF8E1).copy(alpha = 0.2f), 
-                        Color(0xFFFBC02D)
+                        MaterialTheme.colorScheme.secondaryContainer, 
+                        MaterialTheme.colorScheme.secondary
                     )
                 }
             }
 
-            label.contains("Dinner", true) || label.contains("BD", true) -> {
+            label.contains("Dinner", true) || label.contains("BD", true) || label.contains("AD", true) -> {
                 Triple(
                     Icons.Outlined.SoupKitchen, 
-                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f), 
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.colorScheme.tertiaryContainer, 
+                    MaterialTheme.colorScheme.tertiary
                 )
             }
 
             else -> {
                 Triple(
                     Icons.Outlined.Bedtime, 
-                    MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.2f), 
-                    MaterialTheme.colorScheme.tertiary
+                    MaterialTheme.colorScheme.secondaryContainer, 
+                    MaterialTheme.colorScheme.secondary
                 )
             }
         }
 
         return GlucoseReadingUiModel(
             icon = icon,
-            iconBgColor = bgColor,
+            iconBgColor = bgColor.copy(alpha = 0.4f),
             iconTint = iconTint,
             minTarget = minTarget,
             maxTarget = maxTarget,

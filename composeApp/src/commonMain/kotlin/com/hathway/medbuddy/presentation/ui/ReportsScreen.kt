@@ -26,7 +26,6 @@ import com.hathway.medbuddy.presentation.components.reports_components.ReportsTo
 import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
 import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
 import com.hathway.medbuddy.presentation.components.reports_components.TrendChartCard
-import com.hathway.medbuddy.presentation.theme.LightBackground
 import com.hathway.medbuddy.presentation.viewmodel.ReportsViewModel
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.ic_circle_arrow_up
