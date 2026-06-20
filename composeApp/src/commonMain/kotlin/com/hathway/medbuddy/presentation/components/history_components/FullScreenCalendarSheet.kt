@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -33,27 +32,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import com.hathway.medbuddy.presentation.theme.StatusHigh
+import com.hathway.medbuddy.presentation.theme.StatusInRange
+import com.hathway.medbuddy.presentation.theme.StatusLow
 import com.hathway.medbuddy.util.parseDisplayDate
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.next_symbol
-import medbuddy.composeapp.generated.resources.prev_symbol
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
-
-/**
- * Full-screen month calendar.
- *
- * Features:
- * - Month navigation
- * - Record indicators
- * - Date selection
- *
- * Opens when user taps date header.
- */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,48 +54,22 @@ fun FullScreenCalendarSheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
-
     var currentMonth by remember { mutableStateOf(selectedDate) }
 
-    /**
-     * Creates a set of days that contain
-     * glucose records for the displayed month.
-     *
-     * Example:
-     *
-     * Records:
-     * 5 Jun
-     * 10 Jun
-     * 15 Jun
-     *
-     * Result:
-     * [5,10,15]
-     *
-     * Used to highlight days with data.
-     */
-
     val dayStatuses = remember(records, currentMonth) {
-
         records.groupBy {
             parseDisplayDate(it.date)
         }.mapValues { (_, dayRecords) ->
-
             var low = 0
             var inRange = 0
             var high = 0
-
             dayRecords.forEach { record ->
-
                 listOfNotNull(
-                    record.beforeBreakfast,
-                    record.afterBreakfast,
-                    record.beforeLunch,
-                    record.afterLunch,
-                    record.beforeDinner,
-                    record.afterDinner,
+                    record.beforeBreakfast, record.afterBreakfast,
+                    record.beforeLunch, record.afterLunch,
+                    record.beforeDinner, record.afterDinner,
                     record.bedtime
                 ).forEach { value ->
-
                     when {
                         value < 70 -> low++
                         value <= 140 -> inRange++
@@ -114,7 +77,6 @@ fun FullScreenCalendarSheet(
                     }
                 }
             }
-
             CalendarDayStatus(
                 date = parseDisplayDate(dayRecords.first().date),
                 lowCount = low,
@@ -130,7 +92,7 @@ fun FullScreenCalendarSheet(
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         ) {
             // Month navigation
             Row(
@@ -151,11 +113,11 @@ fun FullScreenCalendarSheet(
                 }
 
                 Text(
-                    text = "${
-                    currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
-                } ${currentMonth.year}",
+                    text = "${currentMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${currentMonth.year}",
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
 
                 Box(
                     modifier = Modifier.size(40.dp).clickable {
@@ -179,8 +141,8 @@ fun FullScreenCalendarSheet(
                 dayStatuses = dayStatuses,
                 onDateSelected = { date ->
                     onDateSelected(date)
-                    coroutineScope.launch {
-                        sheetState.hide()
+                    coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { 
+                        if (!sheetState.isVisible) onDismiss() 
                     }
                 })
 
@@ -197,27 +159,17 @@ fun FullScreenCalendarSheet(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-
 }
 
 @Composable
 fun CalendarSummaryCard(
     selectedDate: LocalDate, records: List<GlucoseRecord>
 ) {
-
-    val dayRecords = records.filter {
-        parseDisplayDate(it.date) == selectedDate
-    }
-
+    val dayRecords = records.filter { parseDisplayDate(it.date) == selectedDate }
     val readings = dayRecords.flatMap {
         listOfNotNull(
-            it.beforeBreakfast,
-            it.afterBreakfast,
-            it.beforeLunch,
-            it.afterLunch,
-            it.beforeDinner,
-            it.afterDinner,
-            it.bedtime
+            it.beforeBreakfast, it.afterBreakfast, it.beforeLunch,
+            it.afterLunch, it.beforeDinner, it.afterDinner, it.bedtime
         )
     }
 
@@ -225,40 +177,28 @@ fun CalendarSummaryCard(
     val inRangeCount = readings.count { it in 70..140 }
     val highCount = readings.count { it > 140 }
 
-    val average = if (readings.isNotEmpty()) readings.average().toInt()
-    else 0
+    val average = if (readings.isNotEmpty()) readings.average().toInt() else 0
 
-    val statusText = when {
-        average < 70 -> "Low"
-        average <= 140 -> "In Range"
-        else -> "High"
-    }
-
-    val statusColor = when (statusText) {
-        "Low" -> Color(0xFFE53935)
-        "High" -> Color(0xFFFF9800)
-        else -> Color(0xFF2E7D32)
+    val (statusText, statusColor) = when {
+        average == 0 -> "" to Color.Transparent
+        average < 70 -> stringResource(Res.string.low) to StatusLow
+        average <= 140 -> stringResource(Res.string.status_in_range) to StatusInRange
+        else -> stringResource(Res.string.high) to StatusHigh
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
-
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "${selectedDate.dayOfMonth} ${
-                selectedDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
-            } ${selectedDate.year} Summary", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                text = "${selectedDate.dayOfMonth} ${selectedDate.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${selectedDate.year} Summary", 
+                fontWeight = FontWeight.Bold, 
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -266,45 +206,42 @@ fun CalendarSummaryCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-
                 SummaryStatCard(
                     modifier = Modifier.weight(1f),
                     value = readings.size.toString(),
                     label = "Readings",
-                    backgroundColor = Color(0xFFEAF7EC),
-                    textColor = Color(0xFF2E7D32)
+                    backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                    textColor = MaterialTheme.colorScheme.primary
                 )
 
                 SummaryStatCard(
                     modifier = Modifier.weight(1f),
                     value = lowCount.toString(),
-                    label = "Low",
-                    backgroundColor = Color(0xFFFFEEEE),
-                    textColor = Color(0xFFE53935)
+                    label = stringResource(Res.string.low),
+                    backgroundColor = StatusLow.copy(alpha = 0.1f),
+                    textColor = StatusLow
                 )
 
                 SummaryStatCard(
                     modifier = Modifier.weight(1f),
                     value = inRangeCount.toString(),
-                    label = "In Range",
-                    backgroundColor = Color(0xFFEAF7EC),
-                    textColor = Color(0xFF2E7D32)
+                    label = stringResource(Res.string.status_in_range),
+                    backgroundColor = StatusInRange.copy(alpha = 0.1f),
+                    textColor = StatusInRange
                 )
 
                 SummaryStatCard(
                     modifier = Modifier.weight(1f),
                     value = highCount.toString(),
-                    label = "High",
-                    backgroundColor = Color(0xFFFFF4E5),
-                    textColor = Color(0xFFFF9800)
+                    label = stringResource(Res.string.high),
+                    backgroundColor = StatusHigh.copy(alpha = 0.1f),
+                    textColor = StatusHigh
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                text = "Average", color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Text(text = stringResource(Res.string.average), color = MaterialTheme.colorScheme.onSurfaceVariant)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -313,31 +250,32 @@ fun CalendarSummaryCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Row(
-                    verticalAlignment = Alignment.Bottom
-                ) {
-
+                Row(verticalAlignment = Alignment.Bottom) {
                     Text(
-                        text = average.toString(), fontSize = 42.sp, fontWeight = FontWeight.Bold
+                        text = average.toString(), 
+                        fontSize = 42.sp, 
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-
                     Text(
-                        text = " mg/dL", modifier = Modifier.padding(bottom = 6.dp)
+                        text = " " + stringResource(Res.string.glucose_unit), 
+                        modifier = Modifier.padding(bottom = 6.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
-                Surface(
-                    shape = RoundedCornerShape(50), color = statusColor.copy(alpha = 0.12f)
-                ) {
-                    Text(
-                        text = statusText,
-                        color = statusColor,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(
-                            horizontal = 12.dp, vertical = 6.dp
+                if (statusText.isNotEmpty()) {
+                    Surface(
+                        shape = RoundedCornerShape(50), 
+                        color = statusColor.copy(alpha = 0.12f)
+                    ) {
+                        Text(
+                            text = statusText,
+                            color = statusColor,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                         )
-                    )
+                    }
                 }
             }
         }
@@ -347,7 +285,3 @@ fun CalendarSummaryCard(
 data class CalendarDayStatus(
     val date: LocalDate, val lowCount: Int, val inRangeCount: Int, val highCount: Int
 )
-
-
-
-

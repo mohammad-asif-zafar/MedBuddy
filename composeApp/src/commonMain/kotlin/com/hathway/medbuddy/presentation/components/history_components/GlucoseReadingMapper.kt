@@ -6,9 +6,10 @@ import androidx.compose.material.icons.outlined.Coffee
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.SoupKitchen
 import androidx.compose.material.icons.outlined.WbSunny
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-
 import com.hathway.medbuddy.presentation.theme.StatusHigh
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import com.hathway.medbuddy.presentation.theme.StatusLow
@@ -23,6 +24,7 @@ data class GlucoseReadingUiModel(
 
 object GlucoseReadingMapper {
 
+    @Composable
     fun map(
         label: String, value: Int
     ): GlucoseReadingUiModel {
@@ -56,11 +58,15 @@ object GlucoseReadingMapper {
 
                 if (isAfterMeal) {
                     Triple(
-                        Icons.Outlined.Coffee, Color(0xFFE8F5E9), Color(0xFF2E7D32)
+                        Icons.Outlined.Coffee, 
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f), 
+                        MaterialTheme.colorScheme.primary
                     )
                 } else {
                     Triple(
-                        Icons.Outlined.LightMode, Color(0xFFFFF3E0), Color(0xFFEF6C00)
+                        Icons.Outlined.LightMode, 
+                        Color(0xFFFFF3E0).copy(alpha = 0.2f), // Amber accent
+                        Color(0xFFEF6C00)
                     )
                 }
             }
@@ -71,26 +77,32 @@ object GlucoseReadingMapper {
 
                 if (isAfterMeal) {
                     Triple(
-                        Icons.Outlined.SoupKitchen, Color(0xFFFFF3E0), Color(0xFFD84315)
+                        Icons.Outlined.SoupKitchen, 
+                        Color(0xFFFFF3E0).copy(alpha = 0.2f), 
+                        Color(0xFFD84315)
                     )
                 } else {
                     Triple(
-                        Icons.Outlined.WbSunny, Color(0xFFFFF8E1), Color(0xFFFBC02D)
+                        Icons.Outlined.WbSunny, 
+                        Color(0xFFFFF8E1).copy(alpha = 0.2f), 
+                        Color(0xFFFBC02D)
                     )
                 }
             }
 
             label.contains("Dinner", true) || label.contains("BD", true) -> {
-
                 Triple(
-                    Icons.Outlined.SoupKitchen, Color(0xFFE8EAF6), Color(0xFF283593)
+                    Icons.Outlined.SoupKitchen, 
+                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f), 
+                    MaterialTheme.colorScheme.secondary
                 )
             }
 
             else -> {
-
                 Triple(
-                    Icons.Outlined.Bedtime, Color(0xFFEDE7F6), Color(0xFF4527A0)
+                    Icons.Outlined.Bedtime, 
+                    MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.2f), 
+                    MaterialTheme.colorScheme.tertiary
                 )
             }
         }

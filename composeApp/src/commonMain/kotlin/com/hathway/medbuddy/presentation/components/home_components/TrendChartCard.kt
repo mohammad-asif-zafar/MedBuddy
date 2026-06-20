@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
@@ -31,12 +30,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
-import com.hathway.medbuddy.presentation.theme.ChartAlertLine
-import com.hathway.medbuddy.presentation.theme.ChartFillStart
-import com.hathway.medbuddy.presentation.theme.ChartGridLine
-import com.hathway.medbuddy.presentation.theme.DeepGreen
-import com.hathway.medbuddy.presentation.theme.TextPrimary
-import com.hathway.medbuddy.presentation.theme.TextSecondary
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.glucose_trend
 import org.jetbrains.compose.resources.stringResource
@@ -48,7 +41,7 @@ fun TrendChartCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -56,7 +49,7 @@ fun TrendChartCard(
                 text = stringResource(Res.string.glucose_trend),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = TextPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -72,8 +65,12 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
 
     val textMeasurer = rememberTextMeasurer()
     val yAxisTextStyle = TextStyle(
-        color = TextSecondary, fontSize = 10.sp, fontWeight = FontWeight.Medium
+        color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp, fontWeight = FontWeight.Medium
     )
+
+    val chartLineColor = MaterialTheme.colorScheme.primary
+    val gridLineColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
+    val circleInnerColor = MaterialTheme.colorScheme.surface
 
     Column {
         Box(
@@ -103,17 +100,17 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     )
 
                     drawLine(
-                        color = ChartGridLine,
+                        color = gridLineColor,
                         start = Offset(0f, y),
                         end = Offset(width, y),
                         strokeWidth = 1.dp.toPx()
                     )
                 }
 
-                // 2. Draw Target Boundary Alert Baseline (Dashed Line at 70 mg/dL as shown in reference image)
+                // 2. Draw Target Boundary Alert Baseline
                 val alertY = mapY(70f)
                 drawLine(
-                    color = ChartAlertLine,
+                    color = chartLineColor.copy(alpha = 0.4f),
                     start = Offset(0f, alertY),
                     end = Offset(width, alertY),
                     strokeWidth = 1.5.dp.toPx(),
@@ -135,7 +132,6 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                             val p0 = connectionPointsList[i]
                             val p1 = connectionPointsList[i + 1]
 
-                            // Cubic control vectors create elegant organic curve lines between values
                             val controlPointX1 = p0.x + (p1.x - p0.x) / 2f
                             val controlPointY1 = p0.y
                             val controlPointX2 = p0.x + (p1.x - p0.x) / 2f
@@ -155,7 +151,6 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     // 4. Fill Area Gradient Shading Layer Beneath the Smooth Path Track
                     val fillPath = Path().apply {
                         addPath(strokePath)
-                        // Close loop bounding down to the canvas ground baseline layout line safely
                         lineTo(connectionPointsList.last().x, height)
                         lineTo(connectionPointsList.first().x, height)
                         close()
@@ -164,8 +159,8 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     drawPath(
                         path = fillPath, brush = Brush.verticalGradient(
                             colors = listOf(
-                                ChartFillStart,
-                                DeepGreen.copy(alpha = 0.00f)
+                                chartLineColor.copy(alpha = 0.15f),
+                                chartLineColor.copy(alpha = 0.00f)
                             ), startY = mapY(200f), endY = height
                         )
                     )
@@ -173,17 +168,17 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     // 5. Draw Core Top Line Curve
                     drawPath(
                         path = strokePath,
-                        color = DeepGreen,
+                        color = chartLineColor,
                         style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                     )
 
                     // 6. Anchor Dot Highlights Overlay matching exactly the layout junctions
                     connectionPointsList.forEach { point ->
                         drawCircle(
-                            color = DeepGreen, radius = 5.dp.toPx(), center = point
+                            color = chartLineColor, radius = 5.dp.toPx(), center = point
                         )
                         drawCircle(
-                            color = Color.White, radius = 2.5.dp.toPx(), center = point
+                            color = circleInnerColor, radius = 2.5.dp.toPx(), center = point
                         )
                     }
                 }
@@ -208,4 +203,3 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
         }
     }
 }
-

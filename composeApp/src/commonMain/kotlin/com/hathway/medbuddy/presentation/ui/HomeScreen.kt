@@ -41,7 +41,7 @@ fun HomeScreen(
 
     Box(
         modifier = Modifier.fillMaxSize().background(
-            LightBackground
+            MaterialTheme.colorScheme.background
         )
     ) {
         LazyColumn(
@@ -56,7 +56,7 @@ fun HomeScreen(
                     rightIcon = Icons.Outlined.Notifications,
                     onLeftClick = { },
                     onRightClick = { onOpenNotifications() },
-                    titleColor = Primary,
+                    titleColor = MaterialTheme.colorScheme.primary,
                     showBadge = uiState.hasUnreadNotifications
                 )
             }

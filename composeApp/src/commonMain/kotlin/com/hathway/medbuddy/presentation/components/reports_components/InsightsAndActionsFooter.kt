@@ -21,15 +21,13 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun InsightsAndActionsFooter(
     insights: List<Pair<DrawableResource, StringResource>>,
-    modifier: Modifier = Modifier,
-    titleColor: Color = OnSurface,
-    textColor: Color = OnSurfaceVariant,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MiniCardBackground
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         border = BorderStroke(
             width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
@@ -41,7 +39,7 @@ fun InsightsAndActionsFooter(
                 text = stringResource(Res.string.insights_section_title),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = titleColor
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -49,7 +47,6 @@ fun InsightsAndActionsFooter(
                 val iconDrawable = insight.first
                 val stringResourceKey = insight.second
 
-                // Robust color selection logic
                 val dynamicIconColor = when (iconDrawable) {
                     Res.drawable.ic_circle_arrow_up -> Warning
                     Res.drawable.ic_shield_check -> Info
@@ -72,7 +69,7 @@ fun InsightsAndActionsFooter(
                     Text(
                         text = stringResource(stringResourceKey),
                         fontSize = 14.sp,
-                        color = textColor,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 20.sp,
                         modifier = Modifier.weight(1f)
                     )
@@ -83,7 +80,7 @@ fun InsightsAndActionsFooter(
                 Text(
                     text = stringResource(Res.string.no_clinical_insights),
                     fontSize = 13.sp,
-                    color = textColor.copy(alpha = 0.6f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             } else {

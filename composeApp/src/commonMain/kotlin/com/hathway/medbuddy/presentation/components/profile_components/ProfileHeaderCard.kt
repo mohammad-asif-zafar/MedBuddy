@@ -32,13 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.presentation.theme.BrandGreen
-import com.hathway.medbuddy.presentation.theme.MiniCardBackground
-import com.hathway.medbuddy.presentation.theme.TextGreen
-import com.hathway.medbuddy.presentation.theme.TextPrimary
-import com.hathway.medbuddy.presentation.theme.TextSecondary
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -63,12 +57,12 @@ fun ProfileHeaderCard(
             modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MiniCardBackground
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             border = BorderStroke(
                 width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
             ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
 
             Column(
@@ -99,14 +93,15 @@ fun ProfileHeaderCard(
 
                         Box(
                             modifier = Modifier.size(120.dp).clip(CircleShape)
-                                .background(Color.White), contentAlignment = Alignment.Center
+                                .background(MaterialTheme.colorScheme.primaryContainer), 
+                            contentAlignment = Alignment.Center
                         ) {
 
                             Text(
                                 text = name.firstOrNull()?.uppercase() ?: "A",
                                 fontSize = 42.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = BrandGreen
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                     }
@@ -114,7 +109,7 @@ fun ProfileHeaderCard(
                     Surface(
                         modifier = Modifier.size(38.dp).clickable { onEditPhotoClick() },
                         shape = CircleShape,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.surface,
                         shadowElevation = 6.dp
                     ) {
 
@@ -126,7 +121,7 @@ fun ProfileHeaderCard(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp),
-                                tint = BrandGreen
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -140,7 +135,7 @@ fun ProfileHeaderCard(
                     text = name,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(
@@ -148,7 +143,9 @@ fun ProfileHeaderCard(
                 )
 
                 Text(
-                    text = email, style = MaterialTheme.typography.bodyMedium, color = TextSecondary
+                    text = email, 
+                    style = MaterialTheme.typography.bodyMedium, 
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -181,9 +178,12 @@ fun ProfileInfoCard(
 ) {
 
     Card(
-        modifier = modifier, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ), elevation = CardDefaults.cardElevation(
+        modifier = modifier, 
+        shape = RoundedCornerShape(18.dp), 
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ), 
+        elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         )
     ) {
@@ -197,7 +197,7 @@ fun ProfileInfoCard(
                 text = value,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = TextGreen
+                color = MaterialTheme.colorScheme.primary
             )
 
             Spacer(
@@ -205,7 +205,9 @@ fun ProfileInfoCard(
             )
 
             Text(
-                text = title, fontSize = 12.sp, color = TextGreen
+                text = title, 
+                fontSize = 12.sp, 
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

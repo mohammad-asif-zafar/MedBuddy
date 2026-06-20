@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Card
@@ -16,31 +17,25 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.hathway.medbuddy.presentation.theme.MiniCardBackground
-
-import com.hathway.medbuddy.presentation.theme.Cream
-import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsSection(
     onPreferencesClick: () -> Unit,
-    onHelpClick: () -> Unit, // Added missing handler to support layout row
+    onHelpClick: () -> Unit,
     onLogoutClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp) // Spacing separating your main cards
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Group 1: Navigation Preferences & Help Container Card
         Card(
-            modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MiniCardBackground
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             border = BorderStroke(
                 width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
@@ -56,23 +51,27 @@ fun SettingsSection(
 
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    color = Color.Black.copy(alpha = 0.06f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
                     thickness = 1.dp
                 )
 
                 SettingsActionRow(
-                    icon = Icons.Outlined.HelpOutline,
+                    icon = Icons.AutoMirrored.Outlined.HelpOutline,
                     label = stringResource(Res.string.help_support),
                     onClick = onHelpClick
                 )
             }
         }
 
-        // Group 2: Isolated Standalone Logout Container Card
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Cream),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            border = BorderStroke(
+                width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+            ),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             SettingsActionRow(

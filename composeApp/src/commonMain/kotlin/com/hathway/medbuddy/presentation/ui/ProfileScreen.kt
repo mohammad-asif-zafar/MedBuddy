@@ -32,7 +32,6 @@ import com.hathway.medbuddy.presentation.components.profile_components.EditProfi
 import com.hathway.medbuddy.presentation.components.profile_components.ProfileHeaderCard
 import com.hathway.medbuddy.presentation.components.profile_components.SectionHeader
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
-import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.presentation.viewmodel.ProfileViewModel
 import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
@@ -61,7 +60,7 @@ fun ProfileScreen(
                 rightIcon = Icons.Outlined.Settings,
                 onLeftClick = { },
                 onRightClick = { },
-                titleColor = Primary
+                titleColor = MaterialTheme.colorScheme.primary
             )
         }
 

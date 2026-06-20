@@ -32,15 +32,12 @@ import org.jetbrains.compose.resources.stringResource
 fun BloodGlucoseCard(
     glucoseValue: Int, mealType: String, status: String, minTarget: String, maxTarget: String
 ) {
-    println(status)
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            // ✅ Set to an absolute white color or use surface token depending on your setup
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
-        // ✅ Removed the border stroke entirely to match the flat reference style
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -54,7 +51,8 @@ fun BloodGlucoseCard(
                 Text(
                     text = stringResource(Res.string.todays_glucose),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(Modifier.height(4.dp))
@@ -73,7 +71,8 @@ fun BloodGlucoseCard(
                     Text(
                         text = glucoseValue.toString(),
                         fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     Spacer(Modifier.width(6.dp))
@@ -102,25 +101,6 @@ fun BloodGlucoseCard(
 
             GlucoseMeter(
                 value = glucoseValue, modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun BloodGlucoseCardPreview() {
-    MaterialTheme {
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            BloodGlucoseCard(
-                status = "In Range",
-                glucoseValue = 7,
-                mealType ="BFF",
-                minTarget ="121",
-                maxTarget ="121"
             )
         }
     }

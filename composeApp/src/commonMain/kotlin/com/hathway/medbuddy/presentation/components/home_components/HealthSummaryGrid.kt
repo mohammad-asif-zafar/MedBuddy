@@ -7,9 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hathway.medbuddy.presentation.theme.Danger
-import com.hathway.medbuddy.presentation.theme.Success
-import com.hathway.medbuddy.presentation.theme.Warning
+import com.hathway.medbuddy.presentation.theme.*
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
 
@@ -41,7 +39,7 @@ fun HealthSummaryGrid(
                 value = if (hbA1c > 0) "${((hbA1c * 10).toInt() / 10.0)}%"
                 else stringResource(Res.string.not_available),
                 subtitle = stringResource(Res.string.good),
-                valueColor = Success,
+                valueColor = StatusInRange,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -55,14 +53,14 @@ fun HealthSummaryGrid(
                 value = if (highest > 0) highest.toString()
                 else stringResource(Res.string.not_available),
                 unit = stringResource(Res.string.glucose_unit),
-                valueColor = Warning,
+                valueColor = StatusHigh,
                 modifier = Modifier.weight(1f)
             )
             SummaryCard(
                 title = stringResource(Res.string.lowest),
                 value = if (lowest > 0) lowest.toString() else stringResource(Res.string.not_available),
                 unit = stringResource(Res.string.glucose_unit),
-                valueColor = Danger,
+                valueColor = StatusLow,
                 modifier = Modifier.weight(1f)
             )
         }

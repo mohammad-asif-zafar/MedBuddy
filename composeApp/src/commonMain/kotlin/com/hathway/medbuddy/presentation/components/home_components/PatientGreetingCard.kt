@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,9 +26,6 @@ import com.hathway.medbuddy.util.formatDisplayDate
 import com.hathway.medbuddy.util.getGreetingIconImageVector
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import com.hathway.medbuddy.util.greetingIconColor
-import com.hathway.medbuddy.presentation.theme.CardBackgroundCream
-import com.hathway.medbuddy.presentation.theme.TextDark
-import com.hathway.medbuddy.presentation.theme.TextSecondaryMuted
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -48,7 +44,7 @@ fun IntegratedGlucoseCardSection(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = CardBackgroundCream
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -65,7 +61,7 @@ fun IntegratedGlucoseCardSection(
                             text = "$greeting ${patientName.displayName()} ",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = TextDark
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Icon(
                             imageVector = getGreetingIconImageVector(),
@@ -83,7 +79,9 @@ fun IntegratedGlucoseCardSection(
                             formatDisplayDate(
                                 getNowLocalDateTime().date
                             )
-                        }", style = MaterialTheme.typography.bodySmall, color = TextSecondaryMuted
+                        }", 
+                        style = MaterialTheme.typography.bodySmall, 
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                     )
                 }
             }
@@ -94,9 +92,11 @@ fun IntegratedGlucoseCardSection(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(
                     topStart = 20.dp, topEnd = 20.dp, bottomStart = 24.dp, bottomEnd = 24.dp
-                ), colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                ), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                ), 
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ), 
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -108,7 +108,7 @@ fun IntegratedGlucoseCardSection(
                             text = if (isToday) stringResource(Res.string.todays_glucose) else stringResource(Res.string.last_reading),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
-                            color = TextDark
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Spacer(modifier = Modifier.height(2.dp))
@@ -116,7 +116,7 @@ fun IntegratedGlucoseCardSection(
                         Text(
                             text = mealType,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = TextSecondaryMuted
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -126,12 +126,12 @@ fun IntegratedGlucoseCardSection(
                                 text = glucoseValue.toString(),
                                 fontSize = 44.sp,
                                 fontWeight = FontWeight.Black,
-                                color = TextDark
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = " " + stringResource(Res.string.glucose_unit),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = TextDark,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.padding(bottom = 6.dp)
                             )
                         }
@@ -145,7 +145,7 @@ fun IntegratedGlucoseCardSection(
                         Text(
                             text = stringResource(Res.string.glucose_target, minTarget, maxTarget),
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextSecondaryMuted
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 

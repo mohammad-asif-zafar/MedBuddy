@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.presentation.theme.*
@@ -31,11 +30,6 @@ fun SummaryMetricsSection(
     totalReadings: Int,
     selectedFilterDays: String,
     modifier: Modifier = Modifier,
-    titleColor: Color = OnBackground,
-    healthyColor: Color = Success,
-    warningColor: Color = Warning,
-    dangerColor: Color = Danger,
-    neutralColor: Color = Info
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -44,20 +38,19 @@ fun SummaryMetricsSection(
         isVisible = true
     }
 
-    // Dynamic healthcare compliance logic using your actual theme state variables
-    val glucoseColor = if (avgGlucose > 130) dangerColor else healthyColor
+    val glucoseColor = if (avgGlucose > 130) StatusLow else StatusInRange
     val hba1cColor = when {
-        hba1c >= 6.5 -> dangerColor
-        hba1c >= 5.7 -> warningColor
-        else -> healthyColor
+        hba1c >= 6.5 -> StatusLow
+        hba1c >= 5.7 -> StatusHigh
+        else -> StatusInRange
     }
-    val tirColor = if (timeInRange >= 70) healthyColor else dangerColor
+    val tirColor = if (timeInRange >= 70) StatusInRange else StatusLow
 
     Card(
-        modifier = modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
+        modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MiniCardBackground
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         border = BorderStroke(
             width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
@@ -69,24 +62,21 @@ fun SummaryMetricsSection(
                 text = stringResource(Res.string.summary_title_days, selectedFilterDays),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                color = titleColor,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(start = 2.dp)
             )
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            //  Combined grid fade animation wrapper block
             AnimatedVisibility(
                 visible = isVisible,
                 enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically(
                     animationSpec = tween(durationMillis = 500)
                 ) { it / 6 }) {
-                //  Modern 4-column horizontal configuration grid matching the image layout
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // 1. Average Glucose
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.avg_glucose_title),
@@ -96,7 +86,6 @@ fun SummaryMetricsSection(
                         icon = painterResource(Res.drawable.ic_glucose_pulse)
                     )
 
-                    // 2. HbA1c
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.hba1c_title),
@@ -106,7 +95,6 @@ fun SummaryMetricsSection(
                         icon = painterResource(Res.drawable.ic_blood_drop_outline)
                     )
 
-                    // 3. Time In Range
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.time_in_range_title),
@@ -116,96 +104,16 @@ fun SummaryMetricsSection(
                         icon = painterResource(Res.drawable.ic_time_in_range)
                     )
 
-                    // 4. Total Readings
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.total_readings_title),
                         value = "$totalReadings",
                         subValue = "",
-                        valueColor = neutralColor,
+                        valueColor = MaterialTheme.colorScheme.primary,
                         icon = Icons.AutoMirrored.Filled.Assignment
                     )
                 }
             }
         }
-    }
-}
-
-
-// ==================== PREVIEW ENGINE (TESTING THRESHOLDS) ====================
-
-@Preview(name = "Healthy Metrics Profile")
-@Composable
-fun SummaryMetricsHealthyPreview() {
-    SummaryMetricsSection(
-        avgGlucose = 112, hba1c = 5.4,
-        timeInRange = 92,
-        totalReadings = 145,
-        selectedFilterDays = "7 Days",
-    )
-}
-
-@Composable
-private fun MetricsGridPreviewTheme(
-    isDark: Boolean = false, isCream: Boolean = false, content: @Composable () -> Unit
-) {
-    val colors = when {
-        isCream -> lightColorScheme(
-            surfaceVariant = PreviewSurfaceVariantCream,
-            surface = Color.White,
-            onSurfaceVariant = PreviewOnSurfaceVariantCream,
-            onSurface = Color(0xFF2C3E50),
-            primary = DeepGreen,
-            error = Destructive
-        )
-
-        isDark -> darkColorScheme(
-            surfaceVariant = PreviewSurfaceVariantDark,
-            surface = Color(0xFF2B2B28),
-            onSurfaceVariant = PreviewOnSurfaceVariantDark,
-            onSurface = Color(0xFF90CAF9),
-            primary = Primary,
-            error = Error
-        )
-
-        else -> lightColorScheme(
-            surfaceVariant = Color(0xFFF5F5F5),
-            surface = Color.White,
-            onSurfaceVariant = Color(0xFF757575),
-            onSurface = Color(0xFF1976D2),
-            primary = Success,
-            error = Danger
-        )
-    }
-    MaterialTheme(colorScheme = colors, content = content)
-}
-
-@Preview
-@Composable
-fun SummaryGridMetricsCreamPreview() {
-    MetricsGridPreviewTheme(isCream = true) {
-        SummaryMetricsSection(
-            avgGlucose = 124,
-            hba1c = 5.9,
-            timeInRange = 78,
-            totalReadings = 142,
-            selectedFilterDays = "30 Days",
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-}
-
-@Preview
-@Composable
-fun SummaryGridMetricsDarkPreview() {
-    MetricsGridPreviewTheme(isDark = true) {
-        SummaryMetricsSection(
-            avgGlucose = 124,
-            hba1c = 5.9,
-            timeInRange = 78,
-            totalReadings = 142,
-            selectedFilterDays = "90 Days",
-            modifier = Modifier.padding(16.dp)
-        )
     }
 }
