@@ -10,6 +10,7 @@ expect object FirebaseManager {
     suspend fun getUserProfile(userId: String): CurrentUser?
     suspend fun saveUserProfile(userId: String, name: String, age: String, weight: String, bloodType: String)
     suspend fun updateProfilePicture(userId: String, imageBytes: ByteArray): String?
+    suspend fun updateFcmToken(userId: String, token: String)
 }
 
 data class CurrentUser(

@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.ArrowCircleUp
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -50,7 +50,7 @@ fun ReportsScreen(
         listOf(
             Icons.Default.CheckCircle to "Most of your readings are within the target range. Great job!",
             Icons.Default.ArrowCircleUp to "After lunch readings tend to be higher than other times.",
-            Icons.Default.TrendingUp to "Average glucose improved by 8% compared to last 30 days.",
+            Icons.AutoMirrored.Filled.TrendingUp to "Average glucose improved by 8% compared to last 30 days.",
             Icons.Default.CheckCircle to "No low glucose episodes in the last 7 days."
         )
     }

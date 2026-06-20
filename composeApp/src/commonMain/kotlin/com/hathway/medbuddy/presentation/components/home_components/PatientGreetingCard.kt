@@ -42,7 +42,8 @@ fun IntegratedGlucoseCardSection(
     mealType: String,
     status: String,
     minTarget: String,
-    maxTarget: String
+    maxTarget: String,
+    isToday: Boolean = true
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -64,7 +65,7 @@ fun IntegratedGlucoseCardSection(
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = "$greeting, ${patientName.displayName()} ",
+                            text = "$greeting ${patientName.displayName()} ",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF1C1B1F)
@@ -80,7 +81,7 @@ fun IntegratedGlucoseCardSection(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = stringResource(Res.string.today) + " • ${
+                        text = (if (isToday) stringResource(Res.string.today) else "Last Reading") + " • ${
                             formatDisplayDate(
                                 getNowLocalDateTime().date
                             )
@@ -108,7 +109,7 @@ fun IntegratedGlucoseCardSection(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = stringResource(Res.string.todays_glucose),
+                            text = if (isToday) stringResource(Res.string.todays_glucose) else "Last Reading",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF1C1B1F)

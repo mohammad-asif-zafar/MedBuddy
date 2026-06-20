@@ -256,4 +256,20 @@
     <string name="filter_30_days">30 Days</string>
     <string name="filter_90_days">90 Days</string>
     <string name="filter_custom">Custom</string>
+    <!-- Notifications -->
+    <string name="daily_log_reminder">Daily Log Reminder</string>
+    <string name="daily_log_reminder_desc">You haven\'t logged any glucose readings today. Consistency is key!</string>
+    <string name="missed_breakfast_log">Missed Breakfast Log?</string>
+    <string name="missed_breakfast_log_desc">Don\'t forget to log your fasting glucose from this morning.</string>
+    <string name="high_glucose_alert">High Glucose Alert</string>
+    <string name="high_glucose_alert_desc">Your last reading was %1$d mg/dL. Consider contacting your doctor if it stays high.</string>
+    <string name="low_glucose_alert">Low Glucose Alert</string>
+    <string name="low_glucose_alert_desc">Your last reading was %1$d mg/dL. Please consume fast-acting sugar immediately.</string>
+    <string name="upcoming_appointment">Upcoming Appointment</string>
+    <string name="upcoming_appointment_desc">You have an appointment with %1$s in %2$d days.</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="back_button_desc">Navigate back to dashboard</string>
+    <string name="notifications_empty_title">All Caught Up!</string>
+    <string name="notifications_empty_desc">You have no unread medical notifications or log reminders right now.</string>
+
 </resources>

@@ -32,7 +32,8 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    onOpenNotifications: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -45,7 +46,6 @@ fun HomeScreen(
         Box(
             modifier = Modifier.fillMaxWidth().background(
                 Color(0xFFFEF9F0)
-
             )
         )
 
@@ -53,7 +53,6 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
             // Home Tool Bar
             item {
                 MedBuddyTopBar(
@@ -61,17 +60,17 @@ fun HomeScreen(
                     leftIcon = Icons.Default.Menu,
                     rightIcon = Icons.Outlined.Notifications,
                     onLeftClick = { },
-                    onRightClick = { },
+                    onRightClick = { onOpenNotifications() },
                     titleColor = Color(0xFF4F6B35)
                 )
             }
             // Section 1: Greeting with patient info
-            //  Section 2:  Today's Glucose
+            // Section 2:  Today's Glucose
             item {
                 // Determine the correct meal period enum safely
                 val currentPeriod = uiState.lastMealPeriod
                 val targetData = calculateGlucoseTargets(
-                    valueMgMl = uiState.lastReading.toDouble(),
+                    valueMgMl = uiState.lastReading.toDouble() / 100.0,
                     mealType = currentPeriod,
                     hasDiabetes = true
                 )
@@ -81,8 +80,9 @@ fun HomeScreen(
                     glucoseValue = uiState.lastReading,
                     mealType = uiState.lastMealType,
                     status = uiState.glucoseStatusText,
-                    minTarget = (targetData.minTarget * 100).toString(),
-                    maxTarget = (targetData.maxTarget * 100).toString()
+                    minTarget = (targetData.minTarget * 100).toInt().toString(),
+                    maxTarget = (targetData.maxTarget * 100).toInt().toString(),
+                    isToday = uiState.isToday
                 )
             }
             //  Section 3: Doctor Information

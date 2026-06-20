@@ -55,6 +55,7 @@ data class HomeUiState(
     val lastReading: Int = 0,
     val lastReadingTime: String = "",
     val lastMealType: String = "",
+    val isToday: Boolean = true,
     val lastMealPeriod: TimePeriod = TimePeriod.BEFORE_BREAKFAST,
     val dailyAverageReadings: List<DailyAverageReading> = emptyList(),
     val last7Readings: List<RecentReading> = emptyList()
@@ -139,6 +140,7 @@ class HomeViewModel(
                         lastReading = dashboard.todayGlucose ?: 0,
                         lastReadingTime = dashboard.recordedTime,
                         lastMealType = dashboard.mealType,
+                        isToday = dashboard.isToday,
                         lastMealPeriod = dashboard.lastMealPeriod,
                         dailyAverageReadings = dashboard.dailyAverageReadings,
                         last7Readings = dashboard.last7Readings

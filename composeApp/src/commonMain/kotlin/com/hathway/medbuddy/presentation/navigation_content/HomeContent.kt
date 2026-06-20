@@ -6,6 +6,7 @@ import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 
 @Composable
-fun HomeContent(repository: IGlucoseRepository) {
-    HomeScreen(viewModel = HomeViewModel(repository))
+fun HomeContent(repository: IGlucoseRepository,
+                onOpenNotifications: () -> Unit) {
+    HomeScreen(viewModel = HomeViewModel(repository),onOpenNotifications)
 }

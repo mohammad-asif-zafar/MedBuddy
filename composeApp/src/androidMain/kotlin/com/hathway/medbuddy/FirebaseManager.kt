@@ -165,4 +165,15 @@ actual object FirebaseManager {
             null
         }
     }
+
+    actual suspend fun updateFcmToken(userId: String, token: String) {
+        try {
+            firestore.collection("MedBuddy_users")
+                .document(userId)
+                .update("fcmToken", token)
+                .await()
+        } catch (e: Exception) {
+            // Document might not exist yet, or other error
+        }
+    }
 }

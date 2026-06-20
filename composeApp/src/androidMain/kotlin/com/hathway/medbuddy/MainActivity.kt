@@ -1,10 +1,14 @@
 package com.hathway.medbuddy
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -15,7 +19,9 @@ import com.hathway.medbuddy.presentation.ui.LoginScreen
 import com.hathway.medbuddy.data.remote.FirebaseSyncService
 import com.hathway.medbuddy.data.repository.DoctorRepository
 import com.hathway.medbuddy.data.repository.GlucoseRepository
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : ComponentActivity() {
 
@@ -29,6 +35,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        askNotificationPermission()
 
         googleAuthUiClient = GoogleAuthUiClient(this)
 
@@ -49,6 +57,7 @@ class MainActivity : ComponentActivity() {
                 try {
 
                     FirebaseSyncService(this@MainActivity).createUserIfNotExists()
+                    syncFcmToken()
 
                     authState.value = AuthState.Home
 
@@ -92,6 +101,37 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d(TAG, "Notification permission granted")
+        } else {
+            Log.w(TAG, "Notification permission denied")
+        }
+    }
+
+    private suspend fun syncFcmToken() {
+        try {
+            val userId = FirebaseManager.auth.currentUser?.uid ?: return
+            val token = FirebaseMessaging.getInstance().token.await()
+            FirebaseManager.updateFcmToken(userId, token)
+            Log.d(TAG, "FCM Token synced to Firestore")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to sync FCM Token", e)
+        }
+    }
+
     private val launcher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -118,6 +158,7 @@ class MainActivity : ComponentActivity() {
                     FirebaseSyncService(
                         this@MainActivity
                     ).createUserIfNotExists()
+                    syncFcmToken()
 
                     authState.value = AuthState.Home
 

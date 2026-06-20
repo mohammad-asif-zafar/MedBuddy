@@ -37,11 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.glucose_trend_title
-import medbuddy.composeapp.generated.resources.glucose_unit_mg_dl
-import medbuddy.composeapp.generated.resources.trend_chart_empty_desc
-import medbuddy.composeapp.generated.resources.trend_chart_empty_title
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -103,7 +99,7 @@ fun TrendChartCard(
                         color = brandGreen.copy(alpha = 0.12f)
                     ) {
                         Text(
-                            text = stringResource(Res.string.glucose_trend_title, calculatedAvg),
+                            text = stringResource(Res.string.avg_glucose_pill_format, calculatedAvg),
                             color = brandGreen,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,

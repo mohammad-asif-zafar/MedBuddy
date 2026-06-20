@@ -171,7 +171,7 @@ fun LazyListScope.glucoseItem(
     label: String, value: Int?, selectedDateTime: String
 ) {
     if (value != null) {
-        item {
+        item(key = label) {
             GlucoseReadingCard(
                 label = label, value = value, time = selectedDateTime
             )

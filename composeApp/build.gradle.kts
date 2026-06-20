@@ -42,6 +42,7 @@ kotlin {
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.storage)
+            implementation(libs.firebase.messaging)
             implementation(libs.play.services.auth)
             implementation(libs.ktor.client.okhttp)
         }
