@@ -272,4 +272,9 @@
     <string name="notifications_empty_title">All Caught Up!</string>
     <string name="notifications_empty_desc">You have no unread medical notifications or log reminders right now.</string>
 
+    <string name="insight_within_range">Most of your readings are within the target range. Great job!</string>
+    <string name="insight_lunch_spike">After lunch readings tend to be higher than other times.</string>
+    <string name="insight_glucose_improved">Average glucose improved by 8% compared to last 30 days.</string>
+    <string name="insight_no_lows">No low glucose episodes in the last 7 days.</string>
+
 </resources>

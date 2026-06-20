@@ -4,46 +4,23 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Adjust
-import androidx.compose.material.icons.filled.Assignment
-import androidx.compose.material.icons.filled.Bloodtype
-import androidx.compose.material.icons.filled.WaterDrop
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.automirrored.filled.Assignment
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.*
 import kotlinx.coroutines.delay
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.avg_glucose_title
-import medbuddy.composeapp.generated.resources.avg_glucose_unit
-import medbuddy.composeapp.generated.resources.hba1c_estimate
-import medbuddy.composeapp.generated.resources.hba1c_title
-import medbuddy.composeapp.generated.resources.summary_title_days
-import medbuddy.composeapp.generated.resources.time_in_range_title
-import medbuddy.composeapp.generated.resources.total_readings_title
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -52,35 +29,40 @@ fun SummaryMetricsSection(
     hba1c: Double,
     timeInRange: Int,
     totalReadings: Int,
+    selectedFilterDays: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    titleColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    healthyColor: Color = MaterialTheme.colorScheme.primary,
-    warningColor: Color = MaterialTheme.colorScheme.error,
-    neutralColor: Color = MaterialTheme.colorScheme.onSurface,
-    selectedFilterDays: String // 7 Days 90 Days 30 Days
+    titleColor: Color = OnBackground,
+    healthyColor: Color = Success,
+    warningColor: Color = Warning,
+    dangerColor: Color = Danger,
+    neutralColor: Color = Info
 ) {
+    var isVisible by remember { mutableStateOf(false) }
 
-    // Animation state triggers
-    var isVisibleRow1 by remember { mutableStateOf(false) }
-    var isVisibleRow2 by remember { mutableStateOf(false) }
-
-    // Sequential load engine
     LaunchedEffect(Unit) {
-        delay(100) // Small initial delay to let the screen mount
-        isVisibleRow1 = true
-        delay(150) // Staggered transition effect for Row 2
-        isVisibleRow2 = true
+        delay(100)
+        isVisible = true
     }
 
-    val hba1cColor = if (hba1c >= 5.7) warningColor else healthyColor
-    val tirColor = if (timeInRange >= 70) healthyColor else warningColor
-    val glucoseColor = if (avgGlucose > 130) warningColor else healthyColor
+    // Dynamic healthcare compliance logic using your actual theme state variables
+    val glucoseColor = if (avgGlucose > 130) dangerColor else healthyColor
+    val hba1cColor = when {
+        hba1c >= 6.5 -> dangerColor
+        hba1c >= 5.7 -> warningColor
+        else -> healthyColor
+    }
+    val tirColor = if (timeInRange >= 70) healthyColor else dangerColor
 
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        colors = CardDefaults.cardColors(
+            containerColor = MiniCardBackground
+        ),
+        border = BorderStroke(
+            width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Text(
@@ -90,64 +72,58 @@ fun SummaryMetricsSection(
                 color = titleColor,
                 modifier = Modifier.padding(start = 2.dp)
             )
-            Spacer(modifier = Modifier.height(12.dp))
 
-            // 🎬 Row 1 Fade & Slide Animation Wrapper
+            Spacer(modifier = Modifier.height(14.dp))
+
+            //  Combined grid fade animation wrapper block
             AnimatedVisibility(
-                visible = isVisibleRow1,
-                enter = fadeIn(animationSpec = tween(durationMillis = 400)) + slideInVertically(
-                    animationSpec = tween(durationMillis = 400)
-                ) { it / 4 }) {
+                visible = isVisible,
+                enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically(
+                    animationSpec = tween(durationMillis = 500)
+                ) { it / 6 }) {
+                //  Modern 4-column horizontal configuration grid matching the image layout
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    // 1. Average Glucose
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.avg_glucose_title),
                         value = "$avgGlucose",
                         subValue = stringResource(Res.string.avg_glucose_unit),
                         valueColor = glucoseColor,
-                        icon = Icons.Default.WaterDrop
+                        icon = painterResource(Res.drawable.ic_glucose_pulse)
                     )
+
+                    // 2. HbA1c
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.hba1c_title),
-                        value = "${(hba1c * 10).toInt() / 10.0}%", // Clean format
+                        value = "${(hba1c * 10).toInt() / 10.0}%",
                         subValue = stringResource(Res.string.hba1c_estimate),
                         valueColor = hba1cColor,
-                        icon = Icons.Default.Bloodtype
+                        icon = painterResource(Res.drawable.ic_blood_drop_outline)
                     )
-                }
-            }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // 🎬 Row 2 Fade & Slide Animation Wrapper (Staggered)
-            AnimatedVisibility(
-                visible = isVisibleRow2,
-                enter = fadeIn(animationSpec = tween(durationMillis = 400)) + slideInVertically(
-                    animationSpec = tween(durationMillis = 400)
-                ) { it / 4 }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
+                    // 3. Time In Range
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.time_in_range_title),
-                        value = "${timeInRange}%",
-                        subValue = "-",
+                        value = "$timeInRange%",
+                        subValue = "",
                         valueColor = tirColor,
-                        icon = Icons.Default.Adjust
+                        icon = painterResource(Res.drawable.ic_time_in_range)
                     )
+
+                    // 4. Total Readings
                     SummaryMiniCard(
                         modifier = Modifier.weight(1f),
                         title = stringResource(Res.string.total_readings_title),
                         value = "$totalReadings",
-                        subValue = "-",
+                        subValue = "",
                         valueColor = neutralColor,
-                        icon = Icons.Default.Assignment
+                        icon = Icons.AutoMirrored.Filled.Assignment
                     )
                 }
             }

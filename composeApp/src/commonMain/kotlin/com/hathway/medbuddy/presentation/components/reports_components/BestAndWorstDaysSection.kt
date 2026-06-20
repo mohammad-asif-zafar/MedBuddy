@@ -1,5 +1,6 @@
 package com.hathway.medbuddy.presentation.components.reports_components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,14 +42,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.hathway.medbuddy.presentation.theme.Error
+import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 import com.hathway.medbuddy.presentation.theme.OnPrimaryContainer
 import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.presentation.theme.PrimaryContainer
 import com.hathway.medbuddy.presentation.theme.Surface
 import com.hathway.medbuddy.presentation.theme.SurfaceVariant
-import io.ktor.serialization.Configuration
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.best_and_worst_days_title
+import medbuddy.composeapp.generated.resources.ic_calendar_check
 import medbuddy.composeapp.generated.resources.info_button_desc
 import medbuddy.composeapp.generated.resources.label_best_day
 import medbuddy.composeapp.generated.resources.label_worst_day
@@ -73,9 +75,15 @@ fun BestAndWorstDaysSection(
     var showTooltip by remember { mutableStateOf(false) }
 
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        colors = CardDefaults.cardColors(
+            containerColor = MiniCardBackground
+        ),
+        border = BorderStroke(
+            width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 16.dp)) {
 
@@ -149,7 +157,7 @@ fun BestAndWorstDaysSection(
                     title = stringResource(Res.string.label_best_day),
                     date = bestDate,
                     value = bestAvg,
-                    icon = Icons.Default.CheckCircle,
+                    icon = Res.drawable.ic_calendar_check,
                     modifier = Modifier.weight(1f),
                     containerColor = bestContainerColor,
                     accentColor = bestAccentColor,
@@ -161,7 +169,7 @@ fun BestAndWorstDaysSection(
                     title = stringResource(Res.string.label_worst_day),
                     date = worstDate,
                     value = worstAvg,
-                    icon = Icons.Default.Cancel,
+                    icon = Res.drawable.ic_calendar_check,
                     modifier = Modifier.weight(1f),
                     containerColor = worstContainerColor,
                     accentColor = worstAccentColor,

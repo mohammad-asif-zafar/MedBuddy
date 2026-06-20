@@ -3,6 +3,7 @@ package com.hathway.medbuddy.presentation.components.reports_components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,11 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.presentation.theme.Error
+import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 import com.hathway.medbuddy.presentation.theme.OnSurface
 import com.hathway.medbuddy.presentation.theme.Primary
-import com.hathway.medbuddy.presentation.theme.SurfaceVariant
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.before_breakfast
+import medbuddy.composeapp.generated.resources.glucose_unit_mg_dl
 import org.jetbrains.compose.resources.stringResource
-import medbuddy.composeapp.generated.resources.*
 
 @Composable
 fun TimeOfDayItem(
@@ -42,11 +45,11 @@ fun TimeOfDayItem(
     val valueDisplayColor = if (isHigh) warningColor else healthyColor
 
     Surface(
-        // ✅ Added .shadow modifier for explicit 4.dp elevation control
-        modifier = modifier.height(115.dp)
+        modifier = modifier.height(115.dp).fillMaxWidth()
+            .padding(start = 12.dp, end = 12.dp, top = 6.dp)
             .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp)),
         shape = RoundedCornerShape(12.dp),
-        color = SurfaceVariant
+        color = MiniCardBackground
     ) {
         Column(
             modifier = Modifier.padding(6.dp),

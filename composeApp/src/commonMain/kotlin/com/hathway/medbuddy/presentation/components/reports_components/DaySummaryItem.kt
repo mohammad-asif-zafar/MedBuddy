@@ -30,13 +30,17 @@ import androidx.compose.material.icons.outlined.WaterDrop
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.tooling.preview.Preview
+import medbuddy.composeapp.generated.resources.ic_calendar_cancel
+import medbuddy.composeapp.generated.resources.ic_calendar_check
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun DaySummaryItem(
     title: String,
     date: String,
     value: Int,
-    icon: ImageVector,
+    icon: DrawableResource,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     accentColor: Color = MaterialTheme.colorScheme.primary,
@@ -53,7 +57,7 @@ fun DaySummaryItem(
             modifier = Modifier.padding(12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Icon(
-                imageVector = icon,
+                painter = painterResource(icon),
                 contentDescription = null,
                 tint = accentColor,
                 modifier = Modifier.size(28.dp)
@@ -136,7 +140,7 @@ fun DaySummaryItemLightPreview() {
             title = "Blood Glucose",
             date = "Today, 19 Jun",
             value = 142,
-            icon = Icons.Outlined.WaterDrop,
+            icon = Res.drawable.ic_calendar_check,
             modifier = Modifier.padding(16.dp)
         )
     }
@@ -150,7 +154,7 @@ fun DaySummaryItemDarkPreview() {
             title = "Blood Glucose",
             date = "Today, 19 Jun",
             value = 142,
-            icon = Icons.Outlined.WaterDrop,
+            icon = Res.drawable.ic_calendar_cancel,
             modifier = Modifier.padding(16.dp)
         )
     }
@@ -164,7 +168,7 @@ fun DaySummaryItemCreamPreview() {
             title = "Blood Glucose",
             date = "Today, 19 Jun",
             value = 142,
-            icon = Icons.Outlined.WaterDrop,
+            icon = Res.drawable.ic_calendar_check,
             modifier = Modifier.padding(16.dp)
         )
     }

@@ -88,7 +88,7 @@ fun AddScreen(
     var glucoseValue by remember { mutableStateOf("") }
     var time by remember { mutableStateOf(getCurrentTime12Hour()) }
     var notes by remember { mutableStateOf("") }
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var showSuccessDialog by remember { mutableStateOf(false) }
 
@@ -129,7 +129,8 @@ fun AddScreen(
             title = {
                 Text(
                     text = stringResource(Res.string.save_reading),
-                    style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
                 )
             },
             text = {
@@ -154,7 +155,7 @@ fun AddScreen(
 
     Scaffold(
         snackbarHost = {
-            SnackbarHost(snackbarHostState)
+            SnackbarHost(snackBarHostState)
         }) { padding ->
         Card(
             modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp).fillMaxHeight()

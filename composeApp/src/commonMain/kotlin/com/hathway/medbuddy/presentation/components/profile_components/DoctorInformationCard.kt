@@ -1,5 +1,6 @@
 package com.hathway.medbuddy.presentation.components.profile_components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 
 @Composable
 fun DoctorInformationCard(
@@ -43,10 +45,13 @@ fun DoctorInformationCard(
     val hasDoctorInfo = doctorName.isNotBlank()
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFEBEEE4) // Matches your custom warm cream hex code
+            containerColor = MiniCardBackground
+        ),
+        border = BorderStroke(
+            width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {

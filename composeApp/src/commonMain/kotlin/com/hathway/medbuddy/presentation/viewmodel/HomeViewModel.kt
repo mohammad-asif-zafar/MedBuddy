@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.model.TimePeriod
+import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseDashboardUseCase
+import com.hathway.medbuddy.domain.usecase.GetNotificationsUseCase
 import com.hathway.medbuddy.FirebaseManager
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
 import com.hathway.medbuddy.domain.usecase.RecentReading
@@ -58,7 +60,8 @@ data class HomeUiState(
     val isToday: Boolean = true,
     val lastMealPeriod: TimePeriod = TimePeriod.BEFORE_BREAKFAST,
     val dailyAverageReadings: List<DailyAverageReading> = emptyList(),
-    val last7Readings: List<RecentReading> = emptyList()
+    val last7Readings: List<RecentReading> = emptyList(),
+    val hasUnreadNotifications: Boolean = false
 )
 
 enum class GlucoseStatus {
@@ -80,10 +83,12 @@ data class Medication(
 )
 
 class HomeViewModel(
-    private val repository: IGlucoseRepository
+    private val repository: IGlucoseRepository,
+    private val doctorRepository: IDoctorRepository
 ) : ViewModel() {
 
     private val getGlucoseDashboardUseCase = GetGlucoseDashboardUseCase(repository)
+    private val getNotificationsUseCase = GetNotificationsUseCase(repository, doctorRepository)
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -100,6 +105,7 @@ class HomeViewModel(
             try {
                 val dashboard = getGlucoseDashboardUseCase()
                 val greeting = getGreeting()
+                val notifications = getNotificationsUseCase()
 
                 _uiState.update {
                     it.copy(
@@ -143,7 +149,8 @@ class HomeViewModel(
                         isToday = dashboard.isToday,
                         lastMealPeriod = dashboard.lastMealPeriod,
                         dailyAverageReadings = dashboard.dailyAverageReadings,
-                        last7Readings = dashboard.last7Readings
+                        last7Readings = dashboard.last7Readings,
+                        hasUnreadNotifications = notifications.isNotEmpty()
                     )
                 }
             } catch (e: Exception) {

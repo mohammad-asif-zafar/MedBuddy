@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MedicalServices
@@ -16,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.profile_components.DoctorInformationCard
@@ -24,6 +22,7 @@ import com.hathway.medbuddy.presentation.components.profile_components.EditProfi
 import com.hathway.medbuddy.presentation.components.profile_components.ProfileHeaderCard
 import com.hathway.medbuddy.presentation.components.profile_components.SectionHeader
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
+import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.presentation.viewmodel.ProfileViewModel
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.nav_profile
@@ -44,8 +43,8 @@ fun ProfileScreen(
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
-            .padding(16.dp), verticalArrangement = Arrangement.spacedBy(20.dp)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         item {
@@ -54,7 +53,7 @@ fun ProfileScreen(
                 rightIcon = Icons.Outlined.Settings,
                 onLeftClick = { },
                 onRightClick = { },
-                titleColor = Color(0xFF4F6B35)
+                titleColor = Primary
             )
         }
 

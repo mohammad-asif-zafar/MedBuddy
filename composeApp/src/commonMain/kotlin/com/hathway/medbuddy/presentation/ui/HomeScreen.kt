@@ -24,6 +24,8 @@ import com.hathway.medbuddy.presentation.components.home_components.IntegratedGl
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.home_components.RecentRecordsCard
 import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
+import com.hathway.medbuddy.presentation.theme.LightBackground
+import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
 import com.hathway.medbuddy.util.calculateGlucoseTargets
 import medbuddy.composeapp.generated.resources.Res
@@ -39,18 +41,11 @@ fun HomeScreen(
 
     Box(
         modifier = Modifier.fillMaxSize().background(
-            MaterialTheme.colorScheme.background
+            LightBackground
         )
     ) {
-        // Header background
-        Box(
-            modifier = Modifier.fillMaxWidth().background(
-                Color(0xFFFEF9F0)
-            )
-        )
-
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp),
+            modifier = Modifier.fillMaxSize().padding(start = 12.dp, end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Home Tool Bar
@@ -61,7 +56,8 @@ fun HomeScreen(
                     rightIcon = Icons.Outlined.Notifications,
                     onLeftClick = { },
                     onRightClick = { onOpenNotifications() },
-                    titleColor = Color(0xFF4F6B35)
+                    titleColor = Primary,
+                    showBadge = uiState.hasUnreadNotifications
                 )
             }
             // Section 1: Greeting with patient info

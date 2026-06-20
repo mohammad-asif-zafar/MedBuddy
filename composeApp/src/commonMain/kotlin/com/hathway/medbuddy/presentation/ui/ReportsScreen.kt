@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.TrendingUp
-import androidx.compose.material.icons.filled.ArrowCircleUp
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -21,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.components.reports_components.AverageGlucoseByTimeOfDay
 import com.hathway.medbuddy.presentation.components.reports_components.BestAndWorstDaysSection
@@ -30,30 +25,39 @@ import com.hathway.medbuddy.presentation.components.reports_components.ReportsTo
 import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
 import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
 import com.hathway.medbuddy.presentation.components.reports_components.TrendChartCard
+import com.hathway.medbuddy.presentation.theme.LightBackground
 import com.hathway.medbuddy.presentation.viewmodel.ReportsViewModel
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.ic_circle_arrow_up
+import medbuddy.composeapp.generated.resources.ic_circle_check
+import medbuddy.composeapp.generated.resources.ic_shield_check
+import medbuddy.composeapp.generated.resources.ic_target_range
+import medbuddy.composeapp.generated.resources.insight_glucose_improved
+import medbuddy.composeapp.generated.resources.insight_lunch_spike
+import medbuddy.composeapp.generated.resources.insight_no_lows
+import medbuddy.composeapp.generated.resources.insight_within_range
 
 @Composable
 fun ReportsScreen(
     viewModel: ReportsViewModel,
     onMenuClick: () -> Unit,
     onCalendarClick: () -> Unit,
-    onExportPdf: () -> Unit,
-    onShareReport: () -> Unit
+    onExportPdf: () -> Unit = {},
+    onShareReport: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Shared brand palette config
-    val backgroundColor = Color(0xFFF7F7EE)
-
-    // Insights text mapping dataset matching reports footer block
+    // Insights data mapping matrix cleanly decoupled into string resource packages
     val reportInsightsList = remember {
         listOf(
-            Icons.Default.CheckCircle to "Most of your readings are within the target range. Great job!",
-            Icons.Default.ArrowCircleUp to "After lunch readings tend to be higher than other times.",
-            Icons.AutoMirrored.Filled.TrendingUp to "Average glucose improved by 8% compared to last 30 days.",
-            Icons.Default.CheckCircle to "No low glucose episodes in the last 7 days."
+            Res.drawable.ic_circle_check to Res.string.insight_within_range,
+            Res.drawable.ic_circle_arrow_up to Res.string.insight_lunch_spike,
+            Res.drawable.ic_target_range to Res.string.insight_glucose_improved,
+            Res.drawable.ic_shield_check to Res.string.insight_no_lows
         )
     }
+
+
 
     Scaffold(
         topBar = {
@@ -61,9 +65,10 @@ fun ReportsScreen(
                 selectedFilter = uiState.selectedFilter,
                 onFilterSelected = { viewModel.onFilterSelected(it) },
                 onMenuClick = onMenuClick,
-                onCalendarClick = onCalendarClick
+                onCalendarClick = onCalendarClick,
+                enableMenu = false
             )
-        }, containerColor = backgroundColor
+        }, containerColor = LightBackground
     ) { innerPadding ->
         if (uiState.isLoading) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -105,6 +110,8 @@ fun ReportsScreen(
                             afterDinner = data.avgByTimeOfDay.afterDinner
                         )
                     }
+
+                    // 3. Chart Segment TrendChartCard
                     item {
                         TrendChartCard(readings = data.trendChartReadings, modifier = Modifier)
                     }
@@ -122,15 +129,13 @@ fun ReportsScreen(
                     // 6. Automated Insight List & Double Action Footer
                     item {
                         InsightsAndActionsFooter(
-                            insights = reportInsightsList,
-                            onExportPdf = onExportPdf,
-                            onShareReport = onShareReport
+                            insights = reportInsightsList
                         )
                     }
 
                     // Layout buffer space anchor at the bottom of the column screen track
                     item {
-                        Spacer(modifier = Modifier.navigationBarsPadding().height(8.dp))
+                        Spacer(modifier = Modifier.navigationBarsPadding().height(4.dp))
                     }
                 }
             }

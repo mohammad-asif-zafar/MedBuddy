@@ -1,5 +1,6 @@
 package com.hathway.medbuddy.presentation.components.reports_components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 import com.hathway.medbuddy.presentation.theme.Primary
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
@@ -56,12 +58,15 @@ fun AverageGlucoseByTimeOfDay(
     )
 
     Card(
-        modifier = modifier.fillMaxWidth().padding(16.dp),
+        modifier = modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            //  Dynamic Theme Color: Swapped brandCream literal with custom surface variant token
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = MiniCardBackground
+        ),
+        border = BorderStroke(
+            width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -53,7 +54,7 @@ fun SimpleBottomNavigationBar(
                     modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
                     Icon(
-                        imageVector = targetIcon,
+                        painter = painterResource(targetIcon),
                         contentDescription = label,
                         tint = Color.White
                     )
@@ -62,7 +63,7 @@ fun SimpleBottomNavigationBar(
                 NavigationBarItem(
                     icon = {
                         Icon(
-                            imageVector = targetIcon,
+                            painter = painterResource(targetIcon),
                             contentDescription = label
                         )
                     },

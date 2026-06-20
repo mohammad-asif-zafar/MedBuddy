@@ -1,0 +1,44 @@
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Main Calendar Outline Body Frame -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M19,4H5C3.89,4 3,4.89 3,6V20C3,21.11 3.89,22 5,22H19C20.11,22 21,21.11 21,20V6C21,4.89 20.11,4 19,4Z"/>
+
+    <!-- Upper Top Horizontal Header Line Divider -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M3,9H21"/>
+
+    <!-- Left Top Binder Post Hook -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M8,2V6"/>
+
+    <!-- Right Top Binder Post Hook -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M16,2V6"/>
+
+    <!-- Center Content Cancel Cross (X) Accent -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M10,12L14,16M14,12L10,16"/>
+</vector>

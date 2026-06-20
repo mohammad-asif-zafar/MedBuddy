@@ -23,6 +23,8 @@ val OnSecondary = Color.White
 val Background = Color(0xFFF8F7F4)
 val OnBackground = Color(0xFF1D1D1B)
 
+val LightBackground = Color(0xFFFEF9F0)
+
 val Surface = Color.White
 val OnSurface = Color(0xFF1D1D1B)
 
@@ -59,7 +61,7 @@ val DangerContainer = Color(0xFFFDECEC)
 // ========================
 
 val Border = Color(0xFFE4E0D8)
-val Divider = Color(0xFFEAE7E0)
+val Divider = Color(0xFFF6F2F2)
 
 // ========================
 // Error
@@ -71,3 +73,5 @@ val OnError = Color.White
 val HeaderBackground = Color(0xFFF8F4EC)
 val BrandGreen = Color(0xFF4F6B35)
 val CardBorder = Color(0xFFE7E0D5)
+
+val MiniCardBackground = Color(0xFFFFFFFF)

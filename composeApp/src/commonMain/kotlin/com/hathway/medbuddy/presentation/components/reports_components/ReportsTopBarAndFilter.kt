@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,10 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.Background
+import com.hathway.medbuddy.presentation.theme.OnBackground
+import com.hathway.medbuddy.presentation.theme.Primary
+import com.hathway.medbuddy.presentation.theme.PrimaryContainer
 
 @Composable
 fun ReportsTopBarAndFilter(
@@ -48,6 +53,7 @@ fun ReportsTopBarAndFilter(
     onMenuClick: () -> Unit,
     onCalendarClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enableMenu: Boolean,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     brandAccentColor: Color = MaterialTheme.colorScheme.primary,
@@ -71,13 +77,15 @@ fun ReportsTopBarAndFilter(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-           /* IconButton(onClick = onMenuClick) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = stringResource(Res.string.nav_menu_desc),
-                    tint = contentColor
-                )
-            }*/
+            if (enableMenu) {
+                IconButton(onClick = onMenuClick) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = stringResource(Res.string.nav_menu_desc),
+                        tint = contentColor
+                    )
+                }
+            }
             Text(
                 text = stringResource(Res.string.reports_screen_title),
                 fontSize = 22.sp,
@@ -86,9 +94,8 @@ fun ReportsTopBarAndFilter(
             )
             IconButton(onClick = onCalendarClick) {
                 Icon(
-                    imageVector = Icons.Default.Notifications,
+                    imageVector = Icons.Outlined.Notifications,
                     contentDescription = stringResource(Res.string.reports_calendar_desc),
-                    tint = brandAccentColor
                 )
             }
         }
@@ -99,10 +106,11 @@ fun ReportsTopBarAndFilter(
         ) {
             filterItems.forEach { filter ->
                 val isSelected = filter == selectedFilter
+               // if (isSelected) Primary else PrimaryContainer
                 Surface(
                     modifier = Modifier.weight(1f).clickable { onFilterSelected(filter) },
                     shape = RoundedCornerShape(50),
-                    color = if (isSelected) brandAccentColor else unselectedPillColor,
+                    color = if (isSelected) brandAccentColor else Background,
                     border = if (!isSelected) BorderStroke(
                         width = 1.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
                     ) else null
@@ -180,7 +188,9 @@ fun ReportsTopBarAndFilterCreamPreview() {
             selectedFilter = "7 Days",
             onFilterSelected = {},
             onMenuClick = {},
-            onCalendarClick = {})
+            onCalendarClick = {},
+            enableMenu = true
+        )
     }
 }
 
@@ -192,6 +202,7 @@ fun ReportsTopBarAndFilterDarkPreview() {
             selectedFilter = "30 Days",
             onFilterSelected = {},
             onMenuClick = {},
+            enableMenu = false,
             onCalendarClick = {})
     }
 }

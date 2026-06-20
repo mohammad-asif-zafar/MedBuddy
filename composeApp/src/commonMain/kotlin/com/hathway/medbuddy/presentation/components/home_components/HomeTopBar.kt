@@ -57,6 +57,9 @@ fun HomeTopBar() {
     }
 }*/
 
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Badge
+
 @Composable
 fun MedBuddyTopBar(
     title: String,
@@ -65,7 +68,8 @@ fun MedBuddyTopBar(
     rightIcon: ImageVector? = null,
     onLeftClick: () -> Unit = {},
     onRightClick: () -> Unit = {},
-    titleColor: Color = MaterialTheme.colorScheme.onSurface
+    titleColor: Color = MaterialTheme.colorScheme.onSurface,
+    showBadge: Boolean = false
 ) {
 
     Row(
@@ -87,6 +91,8 @@ fun MedBuddyTopBar(
                     contentDescription = null
                 )
             }
+        }else{
+            Spacer(Modifier.width(32.dp))
         }
 
         Text(
@@ -101,10 +107,20 @@ fun MedBuddyTopBar(
             IconButton(
                 onClick = onRightClick
             ) {
-                Icon(
-                    imageVector = rightIcon,
-                    contentDescription = null
-                )
+                BadgedBox(
+                    badge = {
+                        if (showBadge) {
+                            Badge(
+                                containerColor = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = rightIcon,
+                        contentDescription = null
+                    )
+                }
             }
         } else {
             Spacer(

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,7 @@ import com.hathway.medbuddy.data.remote.FirebaseSyncService
 import com.hathway.medbuddy.data.repository.DoctorRepository
 import com.hathway.medbuddy.data.repository.GlucoseRepository
 import com.google.firebase.messaging.FirebaseMessaging
+import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -30,12 +32,15 @@ class MainActivity : ComponentActivity() {
     private lateinit var googleAuthUiClient: GoogleAuthUiClient
 
     private val authState = mutableStateOf<AuthState>(AuthState.Login)
+    private val deepLinkDestination = mutableStateOf(NavigationDestination.HOME)
 
     private val errorMessage = mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        handleIntent(intent)
         askNotificationPermission()
 
         googleAuthUiClient = GoogleAuthUiClient(this)
@@ -95,9 +100,21 @@ class MainActivity : ComponentActivity() {
                     val repository = GlucoseRepository(this)
                     val doctorRepository = DoctorRepository()
 
-                    App(repository, doctorRepository)
+                    App(repository, doctorRepository, initialDestination = deepLinkDestination.value)
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: android.content.Intent) {
+        val target = intent.getStringExtra("navigate_to")
+        if (target == "notifications") {
+            deepLinkDestination.value = NavigationDestination.NOTIFICATIONS
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -22,9 +23,19 @@ import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
 fun App(
-    repository: IGlucoseRepository? = null, doctorRepository: IDoctorRepository? = null
+    repository: IGlucoseRepository? = null,
+    doctorRepository: IDoctorRepository? = null,
+    initialDestination: NavigationDestination = NavigationDestination.HOME
 ) {
-    val currentDestination = remember { mutableStateOf(NavigationDestination.HOME) }
+    // For now, we'll use a simple state instead of viewModel
+    val currentDestination = remember { mutableStateOf(initialDestination) }
+
+    // Update if initial destination changes externally (e.g. from notification)
+    LaunchedEffect(initialDestination) {
+        if (initialDestination != currentDestination.value) {
+            currentDestination.value = initialDestination
+        }
+    }
 
     MedBuddyTheme {
         Scaffold(
@@ -41,10 +52,10 @@ fun App(
             ) {
                 when (currentDestination.value) {
                     NavigationDestination.HOME -> {
-                        repository?.let { initRepository ->
+                        if (repository != null && doctorRepository != null) {
                             HomeContent(
-                                repository = initRepository,
-                                // ✅ Forward top bar notifications click up into state manager
+                                repository = repository,
+                                doctorRepository = doctorRepository,
                                 onOpenNotifications = {
                                     currentDestination.value = NavigationDestination.NOTIFICATIONS
                                 })

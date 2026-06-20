@@ -1,0 +1,15 @@
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Clean, uniform hollow teardrop path -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M12,3.5C12,3.5 6.5,9.5 6.5,14.5C6.5,17.54 8.96,20 12,20C15.04,20 17.5,17.54 17.5,14.5C17.5,9.5 12,3.5 12,3.5Z"/>
+</vector>

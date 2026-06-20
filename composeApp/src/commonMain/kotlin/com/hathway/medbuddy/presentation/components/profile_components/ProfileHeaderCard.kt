@@ -1,5 +1,6 @@
 package com.hathway.medbuddy.presentation.components.profile_components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ import coil3.compose.AsyncImage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -54,11 +56,15 @@ fun ProfileHeaderCard(
     ) {
 
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFEBEEE4)
-            )
+                containerColor = MiniCardBackground
+            ),
+            border = BorderStroke(
+                width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
 
             Column(
@@ -144,7 +150,7 @@ fun ProfileHeaderCard(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().offset(y = (-38).dp).padding(horizontal = 12.dp),
+            modifier = Modifier.fillMaxWidth().offset(y = (-38).dp).padding(horizontal = 12.dp).padding(start = 12.dp, end = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
