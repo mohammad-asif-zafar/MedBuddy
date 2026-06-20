@@ -19,13 +19,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
 import com.hathway.medbuddy.presentation.components.reports_components.AverageGlucoseByTimeOfDay
 import com.hathway.medbuddy.presentation.components.reports_components.BestAndWorstDaysSection
 import com.hathway.medbuddy.presentation.components.reports_components.InsightsAndActionsFooter
 import com.hathway.medbuddy.presentation.components.reports_components.ReportsTopBarAndFilter
 import com.hathway.medbuddy.presentation.components.reports_components.SummaryMetricsSection
 import com.hathway.medbuddy.presentation.components.reports_components.TimeInRangeCard
-import com.hathway.medbuddy.presentation.components.reports_components.TrendChartCard
+import com.hathway.medbuddy.presentation.components.reports_components.GlucoseTrendCard
 import com.hathway.medbuddy.presentation.viewmodel.ReportsViewModel
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.ic_circle_arrow_up
@@ -113,7 +114,7 @@ fun ReportsScreen(
 
                     // 3. Chart Segment TrendChartCard
                     item {
-                        TrendChartCard(readings = data.trendChartReadings, modifier = Modifier)
+                        TrendChartCard(readings = data.trendChartReadings)
                     }
 
                     // 5. High & Low Extremes Performance Highlights Block

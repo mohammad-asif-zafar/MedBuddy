@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
 fun LoadingScreen() {
@@ -69,5 +72,24 @@ fun LoadingScreen() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+
+// Light Theme Preview for Loading Screen
+@Preview(name = "Loading Screen - Light", showBackground = true)
+@Composable
+fun LoadingScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LoadingScreen()
+    }
+}
+
+// Dark Theme Preview for Loading Screen
+@Preview(name = "Loading Screen - Dark", showBackground = true)
+@Composable
+fun LoadingScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        LoadingScreen()
     }
 }

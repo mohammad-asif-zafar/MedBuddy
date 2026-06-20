@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Central Modern Rounded Medical Cross Base Shape -->
+    <path
+        android:fillColor="#2E7D4F"
+        android:pathData="M54,26 C60.63,26 66,31.37 66,38 L66,42 L70,42 C76.63,42 82,47.37 82,54 C82,60.63 76.63,66 70,66 L66,66 L66,70 C66,76.63 60.63,82 54,82 C47.37,82 42,76.63 42,70 L42,66 L38,66 C31.37,66 26,60.63 26,54 C26,47.37 31.37,42 38,42 L42,42 L42,38 C42,31.37 47.37,26 54,26 Z" />
+
+    <!-- Overlay Clean White Glucose Pulse Heartbeat Frequency Signature Track -->
+    <path
+        android:pathData="M29,54 H41 L45,44 L51,64 L57,48 L61,58 L65,54 H79"
+        android:strokeWidth="3.5"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Tiny Accent Teardrop Spark indicating glucose tracking accuracy precision -->
+    <path
+        android:fillColor="#E89A22"
+        android:pathData="M54,14 C54,14 50,18.5 50,20.2 C50,21.2 50.8,22 51.8,22 C52.8,22 53.6,21.2 53.6,20.2 C53.6,18.5 54,14 54,14 Z" />
+</vector>

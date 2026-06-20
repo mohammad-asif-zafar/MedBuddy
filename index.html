@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedBuddy - Smart Glucose Care</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #2E7D4F;
+            --brand-green: #4F6B35;
+            --cream-bg: #FEF9F0;
+            --white: #FFFFFF;
+            --text-dark: #1D1D1B;
+            --text-gray: #6B7280;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; color: var(--text-dark); background-color: var(--white); line-height: 1.6; }
+
+        /* Navigation */
+        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: var(--white); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; color: var(--brand-green); text-decoration: none; }
+        .logo img { width: 40px; height: 40px; border-radius: 10px; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary-green); }
+
+        /* Hero Section */
+        .hero { padding: 80px 5%; background: linear-gradient(135deg, var(--cream-bg) 0%, #fff 100%); display: flex; align-items: center; min-height: 80vh; }
+        .hero-content { flex: 1; }
+        .hero-image { flex: 1; text-align: center; }
+        .hero-image img { width: 300px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); border-radius: 30px; }
+        h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; color: var(--brand-green); }
+        .hero p { font-size: 1.25rem; color: var(--text-gray); margin-bottom: 40px; max-width: 500px; }
+        .cta-btn { padding: 16px 32px; background: var(--primary-green); color: white; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.3s, box-shadow 0.3s; }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(46, 125, 79, 0.2); }
+
+        /* Features */
+        .section { padding: 100px 5%; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.5rem; color: var(--brand-green); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .feature-card { padding: 40px; background: var(--cream-bg); border-radius: 24px; text-align: center; transition: transform 0.3s; }
+        .feature-card:hover { transform: translateY(-10px); }
+        .feature-card i { font-size: 2.5rem; color: var(--primary-green); margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 15px; font-size: 1.5rem; }
+
+        /* Screenshots */
+        .screenshots { background: var(--text-dark); color: white; overflow: hidden; }
+        .screenshots-track { display: flex; gap: 20px; padding: 40px 0; animation: scroll 40s linear infinite; }
+        .screenshots-track img { height: 500px; border-radius: 20px; border: 4px solid #333; }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* AI Insights */
+        .ai-insights { display: flex; align-items: center; gap: 50px; background: var(--cream-bg); border-radius: 40px; margin: 0 5%; }
+        .ai-content { padding: 60px; flex: 1; }
+        .ai-viz { flex: 1; padding: 60px; text-align: center; }
+        .ai-viz img { width: 100%; max-width: 400px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* Footer */
+        footer { padding: 60px 5%; background: var(--white); border-top: 1px solid #eee; text-align: center; }
+        .footer-links { margin: 20px 0; display: flex; justify-content: center; gap: 30px; }
+        .footer-links a { color: var(--text-gray); text-decoration: none; font-size: 0.9rem; }
+        .copyright { color: var(--text-gray); font-size: 0.85rem; margin-top: 40px; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .hero { flex-direction: column; text-align: center; padding-top: 40px; }
+            .hero-content { margin-bottom: 50px; }
+            .nav-links { display: none; }
+            .ai-insights { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">
+            <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
+            MedBuddy
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#screenshots">Screenshots</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="privacy-policy.html">Privacy</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Smart Glucose Care, Simplified.</h1>
+            <p>Track your levels, analyze trends with AI-powered insights, and take control of your health with MedBuddy. Built with Kotlin Multiplatform for a seamless experience.</p>
+            <a href="#download" class="cta-btn">
+                <i class="fab fa-google-play"></i> Get Started
+            </a>
+        </div>
+        <div class="hero-image">
+            <!-- Hero image using one of the main screenshots -->
+            <img src="Screenshots/Screenshot_20260620_204341.png" alt="App Dashboard">
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <div class="section-title">
+            <h2>Why MedBuddy?</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Intelligent Dashboard</h3>
+                <p>Real-time overview of your latest readings, 7-day averages, and estimated HbA1c at a glance.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-robot"></i>
+                <h3>AI-Driven Insights</h3>
+                <p>Context-aware feedback that helps you understand spikes and celebrate stability in your glucose levels.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-sync"></i>
+                <h3>Cloud Sync</h3>
+                <p>Seamlessly sync your health data across devices using secure Firebase integration.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="screenshots" class="screenshots section">
+        <div class="section-title">
+            <h2 style="color: white;">App in Action</h2>
+        </div>
+        <div class="screenshots-track">
+            <!-- Duplicated images for smooth infinite loop -->
+            <img src="Screenshots/Screenshot_20260620_204341.png" alt="Screen">
+            <img src="Screenshots/report.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204540.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204641.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204735.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204822.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204910.png" alt="Screen">
+            <!-- Repeat -->
+            <img src="Screenshots/Screenshot_20260620_204341.png" alt="Screen">
+            <img src="Screenshots/report.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204540.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204641.png" alt="Screen">
+            <img src="Screenshots/Screenshot_20260620_204735.png" alt="Screen">
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="ai-insights">
+            <div class="ai-content">
+                <h2>Advanced Analytics</h2>
+                <p>Understand your health patterns with interactive Cubic Bezier charts and "Time In Range" donut visualizations. MedBuddy doesn't just show numbers; it shows your progress.</p>
+                <br>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> 7, 30, and 90-day trend analysis</li>
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> Meal-segment breakdown (Before/After)</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> Best & Worst days tracking</li>
+                </ul>
+            </div>
+            <div class="ai-viz">
+                <img src="Screenshots/report.png" alt="Report Analysis">
+            </div>
+        </div>
+    </section>
+
+    <footer id="download">
+        <div class="logo" style="justify-content: center; margin-bottom: 30px;">
+            <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
+            MedBuddy
+        </div>
+        <p>Ready to transform your health tracking?</p>
+        <br>
+        <a href="#" class="cta-btn">
+            <i class="fab fa-google-play"></i> Download for Android
+        </a>
+        &nbsp;
+        <a href="#" class="cta-btn" style="background: #000;">
+            <i class="fab fa-apple"></i> Coming soon to iOS
+        </a>
+
+        <div class="footer-links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="mailto:support@medbuddy.com">Contact Support</a>
+            <a href="#">Release Notes</a>
+        </div>
+
+        <p class="copyright">&copy; 2026 MedBuddy - Smart Glucose Care. Developed with ❤️ for better health.</p>
+    </footer>
+
+</body>
+</html>

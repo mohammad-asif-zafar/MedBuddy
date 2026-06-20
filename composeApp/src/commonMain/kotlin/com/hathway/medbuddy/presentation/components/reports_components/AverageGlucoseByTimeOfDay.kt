@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.NightsStay
+import androidx.compose.material.icons.filled.SoupKitchen
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material.icons.filled.WbTwilight
 import androidx.compose.material.icons.outlined.Restaurant
@@ -88,16 +89,16 @@ fun AverageGlucoseByTimeOfDay(
             ) {
                 TimeOfDayItem(
                     modifier = Modifier.weight(1f),
-                    label = stringResource(Res.string.tag_before_dinner),
-                    value = beforeDinner,
-                    icon = Icons.Outlined.Restaurant,
-                    iconColor = TwilightIconDeep
+                    label = stringResource(Res.string.tag_after_lunch),
+                    value = afterLunch,
+                    icon = Icons.Default.SoupKitchen,
+                    iconColor = LunchIconDeep
                 )
                 TimeOfDayItem(
                     modifier = Modifier.weight(1f),
-                    label = stringResource(Res.string.tag_after_dinner),
-                    value = afterDinner,
-                    icon = Icons.Default.WbTwilight,
+                    label = stringResource(Res.string.tag_before_dinner),
+                    value = beforeDinner,
+                    icon = Icons.Outlined.Restaurant,
                     iconColor = TwilightIconDeep
                 )
                 TimeOfDayItem(

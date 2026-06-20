@@ -21,6 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.presentation.theme.Primary
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -29,23 +34,17 @@ import org.jetbrains.compose.resources.stringResource
 fun LoginScreen(
     errorMessage: String?, onGoogleSignInClick: () -> Unit
 ) {
-
     Surface(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
-
         Column(
             modifier = Modifier.fillMaxSize().padding(24.dp),
-
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             Surface(
-                shape = RoundedCornerShape(28.dp),
-                color = MaterialTheme.colorScheme.primaryContainer
+                shape = RoundedCornerShape(28.dp), color = Primary
             ) {
-
                 Image(
                     painter = painterResource(Res.drawable.medbuddy_logo),
                     contentDescription = null,
@@ -53,9 +52,7 @@ fun LoginScreen(
                 )
             }
 
-            Spacer(
-                modifier = Modifier.height(24.dp)
-            )
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = stringResource(Res.string.medbuddy),
@@ -63,9 +60,7 @@ fun LoginScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(
-                modifier = Modifier.height(8.dp)
-            )
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = stringResource(Res.string.smart_glucose_care),
@@ -73,28 +68,22 @@ fun LoginScreen(
                 color = MaterialTheme.colorScheme.primary
             )
 
-            Spacer(
-                modifier = Modifier.height(12.dp)
-            )
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = stringResource(Res.string.login_description),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Primary
             )
 
-            Spacer(
-                modifier = Modifier.height(32.dp)
-            )
+            Spacer(modifier = Modifier.height(32.dp))
 
             errorMessage?.let {
-
                 Card(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer
                     )
                 ) {
-
                     Text(
                         text = it,
                         modifier = Modifier.padding(12.dp),
@@ -102,9 +91,7 @@ fun LoginScreen(
                     )
                 }
 
-                Spacer(
-                    modifier = Modifier.height(16.dp)
-                )
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             Button(
@@ -112,16 +99,13 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-
                 Text(
                     text = stringResource(Res.string.continue_with_google),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
 
-            Spacer(
-                modifier = Modifier.height(16.dp)
-            )
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(Res.string.secure_signin_powered_by_google),
@@ -131,3 +115,25 @@ fun LoginScreen(
         }
     }
 }
+
+
+// 1. Light Theme Preview
+@Preview(name = "Light Theme", showBackground = true)
+@Composable
+fun LoginScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LoginScreen(
+            errorMessage = "Invalid credentials. Please try again.", onGoogleSignInClick = {})
+    }
+}
+
+// 2. Dark Theme Preview
+@Preview(name = "Dark Theme", showBackground = true)
+@Composable
+fun LoginScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        LoginScreen(
+            errorMessage = "Invalid credentials. Please try again.", onGoogleSignInClick = {})
+    }
+}
+
