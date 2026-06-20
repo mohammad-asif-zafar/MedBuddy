@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedBuddy - Smart Glucose Care</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-green: #2E7D4F;
@@ -14,6 +15,52 @@
             --text-dark: #1D1D1B;
             --text-gray: #6B7280;
         }
+/* ===========================
+Demo Video Section
+=========================== */
+
+.video-showcase {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.phone-frame {
+width: 340px;
+padding: 10px;
+background: #111;
+border-radius: 40px;
+box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+position: relative;
+}
+
+.phone-frame::before {
+content: "";
+width: 120px;
+height: 6px;
+background: #444;
+border-radius: 999px;
+position: absolute;
+top: 12px;
+left: 50%;
+transform: translateX(-50%);
+}
+
+.phone-frame video {
+width: 100%;
+display: block;
+border-radius: 32px;
+}
+
+@media (max-width:768px){
+
+```
+.phone-frame{
+    width: 280px;
+}
+```
+
+}
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', -apple-system, system-ui, sans-serif; color: var(--text-dark); background-color: var(--white); line-height: 1.6; }
@@ -78,119 +125,170 @@
 </head>
 <body>
 
-    <nav>
-        <a href="#" class="logo">
-            <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
-            MedBuddy
+<nav>
+    <a href="#" class="logo">
+        <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
+        MedBuddy
+    </a>
+    <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
+        <li><a href="#download">Download</a></li>
+        <li><a href="privacy-policy.html">Privacy</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Smart Glucose Care, Simplified.</h1>
+        <p>Track your levels, analyze trends with AI-powered insights, and take control of your
+            health with MedBuddy. Built with Kotlin Multiplatform for a seamless experience.</p>
+        <a href="#download" class="cta-btn">
+            <i class="fab fa-google-play"></i> Get Started
         </a>
-        <ul class="nav-links">
-            <li><a href="#features">Features</a></li>
-            <li><a href="#screenshots">Screenshots</a></li>
-            <li><a href="#download">Download</a></li>
-            <li><a href="privacy-policy.html">Privacy</a></li>
-        </ul>
-    </nav>
+    </div>
+    <div class="hero-image">
+        <!-- Hero image using one of the main screenshots -->
+        <img src="Screenshots/Screenshot_20260621_010051.png" alt="App Dashboard">
+    </div>
+</section>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Smart Glucose Care, Simplified.</h1>
-            <p>Track your levels, analyze trends with AI-powered insights, and take control of your health with MedBuddy. Built with Kotlin Multiplatform for a seamless experience.</p>
-            <a href="#download" class="cta-btn">
-                <i class="fab fa-google-play"></i> Get Started
-            </a>
+<section id="features" class="section">
+    <div class="section-title">
+        <h2>Why MedBuddy?</h2>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <i class="fas fa-chart-line"></i>
+            <h3>Intelligent Dashboard</h3>
+            <p>Real-time overview of your latest readings, 7-day averages, and estimated HbA1c at a
+                glance.</p>
         </div>
-        <div class="hero-image">
-            <!-- Hero image using one of the main screenshots -->
-            <img src="Screenshots/Screenshot_20260620_204341.png" alt="App Dashboard">
+        <div class="feature-card">
+            <i class="fas fa-robot"></i>
+            <h3>AI-Driven Insights</h3>
+            <p>Context-aware feedback that helps you understand spikes and celebrate stability in
+                your glucose levels.</p>
         </div>
-    </section>
+        <div class="feature-card">
+            <i class="fas fa-sync"></i>
+            <h3>Cloud Sync</h3>
+            <p>Seamlessly sync your health data across devices using secure Firebase
+                integration.</p>
+        </div>
+    </div>
+</section>
 
-    <section id="features" class="section">
-        <div class="section-title">
-            <h2>Why MedBuddy?</h2>
+<section id="screenshots" class="screenshots section">
+    <div class="section-title">
+        <h2 style="color: white;">App in Action</h2>
+    </div>
+    <div class="screenshots-track">
+        <!-- Duplicated images for smooth infinite loop -->
+        <img src="Screenshots/Screenshot_20260621_010051.png" alt="Screen">
+        <img src="Screenshots/app_design_flow.PNG" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010136.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010126.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010155.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010209.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010242.png" alt="Screen">
+        <!-- Repeat -->
+        <img src="Screenshots/Screenshot_20260621_010242.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010532.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010456.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010508.png" alt="Screen">
+        <img src="Screenshots/Screenshot_20260621_010446.png" alt="Screen">
+    </div>
+</section>
+
+<section class="section">
+    <div class="ai-insights">
+        <div class="ai-content">
+            <h2>Advanced Analytics</h2>
+            <p>Understand your health patterns with interactive Cubic Bezier charts and "Time In
+                Range" donut visualizations. MedBuddy doesn't just show numbers; it shows your
+                progress.</p>
+            <br>
+            <ul style="list-style: none;">
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle"
+                                                    style="color: var(--primary-green);"></i> 7, 30,
+                    and 90-day trend analysis
+                </li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle"
+                                                    style="color: var(--primary-green);"></i>
+                    Meal-segment breakdown (Before/After)
+                </li>
+                <li><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> Best &
+                    Worst days tracking
+                </li>
+            </ul>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <i class="fas fa-chart-line"></i>
-                <h3>Intelligent Dashboard</h3>
-                <p>Real-time overview of your latest readings, 7-day averages, and estimated HbA1c at a glance.</p>
+        <div class="ai-viz">
+            <img src="Screenshots/Screenshot_20260621_010051.png" alt="Report Analysis">
+        </div>
+        <!-- App Demo Video Section -->
+
+        <section class="section" id="demo">
+            <div class="section-title">
+                <h2>See MedBuddy in Action</h2>
+                <p style="margin-top:12px;color:var(--text-gray);">
+                    Watch how MedBuddy helps track glucose readings,
+                    monitor trends and generate health insights.
+                </p>
             </div>
-            <div class="feature-card">
-                <i class="fas fa-robot"></i>
-                <h3>AI-Driven Insights</h3>
-                <p>Context-aware feedback that helps you understand spikes and celebrate stability in your glucose levels.</p>
+
+            ```
+            <div class="video-showcase">
+
+                <div class="phone-frame">
+
+                    <video
+                            autoplay
+                            muted
+                            loop
+                            controls
+                            playsinline
+                            poster="Screenshots/Screenshot_20260621_010051.png">
+
+                        <source src="Screenshots/VIDEO-2026-06-21-00-58-59.mp4" type="video/mp4">
+
+                        Your browser does not support video playback.
+                    </video>
+
+                </div>
+
             </div>
-            <div class="feature-card">
-                <i class="fas fa-sync"></i>
-                <h3>Cloud Sync</h3>
-                <p>Seamlessly sync your health data across devices using secure Firebase integration.</p>
-            </div>
-        </div>
-    </section>
 
-    <section id="screenshots" class="screenshots section">
-        <div class="section-title">
-            <h2 style="color: white;">App in Action</h2>
-        </div>
-        <div class="screenshots-track">
-            <!-- Duplicated images for smooth infinite loop -->
-            <img src="Screenshots/Screenshot_20260620_204341.png" alt="Screen">
-            <img src="Screenshots/report.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204540.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204641.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204735.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204822.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204910.png" alt="Screen">
-            <!-- Repeat -->
-            <img src="Screenshots/Screenshot_20260620_204341.png" alt="Screen">
-            <img src="Screenshots/report.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204540.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204641.png" alt="Screen">
-            <img src="Screenshots/Screenshot_20260620_204735.png" alt="Screen">
-        </div>
-    </section>
+        </section>
 
-    <section class="section">
-        <div class="ai-insights">
-            <div class="ai-content">
-                <h2>Advanced Analytics</h2>
-                <p>Understand your health patterns with interactive Cubic Bezier charts and "Time In Range" donut visualizations. MedBuddy doesn't just show numbers; it shows your progress.</p>
-                <br>
-                <ul style="list-style: none;">
-                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> 7, 30, and 90-day trend analysis</li>
-                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> Meal-segment breakdown (Before/After)</li>
-                    <li><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> Best & Worst days tracking</li>
-                </ul>
-            </div>
-            <div class="ai-viz">
-                <img src="Screenshots/report.png" alt="Report Analysis">
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <footer id="download">
-        <div class="logo" style="justify-content: center; margin-bottom: 30px;">
-            <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
-            MedBuddy
-        </div>
-        <p>Ready to transform your health tracking?</p>
-        <br>
-        <a href="#" class="cta-btn">
-            <i class="fab fa-google-play"></i> Download for Android
-        </a>
-        &nbsp;
-        <a href="#" class="cta-btn" style="background: #000;">
-            <i class="fab fa-apple"></i> Coming soon to iOS
-        </a>
+<footer id="download">
+    <div class="logo" style="justify-content: center; margin-bottom: 30px;">
+        <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
+        MedBuddy
+    </div>
+    <p>Ready to transform your health tracking?</p>
+    <br>
+    <a href="#" class="cta-btn">
+        <i class="fab fa-google-play"></i> Download for Android
+    </a>
+    &nbsp;
+    <a href="#" class="cta-btn" style="background: #000;">
+        <i class="fab fa-apple"></i> Coming soon to iOS
+    </a>
 
-        <div class="footer-links">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="mailto:support@medbuddy.com">Contact Support</a>
-            <a href="#">Release Notes</a>
-        </div>
+    <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="mailto:support@medbuddy.com">Contact Support</a>
+        <a href="#">Release Notes</a>
+    </div>
 
-        <p class="copyright">&copy; 2026 MedBuddy - Smart Glucose Care. Developed with ❤️ for better health.</p>
-    </footer>
+    <p class="copyright">&copy; 2026 MedBuddy - Smart Glucose Care. Developed with ❤️ for better
+        health.</p>
+
+</footer>
 
 </body>
 </html>
