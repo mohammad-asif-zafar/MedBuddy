@@ -34,7 +34,11 @@ import coil3.compose.AsyncImage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.BrandGreen
 import com.hathway.medbuddy.presentation.theme.MiniCardBackground
+import com.hathway.medbuddy.presentation.theme.TextGreen
+import com.hathway.medbuddy.presentation.theme.TextPrimary
+import com.hathway.medbuddy.presentation.theme.TextSecondary
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -102,7 +106,7 @@ fun ProfileHeaderCard(
                                 text = name.firstOrNull()?.uppercase() ?: "A",
                                 fontSize = 42.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFF4F6B35)
+                                color = BrandGreen
                             )
                         }
                     }
@@ -122,7 +126,7 @@ fun ProfileHeaderCard(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp),
-                                tint = Color(0xFF4F6B35)
+                                tint = BrandGreen
                             )
                         }
                     }
@@ -136,7 +140,7 @@ fun ProfileHeaderCard(
                     text = name,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = TextPrimary
                 )
 
                 Spacer(
@@ -144,7 +148,7 @@ fun ProfileHeaderCard(
                 )
 
                 Text(
-                    text = email, style = MaterialTheme.typography.bodyMedium, color = Color.Gray
+                    text = email, style = MaterialTheme.typography.bodyMedium, color = TextSecondary
                 )
             }
         }
@@ -155,15 +159,15 @@ fun ProfileHeaderCard(
         ) {
 
             ProfileInfoCard(
-                value = bloodType, title = "Blood Type", modifier = Modifier.weight(1f)
+                value = bloodType, title = stringResource(Res.string.blood), modifier = Modifier.weight(1f)
             )
 
             ProfileInfoCard(
-                value = age, title = "Age", modifier = Modifier.weight(1f)
+                value = age, title = stringResource(Res.string.age), modifier = Modifier.weight(1f)
             )
 
             ProfileInfoCard(
-                value = "$weight kg", title = "Weight", modifier = Modifier.weight(1f)
+                value = "$weight kg", title = stringResource(Res.string.weight), modifier = Modifier.weight(1f)
             )
         }
         Spacer(modifier = Modifier.height(26.dp))
@@ -193,7 +197,7 @@ fun ProfileInfoCard(
                 text = value,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF264D35)
+                color = TextGreen
             )
 
             Spacer(
@@ -201,7 +205,7 @@ fun ProfileInfoCard(
             )
 
             Text(
-                text = title, fontSize = 12.sp, color = Color(0xFF264D35)
+                text = title, fontSize = 12.sp, color = TextGreen
             )
         }
     }

@@ -9,6 +9,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.hathway.medbuddy.domain.model.GlucoseTarget
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.ValidationResult
+import com.hathway.medbuddy.presentation.theme.AfternoonOrange
+import com.hathway.medbuddy.presentation.theme.EveningIndigo
+import com.hathway.medbuddy.presentation.theme.MorningAmber
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -48,12 +51,10 @@ fun getGreetingIconImageVector(): ImageVector {
 fun greetingIconColor(): Color {
     val hour = getNowLocalDateTime().hour
     return when {
-        hour < 12 -> Color(0xFFF59E0B) // Morning Amber
-        hour < 17 -> Color(0xFFFB923C) // Afternoon Orange
-        else -> Color(0xFF6366F1) // Evening Indigo
+        hour < 12 -> MorningAmber
+        hour < 17 -> AfternoonOrange
+        else -> EveningIndigo
     }
-
-
 }
 
 

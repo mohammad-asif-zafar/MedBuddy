@@ -30,11 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.model.TimeInRangeData
-import com.hathway.medbuddy.presentation.theme.Error
-import com.hathway.medbuddy.presentation.theme.MiniCardBackground
-import com.hathway.medbuddy.presentation.theme.Primary
-import com.hathway.medbuddy.presentation.theme.PrimaryContainer
-import com.hathway.medbuddy.presentation.theme.Secondary
+import com.hathway.medbuddy.presentation.theme.*
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
 
@@ -79,7 +75,6 @@ fun TimeInRangeCard(
                         val radius = (canvasSize - strokeWidth) / 2
                         val centerOffset = Offset(size.width / 2, size.height / 2)
 
-                        // Scale absolute percentages out of a complete 360 degree revolution ring
                         val sweepInRange = (data.inRangePct / 100f) * 360f
                         val sweepHigh = (data.highPct / 100f) * 360f
                         val sweepLow = (data.lowPct / 100f) * 360f
@@ -87,7 +82,6 @@ fun TimeInRangeCard(
                         val topLeft = Offset(centerOffset.x - radius, centerOffset.y - radius)
                         val boundingSize = Size(radius * 2, radius * 2)
 
-                        // Base starting point alignment position vector pointing straight up (-90 degrees)
                         var currentStartAngle = -90f
 
                         // Draw Segment Slice 1: In Range (Green)
@@ -126,7 +120,6 @@ fun TimeInRangeCard(
                         )
                     }
 
-                    // Center text readout panel overlaying the inner donut hole blank section
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = "${data.inRangePct.toInt()}%",
@@ -143,7 +136,6 @@ fun TimeInRangeCard(
                     }
                 }
 
-                // Vertical Layout Segment Side Legends Block Component Alignment
                 Column(
                     modifier = Modifier.padding(end = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -193,24 +185,21 @@ fun TimeInRangeCardDarkPreview() {
     }
 }
 
-/**
- * Isolated visual theme container providing your exact cream and dark specifications.
- */
 @Composable
 private fun TimeInRangeMockTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
     val systemColorScheme = if (darkTheme) {
         androidx.compose.material3.darkColorScheme(
-            surface = Color(0xFF1E1E1C),
-            surfaceVariant = Color(0xFF2B2B28), // Premium low-light charcoal-cream tone
-            onSurface = Color(0xFFF7F7EE),      // Custom clear warm off-white text
-            onSurfaceVariant = Color(0xFFE5E5DC) // Secondary desaturated labels
+            surface = PreviewSurfaceDark,
+            surfaceVariant = PreviewSurfaceVariantDark,
+            onSurface = PreviewSurfaceVariantCream,
+            onSurfaceVariant = PreviewOnSurfaceDark
         )
     } else {
         androidx.compose.material3.lightColorScheme(
-            surface = Color(0xFFFEF9F0),         // Your custom warm cream canvas background
-            surfaceVariant = Color(0xFFF7F7EE),  // Your custom warm cream card container hex
-            onSurface = Color(0xFF1A1A17),       // Crisp dark value text
-            onSurfaceVariant = Color(0xFF42423E) // Muted gray-cream label text
+            surface = LightBackground,
+            surfaceVariant = PreviewSurfaceVariantCream,
+            onSurface = Color(0xFF1A1A17),
+            onSurfaceVariant = Color(0xFF42423E)
         )
     }
 

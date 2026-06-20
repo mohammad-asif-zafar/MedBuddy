@@ -9,6 +9,10 @@ import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
+import com.hathway.medbuddy.presentation.theme.StatusHigh
+import com.hathway.medbuddy.presentation.theme.StatusInRange
+import com.hathway.medbuddy.presentation.theme.StatusLow
+
 data class GlucoseReadingUiModel(
     val icon: ImageVector, val iconBgColor: Color, val iconTint: Color,
 
@@ -30,55 +34,18 @@ object GlucoseReadingMapper {
 
         val isBedtime = label.contains("Bed", true) || label.contains("(BT)", true)
 
-        /**
-         * Target range rules:
-         *
-         * Before meals:
-         * 70 - 100 mg/dL
-         *
-         * After meals:
-         * 70 - 140 mg/dL
-         *
-         * Bedtime:
-         * 70 - 140 mg/dL
-         */
-
-
         val (minTarget, maxTarget) = if (isAfterMeal || isBedtime) {
             70 to 140
         } else {
             70 to 100
         }
 
-        /**
-         * Determines glucose status.
-         *
-         * Below target → Low
-         * Within target → In Range
-         * Above target → High
-         */
-        /**
-         * Maps meal type to:
-         * - Icon
-         * - Background color
-         * - Icon tint
-         * - Suggested time
-         *
-         * Examples:
-         *
-         * Before Breakfast → Sun icon
-         * After Breakfast → Coffee icon
-         * Lunch → Sunny icon
-         * Dinner → Soup icon
-         * Bedtime → Bed icon
-         */
-
         val (statusText, statusColor) = when {
-            value < minTarget -> "Low" to Color(0xFFE53935)
+            value < minTarget -> "Low" to StatusLow
 
-            value > maxTarget -> "High" to Color(0xFFFF9500)
+            value > maxTarget -> "High" to StatusHigh
 
-            else -> "In Range" to Color(0xFF1B5E20)
+            else -> "In Range" to StatusInRange
         }
 
         val (icon, bgColor, iconTint) = when {

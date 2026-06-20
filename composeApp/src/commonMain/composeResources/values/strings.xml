@@ -126,15 +126,15 @@
     <string name="close">Close</string>
     <string name="general_information">General Information</string>
     <string name="doctor_name">Doctor Name</string>
-    <string name="doctor_name_placeholder">e.g. Dr. Sumit Gulla</string>
-    <string name="role_title">Role / Title</string>
-    <string name="role_title_placeholder">e.g. Primary Physician</string>
+    <string name="doctor_name_placeholder">e.g., Dr. Sumit Gulla</string>
+    <string name="role_title">Role Title</string>
+    <string name="role_title_placeholder">e.g., MBBS, MD</string>
     <string name="practice_details">Practice Details</string>
     <string name="speciality">Speciality</string>
-    <string name="speciality_placeholder">e.g. Endocrinologist</string>
+    <string name="speciality_placeholder">e.g., Endocrinologist</string>
     <string name="medical_center">Medical Center</string>
-    <string name="medical_center_placeholder">e.g. City Care Hospital</string>
-    <string name="follow_up">Follow-up</string>
+    <string name="medical_center_placeholder">e.g., Miracles Health</string>
+    <string name="follow_up">Follow Up</string>
     <string name="discard">Discard</string>
     <string name="save_info">Save Info</string>
 
@@ -177,7 +177,7 @@
     <string name="insight_lower">Glucose is 15% lower than last week</string>
     <string name="patient">Patient</string>
     <string name="today">Today</string>
-    <string name="todays_glucose">Today's Glucose</string>
+    <string name="todays_glucose">Today\'s Glucose</string>
 
     <!-- Appointment -->
     <string name="next_appointment_label">Next Appointment</string>
@@ -277,4 +277,20 @@
     <string name="insight_glucose_improved">Average glucose improved by 8% compared to last 30 days.</string>
     <string name="insight_no_lows">No low glucose episodes in the last 7 days.</string>
 
+    <string name="preferences">Preferences</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="logout">Logout</string>
+
+    <string name="next_visit">Next Visit</string>
+    <string name="no_doctor_info_available">No Doctor Info Available</string>
+    <string name="add_doctor_info_prompt">Please add your primary care physician\'s info.</string>
+    <string name="view_doctor_details">View Doctor Details</string>
+    <string name="add_doctor_info_btn">Add Doctor Info</string>
+
+    <string name="condition_default">Type 2 Diabetes</string>
+    <string name="doctor_name_default">Dr. Sumit Gulla </string>
+    <string name="speciality_default">Endocrinologist</string>
+    <string name="date_default">15 Jun 2026</string>
+    <string name="patient_default">Patient</string>
+    <string name="no_clinical_insights">No clinical insights available for the selected timeframe.</string>
 </resources>

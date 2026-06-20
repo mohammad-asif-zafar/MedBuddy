@@ -28,6 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.Success
+import com.hathway.medbuddy.presentation.theme.Danger
 
 @Composable
 fun SummaryMiniCard(
@@ -113,7 +115,7 @@ private fun PreviewRowLayout() {
             title = "Avg Glucose",
             value = "124",
             subValue = "mg/dL",
-            valueColor = Color(0xFF4CAF50),
+            valueColor = Success,
             icon = Icons.Outlined.Bloodtype
         )
 
@@ -122,7 +124,7 @@ private fun PreviewRowLayout() {
             title = "Heart Rate",
             value = "72",
             subValue = "bpm",
-            valueColor = Color(0xFFE91E63),
+            valueColor = Danger,
             icon = Icons.Filled.Favorite
         )
     }

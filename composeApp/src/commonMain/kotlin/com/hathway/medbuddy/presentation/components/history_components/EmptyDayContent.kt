@@ -9,14 +9,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.TextSecondary
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.calendar_emoji
 import medbuddy.composeapp.generated.resources.no_glucose_records_day
 import org.jetbrains.compose.resources.stringResource
-
 
 /**
  * Empty state screen.
@@ -45,7 +44,7 @@ fun EmptyDayContent() {
         Text(
             text = stringResource(
                 Res.string.no_glucose_records_day
-            ), color = Color.Gray
+            ), color = TextSecondary
         )
     }
 }

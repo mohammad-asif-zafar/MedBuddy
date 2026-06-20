@@ -81,7 +81,7 @@ fun InsightsAndActionsFooter(
 
             if (insights.isEmpty()) {
                 Text(
-                    text = "No clinical insights available for the selected timeframe.",
+                    text = stringResource(Res.string.no_clinical_insights),
                     fontSize = 13.sp,
                     color = textColor.copy(alpha = 0.6f),
                     modifier = Modifier.padding(vertical = 8.dp)

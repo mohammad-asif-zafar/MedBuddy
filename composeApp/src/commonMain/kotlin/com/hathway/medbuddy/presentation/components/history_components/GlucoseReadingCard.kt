@@ -26,6 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.TextPrimary
+import com.hathway.medbuddy.presentation.theme.TextSecondary
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.glucose_target
+import medbuddy.composeapp.generated.resources.glucose_unit
+import org.jetbrains.compose.resources.stringResource
 
 
 /**
@@ -94,7 +100,7 @@ fun GlucoseReadingCard(
                         text = label,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A)
+                        color = TextPrimary
                     )
 
                     Row(
@@ -104,7 +110,7 @@ fun GlucoseReadingCard(
                         Text(
                             text = time,
                             style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray
+                            color = TextSecondary
                         )
                         Box(
                             modifier = Modifier.size(8.dp)
@@ -126,14 +132,14 @@ fun GlucoseReadingCard(
                             text = value.toString(),
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1A1A1A),
+                            color = TextPrimary,
                             modifier = Modifier.alignByBaseline()
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "mg/dL",
+                            text = stringResource(Res.string.glucose_unit),
                             fontSize = 13.sp,
-                            color = Color.Gray,
+                            color = TextSecondary,
                             modifier = Modifier.alignByBaseline()
                         )
                     }
@@ -150,9 +156,9 @@ fun GlucoseReadingCard(
 
                 // Row 3: Guidelines Context Node
                 Text(
-                    text = "Target: ${uiModel.minTarget}-${uiModel.maxTarget} mg/dL",
+                    text = stringResource(Res.string.glucose_target, uiModel.minTarget, uiModel.maxTarget),
                     fontSize = 12.sp,
-                    color = Color.Gray
+                    color = TextSecondary
                 )
             }
         }

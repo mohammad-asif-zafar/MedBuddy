@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ShowChart
 import androidx.compose.material.icons.outlined.ShowChart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -129,7 +130,7 @@ fun TrendChartCard(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.ShowChart,
+                        imageVector = Icons.AutoMirrored.Outlined.ShowChart,
                         contentDescription = null,
                         modifier = Modifier.size(40.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)

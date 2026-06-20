@@ -25,19 +25,19 @@ data class HomeUiState(
     val patientName: String = "",
     val patientEmail: String = "",
     val patientPhotoUrl: String = "",
-    val greeting: String = "Good Morning",
+    val greeting: String = "",
 
-    val condition: String = "Type 2 Diabetes",
+    val condition: String = "",
     val todayGlucose: Int? = null,
     val glucoseStatus: GlucoseStatus = GlucoseStatus.Normal,
-    val glucoseStatusText: String = "Normal",
+    val glucoseStatusText: String = "",
     val recordedTime: String = "",
     val sevenDayAverage: Int = 0,
     val hbA1cEstimate: Double = 0.0,
 
-    val doctorName: String = "Dr. Sumit Gulla ",
-    val doctorSpecialty: String = "Endocrinologist",
-    val nextVisitDate: String = "15 Jun 2026",
+    val doctorName: String = "",
+    val doctorSpecialty: String = "",
+    val nextVisitDate: String = "",
     val daysUntilVisit: Int = 12,
     val targetProgress: Int = 60,
     val targetReadings: Int = 18,
@@ -116,6 +116,10 @@ class HomeViewModel(
                         sevenDayAverage = dashboard.sevenDayAverage,
                         hbA1cEstimate = dashboard.hbA1cEstimate,
                         greeting = greeting,
+                        condition = getString(Res.string.condition_default),
+                        doctorName = getString(Res.string.doctor_name_default),
+                        doctorSpecialty = getString(Res.string.speciality_default),
+                        nextVisitDate = getString(Res.string.date_default),
                         highestGlucose = dashboard.highestGlucose,
                         lowestGlucose = dashboard.lowestGlucose,
                         chartReadings = dashboard.chartReadings,
@@ -169,18 +173,17 @@ class HomeViewModel(
     }
 
     private fun loadCurrentUser() {
-
         val user = FirebaseManager.currentUser
 
-        _uiState.update {
-
-            it.copy(
-                patientName = user?.displayName ?: "Patient",
-                patientEmail = user?.email ?: "",
-                patientPhotoUrl = user?.photoUrl ?: ""
-            )
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    patientName = user?.displayName ?: getString(Res.string.patient),
+                    patientEmail = user?.email ?: "",
+                    patientPhotoUrl = user?.photoUrl ?: ""
+                )
+            }
         }
-
     }
 }
 

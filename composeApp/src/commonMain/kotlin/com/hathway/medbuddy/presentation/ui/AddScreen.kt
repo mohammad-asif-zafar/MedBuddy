@@ -78,7 +78,9 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AddScreen(
-    viewModel: AddViewModel
+    viewModel: AddViewModel,
+    onSaveSuccess: () -> Unit = {},
+    onCancel: () -> Unit = {}
 ) {
     val currentDeviceDate = remember { getNowLocalDateTime().date }
     var showDatePicker by remember { mutableStateOf(false) }
@@ -94,7 +96,6 @@ fun AddScreen(
 
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
-
             glucoseValue = ""
             notes = ""
             selectedDate = getNowLocalDateTime().date
@@ -142,8 +143,7 @@ fun AddScreen(
             confirmButton = {
                 TextButton(onClick = {
                     showSuccessDialog = false
-                    // Optional: Put navigation backstack pop code here if closing screen
-                    // navController.popBackStack()
+                    onSaveSuccess()
                 }) {
                     Text(text = stringResource(Res.string.ok)) // "OK"
                 }
@@ -304,6 +304,7 @@ fun AddScreen(
                             selectedDate = getNowLocalDateTime().date
                             selectedTimePeriod = TimePeriod.BEFORE_BREAKFAST
                             time = getCurrentTime12Hour()
+                           // onCancel()
                         },
                         enabled = !uiState.isSaving,
                         modifier = Modifier.weight(1f).height(54.dp),

@@ -45,6 +45,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.presentation.components.profile_components.AppointmentDateCard
+import com.hathway.medbuddy.presentation.theme.Cream
+import com.hathway.medbuddy.presentation.theme.DeepGreen
+import com.hathway.medbuddy.presentation.theme.CreamDarker
+import com.hathway.medbuddy.presentation.theme.TextPrimary
+import com.hathway.medbuddy.presentation.theme.TextSecondary
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DoctorDialog(
@@ -56,15 +63,11 @@ fun DoctorDialog(
     var hospital by remember { mutableStateOf(doctorInfo.hospital) }
     var nextAppointment by remember { mutableStateOf(doctorInfo.nextAppointment) }
 
-    // Color definitions matching the previous UI card palette
-    val brandCream = Color(0xFFFEF9F0)
-    val brandGreen = Color(0xFF1B5E20)
-
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
             shape = RoundedCornerShape(24.dp),
-            color = brandCream, // Matches card background
+            color = Cream, // Matches card background
             tonalElevation = 0.dp
         ) {
             Column(
@@ -81,15 +84,15 @@ fun DoctorDialog(
                     ) {
                         Column {
                             Text(
-                                text = "Profile Details",
+                                text = stringResource(Res.string.profile_details),
                                 style = MaterialTheme.typography.labelLarge,
-                                color = Color.Gray
+                                color = TextSecondary
                             )
                             Text(
-                                text = "Doctor Information",
+                                text = stringResource(Res.string.doctor_information),
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.Black
+                                color = TextPrimary
                             )
                         }
                         IconButton(
@@ -99,8 +102,8 @@ fun DoctorDialog(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Close",
-                                tint = Color.Black
+                                contentDescription = stringResource(Res.string.close),
+                                tint = TextPrimary
                             )
                         }
                     }
@@ -113,64 +116,64 @@ fun DoctorDialog(
                 ) {
                     // Group 1: Identity
                     Text(
-                        text = "General Information",
+                        text = stringResource(Res.string.general_information),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = brandGreen,
+                        color = DeepGreen,
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
 
                     DoctorInputField(
                         value = doctorName,
                         onValueChange = { doctorName = it },
-                        label = "Doctor Name",
+                        label = stringResource(Res.string.doctor_name),
                         icon = Icons.Default.Person,
-                        placeholder = "e.g., Dr. Sumit Gulla"
+                        placeholder = stringResource(Res.string.doctor_name_placeholder)
                     )
 
                     DoctorInputField(
                         value = doctorType,
                         onValueChange = { doctorType = it },
-                        label = "Role Title",
+                        label = stringResource(Res.string.role_title),
                         icon = Icons.Default.Badge,
-                        placeholder = "e.g., MBBS, MD"
+                        placeholder = stringResource(Res.string.role_title_placeholder)
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     // Group 2: Medical Details
                     Text(
-                        text = "Practice Details",
+                        text = stringResource(Res.string.practice_details),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = brandGreen,
+                        color = DeepGreen,
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
 
                     DoctorInputField(
                         value = speciality,
                         onValueChange = { speciality = it },
-                        label = "Speciality",
+                        label = stringResource(Res.string.speciality),
                         icon = Icons.Default.Work,
-                        placeholder = "e.g., Diabetologist"
+                        placeholder = stringResource(Res.string.speciality_placeholder)
                     )
 
                     DoctorInputField(
                         value = hospital,
                         onValueChange = { hospital = it },
-                        label = "Medical Center",
+                        label = stringResource(Res.string.medical_center),
                         icon = Icons.Default.Business,
-                        placeholder = "e.g., Miracles Health"
+                        placeholder = stringResource(Res.string.medical_center_placeholder)
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     // Group 3: Schedule
                     Text(
-                        text = "Follow Up",
+                        text = stringResource(Res.string.follow_up),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = brandGreen,
+                        color = DeepGreen,
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
 
@@ -192,11 +195,11 @@ fun DoctorDialog(
                             modifier = Modifier.weight(1f).height(50.dp),
                             shape = RoundedCornerShape(14.dp),
                             colors = ButtonDefaults.textButtonColors(
-                                contentColor = Color.Gray
+                                contentColor = TextSecondary
                             )
                         ) {
                             Text(
-                                text = "Discard", fontWeight = FontWeight.SemiBold, fontSize = 16.sp
+                                text = stringResource(Res.string.discard), fontWeight = FontWeight.SemiBold, fontSize = 16.sp
                             )
                         }
 
@@ -216,11 +219,11 @@ fun DoctorDialog(
                             modifier = Modifier.weight(1f).height(50.dp),
                             shape = RoundedCornerShape(14.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = brandGreen, contentColor = Color.White
+                                containerColor = DeepGreen, contentColor = Color.White
                             )
                         ) {
                             Text(
-                                text = "Save Info", fontWeight = FontWeight.Bold, fontSize = 16.sp
+                                text = stringResource(Res.string.save_info), fontWeight = FontWeight.Bold, fontSize = 16.sp
                             )
                         }
                     }
@@ -238,18 +241,13 @@ fun DoctorInputField(
     icon: ImageVector,
     placeholder: String
 ) {
-    // Exact colors from our previous card/dialog theme
-    val brandGreen = Color(0xFF1B5E20)
-    val brandCreamDarker =
-        Color(0xFFF4EFE6) // Slightly darker tint for the unfocused background fill
-
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
         placeholder = {
             Text(
-                text = placeholder, color = Color.Gray.copy(alpha = 0.5f)
+                text = placeholder, color = TextSecondary.copy(alpha = 0.5f)
             )
         },
         leadingIcon = {
@@ -257,7 +255,7 @@ fun DoctorInputField(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
-                tint = brandGreen // Custom deep green brand icon accent
+                tint = DeepGreen // Custom deep green brand icon accent
             )
         },
         modifier = Modifier.fillMaxWidth(),
@@ -265,14 +263,13 @@ fun DoctorInputField(
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
             // Border Colors
-            focusedBorderColor = brandGreen, unfocusedBorderColor = Color.Gray.copy(alpha = 0.3f),
+            focusedBorderColor = DeepGreen, unfocusedBorderColor = TextSecondary.copy(alpha = 0.3f),
 
             // Text & Label Colors
-            focusedLabelColor = brandGreen, unfocusedLabelColor = Color.Gray,
+            focusedLabelColor = DeepGreen, unfocusedLabelColor = TextSecondary,
 
             // Container Fill Colors (Blends with the cream background)
-            focusedContainerColor = Color.Transparent, unfocusedContainerColor = brandCreamDarker
+            focusedContainerColor = Color.Transparent, unfocusedContainerColor = CreamDarker
         )
     )
 }
-

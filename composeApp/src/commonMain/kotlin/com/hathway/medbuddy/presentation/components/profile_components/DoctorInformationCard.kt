@@ -31,7 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.DeepGreen
 import com.hathway.medbuddy.presentation.theme.MiniCardBackground
+import com.hathway.medbuddy.presentation.theme.TextPrimary
+import com.hathway.medbuddy.presentation.theme.TextSecondary
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DoctorInformationCard(
@@ -83,7 +88,7 @@ fun DoctorInformationCard(
                                 text = doctorName,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.Black,
+                                    color = TextPrimary,
                                     fontSize = 18.sp
                                 )
                             )
@@ -95,14 +100,14 @@ fun DoctorInformationCard(
                                 Text(
                                     text = credentials,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray
+                                    color = TextSecondary
                                 )
                             }
                             if (hospital.isNotBlank()) {
                                 Text(
                                     text = hospital,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray
+                                    color = TextSecondary
                                 )
                             }
                         }
@@ -115,16 +120,16 @@ fun DoctorInformationCard(
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Text(
-                                text = "Next Visit",
+                                text = stringResource(Res.string.next_visit),
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     fontWeight = FontWeight.Medium,
-                                    color = Color(0xFF1B5E20) // Deep green brand accent
+                                    color = DeepGreen // Deep green brand accent
                                 )
                             )
                             Text(
                                 text = nextAppointment,
                                 style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.SemiBold, color = Color.Black
+                                    fontWeight = FontWeight.SemiBold, color = TextPrimary
                                 )
                             )
                         }
@@ -134,15 +139,15 @@ fun DoctorInformationCard(
                 // Fallback Empty State Display layout
                 Column {
                     Text(
-                        text = "No Doctor Info Available",
+                        text = stringResource(Res.string.no_doctor_info_available),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Gray
+                        color = TextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Please add your primary care physician's info.",
+                        text = stringResource(Res.string.add_doctor_info_prompt),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray
+                        color = TextSecondary
                     )
                 }
             }
@@ -158,14 +163,14 @@ fun DoctorInformationCard(
                     width = 1.dp
                 ),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = Color(0xFF1B5E20) // Deep green matching text assets
+                    contentColor = DeepGreen // Deep green matching text assets
                 )
             ) {
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = if (hasDoctorInfo) "View Doctor Details" else "Add Doctor Info",
+                        text = if (hasDoctorInfo) stringResource(Res.string.view_doctor_details) else stringResource(Res.string.add_doctor_info_btn),
                         modifier = Modifier.align(Alignment.Center),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Medium

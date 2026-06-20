@@ -48,6 +48,48 @@ val Warning = Color(0xFFE89A22)
 val Danger = Color(0xFFD9534F)
 val Info = Color(0xFF4A90E2)
 
+val DeepGreen = Color(0xFF1B5E20)
+val Cream = Color(0xFFF7F7EE)
+val CreamDarker = Color(0xFFF4EFE6)
+val DropdownBackground = Color(0xFFF9FAFB)
+val Destructive = Color(0xFFD32F2F)
+val TextGreen = Color(0xFF264D35)
+val MorningAmber = Color(0xFFF59E0B)
+val AfternoonOrange = Color(0xFFFB923C)
+val EveningIndigo = Color(0xFF6366F1)
+val ChartGridLine = Color.LightGray.copy(alpha = 0.2f)
+val ChartFillStart = Color(0xFF1B5E20).copy(alpha = 0.15f)
+val ChartAlertLine = Color(0xFF1B5E20).copy(alpha = 0.4f)
+val TextSecondary = Color.Gray
+val TextPrimary = Color.Black
+val StatusLow = Color(0xFFE53935)
+val StatusHigh = Color(0xFFFF9500)
+val StatusInRange = Color(0xFF1B5E20)
+
+// Preview & Specific UI Colors
+val SunIconLight = Color(0xFFFFB74D)
+val SunIconDeep = Color(0xFFFFA000)
+val LunchIconLight = Color(0xFF64B5F6)
+val LunchIconDeep = Color(0xFF1976D2)
+val TwilightIconLight = Color(0xFFBA68C8)
+val TwilightIconDeep = Color(0xFF7B1FA2)
+val NightIconLight = Color(0xFF9FA8DA)
+val NightIconDeep = Color(0xFF303F9F)
+
+val CardBackgroundCream = Color(0xFFFDF9F2)
+val TextDark = Color(0xFF1C1B1F)
+val TextSecondaryMuted = Color(0xFF79747E)
+
+val PreviewSurfaceDark = Color(0xFF1E1E1C)
+val PreviewSurfaceVariantDark = Color(0xFF2B2B28)
+val PreviewOnSurfaceDark = Color(0xFFE6E6E1)
+val PreviewOnSurfaceVariantDark = Color(0xFFB0B0AA)
+
+val PreviewSurfaceCream = Color(0xFFFCFCF9)
+val PreviewOnSurfaceCream = Color(0xFF1C1B12)
+val PreviewSurfaceVariantCream = Color(0xFFF7F7EE)
+val PreviewOnSurfaceVariantCream = Color(0xFF5A5950)
+
 // ========================
 // Status Containers
 // ========================

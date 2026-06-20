@@ -38,6 +38,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.add_reading
 import medbuddy.composeapp.generated.resources.after_breakfast
 import medbuddy.composeapp.generated.resources.after_dinner
 import medbuddy.composeapp.generated.resources.after_lunch
@@ -100,7 +101,7 @@ fun GlucoseRecordHistory(
                     Icons.Default.Add, contentDescription = null
                 )
             }, text = {
-                Text("")
+                Text(stringResource(Res.string.add_reading))
             })
         }) { padding ->
 

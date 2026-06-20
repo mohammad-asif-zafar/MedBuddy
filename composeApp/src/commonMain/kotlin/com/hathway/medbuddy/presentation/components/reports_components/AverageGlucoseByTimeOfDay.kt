@@ -27,14 +27,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.presentation.theme.MiniCardBackground
-import com.hathway.medbuddy.presentation.theme.Primary
+import com.hathway.medbuddy.presentation.theme.*
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
 
 @Composable
 fun AverageGlucoseByTimeOfDay(
-    modifier: Modifier = Modifier, // ✅ Added default modifier value for better reusability
+    modifier: Modifier = Modifier,
     beforeBreakfast: Int,
     afterBreakfast: Int,
     beforeLunch: Int,
@@ -43,19 +42,10 @@ fun AverageGlucoseByTimeOfDay(
     afterDinner: Int,
     bedtime: Int
 ) {
-    // ✅ Dynamic Icon Tones: Adaptive accents that automatically shift properties based on layout themes
-    val sunIconColor = if (Primary == Color(0xFF81C784)) Color(0xFFFFB74D) else Color(
-        0xFFFFA000
-    )
-    val lunchIconColor = if (Primary == Color(0xFF81C784)) Color(0xFF64B5F6) else Color(
-        0xFF1976D2
-    )
-    val twilightIconColor = if (Primary == Color(0xFF81C784)) Color(0xFFBA68C8) else Color(
-        0xFF7B1FA2
-    )
-    val nightIconColor = if (Primary == Color(0xFF81C784)) Color(0xFF9FA8DA) else Color(
-        0xFF303F9F
-    )
+    val sunIconColor = if (Primary == PreviewSurfaceVariantDark) SunIconLight else SunIconDeep
+    val lunchIconColor = if (Primary == PreviewSurfaceVariantDark) LunchIconLight else LunchIconDeep
+    val twilightIconColor = if (Primary == PreviewSurfaceVariantDark) TwilightIconLight else TwilightIconDeep
+    val nightIconColor = if (Primary == PreviewSurfaceVariantDark) NightIconLight else NightIconDeep
 
     Card(
         modifier = modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
@@ -143,12 +133,12 @@ fun AverageGlucoseByTimeOfDayCreamPreview() {
     TimeOfDaySectionMockTheme(darkTheme = false) {
         AverageGlucoseByTimeOfDay(
             beforeBreakfast = 115,
-            afterBreakfast = 152, // Warning: flips to crisp medical red
+            afterBreakfast = 152,
             beforeLunch = 120,
             afterLunch = 138,
             beforeDinner = 118,
-            afterDinner = 164, // Warning: flips to crisp medical red
-            bedtime = 142       // Warning: bedtime > 140 flips to crisp medical red
+            afterDinner = 164,
+            bedtime = 142
         )
     }
 }
@@ -159,36 +149,33 @@ fun AverageGlucoseByTimeOfDayDarkPreview() {
     TimeOfDaySectionMockTheme(darkTheme = true) {
         AverageGlucoseByTimeOfDay(
             beforeBreakfast = 115,
-            afterBreakfast = 152, // Warning: flips to glowing neon-pastel red
+            afterBreakfast = 152,
             beforeLunch = 120,
             afterLunch = 138,
             beforeDinner = 118,
-            afterDinner = 164, // Warning: flips to glowing neon-pastel red
-            bedtime = 142       // Warning: bedtime > 140 flips to glowing neon-pastel red
+            afterDinner = 164,
+            bedtime = 142
         )
     }
 }
 
-/**
- * Custom isolated design theme provider
- */
 @Composable
 private fun TimeOfDaySectionMockTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
     val systemColorScheme = if (darkTheme) {
         androidx.compose.material3.darkColorScheme(
-            surface = Color(0xFF1E1E1C),
-            surfaceVariant = Color(0xFF2B2B28),
-            onSurfaceVariant = Color(0xFFE5E5DC),
-            primary = Color(0xFF81C784),       // Soft dark-optimized neon green
-            error = Color(0xFFFF8A80)          // Soft dark-optimized coral warning red
+            surface = PreviewSurfaceDark,
+            surfaceVariant = PreviewSurfaceVariantDark,
+            onSurfaceVariant = PreviewOnSurfaceDark,
+            primary = Primary,
+            error = Error
         )
     } else {
         androidx.compose.material3.lightColorScheme(
-            surface = Color(0xFFFEF9F0),
-            surfaceVariant = Color(0xFFF7F7EE),  // Matches warm cream card backgrounds
-            onSurfaceVariant = Color(0xFF42423E),
-            primary = Color(0xFF1B5E20),       // Solid light mode deep green
-            error = Color(0xFFD32F2F)          // Solid light mode deep red
+            surface = LightBackground,
+            surfaceVariant = PreviewSurfaceVariantCream,
+            onSurfaceVariant = PreviewOnSurfaceVariantCream,
+            primary = DeepGreen,
+            error = Destructive
         )
     }
 

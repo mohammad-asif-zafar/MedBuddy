@@ -7,9 +7,17 @@ import com.hathway.medbuddy.presentation.ui.AddScreen
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 
 @Composable
-fun AddContent(repository: IGlucoseRepository? = null) {
+fun AddContent(
+    repository: IGlucoseRepository? = null,
+    onSaveSuccess: () -> Unit = {},
+    onCancel: () -> Unit = {}
+) {
     val viewModel: AddViewModel = viewModel {
         AddViewModel(repository)
     }
-    AddScreen( viewModel = viewModel)
+    AddScreen(
+        viewModel = viewModel,
+        onSaveSuccess = onSaveSuccess,
+        onCancel = onCancel
+    )
 }

@@ -137,14 +137,12 @@ fun SummaryMetricsSection(
 @Preview(name = "Healthy Metrics Profile")
 @Composable
 fun SummaryMetricsHealthyPreview() {
-    MedBuddyTheme(darkTheme = true) {
-        SummaryMetricsSection(
-            avgGlucose = 112, hba1c = 5.4,       // Under 5.7 -> Will render Green
-            timeInRange = 92,  // Over 70% -> Will render Green
-            totalReadings = 145,
-            selectedFilterDays = "7 Days",
-        )
-    }
+    SummaryMetricsSection(
+        avgGlucose = 112, hba1c = 5.4,
+        timeInRange = 92,
+        totalReadings = 145,
+        selectedFilterDays = "7 Days",
+    )
 }
 
 @Composable
@@ -153,30 +151,30 @@ private fun MetricsGridPreviewTheme(
 ) {
     val colors = when {
         isCream -> lightColorScheme(
-            surfaceVariant = Color(0xFFF7F7EE),      // Main light cream grid background
-            surface = Color(0xFFFFFFFF),             // Elevation Card base fields
-            onSurfaceVariant = Color(0xFF5A5950),    // Muted dark grey text
-            onSurface = Color(0xFF2C3E50),           // Dark blue label text color
-            primary = Color(0xFF2E7D32),             // Forest green health color
-            error = Color(0xFFC62828)                // Clear warning crimson
+            surfaceVariant = PreviewSurfaceVariantCream,
+            surface = Color.White,
+            onSurfaceVariant = PreviewOnSurfaceVariantCream,
+            onSurface = Color(0xFF2C3E50),
+            primary = DeepGreen,
+            error = Destructive
         )
 
         isDark -> darkColorScheme(
-            surfaceVariant = Color(0xFF1E1E1C),
+            surfaceVariant = PreviewSurfaceVariantDark,
             surface = Color(0xFF2B2B28),
-            onSurfaceVariant = Color(0xFFB0B0AA),
+            onSurfaceVariant = PreviewOnSurfaceVariantDark,
             onSurface = Color(0xFF90CAF9),
-            primary = Color(0xFF81C784),
-            error = Color(0xFFE57373)
+            primary = Primary,
+            error = Error
         )
 
         else -> lightColorScheme(
             surfaceVariant = Color(0xFFF5F5F5),
-            surface = Color(0xFFFFFFFF),
+            surface = Color.White,
             onSurfaceVariant = Color(0xFF757575),
             onSurface = Color(0xFF1976D2),
-            primary = Color(0xFF388E3C),
-            error = Color(0xFFD32F2F)
+            primary = Success,
+            error = Danger
         )
     }
     MaterialTheme(colorScheme = colors, content = content)
@@ -191,7 +189,7 @@ fun SummaryGridMetricsCreamPreview() {
             hba1c = 5.9,
             timeInRange = 78,
             totalReadings = 142,
-            selectedFilterDays = "30 Days", // ✅ Fixed parameter name matching signature
+            selectedFilterDays = "30 Days",
             modifier = Modifier.padding(16.dp)
         )
     }
@@ -206,7 +204,7 @@ fun SummaryGridMetricsDarkPreview() {
             hba1c = 5.9,
             timeInRange = 78,
             totalReadings = 142,
-            selectedFilterDays = "90 Days", // ✅ Fixed parameter name matching signature
+            selectedFilterDays = "90 Days",
             modifier = Modifier.padding(16.dp)
         )
     }

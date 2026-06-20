@@ -31,25 +31,32 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
+import com.hathway.medbuddy.presentation.theme.ChartAlertLine
+import com.hathway.medbuddy.presentation.theme.ChartFillStart
+import com.hathway.medbuddy.presentation.theme.ChartGridLine
+import com.hathway.medbuddy.presentation.theme.DeepGreen
+import com.hathway.medbuddy.presentation.theme.TextPrimary
+import com.hathway.medbuddy.presentation.theme.TextSecondary
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.glucose_trend
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TrendChartCard(
     readings: List<DailyAverageReading>
 ) {
-    val brandCream = Color(0xFFFFFFFF)
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = brandCream),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Glucose Trend (7 Days)",
+                text = stringResource(Res.string.glucose_trend),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = TextPrimary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -65,11 +72,8 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
 
     val textMeasurer = rememberTextMeasurer()
     val yAxisTextStyle = TextStyle(
-        color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Medium
+        color = TextSecondary, fontSize = 10.sp, fontWeight = FontWeight.Medium
     )
-
-    val brandGreen = Color(0xFF1B5E20)
-    val gridLineColor = Color.LightGray.copy(alpha = 0.2f)
 
     Column {
         Box(
@@ -99,7 +103,7 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     )
 
                     drawLine(
-                        color = gridLineColor,
+                        color = ChartGridLine,
                         start = Offset(0f, y),
                         end = Offset(width, y),
                         strokeWidth = 1.dp.toPx()
@@ -109,7 +113,7 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                 // 2. Draw Target Boundary Alert Baseline (Dashed Line at 70 mg/dL as shown in reference image)
                 val alertY = mapY(70f)
                 drawLine(
-                    color = brandGreen.copy(alpha = 0.4f),
+                    color = ChartAlertLine,
                     start = Offset(0f, alertY),
                     end = Offset(width, alertY),
                     strokeWidth = 1.5.dp.toPx(),
@@ -160,8 +164,8 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     drawPath(
                         path = fillPath, brush = Brush.verticalGradient(
                             colors = listOf(
-                                brandGreen.copy(alpha = 0.15f), // Soft transparency blend down
-                                brandGreen.copy(alpha = 0.00f)
+                                ChartFillStart,
+                                DeepGreen.copy(alpha = 0.00f)
                             ), startY = mapY(200f), endY = height
                         )
                     )
@@ -169,14 +173,14 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     // 5. Draw Core Top Line Curve
                     drawPath(
                         path = strokePath,
-                        color = brandGreen,
+                        color = DeepGreen,
                         style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                     )
 
                     // 6. Anchor Dot Highlights Overlay matching exactly the layout junctions
                     connectionPointsList.forEach { point ->
                         drawCircle(
-                            color = brandGreen, radius = 5.dp.toPx(), center = point
+                            color = DeepGreen, radius = 5.dp.toPx(), center = point
                         )
                         drawCircle(
                             color = Color.White, radius = 2.5.dp.toPx(), center = point

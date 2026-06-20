@@ -20,13 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
+import com.hathway.medbuddy.presentation.theme.BrandGreen
+import com.hathway.medbuddy.presentation.theme.Destructive
+import com.hathway.medbuddy.presentation.theme.TextPrimary
+
 @Composable
 fun SettingsActionRow(
     icon: ImageVector, label: String, onClick: () -> Unit, isDestructive: Boolean = false
 ) {
     // Exact colors referenced from your user design guidelines
-    val iconTint = if (isDestructive) Color(0xFFD32F2F) else Color(0xFF4F6B35)
-    val textStyleColor = if (isDestructive) Color(0xFFD32F2F) else Color.Black
+    val iconTint = if (isDestructive) Destructive else BrandGreen
+    val textStyleColor = if (isDestructive) Destructive else TextPrimary
 
     Row(modifier = Modifier.fillMaxWidth().clickable { onClick() }
         .padding(horizontal = 20.dp, vertical = 20.dp), // Balanced cell click surface areas

@@ -20,14 +20,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.theme.MiniCardBackground
 
+import com.hathway.medbuddy.presentation.theme.Cream
+import com.hathway.medbuddy.presentation.theme.MiniCardBackground
+import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
+
 @Composable
 fun SettingsSection(
     onPreferencesClick: () -> Unit,
     onHelpClick: () -> Unit, // Added missing handler to support layout row
     onLogoutClick: () -> Unit
 ) {
-    val brandCream = Color(0xFFF7F7EE)
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp) // Spacing separating your main cards
@@ -47,7 +50,7 @@ fun SettingsSection(
             Column(modifier = Modifier.fillMaxWidth()) {
                 SettingsActionRow(
                     icon = Icons.Outlined.Settings,
-                    label = "Preferences",
+                    label = stringResource(Res.string.preferences),
                     onClick = onPreferencesClick
                 )
 
@@ -59,7 +62,7 @@ fun SettingsSection(
 
                 SettingsActionRow(
                     icon = Icons.Outlined.HelpOutline,
-                    label = "Help & Support",
+                    label = stringResource(Res.string.help_support),
                     onClick = onHelpClick
                 )
             }
@@ -69,12 +72,12 @@ fun SettingsSection(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = brandCream),
+            colors = CardDefaults.cardColors(containerColor = Cream),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.Logout,
-                label = "Logout",
+                label = stringResource(Res.string.logout),
                 onClick = onLogoutClick,
                 isDestructive = true
             )

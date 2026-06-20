@@ -62,8 +62,21 @@ fun App(
                         }
                     }
 
-                    NavigationDestination.HISTORY -> HistoryContent(repository)
-                    NavigationDestination.ADD -> AddContent(repository = repository)
+                    NavigationDestination.HISTORY -> HistoryContent(
+                        repository = repository,
+                        onNavigateToAdd = {
+                            currentDestination.value = NavigationDestination.ADD
+                        }
+                    )
+                    NavigationDestination.ADD -> AddContent(
+                        repository = repository,
+                        onSaveSuccess = {
+                            currentDestination.value = NavigationDestination.HISTORY
+                        },
+                        onCancel = {
+                            currentDestination.value = NavigationDestination.HISTORY
+                        }
+                    )
                     NavigationDestination.REPORTS -> ReportsContent(repository)
                     NavigationDestination.PROFILE -> ProfileContent(doctorRepository)
 

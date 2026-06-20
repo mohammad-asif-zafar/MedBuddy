@@ -27,11 +27,10 @@ import com.hathway.medbuddy.util.formatDisplayDate
 import com.hathway.medbuddy.util.getGreetingIconImageVector
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import com.hathway.medbuddy.util.greetingIconColor
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.glucose_target
-import medbuddy.composeapp.generated.resources.glucose_unit
-import medbuddy.composeapp.generated.resources.today
-import medbuddy.composeapp.generated.resources.todays_glucose
+import com.hathway.medbuddy.presentation.theme.CardBackgroundCream
+import com.hathway.medbuddy.presentation.theme.TextDark
+import com.hathway.medbuddy.presentation.theme.TextSecondaryMuted
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -49,15 +48,13 @@ fun IntegratedGlucoseCardSection(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFDF9F2)
+            containerColor = CardBackgroundCream
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
-            // ✅ Removed bottom/horizontal padding here so the inner card can stretch flush to the edges
         ) {
-            // 1. Header Row (Added localized internal padding to keep text safe)
             Row(
                 modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -68,7 +65,7 @@ fun IntegratedGlucoseCardSection(
                             text = "$greeting ${patientName.displayName()} ",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1C1B1F)
+                            color = TextDark
                         )
                         Icon(
                             imageVector = getGreetingIconImageVector(),
@@ -80,22 +77,21 @@ fun IntegratedGlucoseCardSection(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
+                    val dateLabel = if (isToday) stringResource(Res.string.today) else stringResource(Res.string.last_reading)
                     Text(
-                        text = (if (isToday) stringResource(Res.string.today) else "Last Reading") + " • ${
+                        text = "$dateLabel • ${
                             formatDisplayDate(
                                 getNowLocalDateTime().date
                             )
-                        }", style = MaterialTheme.typography.bodySmall, color = Color(0xFF79747E)
+                        }", style = MaterialTheme.typography.bodySmall, color = TextSecondaryMuted
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 3. Inner White Nested Card Structure
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                // ✅ Matches top rounding with the inner margins, flattens the bottom corners to follow the outer parent boundary shape
                 shape = RoundedCornerShape(
                     topStart = 20.dp, topEnd = 20.dp, bottomStart = 24.dp, bottomEnd = 24.dp
                 ), colors = CardDefaults.cardColors(
@@ -109,10 +105,10 @@ fun IntegratedGlucoseCardSection(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = if (isToday) stringResource(Res.string.todays_glucose) else "Last Reading",
+                            text = if (isToday) stringResource(Res.string.todays_glucose) else stringResource(Res.string.last_reading),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1C1B1F)
+                            color = TextDark
                         )
 
                         Spacer(modifier = Modifier.height(2.dp))
@@ -120,7 +116,7 @@ fun IntegratedGlucoseCardSection(
                         Text(
                             text = mealType,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0xFF79747E)
+                            color = TextSecondaryMuted
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -130,12 +126,12 @@ fun IntegratedGlucoseCardSection(
                                 text = glucoseValue.toString(),
                                 fontSize = 44.sp,
                                 fontWeight = FontWeight.Black,
-                                color = Color(0xFF1C1B1F)
+                                color = TextDark
                             )
                             Text(
                                 text = " " + stringResource(Res.string.glucose_unit),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color(0xFF1C1B1F),
+                                color = TextDark,
                                 modifier = Modifier.padding(bottom = 6.dp)
                             )
                         }
@@ -149,7 +145,7 @@ fun IntegratedGlucoseCardSection(
                         Text(
                             text = stringResource(Res.string.glucose_target, minTarget, maxTarget),
                             style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF79747E)
+                            color = TextSecondaryMuted
                         )
                     }
 
