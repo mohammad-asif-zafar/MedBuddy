@@ -1,10 +1,12 @@
 package com.hathway.medbuddy.presentation.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.hathway.medbuddy.ThemeMode
 
 // 1. Define your custom app background and surface tokens
 val LightSurface = Color(0xFFFFFFFF)    // Pure white for components layered on top
@@ -54,8 +56,13 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun MedBuddyTheme(
-    darkTheme: Boolean = false, content: @Composable () -> Unit
+    themeMode: ThemeMode = ThemeMode.SYSTEM, content: @Composable () -> Unit
 ) {
+    val darkTheme = when (themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+    }
     MaterialTheme(
         colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme, content = content
     )

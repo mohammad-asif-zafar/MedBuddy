@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,6 +29,7 @@ fun App(
     doctorRepository: IDoctorRepository? = null,
     initialDestination: NavigationDestination = NavigationDestination.HOME
 ) {
+    val themeMode by ThemeManager.themeMode.collectAsState()
     // For now, we'll use a simple state instead of viewModel
     val currentDestination = remember { mutableStateOf(initialDestination) }
 
@@ -37,7 +40,7 @@ fun App(
         }
     }
 
-    MedBuddyTheme {
+    MedBuddyTheme(themeMode = themeMode) {
         Scaffold(
             bottomBar = {
                 // ✅ Hide bottom bar when viewing full notification screens

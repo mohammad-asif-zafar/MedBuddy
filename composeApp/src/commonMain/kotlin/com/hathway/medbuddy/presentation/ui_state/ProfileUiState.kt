@@ -1,5 +1,6 @@
 package com.hathway.medbuddy.presentation.ui_state
 
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.DoctorInfo
 
 data class ProfileUiState(
@@ -22,5 +23,7 @@ data class ProfileUiState(
     // Error Handling
     val errorMessage: String? = null,
 
-    val showProfileDialog: Boolean = false
+    val showProfileDialog: Boolean = false,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val showThemeDialog: Boolean = false
 )

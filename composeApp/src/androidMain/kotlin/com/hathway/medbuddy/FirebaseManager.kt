@@ -176,4 +176,17 @@ actual object FirebaseManager {
             // Document might not exist yet, or other error
         }
     }
+
+    actual fun getThemeMode(): ThemeMode {
+        val mode = prefs.getString("theme_mode", ThemeMode.SYSTEM.name)
+        return try {
+            ThemeMode.valueOf(mode!!)
+        } catch (e: Exception) {
+            ThemeMode.SYSTEM
+        }
+    }
+
+    actual fun setThemeMode(mode: ThemeMode) {
+        prefs.edit().putString("theme_mode", mode.name).apply()
+    }
 }

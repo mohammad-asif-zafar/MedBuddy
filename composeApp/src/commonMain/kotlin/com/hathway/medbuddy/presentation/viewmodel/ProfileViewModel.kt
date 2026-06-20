@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.FirebaseManager
 import com.hathway.medbuddy.CurrentUser
+import com.hathway.medbuddy.ThemeManager
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.ui_state.ProfileUiState
 import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
@@ -31,6 +33,27 @@ class ProfileViewModel(
     init {
         loadUser()
         loadDoctorInfo()
+        loadTheme()
+    }
+
+    private fun loadTheme() {
+        viewModelScope.launch {
+            ThemeManager.themeMode.collect { mode ->
+                _uiState.update { it.copy(themeMode = mode) }
+            }
+        }
+    }
+
+    fun setThemeMode(mode: ThemeMode) {
+        ThemeManager.setThemeMode(mode)
+    }
+
+    fun showThemeDialog() {
+        _uiState.update { it.copy(showThemeDialog = true) }
+    }
+
+    fun hideThemeDialog() {
+        _uiState.update { it.copy(showThemeDialog = false) }
     }
 
     private fun getCurrentUserId(): String {

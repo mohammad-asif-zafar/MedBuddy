@@ -11,6 +11,12 @@ expect object FirebaseManager {
     suspend fun saveUserProfile(userId: String, name: String, age: String, weight: String, bloodType: String)
     suspend fun updateProfilePicture(userId: String, imageBytes: ByteArray): String?
     suspend fun updateFcmToken(userId: String, token: String)
+    fun getThemeMode(): ThemeMode
+    fun setThemeMode(mode: ThemeMode)
+}
+
+enum class ThemeMode {
+    LIGHT, DARK, SYSTEM
 }
 
 data class CurrentUser(

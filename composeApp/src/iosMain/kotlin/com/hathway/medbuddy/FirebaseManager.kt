@@ -1,6 +1,7 @@
 package com.hathway.medbuddy
 
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import platform.Foundation.NSUserDefaults
 
 actual object FirebaseManager {
     actual val currentUser: CurrentUser? = null
@@ -11,4 +12,17 @@ actual object FirebaseManager {
     actual suspend fun saveUserProfile(userId: String, name: String, age: String, weight: String, bloodType: String) {}
     actual suspend fun updateProfilePicture(userId: String, imageBytes: ByteArray): String? = null
     actual suspend fun updateFcmToken(userId: String, token: String) {}
+
+    actual fun getThemeMode(): ThemeMode {
+        val mode = NSUserDefaults.standardUserDefaults.stringForKey("theme_mode") ?: ThemeMode.SYSTEM.name
+        return try {
+            ThemeMode.valueOf(mode)
+        } catch (e: Exception) {
+            ThemeMode.SYSTEM
+        }
+    }
+
+    actual fun setThemeMode(mode: ThemeMode) {
+        NSUserDefaults.standardUserDefaults.setObject(mode.name, "theme_mode")
+    }
 }
