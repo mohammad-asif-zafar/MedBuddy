@@ -38,7 +38,6 @@ fun SimpleBottomNavigationBar(
                 NavigationDestination.ADD -> stringResource(Res.string.nav_add)
                 NavigationDestination.REPORTS -> stringResource(Res.string.nav_reports)
                 NavigationDestination.PROFILE -> stringResource(Res.string.nav_profile)
-                // ✅ Keeps the compiler happy, though filtering prevents this block from executing
                 NavigationDestination.NOTIFICATIONS -> ""
             }
 

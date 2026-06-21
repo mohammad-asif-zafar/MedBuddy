@@ -293,4 +293,28 @@
     <string name="date_default">15 Jun 2026</string>
     <string name="patient_default">Patient</string>
     <string name="no_clinical_insights">No clinical insights available for the selected timeframe.</string>
+
+    <!-- Theme Selection Dialog Strings -->
+    <string name="theme_dialog_title">Choose Theme</string>
+    <string name="theme_dialog_subtitle">Personalize your app experience</string>
+    <string name="theme_light_title">Light Mode</string>
+    <string name="theme_light_desc">Bright and clear for daytime use.</string>
+    <string name="theme_dark_title">Dark Mode</string>
+    <string name="theme_dark_desc">Comfortable and easy on the eyes at night.</string>
+    <string name="theme_system_title">System</string>
+    <string name="theme_system_desc">Adapts to your device\'s theme settings.</string>
+    <string name="action_close">Close</string>
+    <!-- Accessibility Semantic Action Strings -->
+    <string name="accessibility_select_theme">Select %1$s</string>
+
+    <string name="report_doctor_appointments">Doctor Appointments</string>
+    <string name="report_blood_pressure">Blood Pressure</string>
+    <string name="report_weight">Weight</string>
+    <string name="report_bmi">BMI</string>
+    <string name="more_options">More Options</string>
+    <string name="view_details">View Details</string>
+    <string name="no_upcoming_appointments">No upcoming appointments</string>
+    <string name="weight_kg_label">%1$s kg</string>
+    <string name="bmi_label">BMI: %1$s</string>
+    <string name="bp_label">BP: %1$d/%2$d mmHg</string>
 </resources>
