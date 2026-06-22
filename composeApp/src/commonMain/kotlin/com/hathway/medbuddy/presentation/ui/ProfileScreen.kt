@@ -35,7 +35,8 @@ expect fun ProfileImagePicker(onImagePicked: (ByteArray) -> Unit): () -> Unit
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel
+    viewModel: ProfileViewModel,
+    onMenuClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

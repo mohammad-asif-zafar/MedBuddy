@@ -10,10 +10,12 @@ import com.hathway.medbuddy.domain.repository.IDoctorRepository
 fun HomeContent(
     repository: IGlucoseRepository,
     doctorRepository: IDoctorRepository,
-    onOpenNotifications: () -> Unit
+    onOpenNotifications: () -> Unit,
+    onMenuClick: () -> Unit
 ) {
     HomeScreen(
         viewModel = HomeViewModel(repository, doctorRepository),
-        onOpenNotifications = onOpenNotifications
+        onOpenNotifications = onOpenNotifications,
+        onMenuClick = onMenuClick
     )
 }

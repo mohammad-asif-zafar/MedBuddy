@@ -10,7 +10,9 @@ import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 
 @Composable
 fun HistoryContent(
-    repository: IGlucoseRepository? = null, onNavigateToAdd: () -> Unit = {}
+    repository: IGlucoseRepository? = null, 
+    onNavigateToAdd: () -> Unit = {},
+    onMenuClick: () -> Unit = {}
 ) {
     val viewModel: AddViewModel = viewModel {
         AddViewModel(repository)
@@ -19,6 +21,9 @@ fun HistoryContent(
     val uiState by viewModel.uiState.collectAsState()
 
     GlucoseRecordHistory(
-        records = uiState.records, viewModel = viewModel, onNavigateToAdd = onNavigateToAdd
+        records = uiState.records, 
+        viewModel = viewModel, 
+        onNavigateToAdd = onNavigateToAdd,
+        onMenuClick = onMenuClick
     )
 }

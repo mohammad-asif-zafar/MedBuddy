@@ -32,6 +32,7 @@ import org.jetbrains.compose.resources.stringResource
 fun HomeScreen(
     viewModel: HomeViewModel,
     onOpenNotifications: () -> Unit,
+    onMenuClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -50,7 +51,7 @@ fun HomeScreen(
                     title = stringResource(Res.string.medbuddy),
                     leftIcon = Icons.Default.Menu,
                     rightIcon = Icons.Outlined.Notifications,
-                    onLeftClick = { },
+                    onLeftClick = onMenuClick,
                     onRightClick = { onOpenNotifications() },
                     titleColor = MaterialTheme.colorScheme.primary,
                     showBadge = uiState.hasUnreadNotifications

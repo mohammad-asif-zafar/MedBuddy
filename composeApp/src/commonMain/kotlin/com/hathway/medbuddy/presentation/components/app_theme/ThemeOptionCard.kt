@@ -37,7 +37,7 @@ import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.ThemeOptionData
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.theme.Surface
-import com.hathway.medbuddy.presentation.ui.ThemeIllustration
+import com.hathway.medbuddy.presentation.components.app_theme.ThemeIllustration
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.accessibility_select_theme
 import medbuddy.composeapp.generated.resources.theme_dark_desc

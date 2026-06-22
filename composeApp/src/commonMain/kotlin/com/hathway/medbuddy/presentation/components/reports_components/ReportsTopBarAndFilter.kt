@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +32,6 @@ import medbuddy.composeapp.generated.resources.filter_7_days
 import medbuddy.composeapp.generated.resources.filter_90_days
 import medbuddy.composeapp.generated.resources.filter_custom
 import medbuddy.composeapp.generated.resources.nav_menu_desc
-import medbuddy.composeapp.generated.resources.reports_calendar_desc
 import medbuddy.composeapp.generated.resources.reports_screen_title
 import org.jetbrains.compose.resources.stringResource
 
@@ -43,7 +40,7 @@ fun ReportsTopBarAndFilter(
     selectedFilter: String,
     onFilterSelected: (String) -> Unit,
     onMenuClick: () -> Unit,
-    onCalendarClick: () -> Unit,
+    onMoreOptionClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     enableMenu: Boolean,
 ) {
@@ -80,13 +77,6 @@ fun ReportsTopBarAndFilter(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            IconButton(onClick = onCalendarClick) {
-                Icon(
-                    imageVector = Icons.Outlined.Notifications,
-                    contentDescription = stringResource(Res.string.reports_calendar_desc),
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
         }
 
         // Horizontal Selector Row

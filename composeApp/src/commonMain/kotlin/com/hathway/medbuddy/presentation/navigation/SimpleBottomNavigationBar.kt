@@ -38,7 +38,7 @@ fun SimpleBottomNavigationBar(
                 NavigationDestination.ADD -> stringResource(Res.string.nav_add)
                 NavigationDestination.REPORTS -> stringResource(Res.string.nav_reports)
                 NavigationDestination.PROFILE -> stringResource(Res.string.nav_profile)
-                NavigationDestination.NOTIFICATIONS -> ""
+                else -> ""
             }
 
             // Safe unpacking helper fallback for the nullable icon property hook

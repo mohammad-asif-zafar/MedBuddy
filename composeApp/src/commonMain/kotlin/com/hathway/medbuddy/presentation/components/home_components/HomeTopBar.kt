@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Notifications
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,9 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.medbuddy
-import org.jetbrains.compose.resources.stringResource
 
 /*
 @Composable
@@ -73,13 +68,9 @@ fun MedBuddyTopBar(
 ) {
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 8.dp,
-                vertical = 12.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.fillMaxWidth().padding(
+            horizontal = 8.dp, vertical = 12.dp
+        ), verticalAlignment = Alignment.CenterVertically
     ) {
 
         if (leftIcon != null) {
@@ -87,11 +78,10 @@ fun MedBuddyTopBar(
                 onClick = onLeftClick
             ) {
                 Icon(
-                    imageVector = leftIcon,
-                    contentDescription = null
+                    imageVector = leftIcon, contentDescription = null
                 )
             }
-        }else{
+        } else {
             Spacer(Modifier.width(32.dp))
         }
 
@@ -114,11 +104,9 @@ fun MedBuddyTopBar(
                                 containerColor = MaterialTheme.colorScheme.error
                             )
                         }
-                    }
-                ) {
+                    }) {
                     Icon(
-                        imageVector = rightIcon,
-                        contentDescription = null
+                        imageVector = rightIcon, contentDescription = null
                     )
                 }
             }

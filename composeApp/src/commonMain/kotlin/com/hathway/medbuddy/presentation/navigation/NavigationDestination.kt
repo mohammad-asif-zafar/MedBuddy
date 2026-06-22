@@ -27,5 +27,19 @@ enum class NavigationDestination(
 
     NOTIFICATIONS(
         icon = null, isVisibleInBottomBar = false
-    )
+    ),
+
+    // Detailed Report Screens
+    AI_INSIGHTS(isVisibleInBottomBar = false),
+    MEAL_TRACKING(isVisibleInBottomBar = false),
+    MEDICATION_ADHERENCE(isVisibleInBottomBar = false),
+    HEALTH_REPORTS_DETAIL(isVisibleInBottomBar = false),
+    FAMILY_CARE(isVisibleInBottomBar = false),
+    EMERGENCY_ALERTS(isVisibleInBottomBar = false),
+    EXERCISE_TRACKING(isVisibleInBottomBar = false),
+    WEIGHT_BMI(isVisibleInBottomBar = false),
+    BLOOD_PRESSURE(isVisibleInBottomBar = false),
+    LAB_RESULTS(isVisibleInBottomBar = false),
+    DOCTOR_APPOINTMENTS_DETAIL(isVisibleInBottomBar = false),
+    FAMILY_MEMBER_MANAGEMENT(isVisibleInBottomBar = false)
 }

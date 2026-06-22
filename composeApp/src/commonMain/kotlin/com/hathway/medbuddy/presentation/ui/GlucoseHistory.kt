@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import androidx.compose.material.icons.filled.Menu
+import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.history_components.DateNavigationHeader
 import com.hathway.medbuddy.presentation.components.history_components.EmptyDayContent
 import com.hathway.medbuddy.presentation.components.history_components.FullScreenCalendarSheet
@@ -37,15 +39,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.add_reading
-import medbuddy.composeapp.generated.resources.after_breakfast
-import medbuddy.composeapp.generated.resources.after_dinner
-import medbuddy.composeapp.generated.resources.after_lunch
-import medbuddy.composeapp.generated.resources.bedtime
-import medbuddy.composeapp.generated.resources.before_breakfast
-import medbuddy.composeapp.generated.resources.before_dinner
-import medbuddy.composeapp.generated.resources.before_lunch
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -69,7 +63,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun GlucoseRecordHistory(
-    records: List<GlucoseRecord>, viewModel: AddViewModel, onNavigateToAdd: () -> Unit
+    records: List<GlucoseRecord>,
+    viewModel: AddViewModel,
+    onNavigateToAdd: () -> Unit,
+    onMenuClick: () -> Unit
 ) {
     /**
      * Finds the glucose record matching
