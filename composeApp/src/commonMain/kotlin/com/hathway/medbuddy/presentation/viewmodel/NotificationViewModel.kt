@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 data class NotificationUiState(
     val isLoading: Boolean = true,
     val notifications: List<MedBuddyNotification> = emptyList(),
+    val selectedNotification: MedBuddyNotification? = null,
     val error: String? = null
 )
 
@@ -42,5 +43,13 @@ class NotificationViewModel(
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
             }
         }
+    }
+
+    fun selectNotification(notification: MedBuddyNotification) {
+        _uiState.update { it.copy(selectedNotification = notification) }
+    }
+
+    fun clearSelection() {
+        _uiState.update { it.copy(selectedNotification = null) }
     }
 }

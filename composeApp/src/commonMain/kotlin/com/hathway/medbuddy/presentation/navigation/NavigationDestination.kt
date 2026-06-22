@@ -47,5 +47,12 @@ enum class NavigationDestination(
     SPLASH(isVisibleInBottomBar = false),
     ONBOARDING(isVisibleInBottomBar = false),
     LOGIN(isVisibleInBottomBar = false),
-    LOADING(isVisibleInBottomBar = false)
+    LOADING(isVisibleInBottomBar = false),
+
+    // Notification & Alerts Flow
+    ALERT_DETAILS(isVisibleInBottomBar = false),
+    TAKE_ACTION(isVisibleInBottomBar = false),
+    ALERT_SETTINGS(isVisibleInBottomBar = false),
+    SNOOZE_REMINDER(isVisibleInBottomBar = false),
+    NOTIFICATION_CHANNELS(isVisibleInBottomBar = false)
 }

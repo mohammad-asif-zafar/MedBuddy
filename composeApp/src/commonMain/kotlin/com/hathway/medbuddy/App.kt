@@ -183,7 +183,13 @@ fun App(
                         NavigationDestination.DOCTOR_APPOINTMENTS_DETAIL -> DoctorAppointmentsDetailScreen(onBack = { currentDestination.value = NavigationDestination.REPORTS })
 
                         // Map screen entry cleanly into state framework
-                        NavigationDestination.NOTIFICATIONS -> {
+                        NavigationDestination.NOTIFICATIONS, 
+                        NavigationDestination.EMERGENCY_ALERTS,
+                        NavigationDestination.ALERT_DETAILS,
+                        NavigationDestination.TAKE_ACTION,
+                        NavigationDestination.ALERT_SETTINGS,
+                        NavigationDestination.SNOOZE_REMINDER,
+                        NavigationDestination.NOTIFICATION_CHANNELS -> {
                             NotificationContent(
                                 repository = repository,
                                 doctorRepository = doctorRepository,

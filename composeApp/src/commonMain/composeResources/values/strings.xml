@@ -454,6 +454,53 @@
     <string name="all_looks_good">All Looks Good</string>
     <string name="latest_results">Latest Results</string>
 
+    <!-- Notification Flow -->
+    <string name="alerts_title">Alerts</string>
+    <string name="filter_alerts">Alerts</string>
+    <string name="filter_reminders">Reminders</string>
+    <string name="filter_updates">Updates</string>
+    <string name="mark_all_read">Mark all as read</string>
+
+    <string name="alert_details_title">Alert Details</string>
+    <string name="date_time_label">Date &amp; Time</string>
+    <string name="glucose_level_label">Glucose Level</string>
+    <string name="recommended_action_label">Recommended Action</string>
+    <string name="source_label">Source</string>
+    <string name="acknowledge_btn">Acknowledge</string>
+
+    <string name="take_action_title">Take Action</string>
+    <string name="action_question">What would you like to do?</string>
+    <string name="action_medication">Take Medication</string>
+    <string name="action_recheck">Recheck Glucose</string>
+    <string name="action_note">Log Note</string>
+    <string name="action_call">Call Doctor</string>
+    <string name="action_none">None</string>
+    <string name="notes_placeholder">Took insulin as per doctor advice.</string>
+    <string name="save_action_btn">Save</string>
+
+    <string name="alert_settings_title">Alert Settings</string>
+    <string name="glucose_alerts_section">Glucose Alerts</string>
+    <string name="medication_reminders_section">Medication Reminders</string>
+    <string name="other_alerts_section">Other Alerts</string>
+    <string name="high_glucose_threshold">High Glucose Alert (>250)</string>
+    <string name="low_glucose_threshold">Low Glucose Alert (&lt;70)</string>
+    <string name="sound_label">Sound</string>
+    <string name="vibration_label">Vibration</string>
+
+    <string name="snooze_reminder_title">Snooze Reminder</string>
+    <string name="snooze_for_label">Snooze for</string>
+    <string name="snooze_15m">15 Minutes</string>
+    <string name="snooze_30m">30 Minutes</string>
+    <string name="snooze_1h">1 Hour</string>
+    <string name="snooze_2h">2 Hours</string>
+    <string name="snooze_custom">Custom Time</string>
+
+    <string name="manage_channels_title">Notification Channels</string>
+    <string name="push_notifications">Push Notifications</string>
+    <string name="email_notifications">Email Notifications</string>
+    <string name="sms_notifications">SMS Notifications</string>
+    <string name="whatsapp_notifications">WhatsApp Notifications</string>
+
     <!-- Splash & Onboarding -->
     <string name="splash_tagline">Your Health Companion</string>
     <string name="onboarding_title">Track. Manage. Improve.</string>
