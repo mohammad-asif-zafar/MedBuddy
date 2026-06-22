@@ -177,7 +177,7 @@
     <string name="insight_lower">Glucose is 15% lower than last week</string>
     <string name="patient">Patient</string>
     <string name="today">Today</string>
-    <string name="todays_glucose">Today\'s Glucose</string>
+    <string name="todays_glucose">Today's Glucose</string>
 
     <!-- Appointment -->
     <string name="next_appointment_label">Next Appointment</string>
@@ -453,4 +453,10 @@
     <string name="health_at_glance">Health At Glance</string>
     <string name="all_looks_good">All Looks Good</string>
     <string name="latest_results">Latest Results</string>
+
+    <!-- Splash & Onboarding -->
+    <string name="splash_tagline">Your Health Companion</string>
+    <string name="onboarding_title">Track. Manage. Improve.</string>
+    <string name="onboarding_desc">All your health data in one place.</string>
+    <string name="next">Next</string>
 </resources>

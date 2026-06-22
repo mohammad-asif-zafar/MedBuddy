@@ -24,6 +24,7 @@ import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import com.hathway.medbuddy.presentation.navigation.SimpleBottomNavigationBar
 import com.hathway.medbuddy.presentation.navigation_content.*
 import com.hathway.medbuddy.presentation.ui.detailed_reports.*
+import com.hathway.medbuddy.presentation.ui.*
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -33,17 +34,18 @@ import kotlinx.coroutines.launch
 fun App(
     repository: IGlucoseRepository? = null,
     doctorRepository: IDoctorRepository? = null,
-    initialDestination: NavigationDestination = NavigationDestination.HOME
+    initialDestination: NavigationDestination = NavigationDestination.SPLASH,
+    onGoogleSignInClick: () -> Unit = {}
 ) {
     val themeMode by ThemeManager.themeMode.collectAsState()
     val currentDestination = remember { mutableStateOf(initialDestination) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    // Update if initial destination changes externally (e.g. from notification)
-    LaunchedEffect(initialDestination) {
-        if (initialDestination != currentDestination.value) {
-            currentDestination.value = initialDestination
+    // Handle Auth State changes to navigate to HOME or LOGIN
+    LaunchedEffect(repository, doctorRepository) {
+        if (currentDestination.value == NavigationDestination.LOADING && repository != null && doctorRepository != null) {
+            currentDestination.value = NavigationDestination.HOME
         }
     }
 
@@ -60,6 +62,7 @@ fun App(
                     },
                     onLogout = {
                         // TODO: Implement logout logic
+                        currentDestination.value = NavigationDestination.LOGIN
                         scope.launch { drawerState.close() }
                     }
                 )
@@ -78,6 +81,28 @@ fun App(
                     modifier = Modifier.fillMaxSize().padding(paddingValues)
                 ) {
                     when (currentDestination.value) {
+                        NavigationDestination.SPLASH -> SplashScreen(onSplashFinished = {
+                            if (FirebaseManager.currentUser != null) {
+                                currentDestination.value = NavigationDestination.HOME
+                            } else {
+                                currentDestination.value = NavigationDestination.ONBOARDING
+                            }
+                        })
+
+                        NavigationDestination.ONBOARDING -> OnboardingScreen(onNext = {
+                            currentDestination.value = NavigationDestination.LOGIN
+                        })
+
+                        NavigationDestination.LOGIN -> LoginScreen(
+                            errorMessage = null, 
+                            onGoogleSignInClick = {
+                                currentDestination.value = NavigationDestination.LOADING
+                                onGoogleSignInClick()
+                            }
+                        )
+
+                        NavigationDestination.LOADING -> LoadingScreen()
+
                         NavigationDestination.HOME -> {
                             if (repository != null && doctorRepository != null) {
                                 HomeContent(

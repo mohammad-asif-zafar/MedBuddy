@@ -3,6 +3,7 @@ package com.hathway.medbuddy.presentation.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -37,75 +38,78 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
-        modifier = Modifier.fillMaxSize().background(
-            MaterialTheme.colorScheme.background
-        )
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(start = 12.dp, end = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Home Tool Bar
-            item {
-                MedBuddyTopBar(
-                    title = stringResource(Res.string.medbuddy),
-                    leftIcon = Icons.Default.Menu,
-                    rightIcon = Icons.Outlined.Notifications,
-                    onLeftClick = onMenuClick,
-                    onRightClick = { onOpenNotifications() },
-                    titleColor = MaterialTheme.colorScheme.primary,
-                    showBadge = uiState.hasUnreadNotifications
-                )
-            }
-            // Section 1: Greeting with patient info
-            // Section 2:  Today's Glucose
-            item {
-                // Determine the correct meal period enum safely
-                val currentPeriod = uiState.lastMealPeriod
-                val targetData = calculateGlucoseTargets(
-                    valueMgMl = uiState.lastReading.toDouble() / 100.0,
-                    mealType = currentPeriod,
-                    hasDiabetes = true
-                )
-                GlucoseAndPatientCardSection(
-                    greeting = uiState.greeting,
-                    patientName = uiState.patientName,
-                    glucoseValue = uiState.lastReading,
-                    mealType = uiState.lastMealType,
-                    status = uiState.glucoseStatusText,
-                    minTarget = (targetData.minTarget * 100).toInt().toString(),
-                    maxTarget = (targetData.maxTarget * 100).toInt().toString(),
-                    isToday = uiState.isToday
-                )
-            }
-            //  Section 3: Doctor Information
-            item {
-                TrendChartCard(
-                    readings = uiState.dailyAverageReadings
-                )
-            }
-            // Section 4: Health Summary (4 cards in grid)
-            item {
-                HealthSummaryGrid(
-                    average = uiState.sevenDayAverage,
-                    hbA1c = uiState.hbA1cEstimate,
-                    highest = uiState.highestGlucose,
-                    lowest = uiState.lowestGlucose
-                )
-            }
-            // Section 6: Last 3 Records
-            item {
-                RecentRecordsCard(
-                    recentRecords = uiState.last7Readings
-                )
-            }
-            // Section 7: bottom space
-            item {
-                Spacer(
-                    modifier = Modifier.height(6.dp)
-                )
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Pinned Top Bar with its own unique padding/spacing if needed
+            MedBuddyTopBar(
+                title = stringResource(Res.string.medbuddy),
+                leftIcon = Icons.Default.Menu,
+                rightIcon = Icons.Outlined.Notifications,
+                onLeftClick = onMenuClick,
+                onRightClick = { onOpenNotifications() },
+                titleColor = MaterialTheme.colorScheme.primary,
+                showBadge = uiState.hasUnreadNotifications,
+                modifier = Modifier.padding(horizontal = 12.dp) // Match the side padding
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 12.dp, end = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Section 1 & 2: Today's Glucose (Now becomes the very first item)
+                item {
+                    val currentPeriod = uiState.lastMealPeriod
+                    val targetData = calculateGlucoseTargets(
+                        valueMgMl = uiState.lastReading.toDouble() / 100.0,
+                        mealType = currentPeriod,
+                        hasDiabetes = true
+                    )
+                    GlucoseAndPatientCardSection(
+                        greeting = uiState.greeting,
+                        patientName = uiState.patientName,
+                        glucoseValue = uiState.lastReading,
+                        mealType = uiState.lastMealType,
+                        status = uiState.glucoseStatusText,
+                        minTarget = (targetData.minTarget * 100).toInt().toString(),
+                        maxTarget = (targetData.maxTarget * 100).toInt().toString(),
+                        isToday = uiState.isToday
+                    )
+                }
+
+                // Section 3: Doctor Information
+                item {
+                    TrendChartCard(readings = uiState.dailyAverageReadings)
+                }
+
+                // Section 4: Health Summary
+                item {
+                    HealthSummaryGrid(
+                        average = uiState.sevenDayAverage,
+                        hbA1c = uiState.hbA1cEstimate,
+                        highest = uiState.highestGlucose,
+                        lowest = uiState.lowestGlucose
+                    )
+                }
+
+                // Section 6: Last 3 Records
+                item {
+                    RecentRecordsCard(recentRecords = uiState.last7Readings)
+                }
+
+                // Section 7: bottom space
+                item {
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
             }
         }
     }
+
 }
 

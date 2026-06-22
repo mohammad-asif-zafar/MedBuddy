@@ -2,6 +2,7 @@ package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MedicalServices
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -35,17 +37,13 @@ expect fun ProfileImagePicker(onImagePicked: (ByteArray) -> Unit): () -> Unit
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel,
-    onMenuClick: () -> Unit
+    viewModel: ProfileViewModel, onMenuClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+    Box(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
     ) {
-
-        item {
+        Column(modifier = Modifier.fillMaxSize()) {
             MedBuddyTopBar(
                 title = stringResource(Res.string.nav_profile),
                 rightIcon = Icons.Outlined.Settings,
@@ -53,89 +51,94 @@ fun ProfileScreen(
                 onRightClick = { },
                 titleColor = MaterialTheme.colorScheme.primary
             )
-        }
 
-        // Profile Header Card & Section Title (Grouped to manage overlapping offset)
-        item {
-            Column(
-                verticalArrangement = Arrangement.spacedBy((-42).dp) // Tighter grouping to eliminate excessive gap
+            Spacer(modifier = Modifier.height(8.dp))
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                ProfileHeaderCard(
+                // Profile Header Card & Section Title (Grouped to manage overlapping offset)
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy((-42).dp) // Tighter grouping to eliminate excessive gap
+                    ) {
+                        ProfileHeaderCard(
+                            name = uiState.name,
+                            email = uiState.email,
+                            photoUrl = uiState.photoUrl,
+                            age = uiState.age,
+                            weight = uiState.weight,
+                            bloodType = uiState.bloodType,
+                            isLoading = uiState.isLoading,
+                            onEditPhotoClick = {
+                                viewModel.showProfileDialog()
+                            },
+                            onEditProfileClick = {
+                                viewModel.showProfileDialog()
+                            })
+
+                        SectionHeader(
+                            title = stringResource(Res.string.personal_health_details),
+                            icon = Icons.Default.MedicalServices
+                        )
+                    }
+                }
+
+                // Doctor Information Card
+                item {
+                    DoctorInformationCard(
+                        doctorName = uiState.doctorInfo.doctorName,
+                        doctorType = uiState.doctorInfo.doctorType,
+                        speciality = uiState.doctorInfo.speciality,
+                        hospital = uiState.doctorInfo.hospital,
+                        nextAppointment = uiState.doctorInfo.nextAppointment,
+                        onDetailsClick = {
+                            viewModel.showDoctorDialog()
+                        })
+                }
+
+                // Settings & Logout Section
+                item {
+                    SettingsSection(
+                        onPreferencesClick = { viewModel.showThemeDialog() },
+                        onHelpClick = { /* Handle action */ }, // Wired parameter
+                        onLogoutClick = { viewModel.logout() })
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+            }
+
+            // Dialog Conditional Visibility States
+            if (uiState.showDoctorDialog) {
+                DoctorDialog(
+                    doctorInfo = uiState.doctorInfo,
+                    onDismiss = { viewModel.hideDoctorDialog() },
+                    onSave = { viewModel.saveDoctor(it) })
+            }
+
+            if (uiState.showProfileDialog) {
+                EditProfileDialog(
                     name = uiState.name,
-                    email = uiState.email,
-                    photoUrl = uiState.photoUrl,
                     age = uiState.age,
                     weight = uiState.weight,
                     bloodType = uiState.bloodType,
-                    isLoading = uiState.isLoading,
-                    onEditPhotoClick = {
-                        viewModel.showProfileDialog()
-                    },
-                    onEditProfileClick = {
-                        viewModel.showProfileDialog()
+                    onDismiss = { viewModel.hideProfileDialog() },
+                    onSave = { name, age, weight, bloodType ->
+                        viewModel.saveProfile(name, age, weight, bloodType)
                     })
+            }
 
-                SectionHeader(
-                    title = stringResource(Res.string.personal_health_details),
-                    icon = Icons.Default.MedicalServices
-                )
+            if (uiState.showThemeDialog) {
+                ThemeSelectionDialog(
+                    currentMode = uiState.themeMode,
+                    onDismiss = { viewModel.hideThemeDialog() },
+                    onSelect = {
+                        viewModel.setThemeMode(it)
+                        viewModel.hideThemeDialog()
+                    })
             }
         }
-
-        // Doctor Information Card
-        item {
-            DoctorInformationCard(
-                doctorName = uiState.doctorInfo.doctorName,
-                doctorType = uiState.doctorInfo.doctorType,
-                speciality = uiState.doctorInfo.speciality,
-                hospital = uiState.doctorInfo.hospital,
-                nextAppointment = uiState.doctorInfo.nextAppointment,
-                onDetailsClick = {
-                    viewModel.showDoctorDialog()
-                })
-        }
-
-        // Settings & Logout Section
-        item {
-            SettingsSection(
-                onPreferencesClick = { viewModel.showThemeDialog() },
-                onHelpClick = { /* Handle action */ }, // Wired parameter
-                onLogoutClick = { viewModel.logout() })
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(6.dp))
-        }
-    }
-
-    // Dialog Conditional Visibility States
-    if (uiState.showDoctorDialog) {
-        DoctorDialog(
-            doctorInfo = uiState.doctorInfo,
-            onDismiss = { viewModel.hideDoctorDialog() },
-            onSave = { viewModel.saveDoctor(it) })
-    }
-
-    if (uiState.showProfileDialog) {
-        EditProfileDialog(
-            name = uiState.name,
-            age = uiState.age,
-            weight = uiState.weight,
-            bloodType = uiState.bloodType,
-            onDismiss = { viewModel.hideProfileDialog() },
-            onSave = { name, age, weight, bloodType ->
-                viewModel.saveProfile(name, age, weight, bloodType)
-            })
-    }
-
-    if (uiState.showThemeDialog) {
-        ThemeSelectionDialog(
-            currentMode = uiState.themeMode,
-            onDismiss = { viewModel.hideThemeDialog() },
-            onSelect = { 
-                viewModel.setThemeMode(it)
-                viewModel.hideThemeDialog()
-            }
-        )
     }
 }

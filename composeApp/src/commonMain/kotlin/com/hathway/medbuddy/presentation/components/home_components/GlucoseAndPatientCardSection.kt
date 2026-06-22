@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.util.displayName
 import com.hathway.medbuddy.util.formatDisplayDate
 import com.hathway.medbuddy.util.getGreetingIconImageVector
@@ -93,7 +94,7 @@ fun GlucoseAndPatientCardSection(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.primaryContainer
             ),
             border = BorderStroke(
                 width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)

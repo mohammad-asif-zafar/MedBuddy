@@ -23,7 +23,6 @@ fun SimpleBottomNavigationBar(
     currentDestination: NavigationDestination,
     onDestinationSelected: (NavigationDestination) -> Unit
 ) {
-    // ✅ Optimizes performance by pre-filtering non-bottom bar screens like NOTIFICATIONS
     val visibleDestinations = remember {
         NavigationDestination.entries.filter { it.isVisibleInBottomBar }
     }

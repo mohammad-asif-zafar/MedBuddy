@@ -41,5 +41,11 @@ enum class NavigationDestination(
     BLOOD_PRESSURE(isVisibleInBottomBar = false),
     LAB_RESULTS(isVisibleInBottomBar = false),
     DOCTOR_APPOINTMENTS_DETAIL(isVisibleInBottomBar = false),
-    FAMILY_MEMBER_MANAGEMENT(isVisibleInBottomBar = false)
+    FAMILY_MEMBER_MANAGEMENT(isVisibleInBottomBar = false),
+
+    // App Startup Flow
+    SPLASH(isVisibleInBottomBar = false),
+    ONBOARDING(isVisibleInBottomBar = false),
+    LOGIN(isVisibleInBottomBar = false),
+    LOADING(isVisibleInBottomBar = false)
 }

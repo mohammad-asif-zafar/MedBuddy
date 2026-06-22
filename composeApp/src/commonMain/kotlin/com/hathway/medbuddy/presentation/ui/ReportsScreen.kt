@@ -131,30 +131,6 @@ fun ReportsScreen(
                             insights = reportInsightsList
                         )
                     }
-
-                    // 7. Feature Cards Grid
-                    item {
-                        FlowRow(
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
-                            horizontalArrangement = Arrangement.spacedBy(0.dp),
-                            maxItemsInEachRow = 2
-                        ) {
-                            val cardModifier = Modifier.fillMaxWidth(0.5f)
-                            
-                            Box(modifier = cardModifier) { AIInsightsCard(onClick = { onFeatureClick(NavigationDestination.AI_INSIGHTS) }) }
-                            Box(modifier = cardModifier) { MealTrackingCard(onClick = { onFeatureClick(NavigationDestination.MEAL_TRACKING) }) }
-                            Box(modifier = cardModifier) { MedicationAdherenceCard(onClick = { onFeatureClick(NavigationDestination.MEDICATION_ADHERENCE) }) }
-                            Box(modifier = cardModifier) { HealthReportsCard(onClick = { onFeatureClick(NavigationDestination.HEALTH_REPORTS_DETAIL) }) }
-                            Box(modifier = cardModifier) { FamilyCareCard(onClick = { onFeatureClick(NavigationDestination.FAMILY_CARE) }) }
-                            Box(modifier = cardModifier) { EmergencyAlertsCard(onClick = { onFeatureClick(NavigationDestination.EMERGENCY_ALERTS) }) }
-                            Box(modifier = cardModifier) { ExerciseTrackingCard(onClick = { onFeatureClick(NavigationDestination.EXERCISE_TRACKING) }) }
-                            Box(modifier = cardModifier) { WeightBMICard(onClick = { onFeatureClick(NavigationDestination.WEIGHT_BMI) }) }
-                            Box(modifier = cardModifier) { BloodPressureTrackingCard(onClick = { onFeatureClick(NavigationDestination.BLOOD_PRESSURE) }) }
-                            Box(modifier = cardModifier) { DoctorAppointmentsCard(onClick = { onFeatureClick(NavigationDestination.DOCTOR_APPOINTMENTS_DETAIL) }) }
-                            Box(modifier = cardModifier) { DarkModeFeatureCard(onClick = { /* Already handled elsewhere? or profile */ }) }
-                        }
-                    }
-
                     // Layout buffer space anchor at the bottom of the column screen track
                     item {
                         Spacer(modifier = Modifier.navigationBarsPadding().height(4.dp))

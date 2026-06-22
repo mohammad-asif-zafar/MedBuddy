@@ -68,9 +68,12 @@ fun MedBuddyTopBar(
 ) {
 
     Row(
-        modifier = modifier.fillMaxWidth().padding(
-            horizontal = 8.dp, vertical = 12.dp
-        ), verticalAlignment = Alignment.CenterVertically
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = 12.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
         if (leftIcon != null) {

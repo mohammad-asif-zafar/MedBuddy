@@ -15,8 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.hathway.medbuddy.google_manager.GoogleAuthUiClient
-import com.hathway.medbuddy.presentation.ui.LoadingScreen
-import com.hathway.medbuddy.presentation.ui.LoginScreen
 import com.hathway.medbuddy.data.remote.FirebaseSyncService
 import com.hathway.medbuddy.data.repository.DoctorRepository
 import com.hathway.medbuddy.data.repository.GlucoseRepository
@@ -31,10 +29,9 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var googleAuthUiClient: GoogleAuthUiClient
 
-    private val authState = mutableStateOf<AuthState>(AuthState.Login)
-    private val deepLinkDestination = mutableStateOf(NavigationDestination.HOME)
-
-    private val errorMessage = mutableStateOf<String?>(null)
+    private val deepLinkDestination = mutableStateOf(NavigationDestination.SPLASH)
+    private val repository = mutableStateOf<GlucoseRepository?>(null)
+    private val doctorRepository = mutableStateOf<DoctorRepository?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -45,63 +42,33 @@ class MainActivity : ComponentActivity() {
 
         googleAuthUiClient = GoogleAuthUiClient(this)
 
-        // Listen for Auth State Changes (Handles Logout)
-        FirebaseManager.auth.addAuthStateListener { auth ->
-            if (auth.currentUser == null) {
-                authState.value = AuthState.Login
-            }
-        }
-
-        // Auto Login
+        // Auto Login and Repository Initialization
         if (FirebaseManager.auth.currentUser != null) {
-
-            authState.value = AuthState.Loading
-
-            lifecycleScope.launch {
-
-                try {
-
-                    FirebaseSyncService(this@MainActivity).createUserIfNotExists()
-                    syncFcmToken()
-
-                    authState.value = AuthState.Home
-
-                } catch (e: Exception) {
-
-                    authState.value = AuthState.Login
-
-                    Log.e(
-                        TAG, "Auto Login Failed", e
-                    )
-                }
-            }
+            initRepositories()
         }
 
         setContent {
-
-            when (authState.value) {
-
-                AuthState.Login -> {
-                    LoginScreen(
-                        errorMessage = errorMessage.value, onGoogleSignInClick = {
-                            errorMessage.value = null
-                            launcher.launch(
-                                googleAuthUiClient.getSignInIntent()
-                            )
-                        })
+            App(
+                repository = repository.value,
+                doctorRepository = doctorRepository.value,
+                initialDestination = deepLinkDestination.value,
+                onGoogleSignInClick = {
+                    launcher.launch(googleAuthUiClient.getSignInIntent())
                 }
+            )
+        }
+    }
 
-                AuthState.Loading -> {
-                    LoadingScreen()
-                }
+    private fun initRepositories() {
+        repository.value = GlucoseRepository(this)
+        doctorRepository.value = DoctorRepository()
 
-                AuthState.Home -> {
-
-                    val repository = GlucoseRepository(this)
-                    val doctorRepository = DoctorRepository()
-
-                    App(repository, doctorRepository, initialDestination = deepLinkDestination.value)
-                }
+        lifecycleScope.launch {
+            try {
+                FirebaseSyncService(this@MainActivity).createUserIfNotExists()
+                syncFcmToken()
+            } catch (e: Exception) {
+                Log.e(TAG, "Initialization Failed", e)
             }
         }
     }
@@ -152,53 +119,17 @@ class MainActivity : ComponentActivity() {
     private val launcher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-
-        authState.value = AuthState.Loading
-        errorMessage.value = null
-
-        val task = GoogleSignIn.getSignedInAccountFromIntent(
-            result.data
-        )
-
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         lifecycleScope.launch {
-
             try {
-
-                val account = task.getResult(
-                    ApiException::class.java
-                )
-
+                val account = task.getResult(ApiException::class.java)
                 val user = googleAuthUiClient.signInWithGoogle(account)
-
                 if (user != null) {
-
-                    FirebaseSyncService(
-                        this@MainActivity
-                    ).createUserIfNotExists()
-                    syncFcmToken()
-
-                    authState.value = AuthState.Home
-
-                    Log.d(
-                        TAG, "Google Sign-In Success"
-                    )
-
-                } else {
-
-                    errorMessage.value = "Login failed"
-
-                    authState.value = AuthState.Login
+                    initRepositories()
+                    Log.d(TAG, "Google Sign-In Success")
                 }
-
             } catch (e: Exception) {
-
-                errorMessage.value = e.localizedMessage ?: "Google Sign-In Failed"
-
-                authState.value = AuthState.Login
-
-                Log.e(
-                    TAG, "Google Sign-In Failed", e
-                )
+                Log.e(TAG, "Google Sign-In Failed", e)
             }
         }
     }

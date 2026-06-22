@@ -19,7 +19,7 @@ data class MedBuddyNotification(
 )
 
 enum class NotificationType {
-    ALERT, REMINDER, INFO
+    ALERT, REMINDER, INFO, HIGH_GLUCOSE, LOW_GLUCOSE, MEDICATION_REMINDER
 }
 
 class GetNotificationsUseCase(
@@ -28,18 +28,22 @@ class GetNotificationsUseCase(
 ) {
     suspend operator fun invoke(): List<MedBuddyNotification> {
         val notifications = mutableListOf<MedBuddyNotification>()
-        
+
         val allRecords = glucoseRepository.getAllRecords()
         val userId = FirebaseManager.currentUser?.uid ?: ""
         val doctorInfo = if (userId.isNotEmpty()) doctorRepository.getDoctorInfo(userId) else null
-        
+
         val today = getNowLocalDateTime().date
-        
+
         // 1. Check for today's logs (Reminders)
-        val todayRecord = allRecords.find { 
-            try { parseDisplayDate(it.date) == today } catch(e: Exception) { false }
+        val todayRecord = allRecords.find {
+            try {
+                parseDisplayDate(it.date) == today
+            } catch (e: Exception) {
+                false
+            }
         }
-        
+
         if (todayRecord == null) {
             notifications.add(
                 MedBuddyNotification(
@@ -67,12 +71,15 @@ class GetNotificationsUseCase(
         val latestRecord = allRecords.maxByOrNull { it.createdAt }
         if (latestRecord != null) {
             val readings = listOfNotNull(
-                latestRecord.beforeBreakfast, latestRecord.afterBreakfast,
-                latestRecord.beforeLunch, latestRecord.afterLunch,
-                latestRecord.beforeDinner, latestRecord.afterDinner,
+                latestRecord.beforeBreakfast,
+                latestRecord.afterBreakfast,
+                latestRecord.beforeLunch,
+                latestRecord.afterLunch,
+                latestRecord.beforeDinner,
+                latestRecord.afterDinner,
                 latestRecord.bedtime
             )
-            
+
             if (readings.isNotEmpty()) {
                 val lastValue = readings.last()
                 if (lastValue > 250) {
@@ -108,12 +115,17 @@ class GetNotificationsUseCase(
                             MedBuddyNotification(
                                 id = "upcoming_appointment_${apptDateStr}",
                                 title = getString(Res.string.upcoming_appointment),
-                                message = getString(Res.string.upcoming_appointment_desc, doctorInfo.doctorName, daysUntil),
+                                message = getString(
+                                    Res.string.upcoming_appointment_desc,
+                                    doctorInfo.doctorName,
+                                    daysUntil
+                                ),
                                 type = NotificationType.INFO
                             )
                         )
                     }
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                }
             }
         }
 

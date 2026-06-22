@@ -13,10 +13,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -25,7 +27,11 @@ import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
-fun LoadingScreen() {
+fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
+    LaunchedEffect(Unit) {
+        delay(3000)
+        onLoadingFinished()
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
