@@ -3,16 +3,13 @@ package com.hathway.medbuddy.presentation.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults.containerColor
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,8 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.domain.model.GlucoseRecord
-import androidx.compose.material.icons.filled.Menu
-import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.history_components.DateNavigationHeader
 import com.hathway.medbuddy.presentation.components.history_components.EmptyDayContent
 import com.hathway.medbuddy.presentation.components.history_components.FullScreenCalendarSheet
@@ -36,10 +31,17 @@ import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import com.hathway.medbuddy.util.parseDisplayDate
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import medbuddy.composeapp.generated.resources.*
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.add_reading
+import medbuddy.composeapp.generated.resources.after_breakfast
+import medbuddy.composeapp.generated.resources.after_dinner
+import medbuddy.composeapp.generated.resources.after_lunch
+import medbuddy.composeapp.generated.resources.bedtime
+import medbuddy.composeapp.generated.resources.before_breakfast
+import medbuddy.composeapp.generated.resources.before_dinner
+import medbuddy.composeapp.generated.resources.before_lunch
 import org.jetbrains.compose.resources.stringResource
 
 /**

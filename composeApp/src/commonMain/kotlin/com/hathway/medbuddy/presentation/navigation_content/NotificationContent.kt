@@ -4,13 +4,21 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
-import com.hathway.medbuddy.presentation.navigation.NavigationDestination
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.presentation.ui.MedBuddyNotification
-import com.hathway.medbuddy.presentation.ui.notification_flow.*
+import com.hathway.medbuddy.presentation.ui.notification_flow.AlertDetailsScreen
+import com.hathway.medbuddy.presentation.ui.notification_flow.AlertSettingsScreen
+import com.hathway.medbuddy.presentation.ui.notification_flow.NotificationChannelsScreen
+import com.hathway.medbuddy.presentation.ui.notification_flow.SnoozeReminderScreen
+import com.hathway.medbuddy.presentation.ui.notification_flow.TakeActionScreen
 import com.hathway.medbuddy.presentation.viewmodel.NotificationViewModel
 
 enum class NotificationFlowState {

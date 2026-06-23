@@ -1,5 +1,6 @@
 package com.hathway.medbuddy
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -12,6 +13,7 @@ import com.google.firebase.firestore.SetOptions
 actual object FirebaseManager {
 
     val auth = FirebaseAuth.getInstance()
+    @SuppressLint("StaticFieldLeak")
     val firestore = FirebaseFirestore.getInstance()
     val storage = FirebaseStorage.getInstance("gs://medbuddy-4873d.firebasestorage.app")
 

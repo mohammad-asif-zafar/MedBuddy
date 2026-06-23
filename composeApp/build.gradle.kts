@@ -59,6 +59,11 @@ kotlin {
             implementation("io.coil-kt.coil3:coil-compose:3.0.4")
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.4")
             implementation(compose.components.resources)
+            // Includes BackHandler component support across common targets
+            implementation(compose.foundation)
+            implementation(compose.runtime)
+            implementation("org.jetbrains.compose.ui:ui-backhandler:1.9.1")
+
 
         }
         val commonMain by getting

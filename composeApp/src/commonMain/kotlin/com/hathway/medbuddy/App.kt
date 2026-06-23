@@ -145,8 +145,8 @@ fun App(
                         )
                         NavigationDestination.PROFILE -> ProfileContent(
                             doctorRepository = doctorRepository,
-                            onMenuClick = {
-                                scope.launch { drawerState.open() }
+                            onBack = {
+                                currentDestination.value = NavigationDestination.PROFILE
                             }
                         )
 

@@ -1,30 +1,41 @@
 package com.hathway.medbuddy.presentation.components.profile_components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.MonitorWeight
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
-import medbuddy.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import com.hathway.medbuddy.util.getNowLocalDateTime
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import androidx.compose.foundation.layout.Box
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileDialog(
     name: String,
@@ -39,121 +50,84 @@ fun EditProfileDialog(
     var editedWeight by remember { mutableStateOf(weight) }
     var editedBloodType by remember { mutableStateOf(bloodType) }
 
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            shape = RoundedCornerShape(24.dp),
-            color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 6.dp
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
-            ) {
-                // Header Area
-                Box(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 20.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            Text(
-                                text = "Personal Metrics",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Text(
-                                text = stringResource(Res.string.edit_profile_title),
-                                style = MaterialTheme.typography.headlineSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                        IconButton(
-                            onClick = onDismiss, 
-                            modifier = Modifier.background(
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f), CircleShape
-                            )
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(Res.string.close),
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
+    var showDatePicker by remember { mutableStateOf(false) }
+    val currentDeviceDate = remember { getNowLocalDateTime().date }
+
+    var selectedDate by remember { mutableStateOf(currentDeviceDate) }
+
+    val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
+        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+            return utcTimeMillis <= Clock.System.now().toEpochMilliseconds()
+        }
+    })
+
+    if (showDatePicker) {
+        DatePickerDialog(onDismissRequest = { showDatePicker = false }, confirmButton = {
+            TextButton(
+                onClick = {
+                    val selectedMillis = datePickerState.selectedDateMillis
+                    if (selectedMillis != null) {
+                        val instant = Instant.fromEpochMilliseconds(selectedMillis)
+                        val localDate =
+                            instant.toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+                        // ✅ FIXED: Clean string manipulation replacing old capitalization loops
+                        val rawMonth = localDate.month.name
+                        val formattedMonth =
+                            rawMonth.first().uppercase() + rawMonth.substring(1).lowercase()
+
+                        editedAge = "${localDate.dayOfMonth} $formattedMonth ${localDate.year}"
                     }
-                }
-
-                // Styled Form Inputs
-                Column(
-                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    // Name Input
-                    EditProfileInputField(
-                        value = editedName,
-                        onValueChange = { editedName = it },
-                        label = stringResource(Res.string.name),
-                        icon = Icons.Default.Person
-                    )
-
-                    // Age Input
-                    EditProfileInputField(
-                        value = editedAge,
-                        onValueChange = { editedAge = it },
-                        label = stringResource(Res.string.age),
-                        icon = Icons.Default.Numbers
-                    )
-
-                    // Weight Input
-                    EditProfileInputField(
-                        value = editedWeight,
-                        onValueChange = { editedWeight = it },
-                        label = stringResource(Res.string.weight_kg),
-                        icon = Icons.Default.MonitorWeight
-                    )
-
-                    // Blood Type Input
-                    EditProfileInputField(
-                        value = editedBloodType,
-                        onValueChange = { editedBloodType = it },
-                        label = stringResource(Res.string.blood_type),
-                        icon = Icons.Default.WaterDrop
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Dialog Actions Row Section
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        TextButton(
-                            onClick = onDismiss,
-                            modifier = Modifier.weight(1f).height(50.dp),
-                            shape = RoundedCornerShape(14.dp)
-                        ) {
-                            Text(
-                                text = stringResource(Res.string.discard),
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp
-                            )
-                        }
-                        PrimaryButton(
-                            text = stringResource(Res.string.save_info), 
-                            onClick = {
-                                onSave(editedName, editedAge, editedWeight, editedBloodType)
-                            }, 
-                            modifier = Modifier.weight(1f).height(50.dp), 
-                            enabled = true
-                        )
-                    }
-                }
+                    showDatePicker = false
+                }) {
+                Text("OK")
             }
+        }, dismissButton = {
+            TextButton(onClick = { showDatePicker = false }) {
+                Text("Cancel")
+            }
+        }) {
+            DatePicker(state = datePickerState)
         }
     }
+
+    // 1. Name Input
+    EditProfileInputField(
+        value = editedName,
+        onValueChange = { editedName = it },
+        label = "Name",
+        icon = Icons.Default.Person
+    )
+
+    // ✅ 2. FIXED: Tap gesture now opens the calendar properly
+    Box(
+        modifier = Modifier.fillMaxWidth().clickable { showDatePicker = true }) {
+        EditProfileInputField(
+            value = editedAge,
+            onValueChange = {},
+            label = "Birthdate / Age",
+            icon = Icons.Default.CalendarMonth,
+            readOnly = true,
+            enabled = false,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
+    // 3. Weight Input
+    EditProfileInputField(
+        value = editedWeight,
+        onValueChange = { editedWeight = it },
+        label = "Weight (kg)",
+        icon = Icons.Default.MonitorWeight
+    )
+
+    // 4. Blood Type Input
+    EditProfileInputField(
+        value = editedBloodType,
+        onValueChange = { editedBloodType = it },
+        label = "Blood Type",
+        icon = Icons.Default.WaterDrop
+    )
 }
 
 @Composable
@@ -161,7 +135,10 @@ fun EditProfileInputField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         value = value,
@@ -175,8 +152,11 @@ fun EditProfileInputField(
                 tint = MaterialTheme.colorScheme.primary
             )
         },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        interactionSource = remember { MutableInteractionSource() },
+        readOnly = readOnly,
+        enabled = enabled,
+        modifier = modifier.fillMaxWidth(),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -184,7 +164,11 @@ fun EditProfileInputField(
             focusedLabelColor = MaterialTheme.colorScheme.primary,
             unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
             focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+            disabledBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledLeadingIconColor = MaterialTheme.colorScheme.primary
         )
     )
 }

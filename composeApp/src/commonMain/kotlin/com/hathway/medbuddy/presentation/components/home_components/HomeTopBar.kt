@@ -17,41 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-/*
-@Composable
-fun HomeTopBar() {
-
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        IconButton(
-            onClick = { }) {
-            Icon(
-                Icons.Default.Menu, contentDescription = null
-            )
-        }
-
-        Text(
-            text = stringResource(Res.string.medbuddy),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF4F6B35)
-        )
-
-        Spacer(Modifier.weight(1f))
-
-        IconButton(
-            onClick = { }) {
-            Icon(
-                Icons.Outlined.Notifications, contentDescription = null
-            )
-        }
-    }
-}*/
-
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Badge
 

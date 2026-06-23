@@ -20,8 +20,8 @@ data class NotificationUiState(
 )
 
 class NotificationViewModel(
-    private val glucoseRepository: IGlucoseRepository,
-    private val doctorRepository: IDoctorRepository
+    glucoseRepository: IGlucoseRepository,
+    doctorRepository: IDoctorRepository
 ) : ViewModel() {
 
     private val getNotificationsUseCase = GetNotificationsUseCase(glucoseRepository, doctorRepository)
