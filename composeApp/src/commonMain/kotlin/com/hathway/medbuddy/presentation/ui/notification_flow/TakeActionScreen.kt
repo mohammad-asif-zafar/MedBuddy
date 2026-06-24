@@ -39,12 +39,15 @@ import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.presentation.theme.Danger
 import com.hathway.medbuddy.presentation.theme.DangerContainer
 import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.action_back
 import medbuddy.composeapp.generated.resources.action_call
 import medbuddy.composeapp.generated.resources.action_medication
 import medbuddy.composeapp.generated.resources.action_none
 import medbuddy.composeapp.generated.resources.action_note
 import medbuddy.composeapp.generated.resources.action_question
 import medbuddy.composeapp.generated.resources.action_recheck
+import medbuddy.composeapp.generated.resources.glucose_level_demo
+import medbuddy.composeapp.generated.resources.notes_optional_label
 import medbuddy.composeapp.generated.resources.notes_placeholder
 import medbuddy.composeapp.generated.resources.save_action_btn
 import medbuddy.composeapp.generated.resources.take_action_title
@@ -74,7 +77,10 @@ fun TakeActionScreen(
                 title = { Text(stringResource(Res.string.take_action_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.action_back)
+                        )
                     }
                 }
             )
@@ -97,7 +103,7 @@ fun TakeActionScreen(
                     Spacer(Modifier.width(12.dp))
                     Column {
                         Text(title, fontWeight = FontWeight.Bold, color = Danger)
-                        Text("210 mg/dL", style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(Res.string.glucose_level_demo), style = MaterialTheme.typography.bodySmall)
                     }
                 }
             }
@@ -130,7 +136,7 @@ fun TakeActionScreen(
             Spacer(Modifier.height(32.dp))
 
             Text(
-                "Notes (Optional)",
+                stringResource(Res.string.notes_optional_label),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

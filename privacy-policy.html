@@ -4,50 +4,200 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - MedBuddy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { color: #2E7D32; border-bottom: 2px solid #2E7D32; padding-bottom: 10px; }
-        h2 { color: #4F6B35; margin-top: 30px; }
-        footer { margin-top: 50px; font-size: 0.8em; color: #777; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
+        :root {
+            --primary-green: #2E7D4F;
+            --brand-green: #4F6B35;
+            --cream-bg: #FEF9F0;
+            --white: #FFFFFF;
+            --text-dark: #1D1D1B;
+            --text-gray: #6B7280;
+            --danger: #D32F2F;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--cream-bg);
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--white);
+            padding: 60px;
+            border-radius: 32px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--brand-green);
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--primary-green);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--brand-green);
+            margin-bottom: 10px;
+        }
+
+        .last-updated {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary-green);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            font-size: 1.2rem;
+        }
+
+        p, li {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background: var(--cream-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary-green);
+            margin: 20px 0;
+        }
+
+        footer {
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: transform 0.2s;
+        }
+
+        .back-home:hover {
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 30px 20px;
+                border-radius: 0;
+            }
+            h1 { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
-    <h1>Privacy Policy</h1>
-    <p>Last Updated: June 20, 2026</p>
+    <div class="container">
+        <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
 
-    <p>MedBuddy ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share information about you when you use our mobile application.</p>
+        <header>
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                MedBuddy
+            </div>
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: June 20, 2026</p>
+        </header>
 
-    <h2>1. Information We Collect</h2>
-    <p>We collect information you provide directly to us:</p>
-    <ul>
-        <li><strong>Account Information:</strong> Name, email address, and profile picture (via Google Sign-In).</li>
-        <li><strong>Health Data:</strong> Blood glucose readings, meal periods, notes, and medical metrics (age, weight, blood type).</li>
-        <li><strong>Medical Information:</strong> Doctor names, specialties, hospitals, and appointment dates.</li>
-    </ul>
+        <p>MedBuddy ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share information about you when you use our mobile application and related services.</p>
 
-    <h2>2. Use of Information</h2>
-    <p>We use the collected data to:</p>
-    <ul>
-        <li>Provide, maintain, and improve the MedBuddy services.</li>
-        <li>Track your health trends and provide dashboard visualizations.</li>
-        <li>Send you push notifications for log reminders and health alerts via Firebase Cloud Messaging (FCM).</li>
-        <li>Personalize your experience with custom greetings and theme preferences.</li>
-    </ul>
+        <div class="highlight-box">
+            <strong>Your Data, Your Control:</strong> MedBuddy is designed with privacy at its core. We use industry-standard encryption to ensure your sensitive medical data remains private and secure.
+        </div>
 
-    <h2>3. Data Storage and Security</h2>
-    <p>We use <strong>Google Firebase</strong> (Authentication, Firestore, and Cloud Storage) to securely store and sync your data across devices. While we take reasonable measures to protect your information, no security system is impenetrable.</p>
+        <h2><i class="fas fa-database"></i> 1. Information We Collect</h2>
+        <p>To provide you with the best glucose management experience, we collect the following types of information:</p>
+        <ul>
+            <li><strong>Personal Identity:</strong> Name, email address, and profile picture provided through Google Sign-In.</li>
+            <li><strong>Diabetes Metrics:</strong> Blood glucose levels, meal-specific timing (Before/After Breakfast, etc.), and carbohydrate intake.</li>
+            <li><strong>Vital Health Stats:</strong> Blood pressure readings, weight logs, BMI calculations, and exercise/step data.</li>
+            <li><strong>Medical Records:</strong> Lab result values (HbA1c, Cholesterol, etc.) extracted via manual entry or OCR scanning of your reports.</li>
+            <li><strong>Care Network:</strong> Contact details for your primary care physician and caregivers you choose to share data with.</li>
+        </ul>
 
-    <h2>4. Third-Party Services</h2>
-    <p>MedBuddy utilizes Google Play Services and Firebase for its core functionality. These services may collect information used to identify you.</p>
+        <h2><i class="fas fa-microchip"></i> 2. How We Use Your Data</h2>
+        <p>Your information is used strictly to power the following features:</p>
+        <ul>
+            <li><strong>Smart Dashboards:</strong> Generating real-time trends and Cubic Bezier charts of your health history.</li>
+            <li><strong>AI Insights:</strong> Analyzing your data to provide personalized tips, such as identifying meal-time spikes.</li>
+            <li><strong>Emergency Alerts:</strong> Triggering notifications for critically high or low glucose levels.</li>
+            <li><strong>Family Sharing:</strong> Enabling your authorized family members to monitor your logs for your safety.</li>
+            <li><strong>Clinical Reporting:</strong> Generating professional PDF summaries for you to share with your doctor.</li>
+        </ul>
 
-    <h2>5. Your Rights</h2>
-    <p>You can view, update, or delete your health records and profile information at any time within the application. You can sign out to stop syncing data to the cloud.</p>
+        <h2><i class="fas fa-shield-alt"></i> 3. Data Storage & Security</h2>
+        <p>We utilize <strong>Google Firebase</strong> for secure data handling:</p>
+        <ul>
+            <li><strong>Firestore:</strong> Your health records are stored in a secure cloud database, synchronized in real-time across your devices.</li>
+            <li><strong>Authentication:</strong> We use Google Firebase Auth to manage secure access to your account.</li>
+            <li><strong>Storage:</strong> Medical PDF reports and profile photos are stored in encrypted cloud buckets.</li>
+        </ul>
 
-    <h2>6. Contact Us</h2>
-    <p>If you have any questions about this Privacy Policy, please contact us at support@medbuddy.com.</p>
+        <h2><i class="fas fa-user-check"></i> 4. Your Privacy Choices</h2>
+        <p>You have full control over your data within the app settings:</p>
+        <ul>
+            <li><strong>Data Portability:</strong> You can export your full health history into PDF or CSV formats at any time.</li>
+            <li><strong>Right to Erasure:</strong> You may delete specific logs or your entire account and associated data directly from the profile settings.</li>
+            <li><strong>Sharing Control:</strong> You can revoke access to family members or caregivers instantly through the Family Care dashboard.</li>
+        </ul>
 
-    <footer>
-        &copy; 2026 MedBuddy - Smart Glucose Care. All rights reserved.
-    </footer>
+        <h2><i class="fas fa-envelope"></i> 5. Contact Us</h2>
+        <p>If you have any questions regarding this policy or your data privacy, please reach out to our support team:</p>
+        <p style="font-weight: 600;">Email: support@medbuddy.com</p>
+        <p>Website: <a href="https://mohammad-asif-zafar.github.io/MedBuddy/index.html" style="color: var(--primary-green);">medbuddy.health</a></p>
+
+        <footer>
+            <p>&copy; 2026 MedBuddy - Smart Glucose Care. All rights reserved.</p>
+            <p style="font-size: 0.8rem; margin-top: 10px;">MedBuddy is not a replacement for professional medical advice. Always consult with your doctor before making changes to your treatment plan.</p>
+        </footer>
+    </div>
 </body>
 </html>

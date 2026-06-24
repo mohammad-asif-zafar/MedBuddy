@@ -20,6 +20,10 @@ import com.hathway.medbuddy.presentation.ui.notification_flow.NotificationChanne
 import com.hathway.medbuddy.presentation.ui.notification_flow.SnoozeReminderScreen
 import com.hathway.medbuddy.presentation.ui.notification_flow.TakeActionScreen
 import com.hathway.medbuddy.presentation.viewmodel.NotificationViewModel
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.high_glucose_alert
+import medbuddy.composeapp.generated.resources.snooze_reminder_title
+import org.jetbrains.compose.resources.stringResource
 
 enum class NotificationFlowState {
     LIST, DETAILS, TAKE_ACTION, SETTINGS, SNOOZE, CHANNELS
@@ -67,7 +71,7 @@ fun NotificationContent(
                     AlertDetailsScreen(
                         title = notification.title,
                         message = notification.message,
-                        timestamp = "10:30 AM",
+                        timestamp = notification.timestamp,
                         type = notification.type,
                         onBack = { flowState = NotificationFlowState.LIST },
                         onAcknowledge = { flowState = NotificationFlowState.TAKE_ACTION }
@@ -76,7 +80,7 @@ fun NotificationContent(
             }
             NotificationFlowState.TAKE_ACTION -> {
                 TakeActionScreen(
-                    title = uiState.selectedNotification?.title ?: "High Glucose Alert",
+                    title = uiState.selectedNotification?.title ?: stringResource(Res.string.high_glucose_alert),
                     onBack = { flowState = NotificationFlowState.DETAILS },
                     onSave = { action, notes ->
                         // Process action
@@ -92,7 +96,8 @@ fun NotificationContent(
             }
             NotificationFlowState.SNOOZE -> {
                 SnoozeReminderScreen(
-                    title = uiState.selectedNotification?.title ?: "Reminder",
+                    title = uiState.selectedNotification?.title ?: stringResource(Res.string.snooze_reminder_title),
+                    timestamp = uiState.selectedNotification?.timestamp,
                     onBack = { flowState = NotificationFlowState.LIST },
                     onSnooze = { minutes ->
                         flowState = NotificationFlowState.LIST

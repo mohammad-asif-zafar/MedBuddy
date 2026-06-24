@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.util.getNowEpochMillis
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -21,6 +22,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SnoozeReminderScreen(
     title: String,
+    timestamp: Long? = null,
     onBack: () -> Unit,
     onSnooze: (Int) -> Unit
 ) {
@@ -39,7 +41,10 @@ fun SnoozeReminderScreen(
                 title = { Text(stringResource(Res.string.snooze_reminder_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.action_back)
+                        )
                     }
                 }
             )
@@ -61,7 +66,9 @@ fun SnoozeReminderScreen(
                     Spacer(Modifier.width(16.dp))
                     Column {
                         Text(title, fontWeight = FontWeight.Bold)
-                        Text("10:30 AM", style = MaterialTheme.typography.bodySmall)
+                        timestamp?.let {
+                            Text(formatSnoozeTimestamp(it), style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
             }
@@ -117,8 +124,19 @@ fun SnoozeReminderScreen(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text("Snooze", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(stringResource(Res.string.notification_action_snooze), fontWeight = FontWeight.Bold, fontSize = 18.sp)
             }
         }
+    }
+}
+
+@Composable
+private fun formatSnoozeTimestamp(timestamp: Long): String {
+    val elapsedMinutes = ((getNowEpochMillis() - timestamp).coerceAtLeast(0L) / 60_000L).toInt()
+    return when {
+        elapsedMinutes < 1 -> stringResource(Res.string.notification_timestamp_now)
+        elapsedMinutes < 60 -> stringResource(Res.string.notification_timestamp_minutes_ago, elapsedMinutes)
+        elapsedMinutes < 1_440 -> stringResource(Res.string.notification_timestamp_hours_ago, elapsedMinutes / 60)
+        else -> stringResource(Res.string.notification_timestamp_days_ago, elapsedMinutes / 1_440)
     }
 }

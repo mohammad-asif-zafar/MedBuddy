@@ -146,7 +146,7 @@ fun App(
                         NavigationDestination.PROFILE -> ProfileContent(
                             doctorRepository = doctorRepository,
                             onBack = {
-                                currentDestination.value = NavigationDestination.PROFILE
+                                currentDestination.value = NavigationDestination.HOME
                             }
                         )
 
@@ -199,6 +199,8 @@ fun App(
                                 }
                             )
                         }
+
+                        else -> {}
                     }
                 }
             }

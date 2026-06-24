@@ -31,7 +31,10 @@ fun AlertSettingsScreen(
                 title = { Text(stringResource(Res.string.alert_settings_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.action_back)
+                        )
                     }
                 }
             )
@@ -45,28 +48,24 @@ fun AlertSettingsScreen(
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            // Glucose Alerts Section
             SettingSection(stringResource(Res.string.glucose_alerts_section)) {
                 SettingRow(stringResource(Res.string.high_glucose_threshold), true)
                 SettingRow(stringResource(Res.string.low_glucose_threshold), true)
             }
 
-            // Medication Reminders Section
             SettingSection(stringResource(Res.string.medication_reminders_section)) {
-                SettingRow("Insulin (Long Acting)", true)
-                SettingRow("Special Reminders", false)
+                SettingRow(stringResource(Res.string.insulin_long_acting), true)
+                SettingRow(stringResource(Res.string.special_reminders), false)
             }
 
-            // Other Alerts Section
             SettingSection(stringResource(Res.string.other_alerts_section)) {
-                SettingRow("Lab Reports", true)
-                SettingRow("Doctor Appointments", true)
-                SettingRow("Health Tips & Updates", true)
+                SettingRow(stringResource(Res.string.lab_reports_alert), true)
+                SettingRow(stringResource(Res.string.doctor_appointments_alert), true)
+                SettingRow(stringResource(Res.string.health_tips_updates), true)
             }
 
-            // Notification Preferences
-            SettingSection("Notification Preferences") {
-                SettingRow(stringResource(Res.string.sound_label), true, "Default")
+            SettingSection(stringResource(Res.string.notification_preferences_section)) {
+                SettingRow(stringResource(Res.string.sound_label), true, stringResource(Res.string.default_label))
                 SettingRow(stringResource(Res.string.vibration_label), true)
                 
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.05f))

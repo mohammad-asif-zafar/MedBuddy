@@ -43,6 +43,9 @@ enum class NavigationDestination(
     DOCTOR_APPOINTMENTS_DETAIL(isVisibleInBottomBar = false),
     FAMILY_MEMBER_MANAGEMENT(isVisibleInBottomBar = false),
 
+    // Support & Preferences
+    PREFERENCES_HELP(isVisibleInBottomBar = false),
+
     // App Startup Flow
     SPLASH(isVisibleInBottomBar = false),
     ONBOARDING(isVisibleInBottomBar = false),

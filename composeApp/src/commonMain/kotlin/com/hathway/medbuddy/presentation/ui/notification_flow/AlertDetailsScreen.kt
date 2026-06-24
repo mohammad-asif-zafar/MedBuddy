@@ -31,14 +31,26 @@ import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.domain.usecase.NotificationType
 import com.hathway.medbuddy.presentation.theme.Danger
 import com.hathway.medbuddy.presentation.theme.DangerContainer
+import com.hathway.medbuddy.util.getNowEpochMillis
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.acknowledge_btn
+import medbuddy.composeapp.generated.resources.action_back
 import medbuddy.composeapp.generated.resources.alert_details_title
 import medbuddy.composeapp.generated.resources.date_time_label
 import medbuddy.composeapp.generated.resources.glucose_level_label
+import medbuddy.composeapp.generated.resources.glucose_level_demo
 import medbuddy.composeapp.generated.resources.lab_form_ref_range
+import medbuddy.composeapp.generated.resources.notification_timestamp_days_ago
+import medbuddy.composeapp.generated.resources.notification_timestamp_hours_ago
+import medbuddy.composeapp.generated.resources.notification_timestamp_minutes_ago
+import medbuddy.composeapp.generated.resources.notification_timestamp_now
 import medbuddy.composeapp.generated.resources.recommended_action_label
+import medbuddy.composeapp.generated.resources.recommended_action_high_glucose
 import medbuddy.composeapp.generated.resources.source_label
+import medbuddy.composeapp.generated.resources.source_glucose_reading
+import medbuddy.composeapp.generated.resources.status_high
+import medbuddy.composeapp.generated.resources.status_label
+import medbuddy.composeapp.generated.resources.target_range_default
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +58,7 @@ import org.jetbrains.compose.resources.stringResource
 fun AlertDetailsScreen(
     title: String,
     message: String,
-    timestamp: String,
+    timestamp: Long,
     type: NotificationType,
     onBack: () -> Unit,
     onAcknowledge: () -> Unit
@@ -57,7 +69,10 @@ fun AlertDetailsScreen(
                 title = { Text(stringResource(Res.string.alert_details_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.action_back)
+                        )
                     }
                 }
             )
@@ -106,9 +121,9 @@ fun AlertDetailsScreen(
 
             // Info Grid
             Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-                DetailRow(stringResource(Res.string.date_time_label), timestamp)
-                DetailRow(stringResource(Res.string.glucose_level_label), "210 mg/dL")
-                DetailRow("Status", "High")
+                DetailRow(stringResource(Res.string.date_time_label), formatAlertTimestamp(timestamp))
+                DetailRow(stringResource(Res.string.glucose_level_label), stringResource(Res.string.glucose_level_demo))
+                DetailRow(stringResource(Res.string.status_label), stringResource(Res.string.status_high))
                 
                 Column {
                     Text(
@@ -118,14 +133,14 @@ fun AlertDetailsScreen(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Consider taking your medication and recheck after 30 mins. Contact your doctor if it persists.",
+                        stringResource(Res.string.recommended_action_high_glucose),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
                 }
 
-                DetailRow(stringResource(Res.string.source_label), "Glucose Reading")
-                DetailRow(stringResource(Res.string.lab_form_ref_range), "70 - 140 mg/dL")
+                DetailRow(stringResource(Res.string.source_label), stringResource(Res.string.source_glucose_reading))
+                DetailRow(stringResource(Res.string.lab_form_ref_range), stringResource(Res.string.target_range_default))
             }
 
             Spacer(Modifier.weight(1f))
@@ -157,5 +172,16 @@ fun DetailRow(label: String, value: String) {
         )
         Spacer(Modifier.height(12.dp))
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
+    }
+}
+
+@Composable
+private fun formatAlertTimestamp(timestamp: Long): String {
+    val elapsedMinutes = ((getNowEpochMillis() - timestamp).coerceAtLeast(0L) / 60_000L).toInt()
+    return when {
+        elapsedMinutes < 1 -> stringResource(Res.string.notification_timestamp_now)
+        elapsedMinutes < 60 -> stringResource(Res.string.notification_timestamp_minutes_ago, elapsedMinutes)
+        elapsedMinutes < 1_440 -> stringResource(Res.string.notification_timestamp_hours_ago, elapsedMinutes / 60)
+        else -> stringResource(Res.string.notification_timestamp_days_ago, elapsedMinutes / 1_440)
     }
 }

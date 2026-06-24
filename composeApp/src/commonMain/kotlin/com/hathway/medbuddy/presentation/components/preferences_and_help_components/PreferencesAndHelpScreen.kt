@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -19,19 +18,41 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.medbuddy_privacy_url
+import medbuddy.composeapp.generated.resources.medbuddy_website_url
+import medbuddy.composeapp.generated.resources.preferences_permissions_tab
+import medbuddy.composeapp.generated.resources.preferences_privacy_tab
+import medbuddy.composeapp.generated.resources.preferences_support_tab
+import medbuddy.composeapp.generated.resources.preferences_support_title
+import org.jetbrains.compose.resources.stringResource
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PreferencesAndHelpScreen(
     onBackClick: () -> Unit
 ) {
+    BackHandler(enabled = true, onBack = onBackClick)
+
+    val uriHandler = LocalUriHandler.current
     var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("Preferences", "Permissions")
+    val websiteUrl = stringResource(Res.string.medbuddy_website_url)
+    val privacyUrl = stringResource(Res.string.medbuddy_privacy_url)
+    val tabs = listOf(
+        stringResource(Res.string.preferences_support_tab),
+        stringResource(Res.string.preferences_permissions_tab),
+        stringResource(Res.string.preferences_privacy_tab)
+    )
 
     Scaffold(topBar = {
         MedBuddyTopBar(
-            leftIcon = Icons.Outlined.ArrowBack, title = "Preferences & Support", onLeftClick = onBackClick
+            leftIcon = Icons.AutoMirrored.Outlined.ArrowBack,
+            title = stringResource(Res.string.preferences_support_title),
+            onLeftClick = onBackClick
         )
     }, containerColor = MaterialTheme.colorScheme.background) { innerPadding ->
         Column(
@@ -51,15 +72,17 @@ fun PreferencesAndHelpScreen(
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                if (selectedTab == 0) {
-                    PreferencesContent()
-                } else {
-                    PermissionsContent()
+                when (selectedTab) {
+                    0 -> PreferencesContent(
+                        onOpenWebsite = { uriHandler.openUri(websiteUrl) },
+                        onOpenPrivacyPolicy = { uriHandler.openUri(privacyUrl) }
+                    )
+                    1 -> PermissionsContent()
+                    else -> PrivacyPolicyContent(
+                        onOpenPrivacyPolicy = { uriHandler.openUri(privacyUrl) }
+                    )
                 }
             }
         }
     }
 }
-
-
-

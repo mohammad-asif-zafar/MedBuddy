@@ -14,14 +14,19 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.domain.usecase.NotificationType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hathway.medbuddy.domain.usecase.MedBuddyNotification
 import com.hathway.medbuddy.presentation.components.notification_components.EmptyNotificationsView
+import com.hathway.medbuddy.presentation.components.notification_components.NotificationAction
 import com.hathway.medbuddy.presentation.components.notification_components.NotificationCard
 import com.hathway.medbuddy.presentation.viewmodel.NotificationViewModel
 import medbuddy.composeapp.generated.resources.*
@@ -39,6 +44,27 @@ fun MedBuddyNotification(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val notifications = uiState.notifications
+    var selectedTab by remember { mutableStateOf(0) }
+    val tabs = listOf(
+        stringResource(Res.string.filter_all),
+        stringResource(Res.string.filter_alerts),
+        stringResource(Res.string.filter_reminders),
+        stringResource(Res.string.filter_updates)
+    )
+    val filteredNotifications = remember(notifications, selectedTab) {
+        when (selectedTab) {
+            1 -> notifications.filter {
+                it.type == NotificationType.ALERT ||
+                    it.type == NotificationType.HIGH_GLUCOSE ||
+                    it.type == NotificationType.LOW_GLUCOSE
+            }
+            2 -> notifications.filter {
+                it.type == NotificationType.REMINDER || it.type == NotificationType.MEDICATION_REMINDER
+            }
+            3 -> notifications.filter { it.type == NotificationType.INFO }
+            else -> notifications
+        }
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -66,7 +92,7 @@ fun MedBuddyNotification(
                     IconButton(onClick = onSettingsClick) {
                         Icon(
                             imageVector = Icons.Outlined.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.settings_desc),
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
@@ -82,17 +108,19 @@ fun MedBuddyNotification(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Filter Tabs
             PrimaryScrollableTabRow(
-                selectedTabIndex = 0,
+                selectedTabIndex = selectedTab,
                 edgePadding = 16.dp,
                 containerColor = MaterialTheme.colorScheme.background,
                 divider = {}
             ) {
-                Tab(selected = true, onClick = {}, text = { Text("All") })
-                Tab(selected = false, onClick = {}, text = { Text(stringResource(Res.string.filter_alerts)) })
-                Tab(selected = false, onClick = {}, text = { Text(stringResource(Res.string.filter_reminders)) })
-                Tab(selected = false, onClick = {}, text = { Text(stringResource(Res.string.filter_updates)) })
+                tabs.forEachIndexed { index, label ->
+                    Tab(
+                        selected = selectedTab == index,
+                        onClick = { selectedTab = index },
+                        text = { Text(label) }
+                    )
+                }
             }
 
             Box(
@@ -106,7 +134,7 @@ fun MedBuddyNotification(
                         )
                     }
 
-                    notifications.isEmpty() -> {
+                    filteredNotifications.isEmpty() -> {
                         EmptyNotificationsView()
                     }
 
@@ -117,7 +145,7 @@ fun MedBuddyNotification(
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             items(
-                                items = notifications,
+                                items = filteredNotifications,
                                 key = { it.id }
                             ) { notification ->
                                 NotificationCard(
@@ -128,8 +156,9 @@ fun MedBuddyNotification(
                                     isResolved = false,
                                     onActionClick = { actionType ->
                                         when (actionType) {
-                                            "VIEW" -> onNotificationClick(notification)
-                                            "SNOOZE" -> onSnoozeClick(notification)
+                                            NotificationAction.VIEW -> onNotificationClick(notification)
+                                            NotificationAction.SNOOZE -> onSnoozeClick(notification)
+                                            else -> Unit
                                         }
                                     }
                                 )
@@ -137,7 +166,7 @@ fun MedBuddyNotification(
                             
                             item {
                                 TextButton(
-                                    onClick = { },
+                                    onClick = { viewModel.markAllAsRead() },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(stringResource(Res.string.mark_all_read), color = MaterialTheme.colorScheme.primary)

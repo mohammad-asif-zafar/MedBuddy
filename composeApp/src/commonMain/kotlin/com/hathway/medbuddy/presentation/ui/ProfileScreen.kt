@@ -47,15 +47,18 @@ fun ProfileScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Controlled flag state to manage sub-screen switching safely
     var showPreferencesAndHelp by remember { mutableStateOf(false) }
     BackHandler(enabled = true) {
-        onBack() // Executes your navigation lambda to route back home
+        if (showPreferencesAndHelp) {
+            showPreferencesAndHelp = false
+        } else {
+            onBack()
+        }
     }
-    // Intercept layout rendering if help screen option toggle state is enabled
+
     if (showPreferencesAndHelp) {
         PreferencesAndHelpScreen(
-            onBackClick = onBack
+            onBackClick = { showPreferencesAndHelp = false }
         )
     } else {
         Box(

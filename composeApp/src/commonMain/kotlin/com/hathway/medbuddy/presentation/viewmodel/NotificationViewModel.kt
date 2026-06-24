@@ -52,4 +52,8 @@ class NotificationViewModel(
     fun clearSelection() {
         _uiState.update { it.copy(selectedNotification = null) }
     }
+
+    fun markAllAsRead() {
+        _uiState.update { it.copy(notifications = emptyList(), selectedNotification = null) }
+    }
 }

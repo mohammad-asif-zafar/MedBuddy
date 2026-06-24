@@ -44,6 +44,22 @@ import com.hathway.medbuddy.presentation.theme.SuccessContainer
 import com.hathway.medbuddy.presentation.theme.Surface
 import com.hathway.medbuddy.presentation.theme.TextDark
 import com.hathway.medbuddy.presentation.theme.TextSecondaryMuted
+import com.hathway.medbuddy.util.getNowEpochMillis
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.notification_action_ok
+import medbuddy.composeapp.generated.resources.notification_action_resolved
+import medbuddy.composeapp.generated.resources.notification_action_snooze
+import medbuddy.composeapp.generated.resources.notification_action_taken
+import medbuddy.composeapp.generated.resources.notification_action_view
+import medbuddy.composeapp.generated.resources.notification_timestamp_days_ago
+import medbuddy.composeapp.generated.resources.notification_timestamp_hours_ago
+import medbuddy.composeapp.generated.resources.notification_timestamp_minutes_ago
+import medbuddy.composeapp.generated.resources.notification_timestamp_now
+import org.jetbrains.compose.resources.stringResource
+
+enum class NotificationAction {
+    VIEW, RESOLVE, SNOOZE, TAKEN, OK
+}
 
 @Composable
 fun NotificationCard(
@@ -51,11 +67,12 @@ fun NotificationCard(
     message: String? = null,
     timestamp: Long? = null,
     type: NotificationType = NotificationType.REMINDER,
-    isResolved: Boolean = false, // Added to handle the "Resolved" button state seen in the SS
-    onActionClick: (String) -> Unit,
+    isResolved: Boolean = false,
+    onActionClick: (NotificationAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Dynamic container colors matched to your theme configuration
+    val timestampText = timestamp?.let { formatNotificationTimestamp(it) }
+
     val containerColor = when (type) {
         NotificationType.HIGH_GLUCOSE -> DangerContainer
         NotificationType.LOW_GLUCOSE -> if (isResolved) MiniCardBackground else DangerContainer
@@ -64,7 +81,6 @@ fun NotificationCard(
         NotificationType.INFO -> Surface
     }
 
-    // Border stroke matching the bottom clean card layout
     val borderStroke = if (type == NotificationType.REMINDER || type == NotificationType.MEDICATION_REMINDER || isResolved) {
         BorderStroke(1.dp, CardBorder)
     } else {
@@ -76,7 +92,7 @@ fun NotificationCard(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
         border = borderStroke,
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // Flat styling matching the design
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
             modifier = Modifier
@@ -93,7 +109,6 @@ fun NotificationCard(
                     NotificationType.INFO -> Icons.Outlined.Info
                 }
 
-                // Pure status coloring logic from your theme file
                 val iconTint = when (type) {
                     NotificationType.HIGH_GLUCOSE, NotificationType.ALERT -> Danger
                     NotificationType.LOW_GLUCOSE -> Danger
@@ -133,15 +148,15 @@ fun NotificationCard(
                             lineHeight = 18.sp
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-
+                    if (timestampText != null) {
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = timestamp.toString(),
+                            text = timestampText,
                             fontSize = 13.sp,
                             color = TextSecondaryMuted,
                             fontWeight = FontWeight.Normal
                         )
-
+                    }
                 }
             }
 
@@ -154,7 +169,7 @@ fun NotificationCard(
                 when (type) {
                     NotificationType.HIGH_GLUCOSE, NotificationType.ALERT -> {
                         Button(
-                            onClick = { onActionClick("VIEW") },
+                            onClick = { onActionClick(NotificationAction.VIEW) },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = DangerContainer,
                                 contentColor = Danger
@@ -162,7 +177,7 @@ fun NotificationCard(
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 6.dp)
                         ) {
-                            Text(text = "View", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            Text(text = stringResource(Res.string.notification_action_view), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                         }
                     }
                     NotificationType.LOW_GLUCOSE -> {
@@ -177,11 +192,11 @@ fun NotificationCard(
                                 shape = RoundedCornerShape(12.dp),
                                 contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)
                             ) {
-                                Text(text = "Resolved", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(text = stringResource(Res.string.notification_action_resolved), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                         } else {
                             Button(
-                                onClick = { onActionClick("RESOLVE") },
+                                onClick = { onActionClick(NotificationAction.RESOLVE) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = DangerContainer,
                                     contentColor = Danger
@@ -189,7 +204,7 @@ fun NotificationCard(
                                 shape = RoundedCornerShape(12.dp),
                                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 6.dp)
                             ) {
-                                Text(text = "View", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(text = stringResource(Res.string.notification_action_view), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                         }
                     }
@@ -199,7 +214,7 @@ fun NotificationCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Button(
-                                onClick = { onActionClick("SNOOZE") },
+                                onClick = { onActionClick(NotificationAction.SNOOZE) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Divider,
                                     contentColor = TextDark
@@ -207,11 +222,11 @@ fun NotificationCard(
                                 shape = RoundedCornerShape(12.dp),
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
                             ) {
-                                Text(text = "Snooze", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(text = stringResource(Res.string.notification_action_snooze), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                             Spacer(Modifier.width(12.dp))
                             Button(
-                                onClick = { onActionClick("TAKEN") },
+                                onClick = { onActionClick(NotificationAction.TAKEN) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = SuccessContainer,
                                     contentColor = BrandGreen
@@ -219,17 +234,28 @@ fun NotificationCard(
                                 shape = RoundedCornerShape(12.dp),
                                 contentPadding = PaddingValues(horizontal = 18.dp, vertical = 6.dp)
                             ) {
-                                Text(text = "Taken", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(text = stringResource(Res.string.notification_action_taken), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                         }
                     }
                     NotificationType.INFO -> {
-                        TextButton(onClick = { onActionClick("OK") }) {
-                            Text("OK", color = BrandGreen, fontWeight = FontWeight.Bold)
+                        TextButton(onClick = { onActionClick(NotificationAction.OK) }) {
+                            Text(stringResource(Res.string.notification_action_ok), color = BrandGreen, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun formatNotificationTimestamp(timestamp: Long): String {
+    val elapsedMinutes = ((getNowEpochMillis() - timestamp).coerceAtLeast(0L) / 60_000L).toInt()
+    return when {
+        elapsedMinutes < 1 -> stringResource(Res.string.notification_timestamp_now)
+        elapsedMinutes < 60 -> stringResource(Res.string.notification_timestamp_minutes_ago, elapsedMinutes)
+        elapsedMinutes < 1_440 -> stringResource(Res.string.notification_timestamp_hours_ago, elapsedMinutes / 60)
+        else -> stringResource(Res.string.notification_timestamp_days_ago, elapsedMinutes / 1_440)
     }
 }

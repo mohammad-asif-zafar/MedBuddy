@@ -279,6 +279,78 @@
 
     <string name="preferences">Preferences</string>
     <string name="help_support">Help &amp; Support</string>
+    <string name="preferences_support_tab">Support</string>
+    <string name="preferences_permissions_tab">Permissions</string>
+    <string name="preferences_privacy_tab">Privacy</string>
+    <string name="preferences_support_title">Preferences &amp; Support</string>
+    <string name="medbuddy_website_url">https://mohammad-asif-zafar.github.io/MedBuddy/index.html</string>
+    <string name="medbuddy_privacy_url">https://mohammad-asif-zafar.github.io/MedBuddy/privacy-policy.html</string>
+    <string name="preferences_about_medbuddy_section">ABOUT MEDBUDDY</string>
+    <string name="preferences_smart_glucose_care_title">Smart Glucose Care</string>
+    <string name="preferences_smart_glucose_care_desc">Track readings, analyze trends, and take control of your health.</string>
+    <string name="preferences_dashboard_title">Intelligent Dashboard</string>
+    <string name="preferences_dashboard_desc">See latest readings, 7-day averages, and estimated HbA1c at a glance.</string>
+    <string name="preferences_analytics_title">Advanced Analytics</string>
+    <string name="preferences_analytics_desc">Review 7, 30, and 90-day trends with Time in Range visuals.</string>
+    <string name="preferences_cloud_sync_title">Secure Cloud Sync</string>
+    <string name="preferences_cloud_sync_desc">Sync health data across devices with Google Firebase.</string>
+    <string name="preferences_open_website_title">Open MedBuddy Website</string>
+    <string name="preferences_open_website_desc">View the official app page, screenshots, and download details.</string>
+    <string name="preferences_help_support_section">HELP &amp; SUPPORT</string>
+    <string name="preferences_contact_support_title">Contact Support</string>
+    <string name="preferences_contact_support_desc">Email support@medbuddy.com for app or account help.</string>
+    <string name="preferences_health_insights_title">Health Insights</string>
+    <string name="preferences_health_insights_desc">Use context-aware feedback to understand spikes and stability.</string>
+    <string name="preferences_meal_segments_title">Meal Segments</string>
+    <string name="preferences_meal_segments_desc">Compare before and after meal readings for clearer patterns.</string>
+    <string name="preferences_privacy_policy_title">Privacy Policy</string>
+    <string name="preferences_privacy_policy_desc">Open the latest MedBuddy privacy policy in your browser.</string>
+    <string name="preferences_app_info_section">APP INFO</string>
+    <string name="preferences_kmp_title">Built With Kotlin Multiplatform</string>
+    <string name="preferences_kmp_desc">Designed for a seamless Android experience with iOS support planned.</string>
+    <string name="preferences_version_title">Version</string>
+    <string name="preferences_version_desc">Current version 1.0.0</string>
+    <string name="preferences_data_api_title">Data &amp; API Use</string>
+    <string name="preferences_data_api_desc">Uses Google Sign-In, Firebase Authentication, Firestore, Cloud Storage, and FCM.</string>
+    <string name="preferences_banner_title">Smart Glucose Care, Simplified</string>
+    <string name="preferences_banner_desc">MedBuddy helps track glucose readings, monitor trends, and generate health insights.</string>
+    <string name="permissions_title">PERMISSIONS</string>
+    <string name="permissions_intro">MedBuddy uses only the access needed for sign-in, sync, reminders, and health alerts.</string>
+    <string name="permissions_notifications_title">Notifications</string>
+    <string name="permissions_notifications_desc">Used by Firebase Cloud Messaging for log reminders and health alerts.</string>
+    <string name="permissions_status_device_setting">Device setting</string>
+    <string name="permissions_internet_title">Internet Access</string>
+    <string name="permissions_internet_desc">Required for Google Sign-In, Firebase sync, Firestore, and Cloud Storage.</string>
+    <string name="permissions_status_required">Required</string>
+    <string name="permissions_google_account_title">Google Account</string>
+    <string name="permissions_google_account_desc">Used to create your MedBuddy profile with name, email, and profile picture.</string>
+    <string name="permissions_status_on_sign_in">On sign-in</string>
+    <string name="permissions_privacy_matters_title">Your Privacy Matters</string>
+    <string name="permissions_privacy_matters_desc">You can view, update, or delete your health records and profile information inside the app.</string>
+    <string name="permissions_firebase_title">Your Data is Stored on Firebase</string>
+    <string name="permissions_firebase_desc">Authentication, Firestore, Cloud Storage, and Firebase Cloud Messaging power account sync and reminders.</string>
+    <string name="privacy_policy_banner_desc">Last updated: June 20, 2026. Tap to open the full policy online.</string>
+    <string name="privacy_policy_bullet_format">- %1$s</string>
+    <string name="privacy_collect_title">Information We Collect</string>
+    <string name="privacy_collect_account">Account information: name, email address, and profile picture through Google Sign-In.</string>
+    <string name="privacy_collect_health">Health data: blood glucose readings, meal periods, notes, age, weight, and blood type.</string>
+    <string name="privacy_collect_medical">Medical information: doctor names, specialties, hospitals, and appointment dates.</string>
+    <string name="privacy_use_title">How We Use Information</string>
+    <string name="privacy_use_services">Provide, maintain, and improve MedBuddy services.</string>
+    <string name="privacy_use_trends">Track health trends and show dashboard visualizations.</string>
+    <string name="privacy_use_notifications">Send log reminders and health alerts through Firebase Cloud Messaging.</string>
+    <string name="privacy_use_personalize">Personalize greetings and theme preferences.</string>
+    <string name="privacy_security_title">Data Storage and Security</string>
+    <string name="privacy_security_firebase">MedBuddy uses Google Firebase Authentication, Firestore, and Cloud Storage to securely store and sync data across devices.</string>
+    <string name="privacy_security_limits">Reasonable security measures are used to protect your information, though no security system is impenetrable.</string>
+    <string name="privacy_third_party_title">Third-Party Services</string>
+    <string name="privacy_third_party_services">MedBuddy uses Google Play Services and Firebase for core functionality.</string>
+    <string name="privacy_third_party_collect">These services may collect information used to identify you.</string>
+    <string name="privacy_rights_title">Your Rights</string>
+    <string name="privacy_rights_update">You can view, update, or delete health records and profile information inside the app.</string>
+    <string name="privacy_rights_sign_out">You can sign out to stop syncing data to the cloud.</string>
+    <string name="privacy_contact_title">Contact Us</string>
+    <string name="privacy_contact_desc">For privacy questions, contact support@medbuddy.com.</string>
     <string name="logout">Logout</string>
 
     <string name="next_visit">Next Visit</string>
@@ -456,16 +528,32 @@
 
     <!-- Notification Flow -->
     <string name="alerts_title">Alerts</string>
+    <string name="filter_all">All</string>
     <string name="filter_alerts">Alerts</string>
     <string name="filter_reminders">Reminders</string>
     <string name="filter_updates">Updates</string>
     <string name="mark_all_read">Mark all as read</string>
+    <string name="settings_desc">Settings</string>
+    <string name="notification_action_view">View</string>
+    <string name="notification_action_resolved">Resolved</string>
+    <string name="notification_action_snooze">Snooze</string>
+    <string name="notification_action_taken">Taken</string>
+    <string name="notification_action_ok">OK</string>
+    <string name="notification_timestamp_now">Just now</string>
+    <string name="notification_timestamp_minutes_ago">%1$d min ago</string>
+    <string name="notification_timestamp_hours_ago">%1$d hr ago</string>
+    <string name="notification_timestamp_days_ago">%1$d d ago</string>
 
     <string name="alert_details_title">Alert Details</string>
     <string name="date_time_label">Date &amp; Time</string>
     <string name="glucose_level_label">Glucose Level</string>
+    <string name="glucose_level_demo">210 mg/dL</string>
+    <string name="status_label">Status</string>
     <string name="recommended_action_label">Recommended Action</string>
+    <string name="recommended_action_high_glucose">Consider taking your medication and recheck after 30 mins. Contact your doctor if it persists.</string>
     <string name="source_label">Source</string>
+    <string name="source_glucose_reading">Glucose Reading</string>
+    <string name="target_range_default">70 - 140 mg/dL</string>
     <string name="acknowledge_btn">Acknowledge</string>
 
     <string name="take_action_title">Take Action</string>
@@ -475,6 +563,7 @@
     <string name="action_note">Log Note</string>
     <string name="action_call">Call Doctor</string>
     <string name="action_none">None</string>
+    <string name="notes_optional_label">Notes (Optional)</string>
     <string name="notes_placeholder">Took insulin as per doctor advice.</string>
     <string name="save_action_btn">Save</string>
 
@@ -484,7 +573,14 @@
     <string name="other_alerts_section">Other Alerts</string>
     <string name="high_glucose_threshold">High Glucose Alert (>250)</string>
     <string name="low_glucose_threshold">Low Glucose Alert (&lt;70)</string>
+    <string name="insulin_long_acting">Insulin (Long Acting)</string>
+    <string name="special_reminders">Special Reminders</string>
+    <string name="lab_reports_alert">Lab Reports</string>
+    <string name="doctor_appointments_alert">Doctor Appointments</string>
+    <string name="health_tips_updates">Health Tips &amp; Updates</string>
+    <string name="notification_preferences_section">Notification Preferences</string>
     <string name="sound_label">Sound</string>
+    <string name="default_label">Default</string>
     <string name="vibration_label">Vibration</string>
 
     <string name="snooze_reminder_title">Snooze Reminder</string>
@@ -500,6 +596,10 @@
     <string name="email_notifications">Email Notifications</string>
     <string name="sms_notifications">SMS Notifications</string>
     <string name="whatsapp_notifications">WhatsApp Notifications</string>
+    <string name="channel_status_on">On</string>
+    <string name="channel_email_demo">mohammadasifzafar000@gmail.com</string>
+    <string name="channel_phone_demo">+91 1234567890</string>
+    <string name="channel_summary">You will receive alerts on the selected channels.</string>
 
     <!-- Splash & Onboarding -->
     <string name="splash_tagline">Your Health Companion</string>

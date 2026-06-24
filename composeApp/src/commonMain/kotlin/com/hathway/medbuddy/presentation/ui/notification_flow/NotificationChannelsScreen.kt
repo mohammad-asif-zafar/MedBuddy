@@ -34,6 +34,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.action_back
+import medbuddy.composeapp.generated.resources.channel_email_demo
+import medbuddy.composeapp.generated.resources.channel_phone_demo
+import medbuddy.composeapp.generated.resources.channel_status_on
+import medbuddy.composeapp.generated.resources.channel_summary
 import medbuddy.composeapp.generated.resources.email_notifications
 import medbuddy.composeapp.generated.resources.manage_channels_title
 import medbuddy.composeapp.generated.resources.push_notifications
@@ -50,7 +55,10 @@ fun NotificationChannelsScreen(onBack: () -> Unit) {
                 title = { Text(stringResource(Res.string.manage_channels_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.action_back)
+                        )
                     }
                 }
             )
@@ -65,25 +73,25 @@ fun NotificationChannelsScreen(onBack: () -> Unit) {
         ) {
             ChannelItem(
                 title = stringResource(Res.string.push_notifications),
-                subTitle = "On",
+                subTitle = stringResource(Res.string.channel_status_on),
                 icon = Icons.Outlined.Notifications,
                 onClick = {}
             )
             ChannelItem(
                 title = stringResource(Res.string.email_notifications),
-                subTitle = "asif@gmail.com",
+                subTitle = stringResource(Res.string.channel_email_demo),
                 icon = Icons.Outlined.Email,
                 onClick = {}
             )
             ChannelItem(
                 title = stringResource(Res.string.sms_notifications),
-                subTitle = "+91 98765-43210",
+                subTitle = stringResource(Res.string.channel_phone_demo),
                 icon = Icons.Outlined.Sms,
                 onClick = {}
             )
             ChannelItem(
                 title = stringResource(Res.string.whatsapp_notifications),
-                subTitle = "+91 98765-43210",
+                subTitle = stringResource(Res.string.channel_phone_demo),
                 icon = Icons.AutoMirrored.Outlined.Chat,
                 onClick = {}
             )
@@ -91,7 +99,7 @@ fun NotificationChannelsScreen(onBack: () -> Unit) {
             Spacer(Modifier.weight(1f))
             
             Text(
-                "You will receive alerts on the selected channels.",
+                stringResource(Res.string.channel_summary),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
