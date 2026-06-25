@@ -5,35 +5,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.icons.KmpComposeIcons
-import com.hathway.medbuddy.presentation.theme.Primary
-import com.hathway.medbuddy.presentation.theme.Warning
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.permissions_firebase_desc
-import medbuddy.composeapp.generated.resources.permissions_firebase_title
-import medbuddy.composeapp.generated.resources.permissions_google_account_desc
-import medbuddy.composeapp.generated.resources.permissions_google_account_title
-import medbuddy.composeapp.generated.resources.permissions_internet_desc
-import medbuddy.composeapp.generated.resources.permissions_internet_title
-import medbuddy.composeapp.generated.resources.permissions_intro
-import medbuddy.composeapp.generated.resources.permissions_notifications_desc
-import medbuddy.composeapp.generated.resources.permissions_notifications_title
-import medbuddy.composeapp.generated.resources.permissions_privacy_matters_desc
-import medbuddy.composeapp.generated.resources.permissions_privacy_matters_title
-import medbuddy.composeapp.generated.resources.permissions_status_device_setting
-import medbuddy.composeapp.generated.resources.permissions_status_on_sign_in
-import medbuddy.composeapp.generated.resources.permissions_status_required
-import medbuddy.composeapp.generated.resources.permissions_title
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -68,23 +48,23 @@ fun PermissionsContent() {
         ) {
             Column {
                 PermissionRowItem(
-                    KmpComposeIcons.NotificationBell,
+                    Icons.Outlined.Notifications,
                     stringResource(Res.string.permissions_notifications_title),
                     stringResource(Res.string.permissions_notifications_desc),
                     stringResource(Res.string.permissions_status_device_setting),
                     true
                 )
-                HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
                 PermissionRowItem(
-                    KmpComposeIcons.Firebase,
+                    Icons.Outlined.CloudSync,
                     stringResource(Res.string.permissions_internet_title),
                     stringResource(Res.string.permissions_internet_desc),
                     stringResource(Res.string.permissions_status_required),
                     true
                 )
-                HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
                 PermissionRowItem(
-                    KmpComposeIcons.UserProfile,
+                    Icons.Outlined.AccountCircle,
                     stringResource(Res.string.permissions_google_account_title),
                     stringResource(Res.string.permissions_google_account_desc),
                     stringResource(Res.string.permissions_status_on_sign_in),
@@ -96,16 +76,16 @@ fun PermissionsContent() {
         InfoBanner(
             title = stringResource(Res.string.permissions_privacy_matters_title),
             subtitle = stringResource(Res.string.permissions_privacy_matters_desc),
-            icon = KmpComposeIcons.ShadedShield,
-            iconBackgroundColor = Primary,
+            icon = Icons.Outlined.Security,
+            iconBackgroundColor = MaterialTheme.colorScheme.primary,
             bannerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
         )
 
         InfoBanner(
             title = stringResource(Res.string.permissions_firebase_title),
             subtitle = stringResource(Res.string.permissions_firebase_desc),
-            icon = KmpComposeIcons.Firebase,
-            iconBackgroundColor = Warning,
+            icon = Icons.Outlined.Storage,
+            iconBackgroundColor = MaterialTheme.colorScheme.secondary,
             bannerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
         )
     }
