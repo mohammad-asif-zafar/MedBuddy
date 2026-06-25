@@ -36,8 +36,6 @@ import org.jetbrains.compose.resources.stringResource
 fun PreferencesAndHelpScreen(
     onBackClick: () -> Unit
 ) {
-    BackHandler(enabled = true, onBack = onBackClick)
-
     val uriHandler = LocalUriHandler.current
     var selectedTab by remember { mutableStateOf(0) }
     val websiteUrl = stringResource(Res.string.medbuddy_website_url)
@@ -52,7 +50,7 @@ fun PreferencesAndHelpScreen(
         MedBuddyTopBar(
             leftIcon = Icons.AutoMirrored.Outlined.ArrowBack,
             title = stringResource(Res.string.preferences_support_title),
-            onLeftClick = onBackClick
+            onLeftClick = { onBackClick() }
         )
     }, containerColor = MaterialTheme.colorScheme.background) { innerPadding ->
         Column(

@@ -298,7 +298,7 @@
     <string name="preferences_open_website_desc">View the official app page, screenshots, and download details.</string>
     <string name="preferences_help_support_section">HELP &amp; SUPPORT</string>
     <string name="preferences_contact_support_title">Contact Support</string>
-    <string name="preferences_contact_support_desc">Email support@medbuddy.com for app or account help.</string>
+    <string name="preferences_contact_support_desc">Email mohammadasifzafar000@gmail.com for app or account help.</string>
     <string name="preferences_health_insights_title">Health Insights</string>
     <string name="preferences_health_insights_desc">Use context-aware feedback to understand spikes and stability.</string>
     <string name="preferences_meal_segments_title">Meal Segments</string>
@@ -350,7 +350,7 @@
     <string name="privacy_rights_update">You can view, update, or delete health records and profile information inside the app.</string>
     <string name="privacy_rights_sign_out">You can sign out to stop syncing data to the cloud.</string>
     <string name="privacy_contact_title">Contact Us</string>
-    <string name="privacy_contact_desc">For privacy questions, contact support@medbuddy.com.</string>
+    <string name="privacy_contact_desc">For privacy questions, contact mohammadasifzafar000@gmail.com </string>
     <string name="logout">Logout</string>
 
     <string name="next_visit">Next Visit</string>

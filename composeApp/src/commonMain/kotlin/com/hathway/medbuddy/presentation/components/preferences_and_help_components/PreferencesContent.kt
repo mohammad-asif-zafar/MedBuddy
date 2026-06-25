@@ -1,47 +1,22 @@
 package com.hathway.medbuddy.presentation.components.preferences_and_help_components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ContactSupport
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.icons.KmpComposeIcons
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.preferences_about_medbuddy_section
-import medbuddy.composeapp.generated.resources.preferences_analytics_desc
-import medbuddy.composeapp.generated.resources.preferences_analytics_title
-import medbuddy.composeapp.generated.resources.preferences_app_info_section
-import medbuddy.composeapp.generated.resources.preferences_banner_desc
-import medbuddy.composeapp.generated.resources.preferences_banner_title
-import medbuddy.composeapp.generated.resources.preferences_cloud_sync_desc
-import medbuddy.composeapp.generated.resources.preferences_cloud_sync_title
-import medbuddy.composeapp.generated.resources.preferences_contact_support_desc
-import medbuddy.composeapp.generated.resources.preferences_contact_support_title
-import medbuddy.composeapp.generated.resources.preferences_dashboard_desc
-import medbuddy.composeapp.generated.resources.preferences_dashboard_title
-import medbuddy.composeapp.generated.resources.preferences_data_api_desc
-import medbuddy.composeapp.generated.resources.preferences_data_api_title
-import medbuddy.composeapp.generated.resources.preferences_health_insights_desc
-import medbuddy.composeapp.generated.resources.preferences_health_insights_title
-import medbuddy.composeapp.generated.resources.preferences_help_support_section
-import medbuddy.composeapp.generated.resources.preferences_kmp_desc
-import medbuddy.composeapp.generated.resources.preferences_kmp_title
-import medbuddy.composeapp.generated.resources.preferences_meal_segments_desc
-import medbuddy.composeapp.generated.resources.preferences_meal_segments_title
-import medbuddy.composeapp.generated.resources.preferences_open_website_desc
-import medbuddy.composeapp.generated.resources.preferences_open_website_title
-import medbuddy.composeapp.generated.resources.preferences_privacy_policy_desc
-import medbuddy.composeapp.generated.resources.preferences_privacy_policy_title
-import medbuddy.composeapp.generated.resources.preferences_smart_glucose_care_desc
-import medbuddy.composeapp.generated.resources.preferences_smart_glucose_care_title
-import medbuddy.composeapp.generated.resources.preferences_version_desc
-import medbuddy.composeapp.generated.resources.preferences_version_title
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -50,9 +25,35 @@ fun PreferencesContent(
     onOpenPrivacyPolicy: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
+        // App Banner
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
+            )
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text(
+                    text = stringResource(Res.string.preferences_banner_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(Res.string.preferences_banner_desc),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
         SectionWrapper(title = stringResource(Res.string.preferences_about_medbuddy_section)) {
             SettingsRowItem(
                 icon = KmpComposeIcons.Box3D,

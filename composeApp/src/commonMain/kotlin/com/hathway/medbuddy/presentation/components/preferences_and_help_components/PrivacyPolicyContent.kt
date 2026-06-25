@@ -1,14 +1,13 @@
 package com.hathway.medbuddy.presentation.components.preferences_and_help_components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.HelpCenter
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,32 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.medbuddy.icons.KmpComposeIcons
-import com.hathway.medbuddy.presentation.theme.Primary
-import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.preferences_privacy_policy_title
-import medbuddy.composeapp.generated.resources.privacy_collect_account
-import medbuddy.composeapp.generated.resources.privacy_collect_health
-import medbuddy.composeapp.generated.resources.privacy_collect_medical
-import medbuddy.composeapp.generated.resources.privacy_collect_title
-import medbuddy.composeapp.generated.resources.privacy_contact_desc
-import medbuddy.composeapp.generated.resources.privacy_contact_title
-import medbuddy.composeapp.generated.resources.privacy_policy_banner_desc
-import medbuddy.composeapp.generated.resources.privacy_policy_bullet_format
-import medbuddy.composeapp.generated.resources.privacy_rights_sign_out
-import medbuddy.composeapp.generated.resources.privacy_rights_title
-import medbuddy.composeapp.generated.resources.privacy_rights_update
-import medbuddy.composeapp.generated.resources.privacy_security_firebase
-import medbuddy.composeapp.generated.resources.privacy_security_limits
-import medbuddy.composeapp.generated.resources.privacy_security_title
-import medbuddy.composeapp.generated.resources.privacy_third_party_collect
-import medbuddy.composeapp.generated.resources.privacy_third_party_services
-import medbuddy.composeapp.generated.resources.privacy_third_party_title
-import medbuddy.composeapp.generated.resources.privacy_use_notifications
-import medbuddy.composeapp.generated.resources.privacy_use_personalize
-import medbuddy.composeapp.generated.resources.privacy_use_services
-import medbuddy.composeapp.generated.resources.privacy_use_title
-import medbuddy.composeapp.generated.resources.privacy_use_trends
+import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -60,8 +34,8 @@ fun PrivacyPolicyContent(
         InfoBanner(
             title = stringResource(Res.string.preferences_privacy_policy_title),
             subtitle = stringResource(Res.string.privacy_policy_banner_desc),
-            icon = KmpComposeIcons.ShadedShield,
-            iconBackgroundColor = Primary,
+            icon = Icons.Outlined.Shield,
+            iconBackgroundColor = MaterialTheme.colorScheme.primary,
             bannerColor = MaterialTheme.colorScheme.surface,
             showRightArrow = true,
             onClick = onOpenPrivacyPolicy
@@ -113,8 +87,8 @@ fun PrivacyPolicyContent(
         InfoBanner(
             title = stringResource(Res.string.privacy_contact_title),
             subtitle = stringResource(Res.string.privacy_contact_desc),
-            icon = KmpComposeIcons.Headset,
-            iconBackgroundColor = Primary,
+            icon = Icons.AutoMirrored.Outlined.HelpCenter,
+            iconBackgroundColor = MaterialTheme.colorScheme.primary,
             bannerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
         )
     }
