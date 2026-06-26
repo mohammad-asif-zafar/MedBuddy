@@ -20,12 +20,8 @@ val OnSecondaryContainer = Color(0xFF00201F)
 // ========================
 val Background = Color(0xFFF8F9FA)
 val OnBackground = Color(0xFF191C1E)
-
-val LightBackground = Color(0xFFF4F6F6)
-
 val Surface = Color.White
 val OnSurface = Color(0xFF191C1E)
-
 val SurfaceVariant = Color(0xFFEFF3F3)
 val OnSurfaceVariant = Color(0xFF5F696A)
 
@@ -44,32 +40,19 @@ val Info = Color(0xFF3498DB)
 // ========================
 // Time Period / Meal Icons & UI Specifics
 // ========================
-val SunIconLight = Color(0xFFFFE0B2)
 val SunIconDeep = Color(0xFFFF9800)
-val LunchIconLight = Color(0xFFFFE0B2)
 val LunchIconDeep = Color(0xFFFB8C00)
-val TwilightIconLight = Color(0xFFE1BEE7)
 val TwilightIconDeep = Color(0xFF8E24AA)
-val NightIconLight = Color(0xFFC5CAE9)
 val NightIconDeep = Color(0xFF3F51B5)
-
-val CardBackgroundCream = Color(0xFFFFFFFF)
 val TextDark = Color(0xFF1A1C1E)
 val TextSecondaryMuted = Color(0xFF70777A)
-
 val SuccessContainer = Color(0xFFE8F8F5)
-val WarningContainer = Color(0xFFFEF5E7)
 val DangerContainer = Color(0xFFFADBD8)
-
 val Border = Color(0xFFE1E3E5)
 val Divider = Color(0xFFF1F3F4)
-
-val HeaderBackground = Color(0xFFF8F9FA)
 val BrandGreen = Color(0xFF00A896)
 val CardBorder = Color(0xFFEBEFF0)
-
 val MiniCardBackground = Color(0xFFFFFFFF)
-
 
 // ========================
 // Specific Missing Variables Restored

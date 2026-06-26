@@ -20,6 +20,12 @@ import com.hathway.medbuddy.data.repository.DoctorRepository
 import com.hathway.medbuddy.data.repository.GlucoseRepository
 import com.google.firebase.messaging.FirebaseMessaging
 import com.hathway.medbuddy.presentation.navigation.NavigationDestination
+import androidx.compose.runtime.key
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import com.hathway.medbuddy.LanguageManager
+import java.util.Locale
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -48,14 +54,28 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            App(
-                repository = repository.value,
-                doctorRepository = doctorRepository.value,
-                initialDestination = deepLinkDestination.value,
-                onGoogleSignInClick = {
-                    launcher.launch(googleAuthUiClient.getSignInIntent())
-                }
-            )
+            val language by LanguageManager.language.collectAsState()
+
+            LaunchedEffect(language) {
+                val locale = Locale.forLanguageTag(language.code)
+                Locale.setDefault(locale)
+                val resources = this@MainActivity.resources
+                val configuration = resources.configuration
+                configuration.setLocale(locale)
+                this@MainActivity.createConfigurationContext(configuration)
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+            }
+
+            key(language) {
+                App(
+                    repository = repository.value,
+                    doctorRepository = doctorRepository.value,
+                    initialDestination = deepLinkDestination.value,
+                    onGoogleSignInClick = {
+                        launcher.launch(googleAuthUiClient.getSignInIntent())
+                    }
+                )
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.hathway.medbuddy
 
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.model.Language
 
 expect object FirebaseManager {
     val currentUser: CurrentUser?
@@ -13,6 +14,8 @@ expect object FirebaseManager {
     suspend fun updateFcmToken(userId: String, token: String)
     fun getThemeMode(): ThemeMode
     fun setThemeMode(mode: ThemeMode)
+    fun getLanguage(): Language
+    fun setLanguage(language: Language)
 }
 
 enum class ThemeMode {

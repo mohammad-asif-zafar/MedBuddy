@@ -1,6 +1,7 @@
 package com.hathway.medbuddy
 
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.model.Language
 import platform.Foundation.NSUserDefaults
 
 actual object FirebaseManager {
@@ -24,5 +25,14 @@ actual object FirebaseManager {
 
     actual fun setThemeMode(mode: ThemeMode) {
         NSUserDefaults.standardUserDefaults.setObject(mode.name, "theme_mode")
+    }
+
+    actual fun getLanguage(): Language {
+        val code = NSUserDefaults.standardUserDefaults.stringForKey("language_code") ?: Language.ENGLISH.code
+        return Language.entries.find { it.code == code } ?: Language.ENGLISH
+    }
+
+    actual fun setLanguage(language: Language) {
+        NSUserDefaults.standardUserDefaults.setObject(language.code, "language_code")
     }
 }

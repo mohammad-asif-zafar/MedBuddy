@@ -278,6 +278,8 @@
     <string name="insight_no_lows">No low glucose episodes in the last 7 days.</string>
 
     <string name="preferences">Preferences</string>
+    <string name="language">Language</string>
+    <string name="select_language">Select Language</string>
     <string name="help_support">Help &amp; Support</string>
     <string name="preferences_support_tab">Support</string>
     <string name="preferences_permissions_tab">Permissions</string>

@@ -13,13 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.hathway.medbuddy.ThemeMode
-import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 @Composable
 fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
@@ -28,32 +24,34 @@ fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
         onLoadingFinished()
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
+    Scaffold(
+        // Integrates edge-to-edge drawing safely for both Android and iOS
+        contentWindowInsets = WindowInsets.safeDrawing,
+        containerColor = MaterialTheme.colorScheme.background
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
+                .padding(innerPadding), // Offsets layout content from status and navigation areas
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // App Logo Assembly (Consistent with Splash/Login)
+            // App Logo Assembly (Uses dynamic theme color parameters)
             Surface(
                 modifier = Modifier.size(100.dp),
                 shape = CircleShape,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                color = MaterialTheme.colorScheme.primaryContainer
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(50.dp)
                     )
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.background,
+                        tint = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -62,9 +60,8 @@ fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
             Spacer(modifier = Modifier.height(48.dp))
 
             CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary,
-                strokeWidth = 4.dp,
-                modifier = Modifier.size(40.dp)
+                color = MaterialTheme.colorScheme.primary, // Themed progress accent
+                strokeWidth = 4.dp, modifier = Modifier.size(40.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -86,13 +83,5 @@ fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
                 modifier = Modifier.padding(horizontal = 48.dp)
             )
         }
-    }
-}
-
-@Preview
-@Composable
-fun LoadingScreenPreview() {
-    MedBuddyTheme {
-        LoadingScreen()
     }
 }

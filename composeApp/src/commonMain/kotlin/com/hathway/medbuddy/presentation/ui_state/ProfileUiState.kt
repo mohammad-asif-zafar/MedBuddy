@@ -2,6 +2,7 @@ package com.hathway.medbuddy.presentation.ui_state
 
 import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.model.Language
 
 data class ProfileUiState(
 
@@ -25,5 +26,7 @@ data class ProfileUiState(
 
     val showProfileDialog: Boolean = false,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
-    val showThemeDialog: Boolean = false
+    val showThemeDialog: Boolean = false,
+    val language: Language = Language.ENGLISH,
+    val showLanguageDialog: Boolean = false
 )

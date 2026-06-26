@@ -1,0 +1,571 @@
+<resources>
+    <string name="glucose_target">Sasaran: %1$d–%2$d mg/dL</string>
+    <string name="glucose_low">Rendah ⚠ (%1$d)</string>
+    <string name="glucose_high">Tinggi ⚠ (%1$d)</string>
+    <string name="glucose_normal">Normal ✓</string>
+
+    <string name="time_period_label">%1$s (%2$s)</string>
+
+    <string name="current_glucose">Glukosa Semasa</string>
+    <string name="glucose_unit">mg/dL</string>
+
+    <string name="last_reading">Bacaan Terakhir</string>
+
+    <string name="trend_up">%1$s %2$s mg/dL tinggi dari semalam</string>
+    <string name="trend_down">%1$s %2$s mg/dL rendah dari semalam</string>
+
+    <string name="status_high">Tinggi</string>
+    <string name="status_low">Rendah</string>
+    <string name="status_in_range">Dalam Julat</string>
+
+    <string name="reading_value">%1$s mg/dL</string>
+    <string name="reading_details">%1$s • %2$s</string>
+    <string name="glucose_trend">📈 Trend Glukosa</string>
+    <string name="last_7_days">7 Hari Terakhir</string>
+
+    <string name="average_short">Purata</string>
+    <string name="high_short">Tinggi</string>
+    <string name="low_short">Rendah</string>
+
+    <string name="average">Purata</string>
+    <string name="highest">Tertinggi</string>
+    <string name="lowest">Terendah</string>
+
+    <string name="hba1c">HbA1c</string>
+    <string name="not_available">N/A</string>
+    <string name="hba1c_percentage">%1$s%%</string>
+
+    <string name="recent_readings">Bacaan Terkini</string>
+    <string name="view_all">Lihat Semua</string>
+    <string name="no_glucose_readings">Tiada bacaan glukosa tersedia</string>
+
+    <string name="add_glucose_reading">Tambah Bacaan Glukosa</string>
+    <string name="add_reading">Tambah Bacaan</string>
+    <string name="add_glucose_record_title">Tambah Bacaan Glukosa</string>
+    <string name="track_glucose_reading_desc">Jejak bacaan glukosa anda</string>
+    <string name="close_dialog">Tutup dialog</string>
+    <string name="date">Tarikh</string>
+    <string name="change">Ubah</string>
+    <string name="time_device_time">Masa (masa peranti)</string>
+    <string name="notes_optional">Nota (pilihan)</string>
+    <string name="cancel">Batal</string>
+    <string name="saving">Menyimpan...</string>
+    <string name="save_reading">Simpan Bacaan</string>
+    <string name="glucose_saved_success">Bacaan glukosa berjaya disimpan</string>
+
+    <!-- Navigation -->
+    <string name="previous_day">Hari Seterusnya</string>
+    <string name="next_day">Hari Sebelum</string>
+    <string name="prev_symbol">&lt;</string>
+    <string name="next_symbol">&gt;</string>
+
+    <!-- Calendar -->
+    <string name="calendar_days_header">Mei 2026</string>
+    <string name="sun_short">A</string>
+    <string name="mon_short">I</string>
+    <string name="tue_short">S</string>
+    <string name="wed_short">R</string>
+    <string name="thu_short">K</string>
+    <string name="fri_short">J</string>
+    <string name="sat_short">S</string>
+
+    <!-- Legend -->
+    <string name="no_record">Tiada Rekod</string>
+    <string name="has_record">Ada Rekod</string>
+    <string name="selected">Dipilih</string>
+
+    <!-- Glucose -->
+    <string name="low">Rendah</string>
+    <string name="normal">Normal</string>
+    <string name="high">Tinggi</string>
+    <string name="good">Baik</string>
+    <string name="ok">Ok</string>
+
+    <!-- Meal Times -->
+    <string name="before_breakfast">Sebelum Sarapan</string>
+    <string name="after_breakfast">Selepas Sarapan</string>
+    <string name="before_lunch">Sebelum Makan Tengah Hari</string>
+    <string name="after_lunch">Selepas Makan Tengah Hari</string>
+    <string name="before_dinner">Sebelum Makan Malam</string>
+    <string name="after_dinner">Selepas Makan Malam</string>
+    <string name="bedtime">Waktu Tidur</string>
+
+    <!-- Short Meal Times -->
+    <string name="before_breakfast_short">SS</string>
+    <string name="after_breakfast_short">AS</string>
+    <string name="before_lunch_short">SMT</string>
+    <string name="after_lunch_short">AMT</string>
+    <string name="before_dinner_short">SMM</string>
+    <string name="after_dinner_short">AMM</string>
+    <string name="bedtime_short">WT</string>
+
+    <!-- Empty State -->
+    <string name="calendar_emoji">📅</string>
+    <string name="no_glucose_records_day">Tiada rekod glukosa untuk hari ini</string>
+
+    <string name="calendar_month_year">%1$s %2$d</string>
+    <string name="date_display_format">%1$d %2$s %3$d</string>
+
+    <!-- Profile -->
+    <string name="profile_default_initial">P</string>
+    <string name="edit_photo">Edit Foto</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="blood">Darah</string>
+    <string name="age">Umur</string>
+    <string name="weight">Berat</string>
+
+    <!-- Doctor Info Card -->
+    <string name="no_doctor_info">Tiada maklumat doktor tersedia</string>
+    <string name="add_doctor_info_desc">Tambah butiran doktor anda untuk menjejak janji temu dan maklumat penjagaan kesihatan.</string>
+    <string name="edit_doctor_info">Edit Maklumat Doktor</string>
+    <string name="add_doctor_info">Tambah Maklumat Doktor</string>
+
+    <!-- Doctor Dialog -->
+    <string name="profile_details">Butiran Profil</string>
+    <string name="doctor_information">Maklumat Doktor</string>
+    <string name="close">Tutup</string>
+    <string name="general_information">Maklumat Umum</string>
+    <string name="doctor_name">Nama Doktor</string>
+    <string name="doctor_name_placeholder">cth., Dr. Sumit Gulla</string>
+    <string name="role_title">Gelaran Tugas</string>
+    <string name="role_title_placeholder">cth., MBBS, MD</string>
+    <string name="practice_details">Butiran Praktis</string>
+    <string name="speciality">Kepakaran</string>
+    <string name="speciality_placeholder">cth., Pakar Endokrinologi</string>
+    <string name="medical_center">Pusat Perubatan</string>
+    <string name="medical_center_placeholder">cth., Miracles Health</string>
+    <string name="follow_up">Susulan</string>
+    <string name="discard">Buang</string>
+    <string name="save_info">Simpan Maklumat</string>
+
+    <!-- Edit Profile Dialog -->
+    <string name="edit_profile_title">Edit Profil</string>
+    <string name="name">Nama</string>
+    <string name="weight_kg">Berat (kg)</string>
+    <string name="blood_type">Kumpulan Darah</string>
+
+    <string name="personal_health_details">Butiran Kesihatan Peribadi</string>
+
+    <!-- Status Info -->
+    <string name="above_target">Melebihi Sasaran</string>
+
+    <!-- Loading Screen -->
+    <string name="loading_medbuddy">Memuatkan MedBuddy</string>
+    <string name="preparing_dashboard">Menyediakan papan pemuka glukosa anda</string>
+
+    <!-- Login Screen -->
+    <string name="medbuddy">MedBuddy</string>
+    <string name="smart_glucose_care">Penjagaan Glukosa Pintar</string>
+    <string name="login_description">Jejak tahap glukosa, pantau trend dan kekal mengawal kesihatan anda.</string>
+    <string name="continue_with_google">Teruskan dengan Google</string>
+    <string name="secure_signin_powered_by_google">Log masuk selamat dikuasakan oleh Google</string>
+
+    <!-- Time Period Dropdown -->
+    <string name="select_time_period">Pilih Tempoh Masa</string>
+    <string name="time_period">Tempoh Masa</string>
+
+    <!-- Home Components -->
+    <string name="target_range">🎯 Julat Sasaran</string>
+    <string name="readings_within_target">%1$d daripada %2$d bacaan berada dalam julat sasaran</string>
+    <string name="target_excellent">Kawalan cemerlang tempoh ini 🎉</string>
+    <string name="target_good">Anda melakukannya dengan baik. Teruskan usaha 👍</string>
+    <string name="target_improving">Meningkat dengan stabil 📈</string>
+    <string name="target_work">Mari berusaha ke arah lebih banyak bacaan dalam julat 💪</string>
+    <string name="greeting_morning">Selamat Pagi, </string>
+    <string name="greeting_afternoon">Selamat Tengah Hari, </string>
+    <string name="greeting_evening">Selamat Petang, </string>
+    <string name="insight_lower">Glukosa adalah 15% lebih rendah daripada minggu lepas</string>
+    <string name="patient">Pesakit</string>
+    <string name="today">Hari Ini</string>
+    <string name="language">Bahasa</string>
+    <string name="select_language">Pilih Bahasa</string>
+
+    <!-- Appointment -->
+    <string name="next_appointment_label">Janji Temu Seterusnya</string>
+    <string name="select_appointment_date">Pilih Tarikh Janji Temu</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Utama</string>
+    <string name="nav_add">Tambah</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_reports">Laporan</string>
+    <string name="nav_history">Sejarah</string>
+
+    <!-- Errors -->
+    <string name="failed_upload_photo">Gagal memuat naik foto</string>
+
+    <string name="summary_title_days">Ringkasan (%1$s)</string>
+    <string name="avg_glucose_title">Purata Glukosa</string>
+    <string name="avg_glucose_unit">mg/dL</string>
+    <string name="hba1c_title">HbA1c</string>
+    <string name="hba1c_estimate">Anggaran</string>
+    <string name="time_in_range_title">Masa Dalam Julat</string>
+    <string name="total_readings_title">Jumlah Bacaan</string>
+
+    <!-- LegendRowItem -->
+    <string name="legend_high">Tinggi</string>
+    <string name="legend_normal">Normal</string>
+    <string name="legend_low">Rendah</string>
+
+    <!-- TimeInRangeCard -->
+    <string name="legend_in_range">Dalam Julat</string>
+
+    <string name="glucose_unit_mg_dl">mg/dL</string>
+
+    <!-- AverageGlucoseByTimeOfDay -->
+    <string name="avg_glucose_time_of_day_title">Purata Glukosa mengikut Waktu Siang</string>
+    <string name="tag_before_breakfast">SS</string>
+    <string name="tag_after_breakfast">AS</string>
+    <string name="tag_before_lunch">SMT</string>
+    <string name="tag_after_lunch">AMT</string>
+    <string name="tag_before_dinner">SMM</string>
+    <string name="tag_after_dinner">AMM</string>
+    <string name="tag_bedtime">WT</string>
+
+    <string name="glucose_trend_title">Trend Glukosa</string>
+    <!-- Dynamic argument injection structure for our average badge pill -->
+    <string name="avg_glucose_pill_format">Purata %1$d mg/dL</string>
+    <string name="trend_chart_empty_title">Tiada Bacaan Lagi</string>
+    <string name="trend_chart_empty_desc">Mula log glukosa darah anda untuk melihat trend kesihatan 30 hari anda di sini.</string>
+    <string name="glucose_value_format">%1$d </string>
+
+    <!-- Existing Strings -->
+    <string name="best_and_worst_days_title">Hari Terbaik &amp; Terburuk</string>
+    <string name="label_best_day">Hari Terbaik</string>
+    <string name="label_worst_day">Hari Terburuk</string>
+
+    <!-- New Tooltip Dialog Strings -->
+    <string name="info_button_desc">Baca peraturan pengiraan metrik</string>
+    <string name="tooltip_dialog_title">Cara pengiraan berfungsi</string>
+    <string name="tooltip_dialog_best_desc">&lt;b>Hari Terbaik:&lt;/b> Mewakili hari kalendar yang menunjukkan bacaan purata glukosa anda yang paling stabil dan paling hampir dengan sasaran optimum anda (70–140 mg/dL).</string>
+    <string name="tooltip_dialog_worst_desc">&lt;b>Hari Terburuk:&lt;/b> Menjejaki hari yang mengalami kebolehubahan glisemik yang teruk atau purata luar julat berterusan yang tertinggi.</string>
+    <string name="btn_dismiss">Faham</string>
+
+    <!-- Insights and Actions Strings -->
+    <string name="insights_section_title">Wawasan</string>
+    <string name="btn_export_pdf">Eksport PDF</string>
+    <string name="btn_share_report">Kongsi Laporan</string>
+
+    <!-- Screen Header Keys -->
+    <string name="reports_screen_title">Laporan</string>
+    <string name="nav_menu_desc">Buka laci menu navigasi</string>
+    <string name="reports_calendar_desc">Buka pemilih julat kalendar</string>
+
+    <!-- Interactive Chips Filters Labels -->
+    <string name="filter_7_days">7 Hari</string>
+    <string name="filter_30_days">30 Hari</string>
+    <string name="filter_90_days">90 Hari</string>
+    <string name="filter_custom">Tersuai</string>
+    <!-- Notifications -->
+    <string name="daily_log_reminder">Peringatan Log Harian</string>
+    <string name="daily_log_reminder_desc">Anda belum merekodkan sebarang bacaan glukosa hari ini. Konsistensi adalah kunci utama!</string>
+    <string name="missed_breakfast_log">Terlepas Log Sarapan?</string>
+    <string name="missed_breakfast_log_desc">Jangan lupa untuk merekodkan glukosa puasa anda dari pagi ini.</string>
+    <string name="high_glucose_alert">Amaran Glukosa Tinggi</string>
+    <string name="high_glucose_alert_desc">Bacaan terakhir anda ialah %1$d mg/dL. Pertimbangkan untuk menghubungi doktor anda jika ia kekal tinggi.</string>
+    <string name="low_glucose_alert">Amaran Glukosa Rendah</string>
+    <string name="low_glucose_alert_desc">Bacaan terakhir anda ialah %1$d mg/dL. Sila ambil gula bertindak pantas dengan segera.</string>
+    <string name="upcoming_appointment">Janji Temu Akan Datang</string>
+    <string name="upcoming_appointment_desc">Anda mempunyai janji temu dengan %1$s dalam masa %2$d hari.</string>
+    <string name="notifications_title">Pemberitahuan</string>
+    <string name="back_button_desc">Kembali ke papan pemuka</string>
+    <string name="notifications_empty_title">Semua Selesai!</string>
+    <string name="notifications_empty_desc">Anda tidak mempunyai pemberitahuan perubatan atau peringatan log yang belum dibaca pada masa ini.</string>
+
+    <string name="insight_within_range">Kebanyakan bacaan anda berada dalam julat sasaran. Syabas!</string>
+    <string name="insight_lunch_spike">Bacaan selepas makan tengah hari cenderung lebih tinggi berbanding waktu lain.</string>
+    <string name="insight_glucose_improved">Purata glukosa meningkat sebanyak 8% berbanding 30 hari lepas.</string>
+    <string name="insight_no_lows">Tiada episod glukosa rendah dalam 7 hari terakhir.</string>
+
+    <string name="preferences">Keutamaan</string>
+    <string name="help_support">Bantuan &amp; Sokongan</string>
+    <string name="preferences_support_tab">Sokongan</string>
+    <string name="preferences_permissions_tab">Kebenaran</string>
+    <string name="preferences_privacy_tab">Privasi</string>
+    <string name="preferences_support_title">Keutamaan &amp; Sokongan</string>
+    <string name="medbuddy_website_url">https://mohammad-asif-zafar.github.io/MedBuddy/index.html</string>
+    <string name="medbuddy_privacy_url">https://mohammad-asif-zafar.github.io/MedBuddy/privacy-policy.html</string>
+    <string name="preferences_about_medbuddy_section">MENGENAI MEDBUDDY</string>
+    <string name="preferences_smart_glucose_care_title">Penjagaan Glukosa Pintar</string>
+    <string name="preferences_smart_glucose_care_desc">Jejak bacaan, analisis trend, dan kawal kesihatan anda.</string>
+    <string name="preferences_dashboard_title">Papan Pemuka Pintar</string>
+    <string name="preferences_dashboard_desc">Lihat bacaan terkini, purata 7 hari, dan anggaran HbA1c sepintas lalu.</string>
+    <string name="preferences_analytics_title">Analitik Lanjutan</string>
+    <string name="preferences_analytics_desc">Semak trend 7, 30, dan 90 hari dengan visual Masa Dalam Julat.</string>
+    <string name="preferences_cloud_sync_title">Sinkronisasi Awan Selamat</string>
+    <string name="preferences_cloud_sync_desc">Sajarkan data kesihatan merentasi peranti dengan Google Firebase.</string>
+    <string name="preferences_open_website_title">Buka Laman Web MedBuddy</string>
+    <string name="preferences_open_website_desc">Lihat halaman rasmi aplikasi, tangkapan skrin, dan butiran muat turun.</string>
+    <string name="preferences_help_support_section">BANTUAN &amp; SOKONGAN</string>
+    <string name="preferences_contact_support_title">Hubungi Sokongan</string>
+    <string name="preferences_contact_support_desc">E-mel mohammadasifzafar000@gmail.com untuk bantuan aplikasi atau akaun.</string>
+    <string name="preferences_health_insights_title">Wawasan Kesihatan</string>
+    <string name="preferences_health_insights_desc">Gunakan maklum balas peka konteks untuk memahami lonjakan dan kestabilan.</string>
+    <string name="preferences_meal_segments_title">Segmen Makanan</string>
+    <string name="preferences_meal_segments_desc">Bandingkan bacaan sebelum and selepas makan untuk corak yang lebih jelas.</string>
+    <string name="preferences_privacy_policy_title">Dasar Privasi</string>
+    <string name="preferences_privacy_policy_desc">Buka dasar privasi MedBuddy yang terkini dalam penyemak imbas anda.</string>
+    <string name="preferences_app_info_section">INFO APLIKASI</string>
+    <string name="preferences_kmp_title">Dibina Dengan Kotlin Multiplatform</string>
+    <string name="preferences_kmp_desc">Direka untuk pengalaman Android Tangkas dengan sokongan iOS dalam perancangan.</string>
+    <string name="preferences_version_title">Versi</string>
+    <string name="preferences_version_desc">Versi semasa 1.0.0</string>
+    <string name="preferences_data_api_title">Penggunaan Data &amp; API</string>
+    <string name="preferences_data_api_desc">Menggunakan Google Sign-In, Firebase Authentication, Firestore, Cloud Storage, dan FCM.</string>
+    <string name="preferences_banner_title">Penjagaan Glukosa Pintar, Dipermudahkan</string>
+    <string name="preferences_banner_desc">MedBuddy membantu menjejak bacaan glukosa, memantau trend, dan menghasilkan wawasan kesihatan.</string>
+    <string name="permissions_title">KEBENARAN</string>
+    <string name="permissions_intro">MedBuddy hanya menggunakan akses yang diperlukan untuk log masuk, penyelarasan, peringatan, dan amaran kesihatan.</string>
+    <string name="permissions_notifications_title">Pemberitahuan</string>
+    <string name="permissions_notifications_desc">Digunakan oleh Firebase Cloud Messaging untuk peringatan log dan amaran kesihatan.</string>
+    <string name="permissions_status_device_setting">Tetapan peranti</string>
+    <string name="permissions_internet_title">Akses Internet</string>
+    <string name="permissions_internet_desc">Diperlukan untuk Google Sign-In, penyelarasan Firebase, Firestore, dan Cloud Storage.</string>
+    <string name="permissions_status_required">Diperlukan</string>
+    <string name="permissions_google_account_title">Akaun Google</string>
+    <string name="permissions_google_account_desc">Digunakan untuk mencipta profil MedBuddy anda dengan nama, e-mel, dan gambar profil.</string>
+    <string name="permissions_status_on_sign_in">Semasa log masuk</string>
+    <string name="permissions_privacy_matters_title">Privasi Anda Diutamakan</string>
+    <string name="permissions_privacy_matters_desc">Anda boleh melihat, mengemas kini, atau memadam rekod kesihatan dan maklumat profil anda di dalam aplikasi.</string>
+    <string name="permissions_firebase_title">Data Anda Disimpan di Firebase</string>
+    <string name="permissions_firebase_desc">Authentication, Firestore, Cloud Storage, dan Firebase Cloud Messaging menguasai penyelarasan akaun dan peringatan.</string>
+    <string name="privacy_policy_banner_desc">Terakhir dikemas kini: 20 Jun 2026. Ketik untuk membuka dasar penuh secara dalam talian.</string>
+    <string name="privacy_policy_bullet_format">- %1$s</string>
+    <string name="privacy_collect_title">Maklumat Yang Kami Kumpul</string>
+    <string name="privacy_collect_account">Maklumat akaun: nama, alamat e-mel, dan gambar profil melalui Google Sign-In.</string>
+    <string name="privacy_collect_health">Data kesihatan: bacaan glukosa darah, tempoh makan, nota, umur, berat, dan kumpulan darah.</string>
+    <string name="privacy_collect_medical">Maklumat perubatan: nama doktor, kepakaran, hospital, dan tarikh janji temu.</string>
+    <string name="privacy_use_title">Cara Kami Menggunakan Maklumat</string>
+    <string name="privacy_use_services">Menyediakan, menyelenggara, dan menambah baik perkhidmatan MedBuddy.</string>
+    <string name="privacy_use_trends">Menjejak trend kesihatan dan memaparkan visualisasi papan pemuka.</string>
+    <string name="privacy_use_notifications">Menghantar peringatan log dan amaran kesihatan melalui Firebase Cloud Messaging.</string>
+    <string name="privacy_use_personalize">Peribadikan ucapan selamat dan keutamaan tema.</string>
+    <string name="privacy_security_title">Penyimpanan dan Keselamatan Data</string>
+    <string name="privacy_security_firebase">MedBuddy menggunakan Google Firebase Authentication, Firestore, dan Cloud Storage untuk menyimpan dan menyelaraskan data dengan selamat merentasi peranti.</string>
+    <string name="privacy_security_limits">Langkah keselamatan yang munasabah digunakan untuk melindungi maklumat anda, walaupun tiada sistem keselamatan yang benar-benar kebal.</string>
+    <string name="privacy_third_party_title">Perkhidmatan Pihak Ketiga</string>
+    <string name="privacy_third_party_services">MedBuddy menggunakan Google Play Services dan Firebase untuk fungsi teras.</string>
+    <string name="privacy_third_party_collect">Perkhidmatan ini mungkin mengumpul maklumat yang digunakan untuk mengenal pasti anda.</string>
+    <string name="privacy_rights_title">Hak Anda</string>
+    <string name="privacy_rights_update">Anda boleh melihat, mengemas kini, atau memadam rekod kesihatan dan maklumat profil di dalam aplikasi.</string>
+    <string name="privacy_rights_sign_out">Anda boleh log keluar untuk menghentikan penyelarasan data ke awan.</string>
+    <string name="privacy_contact_title">Hubungi Kami</string>
+    <string name="privacy_contact_desc">Untuk soalan privasi, hubungi mohammadasifzafar000@gmail.com </string>
+    <string name="logout">Log Keluar</string>
+
+    <string name="next_visit">Lawatan Seterusnya</string>
+    <string name="no_doctor_info_available">Tiada Info Doktor Tersedia</string>
+    <string name="add_doctor_info_prompt">Sila tambah maklumat doktor penjagaan utama anda.</string>
+    <string name="view_doctor_details">Lihat Butiran Doktor</string>
+    <string name="add_doctor_info_btn">Tambah Info Doktor</string>
+
+    <string name="condition_default">Diabetes Jenis 2</string>
+    <string name="doctor_name_default">Dr. Sumit Gulla </string>
+    <string name="speciality_default">Pakar Endokrinologi</string>
+    <string name="date_default">15 Jun 2026</string>
+    <string name="patient_default">Pesakit</string>
+    <string name="no_clinical_insights">Tiada wawasan klinikal tersedia untuk jangka masa yang dipilih.</string>
+
+    <!-- Theme Selection Dialog Strings -->
+    <string name="theme_dialog_title">Pilih Tema</string>
+    <string name="theme_dialog_subtitle">Peribadikan pengalaman aplikasi anda</string>
+    <string name="theme_light_title">Mod Terang</string>
+    <string name="theme_light_desc">Cerah dan jelas untuk kegunaan siang hari.</string>
+    <string name="theme_dark_title">Mod Gelap</string>
+    <string name="theme_dark_desc">Selesa dan mesra mata pada waktu malam.</string>
+    <string name="theme_system_title">Sistem</string>
+    <string name="theme_system_desc">Menyesuaikan diri dengan tetapan tema peranti anda.</string>
+    <string name="action_close">Tutup</string>
+    <!-- Accessibility Semantic Action Strings -->
+    <string name="accessibility_select_theme">Pilih %1$s</string>
+
+    <string name="report_doctor_appointments">Janji Temu Doktor</string>
+    <string name="report_blood_pressure">Tekanan Darah</string>
+    <string name="report_weight">Berat Badan</string>
+    <string name="report_bmi">BMI</string>
+    <string name="more_options">Pilihan Lain</string>
+    <string name="view_details">Lihat Butiran</string>
+    <string name="no_upcoming_appointments">Tiada janji temu akan datang</string>
+    <string name="weight_kg_label">%1$s kg</string>
+    <string name="bmi_label">BMI: %1$s</string>
+    <string name="bp_label">TD: %1$d/%2$d mmHg</string>
+
+    <!-- Feature Cards Strings -->
+    <string name="title_ai_insights">Wawasan AI &amp; Trend Pintar</string>
+    <string name="desc_ai_insights">AI menganalisis data anda dan memberikan wawasan serta petua peribadi.</string>
+    <string name="title_meal_tracking">Jejak Makanan Pintar</string>
+    <string name="desc_meal_tracking">Jejak makanan, karbohidrat dan lihat cara ia memberi kesan kepada glukosa anda.</string>
+    <string name="title_medication">Kepatuhan Ubat</string>
+    <string name="desc_medication">Peringatan pintar dan penjejakan kepatuhan untuk ubat-ubatan anda.</string>
+    <string name="title_health_reports">Laporan Kesihatan (PDF)</string>
+    <string name="desc_health_reports">Eksport laporan profesional untuk doktor anda dalam satu ketikan.</string>
+    <string name="title_family_care">Penjagaan Keluarga &amp; Perkongsian</string>
+    <string name="desc_family_care">Kongsi data dengan ahli keluarga dan penjaga dengan kawalan penuh.</string>
+    <string name="title_emergency_alerts">Amaran Kecemasan</string>
+    <string name="desc_emergency_alerts">Dapatkan amaran untuk glukosa tinggi/rendah atau ubat yang terlepas.</string>
+    <string name="title_exercise">Penjejakan Senaman</string>
+    <string name="desc_exercise">Jejak aktiviti dan lihat bagaimana senaman meningkatkan kesihatan anda.</string>
+    <string name="title_weight_bmi">Penjejakan Berat &amp; BMI</string>
+    <string name="desc_weight_bmi">Pantau berat badan, BMI anda dan lihat kemajuan dari semasa ke semasa.</string>
+
+    <string name="title_blood_pressure">Penjejakan Tekanan Darah</string>
+    <string name="desc_blood_pressure">Jejak tekanan darah bersama glukosa untuk gambaran kesihatan yang lengkap.</string>
+    <string name="title_lab_results">Keputusan Makmal</string>
+    <string name="desc_lab_results">Simpan dan jejak keputusan ujian makmal yang penting di satu tempat.</string>
+    <string name="title_doctor_appointments">Janji Temu Doktor</string>
+    <string name="desc_doctor_appointments">Urus janji temu dan jangan terlepas sebarang rawatan susulan.</string>
+    <string name="title_dark_mode_feature">Ciri Mod Gelap</string>
+    <string name="desc_dark_mode_feature">Mod gelap yang cantik untuk penggunaan malam yang selesa.</string>
+
+    <string name="label_glucose_prediction">Ramalan Glukosa</string>
+    <string name="label_next_24h">24 Jam Seterusnya</string>
+    <string name="label_carbs_today">Karbohidrat Hari Ini</string>
+    <string name="format_carbs">%1$d / %2$d g</string>
+    <string name="label_adherence">Kepatuhan Ubat</string>
+    <string name="label_excellent">Cemerlang</string>
+    <string name="label_glucose_summary">Ringkasan Glukosa</string>
+    <string name="action_add_member">Tambah Ahli</string>
+    <string name="label_steps_today">Langkah Hari Ini</string>
+    <string name="label_weight_inner">Berat Badan</string>
+    <string name="format_weight_change">%1$s kg bulan ini</string>
+    <string name="label_blood_pressure_inner">Tekanan Darah</string>
+    <string name="label_cholesterol">Kolesterol</string>
+    <string name="label_next_visit_inner">Lawatan Seterusnya</string>
+    <string name="label_high_glucose">Glukosa Tinggi</string>
+    <string name="label_low_glucose">Glukosa Rendah</string>
+
+    <string name="list_title">Rekod Perubatan</string>
+    <string name="action_back">Kembali</string>
+
+    <string name="family_care_title">Penjagaan Keluarga</string>
+    <string name="active_members_label">Ahli Aktif</string>
+    <string name="access_label">Akses</string>
+    <string name="add_new_member_label">Tambah Ahli Baru</string>
+    <string name="share_my_data_label">Kongsi Data Saya</string>
+    <string name="relationship_daughter">Anak Perempuan</string>
+    <string name="relationship_son">Anak Lelaki</string>
+
+    <!-- Lab Results Flow Detail -->
+    <string name="lab_results_title_main">Keputusan Makmal</string>
+    <string name="lab_results_subtitle">Simpan, jejak, dan urus keputusan ujian makmal penting anda di satu tempat.</string>
+    <string name="lab_status_good">Baik</string>
+    <string name="lab_status_normal">Normal</string>
+    <string name="lab_status_high">Tinggi</string>
+    <string name="lab_status_low">Rendah</string>
+    <string name="lab_test_hba1c">HbA1c</string>
+    <string name="lab_test_cholesterol">Kolesterol</string>
+    <string name="lab_test_triglycerides">Trigliserida</string>
+    <string name="lab_test_hdl">HDL</string>
+    <string name="lab_test_ldl">LDL</string>
+    <string name="lab_unit_percent">%</string>
+    <string name="lab_unit_mg_dl">mg/dL</string>
+    <string name="lab_add_title">Tambah Keputusan Makmal</string>
+    <string name="lab_add_desc">Bagaimanakah anda mahu menambah keputusan makmal anda?</string>
+    <string name="lab_action_manual">Masukkan Secara Manual</string>
+    <string name="lab_action_manual_desc">Tambah butiran dengan menaip</string>
+    <string name="lab_action_upload">Muat Naik Laporan</string>
+    <string name="lab_action_upload_desc">Muat naik imej atau PDF</string>
+    <string name="lab_action_import">Import dari Peranti</string>
+    <string name="lab_action_import_desc">Import dari peranti kesihatan</string>
+    <string name="lab_action_ocr">Imbas Laporan (OCR)</string>
+    <string name="lab_action_ocr_desc">Imbas dan ekstrak nilai</string>
+    <string name="lab_form_test_details">Butiran Ujian</string>
+    <string name="lab_form_select_test">Pilih Ujian</string>
+    <string name="lab_form_result_value">Nilai Keputusan</string>
+    <string name="lab_form_date">Tarikh Ujian</string>
+    <string name="lab_form_ref_range">Julat Rujukan</string>
+    <string name="lab_form_notes">Nota (Pilihan)</string>
+    <string name="lab_form_save">Simpan Keputusan</string>
+    <string name="lab_success_title">Keputusan Makmal Disimpan!</string>
+    <string name="lab_success_msg">Anda kini boleh melihat keputusan anda dalam senarai keputusan makmal.</string>
+    <string name="lab_action_view_results">Lihat Keputusan</string>
+    <string name="lab_action_add_another">Tambah Julat Lain</string>
+    <string name="lab_list_all">Semua</string>
+    <string name="lab_list_blood">Ujian Darah</string>
+    <string name="lab_list_urine">Ujian Urin</string>
+    <string name="lab_list_other">Lain-lain</string>
+    <string name="lab_details_title">Butiran Keputusan</string>
+    <string name="lab_details_report">Laporan Dimuat Naik</string>
+    <string name="lab_details_edit">Edit</string>
+    <string name="lab_details_delete">Padam</string>
+    <string name="lab_ocr_title">Keputusan Diekstrak</string>
+    <string name="lab_ocr_desc">Kami menemui keputusan ini dalam laporan anda:</string>
+    <string name="lab_ocr_review">Semak dan simpan keputusan tersebut.</string>
+    <string name="lab_ocr_save_all">Simpan Semua</string>
+    <string name="lab_ocr_edit_manual">Edit Secara Manual</string>
+    <string name="lab_trends_title">Trend HbA1c</string>
+    <string name="lab_trends_7d">7 Hari</string>
+    <string name="lab_trends_30d">30 Hari</string>
+    <string name="lab_trends_3m">3 Bulan</string>
+    <string name="lab_trends_1y">1 Tahun</string>
+    <string name="lab_trends_latest">Terkini</string>
+    <string name="lab_trends_avg">Purata</string>
+    <string name="lab_trends_max">Tertinggi</string>
+    <string name="lab_trends_min">Terendah</string>
+    <string name="lab_filter_title">Penapis</string>
+    <string name="lab_filter_search">Cari ujian...</string>
+    <string name="lab_filter_test_type">Jenis Ujian</string>
+    <string name="lab_filter_date_range">Julat Tarikh</string>
+    <string name="lab_filter_status">Status Keputusan</string>
+    <string name="lab_filter_reset">Set Semula</string>
+    <string name="lab_filter_apply">Cari</string>
+    <string name="lab_filter_sort">Isih mengikut</string>
+    <string name="lab_export_title">Eksport Keputusan Makmal</string>
+    <string name="lab_export_format">Pilih Format</string>
+    <string name="lab_export_pdf">Dokumen PDF</string>
+    <string name="lab_export_csv">Fail CSV</string>
+    <string name="lab_export_include_images">Sertakan Imej Laporan</string>
+    <string name="lab_export_btn">Eksport</string>
+    <string name="lab_share_title">Kongsi Keputusan Makmal</string>
+    <string name="lab_share_with">Kongsi Dengan</string>
+    <string name="lab_share_msg">Tambah Mesej (Pilihan)</string>
+    <string name="lab_share_btn">Kongsi Sekarang</string>
+    <string name="lab_insights_title">Wawasan Makmal</string>
+    <string name="lab_insights_overall">Status Keseluruhan</string>
+    <string name="lab_insights_ai">Wawasan AI</string>
+    <string name="lab_insights_recommendations">Saranan</string>
+    <string name="lab_insights_helpful">Adakah ini membantu?</string>
+    <string name="health_at_glance">Sekilas Kesihatan</string>
+    <string name="all_looks_good">Semua Kelihatan Baik</string>
+    <string name="latest_results">Keputusan Terkini</string>
+
+    <!-- Notification Flow -->
+    <string name="alerts_title">Amaran</string>
+    <string name="filter_all">Semua</string>
+    <string name="filter_alerts">Amaran</string>
+    <string name="filter_reminders">Peringatan</string>
+    <string name="filter_updates">Kemas Kini</string>
+    <string name="mark_all_read">Tandakan semua sebagai dibaca</string>
+    <string name="settings_desc">Tetapan</string>
+    <string name="notification_action_view">Lihat</string>
+    <string name="notification_action_resolved">Selesai</string>
+    <string name="notification_action_snooze">Tunda</string>
+    <string name="notification_action_taken">Sudah Diambil</string>
+    <string name="notification_action_ok">OK</string>
+    <string name="notification_timestamp_now">Baru sahaja</string>
+    <string name="notification_timestamp_minutes_ago">%1$d min lepas</string>
+    <string name="notification_timestamp_hours_ago">%1$d jam lepas</string>
+    <string name="notification_timestamp_days_ago">%1$d hari lepas</string>
+
+    <string name="alert_details_title">Butiran Amaran</string>
+    <string name="date_time_label">Tarikh &amp; Masa</string>
+    <string name="glucose_level_label">Tahap Glukosa</string>
+    <string name="glucose_level_demo">210 mg/dL</string>
+    <string name="status_label">Status</string>
+    <string name="recommended_action_label">Tindakan Disyorkan</string>
+    <string name="recommended_action_high_glucose">Pertimbangkan untuk mengambil ubat anda dan periksa semula selepas 30 minit. Hubungi doktor anda jika keadaan berterusan.</string>
+    <string name="source_label">Sumber</string>
+    <string name="source_glucose_reading">Bacaan Glukosa</string>
+    <string name="target_range_default">70 - 140 mg/dL</string>
+    <string name="acknowledge_btn">Maklum</string>
+
+    <string name="take_action_title">Ambil Tindakan</string>
+    <string name="action_question">Apakah yang ingin anda lakukan?</string>
+    <string name="action_medication">Ambil Ubat</string>
+    <string name="action_recheck">Periksa Semula Glukosa</string>
+    <string name="action_note">Log Nota</string>
+    <string name="action_call">Hubungi Doktor</string>
+    <string name="action_none">Tiada</string>
+    <string name="notes_optional_label">Nota (Pilihan)</string>
+    <string name="notes_placeholder">Mengambil insulin seperti nasihat doktor.</string>
+</resources>

@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.hathway.medbuddy.domain.model.DoctorInfo
+import com.hathway.medbuddy.domain.model.Language
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.SetOptions
 
@@ -190,5 +191,14 @@ actual object FirebaseManager {
 
     actual fun setThemeMode(mode: ThemeMode) {
         prefs.edit().putString("theme_mode", mode.name).apply()
+    }
+
+    actual fun getLanguage(): Language {
+        val code = prefs.getString("language_code", Language.ENGLISH.code)
+        return Language.entries.find { it.code == code } ?: Language.ENGLISH
+    }
+
+    actual fun setLanguage(language: Language) {
+        prefs.edit().putString("language_code", language.code).apply()
     }
 }

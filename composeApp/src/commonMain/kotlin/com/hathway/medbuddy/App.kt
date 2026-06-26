@@ -27,7 +27,7 @@ import com.hathway.medbuddy.presentation.ui.detailed_reports.*
 import com.hathway.medbuddy.presentation.ui.*
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import medbuddy.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.*
 import kotlinx.coroutines.launch
 
 @Composable
@@ -61,7 +61,6 @@ fun App(
                         scope.launch { drawerState.close() }
                     },
                     onLogout = {
-                        // TODO: Implement logout logic
                         currentDestination.value = NavigationDestination.LOGIN
                         scope.launch { drawerState.close() }
                     }
@@ -70,7 +69,6 @@ fun App(
         ) {
             Scaffold(
                 bottomBar = {
-                    // ✅ Hide bottom bar when viewing full notification screens or detailed report screens
                     if (currentDestination.value.isVisibleInBottomBar) {
                         SimpleBottomNavigationBar(
                             currentDestination = currentDestination.value,
@@ -88,21 +86,17 @@ fun App(
                                 currentDestination.value = NavigationDestination.ONBOARDING
                             }
                         })
-
                         NavigationDestination.ONBOARDING -> OnboardingScreen(onNext = {
                             currentDestination.value = NavigationDestination.LOGIN
                         })
-
                         NavigationDestination.LOGIN -> LoginScreen(
-                            errorMessage = null, 
+                            errorMessage = null,
                             onGoogleSignInClick = {
                                 currentDestination.value = NavigationDestination.LOADING
                                 onGoogleSignInClick()
                             }
                         )
-
                         NavigationDestination.LOADING -> LoadingScreen()
-
                         NavigationDestination.HOME -> {
                             if (repository != null && doctorRepository != null) {
                                 HomeContent(
@@ -117,7 +111,6 @@ fun App(
                                 )
                             }
                         }
-
                         NavigationDestination.HISTORY -> HistoryContent(
                             repository = repository,
                             onNavigateToAdd = {
@@ -147,6 +140,9 @@ fun App(
                             doctorRepository = doctorRepository,
                             onBack = {
                                 currentDestination.value = NavigationDestination.HOME
+                            },
+                            logout ={
+                                currentDestination.value = NavigationDestination.LOGIN
                             }
                         )
 
@@ -183,7 +179,7 @@ fun App(
                         NavigationDestination.DOCTOR_APPOINTMENTS_DETAIL -> DoctorAppointmentsDetailScreen(onBack = { currentDestination.value = NavigationDestination.REPORTS })
 
                         // Map screen entry cleanly into state framework
-                        NavigationDestination.NOTIFICATIONS, 
+                        NavigationDestination.NOTIFICATIONS,
                         NavigationDestination.EMERGENCY_ALERTS,
                         NavigationDestination.ALERT_DETAILS,
                         NavigationDestination.TAKE_ACTION,

@@ -25,12 +25,14 @@ import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.components.app_theme.ThemeSelectionDialog
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
+import com.hathway.medbuddy.presentation.components.language_selection.LanguageSelectionDialog
 import com.hathway.medbuddy.presentation.components.preferences_and_help_components.PreferencesAndHelpScreen
 import com.hathway.medbuddy.presentation.components.profile_components.DoctorInformationCard
 import com.hathway.medbuddy.presentation.components.profile_components.EditProfileDialog
 import com.hathway.medbuddy.presentation.components.profile_components.ProfileHeaderCard
 import com.hathway.medbuddy.presentation.components.profile_components.SectionHeader
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
+import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import com.hathway.medbuddy.presentation.viewmodel.ProfileViewModel
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.nav_profile
@@ -43,7 +45,9 @@ expect fun ProfileImagePicker(onImagePicked: (ByteArray) -> Unit): () -> Unit
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel, onBack: () -> Unit
+    viewModel: ProfileViewModel,
+    onBack: () -> Unit,
+    naviToLogScreen: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -58,8 +62,7 @@ fun ProfileScreen(
 
     if (showPreferencesAndHelp) {
         PreferencesAndHelpScreen(
-            onBackClick = { showPreferencesAndHelp = false }
-        )
+            onBackClick = { showPreferencesAndHelp = false })
     } else {
         Box(
             modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
@@ -126,7 +129,12 @@ fun ProfileScreen(
                                 // Safely toggle visibility state wrapper flag on UI threads
                                 showPreferencesAndHelp = true
                             },
-                            onLogoutClick = { viewModel.logout() })
+                            onLogoutClick = {
+                                viewModel.logout()
+                                naviToLogScreen()
+                            },
+                            onLanguage = { viewModel.showLanguageDialog() }
+                        )
                     }
 
                     item {
@@ -161,6 +169,16 @@ fun ProfileScreen(
                         onSelect = {
                             viewModel.setThemeMode(it)
                             viewModel.hideThemeDialog()
+                        })
+                }
+
+                if (uiState.showLanguageDialog) {
+                    LanguageSelectionDialog(
+                        currentLanguage = uiState.language,
+                        onDismiss = { viewModel.hideLanguageDialog() },
+                        onSelect = {
+                            viewModel.setLanguage(it)
+                            viewModel.hideLanguageDialog()
                         })
                 }
             }

@@ -1,0 +1,549 @@
+<resources>
+    <string name="glucose_target">ٹارگٹ: %1$d–%2$d mg/dL</string>
+    <string name="glucose_low">کم ⚠ (%1$d)</string>
+    <string name="glucose_high">زیادہ ⚠ (%1$d)</string>
+    <string name="glucose_normal">نارمل ✓</string>
+
+    <string name="time_period_label">%1$s (%2$s)</string>
+
+    <string name="current_glucose">موجودہ گلوکوز</string>
+    <string name="glucose_unit">mg/dL</string>
+
+    <string name="last_reading">آخری ریڈنگ</string>
+    <string name="language">زبان</string>
+    <string name="select_language">زبان منتخب کریں</string>
+
+    <string name="trend_up">کل سے %1$s %2$s mg/dL زیادہ</string>
+    <string name="trend_down">کل سے %1$s %2$s mg/dL کم</string>
+
+    <string name="status_high">زیادہ</string>
+    <string name="status_low">کم</string>
+    <string name="status_in_range">حد کے اندر</string>
+
+    <string name="reading_value">%1$s mg/dL</string>
+    <string name="reading_details">%1$s • %2$s</string>
+    <string name="glucose_trend">📈 گلوکوز کا رجحان</string>
+    <string name="last_7_days">پچھلے 7 دن</string>
+
+    <string name="average_short">اوسط</string>
+    <string name="high_short">زیادہ</string>
+    <string name="low_short">کم</string>
+
+    <string name="average">اوسط</string>
+    <string name="highest">سب سے زیادہ</string>
+    <string name="lowest">سب سے کم</string>
+
+    <string name="hba1c">HbA1c</string>
+    <string name="not_available">N/A</string>
+    <string name="hba1c_percentage">%1$s%%</string>
+
+    <string name="recent_readings">حالیہ ریڈنگز</string>
+    <string name="view_all">سب دیکھیں</string>
+    <string name="no_glucose_readings">کوئی گلوکوز ریڈنگ دستیاب نہیں ہے</string>
+
+    <string name="add_glucose_reading">گلوکوز ریڈنگ شامل کریں</string>
+    <string name="add_reading">ریڈنگ شامل کریں</string>
+    <string name="add_glucose_record_title">گلوکوز ریڈنگ شامل کریں</string>
+    <string name="track_glucose_reading_desc">اپنی گلوکوز ریڈنگ کو ٹریک کریں</string>
+    <string name="close_dialog">ڈائیلاگ بند کریں</string>
+    <string name="date">تاریخ</string>
+    <string name="change">تبدیل کریں</string>
+    <string name="time_device_time">وقت (ڈیوائس کا وقت)</string>
+    <string name="notes_optional">نوٹس (اختیاری)</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="saving">محفوظ ہو رہا ہے...</string>
+    <string name="save_reading">ریڈنگ محفوظ کریں</string>
+    <string name="glucose_saved_success">گلوکوز ریڈنگ کامیابی سے محفوظ ہو گئی</string>
+
+    <!-- Navigation -->
+    <string name="previous_day">پچھلا دن</string>
+    <string name="next_day">اگلا دن</string>
+    <string name="prev_symbol">&lt;</string>
+    <string name="next_symbol">&gt;</string>
+
+    <!-- Calendar -->
+    <string name="calendar_days_header">مئی 2026</string>
+    <string name="sun_short">اتوار</string>
+    <string name="mon_short">پیر</string>
+    <string name="tue_short">منگل</string>
+    <string name="wed_short">بدھ</string>
+    <string name="thu_short">جمعرات</string>
+    <string name="fri_short">جمعہ</string>
+    <string name="sat_short">ہفتہ</string>
+
+    <!-- Legend -->
+    <string name="no_record">کوئی ریکارڈ نہیں</string>
+    <string name="has_record">ریکارڈ موجود ہے</string>
+    <string name="selected">منتخب کردہ</string>
+
+    <!-- Glucose -->
+    <string name="low">کم</string>
+    <string name="normal">نارمل</string>
+    <string name="high">زیادہ</string>
+    <string name="good">بہتر</string>
+    <string name="ok">ٹھیک ہے</string>
+
+    <!-- Meal Times -->
+    <string name="before_breakfast">ناشتے سے پہلے</string>
+    <string name="after_breakfast">ناشتے کے بعد</string>
+    <string name="before_lunch">دوپہر کے کھانے سے پہلے</string>
+    <string name="after_lunch">دوپہر کے کھانے کے بعد</string>
+    <string name="before_dinner">رات کے کھانے سے پہلے</string>
+    <string name="after_dinner">رات کے کھانے کے بعد</string>
+    <string name="bedtime">سوتے وقت</string>
+
+    <!-- Short Meal Times -->
+    <string name="before_breakfast_short">ن-پ</string>
+    <string name="after_breakfast_short">ن-ب</string>
+    <string name="before_lunch_short">د-پ</string>
+    <string name="after_lunch_short">د-ب</string>
+    <string name="before_dinner_short">ر-پ</string>
+    <string name="after_dinner_short">ر-ب</string>
+    <string name="bedtime_short">سوتے</string>
+
+    <!-- Empty State -->
+    <string name="calendar_emoji">📅</string>
+    <string name="no_glucose_records_day">اس دن کا کوئی گلوکوز ریکارڈ موجود نہیں ہے</string>
+
+    <string name="calendar_month_year">%1$s %2$d</string>
+    <string name="date_display_format">%1$d %2$s %3$d</string>
+
+    <!-- Profile -->
+    <string name="profile_default_initial">P</string>
+    <string name="edit_photo">تصویر تبدیل کریں</string>
+    <string name="edit_profile">پروفائل میں ترمیم کریں</string>
+    <string name="blood">خون</string>
+    <string name="age">عمر</string>
+    <string name="weight">وزن</string>
+
+    <!-- Doctor Info Card -->
+    <string name="no_doctor_info">ڈاکٹر کی معلومات دستیاب نہیں ہیں</string>
+    <string name="add_doctor_info_desc">اپائنٹمنٹس اور ہیلتھ کیئر کی معلومات کو ٹریک کرنے کے لیے اپنے ڈاکٹر کی تفصیلات شامل کریں۔</string>
+    <string name="edit_doctor_info">ڈاکٹر کی معلومات میں ترمیم کریں</string>
+    <string name="add_doctor_info">ڈاکٹر کی معلومات شامل کریں</string>
+
+    <!-- Doctor Dialog -->
+    <string name="profile_details">پروفائل کی تفصیلات</string>
+    <string name="doctor_information">ڈاکٹر کی معلومات</string>
+    <string name="close">بند کریں</string>
+    <string name="general_information">عمومی معلومات</string>
+    <string name="doctor_name">ڈاکٹر کا نام</string>
+    <string name="doctor_name_placeholder">مثال کے طور پر، ڈاکٹر سمیت گُلا</string>
+    <string name="role_title">عہدہ/ڈگری</string>
+    <string name="role_title_placeholder">مثال کے طور پر، MBBS, MD</string>
+    <string name="practice_details">پریکٹس کی تفصیلات</string>
+    <string name="speciality">تخصص (اسپیشلٹی)</string>
+    <string name="speciality_placeholder">مثال کے طور پر، اینڈو کرائنولوجسٹ</string>
+    <string name="medical_center">میڈیکل سنٹر</string>
+    <string name="medical_center_placeholder">مثال کے طور پر، مریکلز ہیلتھ</string>
+    <string name="follow_up">فالو اپ</string>
+    <string name="discard">مسترد کریں</string>
+    <string name="save_info">معلومات محفوظ کریں</string>
+
+    <!-- Edit Profile Dialog -->
+    <string name="edit_profile_title">پروفائل میں ترمیم کریں</string>
+    <string name="name">نام</string>
+    <string name="weight_kg">وزن (کلوگرام)</string>
+    <string name="blood_type">بلڈ گروپ</string>
+
+    <string name="personal_health_details">ذاتی صحت کی تفصیلات</string>
+
+    <!-- Status Info -->
+    <string name="above_target">ٹارگٹ سے اوپر</string>
+
+    <!-- Loading Screen -->
+    <string name="loading_medbuddy">MedBuddy لوڈ ہو رہا ہے</string>
+    <string name="preparing_dashboard">آپ کا گلوکوز ڈیش بورڈ تیار کیا جا رہا ہے</string>
+
+    <!-- Login Screen -->
+    <string name="medbuddy">MedBuddy</string>
+    <string name="smart_glucose_care">اسمارٹ گلوکوز کیئر</string>
+    <string name="login_description">گلوکوز کی سطح کو ٹریک کریں، رجحانات کی نگرانی کریں اور اپنی صحت کو کنٹرول میں رکھیں۔</string>
+    <string name="continue_with_google">Google کے ساتھ جاری رکھیں</string>
+    <string name="secure_signin_powered_by_google">Google کی طرف سے محفوظ سائن ان</string>
+
+    <!-- Time Period Dropdown -->
+    <string name="select_time_period">وقت کی مدت منتخب کریں</string>
+    <string name="time_period">وقت کی مدت</string>
+
+    <!-- Home Components -->
+    <string name="target_range">🎯 ٹارگٹ رینج</string>
+    <string name="readings_within_target">%2$d ریڈنگز میں سے %1$d ٹارگٹ رینج کے اندر تھیں</string>
+    <string name="target_excellent">اس مدت میں بہترین کنٹرول 🎉</string>
+    <string name="target_good">آپ اچھا کام کر رہے ہیں۔ اسے جاری رکھیں 👍</string>
+    <string name="target_improving">مسلسل بہتری آ رہی ہے 📈</string>
+    <string name="target_work">آئیں مزید ریڈنگز کو حد کے اندر لانے کی کوشش کریں 💪</string>
+    <string name="greeting_morning">صبح بخیر، </string>
+    <string name="greeting_afternoon">سہ پہر بخیر، </string>
+    <string name="greeting_evening">شام بخیر، </string>
+    <string name="insight_lower">گلوکوز پچھلے ہفتے کے مقابلے میں 15٪ کم ہے</string>
+    <string name="patient">مریض</string>
+    <string name="today">آج</string>
+
+    <!-- Appointment -->
+    <string name="next_appointment_label">اگلا اپائنٹمنٹ</string>
+    <string name="select_appointment_date">اپائنٹمنٹ کی تاریخ منتخب کریں</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">ہوم</string>
+    <string name="nav_add">شامل کریں</string>
+    <string name="nav_profile">پروفائل</string>
+    <string name="nav_reports">رپورٹس</string>
+    <string name="nav_history">ہسٹری (تاریخ)</string>
+
+    <!-- Errors -->
+    <string name="failed_upload_photo">تصویر اپ لوڈ کرنے میں ناکامی</string>
+
+    <string name="summary_title_days">خلاصہ (%1$s)</string>
+    <string name="avg_glucose_title">اوسط گلوکوز</string>
+    <string name="avg_glucose_unit">mg/dL</string>
+    <string name="hba1c_title">HbA1c</string>
+    <string name="hba1c_estimate">تخمینہ</string>
+    <string name="time_in_range_title">حد کے اندر وقت</string>
+    <string name="total_readings_title">کل ریڈنگز</string>
+
+    <!-- LegendRowItem -->
+    <string name="legend_high">زیادہ</string>
+    <string name="legend_normal">نارمل</string>
+    <string name="legend_low">کم</string>
+
+    <!-- TimeInRangeCard -->
+    <string name="legend_in_range">حد کے اندر</string>
+
+    <string name="glucose_unit_mg_dl">mg/dL</string>
+
+    <!-- AverageGlucoseByTimeOfDay -->
+    <string name="avg_glucose_time_of_day_title">دن کے وقت کے مطابق اوسط گلوکوز</string>
+    <string name="tag_before_breakfast">ن-پ</string>
+    <string name="tag_after_breakfast">ن-ب</string>
+    <string name="tag_before_lunch">د-پ</string>
+    <string name="tag_after_lunch">د-ب</string>
+    <string name="tag_before_dinner">ر-پ</string>
+    <string name="tag_after_dinner">ر-ب</string>
+    <string name="tag_bedtime">سوتے</string>
+
+    <string name="glucose_trend_title">گلوکوز کا رجحان</string>
+    <!-- Dynamic argument injection structure for our average badge pill -->
+    <string name="avg_glucose_pill_format">اوسط %1$d mg/dL</string>
+    <string name="trend_chart_empty_title">ابھی تک کوئی ریڈنگ نہیں ہے</string>
+    <string name="trend_chart_empty_desc">اپنی 30 دن کی صحت کے رجحانات یہاں دیکھنے کے لیے اپنا بلڈ گلوکوز لاگ کرنا شروع کریں۔</string>
+    <string name="glucose_value_format">%1$d </string>
+
+    <!-- Existing Strings -->
+    <string name="best_and_worst_days_title">بہترین اور بدترین دن</string>
+    <string name="label_best_day">بہترین دن</string>
+    <string name="label_worst_day">بدترین دن</string>
+
+    <!-- New Tooltip Dialog Strings -->
+    <string name="info_button_desc">میٹرک کیلکولیشن کے قواعد پڑھیں</string>
+    <string name="tooltip_dialog_title">کیلکولیشن کیسے کام کرتی ہے</string>
+    <string name="tooltip_dialog_best_desc"><b>بہترین دن:</b> وہ کیلنڈر دن ظاہر کرتا ہے جب آپ کی اوسط گلوکوز ریڈنگز آپ کے بہترین اہداف (70-140 mg/dL) کے سب سے قریب اور مستحکم رہی ہوں۔</string>
+    <string name="tooltip_dialog_worst_desc"><b>بدترین دن:</b> اس دن کو ٹریک کرتا ہے جب آپ کے گلوکوز لیول میں شدید اتار چڑھاؤ آیا ہو یا گلوکوز مسلسل حد سے باہر رہا ہو۔</string>
+    <string name="btn_dismiss">سمجھ گیا</string>
+
+    <!-- Insights and Actions Strings -->
+    <string name="insights_section_title">انسائٹس</string>
+    <string name="btn_export_pdf">PDF ایکسپورٹ کریں</string>
+    <string name="btn_share_report">رپورٹ شیئر کریں</string>
+
+    <!-- Screen Header Keys -->
+    <string name="reports_screen_title">رپورٹس</string>
+    <string name="nav_menu_desc">نیویگیشن مینو ڈرائر کھولیں</string>
+    <string name="reports_calendar_desc">کیلنڈر رینج پکر کھولیں</string>
+
+    <!-- Interactive Chips Filters Labels -->
+    <string name="filter_7_days">7 دن</string>
+    <string name="filter_30_days">30 دن</string>
+    <string name="filter_90_days">90 دن</string>
+    <string name="filter_custom">کسٹم</string>
+    <!-- Notifications -->
+    <string name="daily_log_reminder">روزانہ ریکارڈ کا ریمائنڈر</string>
+    <string name="daily_log_reminder_desc">آپ نے آج کوئی گلوکوز ریڈنگ لاگ نہیں کی ہے۔ مستقل مزاجی ہی کامیابی کی کلید ہے!</string>
+    <string name="missed_breakfast_log">کیا ناشتے کا ریکارڈ چھوٹ گیا؟</string>
+    <string name="missed_breakfast_log_desc">آج صبح کا اپنا نہار منہ (فاسٹنگ) گلوکوز لاگ کرنا نہ بھولیں۔</string>
+    <string name="high_glucose_alert">ہائی گلوکوز الرٹ</string>
+    <string name="high_glucose_alert_desc">آپ کی آخری ریڈنگ %1$d mg/dL تھی۔ اگر یہ مسلسل زیادہ رہے تو اپنے ڈاکٹر سے رابطہ کرنے پر غور کریں۔</string>
+    <string name="low_glucose_alert">لو گلوکوز الرٹ</string>
+    <string name="low_glucose_alert_desc">آپ کی آخری ریڈنگ %1$d mg/dL تھی۔ براہ کرم فوری طور پر کچھ میٹھا یا فوری اثر کرنے والی شوگر استعمال کریں۔</string>
+    <string name="upcoming_appointment">آنے والا اپائنٹمنٹ</string>
+    <string name="upcoming_appointment_desc">آپ کا %1$s کے ساتھ %2$d دنوں میں اپائنٹمنٹ ہے۔</string>
+    <string name="notifications_title">نوٹیفیکیشنز</string>
+    <string name="back_button_desc">ڈیش بورڈ پر واپس جائیں</string>
+    <string name="notifications_empty_title">سب اپ ٹو ڈیٹ ہے!</string>
+    <string name="notifications_empty_desc">اس وقت آپ کے پاس کوئی غیر خواندہ طبی نوٹیفیکیشن یا لاگ ریمائنڈر نہیں ہیں۔</string>
+
+    <string name="insight_within_range">آپ کی زیادہ تر ریڈنگز ٹارگٹ رینج کے اندر ہیں۔ بہت اچھا کام!</string>
+    <string name="insight_lunch_spike">دوپہر کے کھانے کے بعد کی ریڈنگز دوسرے اوقات کے مقابلے میں زیادہ ہوتی ہیں۔</string>
+    <string name="insight_glucose_improved">پچھلے 30 دنوں کے مقابلے میں اوسط گلوکوز میں 8٪ بہتری آئی ہے۔</string>
+    <string name="insight_no_lows">پچھلے 7 دنوں میں لو گلوکوز کا کوئی واقعہ نہیں ہوا۔</string>
+
+    <string name="preferences">ترجیحات</string>
+    <string name="help_support">مدد اور سپورٹ</string>
+    <string name="preferences_support_tab">سپورٹ</string>
+    <string name="preferences_permissions_tab">اجازتیں</string>
+    <string name="preferences_privacy_tab">پرائیویسی</string>
+    <string name="preferences_support_title">ترجیحات اور سپورٹ</string>
+    <string name="medbuddy_website_url">https://mohammad-asif-zafar.github.io/MedBuddy/index.html</string>
+    <string name="medbuddy_privacy_url">https://mohammad-asif-zafar.github.io/MedBuddy/privacy-policy.html</string>
+    <string name="preferences_about_medbuddy_section">MEDBUDDY کے بارے میں</string>
+    <string name="preferences_smart_glucose_care_title">اسمارٹ گلوکوز کیئر</string>
+    <string name="preferences_smart_glucose_care_desc">ریڈنگز کو ٹریک کریں، رجحانات کا تجزیہ کریں اور اپنی صحت کو کنٹرول میں رکھیں۔</string>
+    <string name="preferences_dashboard_title">انٹیلیجنٹ ڈیش بورڈ</string>
+    <string name="preferences_dashboard_desc">حالیہ ریڈنگز، 7 دن کی اوسط، اور تخمینہ شدہ HbA1c ایک نظر میں دیکھیں۔</string>
+    <string name="preferences_analytics_title">ایڈوانسڈ اینالیٹکس</string>
+    <string name="preferences_analytics_desc">ٹائم ان رینج ویژولز کے ساتھ 7، 30، اور 90 دن کے رجحانات کا جائزہ لیں۔</string>
+    <string name="preferences_cloud_sync_title">محفوظ کلاؤڈ سنک</string>
+    <string name="preferences_cloud_sync_desc">Google Firebase کے ساتھ تمام ڈیوائسز پر صحت کا ڈیٹا سنک کریں۔</string>
+    <string name="preferences_open_website_title">MedBuddy ویب سائٹ کھولیں</string>
+    <string name="preferences_open_website_desc">آفیشل ایپ پیج، اسکرین شاٹس اور ڈاؤن لوڈ کی تفصیلات دیکھیں۔</string>
+    <string name="preferences_help_support_section">مدد اور سپورٹ</string>
+    <string name="preferences_contact_support_title">سپورٹ سے رابطہ کریں</string>
+    <string name="preferences_contact_support_desc">ایپ یا اکاؤنٹ کی مدد کے لیے mohammadasifzafar000@gmail.com پر ای میل کریں۔</string>
+    <string name="preferences_health_insights_title">صحت کے بارے میں انسائٹس</string>
+    <string name="preferences_health_insights_desc">ریڈنگز میں اچانک اضافے اور استحکام کو سمجھنے کے لیے سیاق و سباق کے مطابق فیڈ بیک کا استعمال کریں۔</string>
+    <string name="preferences_meal_segments_title">کھانے کے اوقات کے حصے</string>
+    <string name="preferences_meal_segments_desc">واضح پیٹرن دیکھنے کے لیے کھانے سے پہلے اور بعد کی ریڈنگز کا موازنہ کریں۔</string>
+    <string name="preferences_privacy_policy_title">پرائیویسی پالیسی</string>
+    <string name="preferences_privacy_policy_desc">اپنے براؤزر میں تازہ ترین MedBuddy پرائیویسی پالیسی کھولیں۔</string>
+    <string name="preferences_app_info_section">ایپ کی معلومات</string>
+    <string name="preferences_kmp_title">Kotlin Multiplatform کے ساتھ تیار کردہ</string>
+    <string name="preferences_kmp_desc">آئی او ایس (iOS) سپورٹ کے منصوبے کے ساتھ ایک ہموار اینڈرائیڈ تجربے کے لیے ڈیزائن کیا گیا ہے۔</string>
+    <string name="preferences_version_title">ورژن</string>
+    <string name="preferences_version_desc">موجودہ ورژن 1.0.0</string>
+    <string name="preferences_data_api_title">ڈیٹا اور API کا استعمال</string>
+    <string name="preferences_data_api_desc">گوگل سائن ان، فائر بیس اتھنٹیکیشن، فائر اسٹور، کلاؤڈ اسٹوریج، اور FCM کا استعمال کرتا ہے۔</string>
+    <string name="preferences_banner_title">اسمارٹ گلوکوز کیئر، اب ہوا آسان</string>
+    <string name="preferences_banner_desc">MedBuddy گلوکوز ریڈنگز کو ٹریک کرنے، رجحانات کی نگرانی کرنے اور صحت کے بارے میں انسائٹس تیار کرنے میں مدد کرتا ہے۔</string>
+    <string name="permissions_title">اجازتیں</string>
+    <string name="permissions_intro">MedBuddy صرف سائن ان، سنک، ریمائنڈرز اور ہیلتھ الرٹس کے لیے ضروری رسائی کا استعمال کرتا ہے۔</string>
+    <string name="permissions_notifications_title">نوٹیفیکیشنز</string>
+    <string name="permissions_notifications_desc">لاگ ریمائنڈرز اور ہیلتھ الرٹس کے لیے فائر بیس کلاؤڈ میسجنگ کے ذریعے استعمال کیا جاتا ہے۔</string>
+    <string name="permissions_status_device_setting">ڈیوائس کی سیٹنگ</string>
+    <string name="permissions_internet_title">انٹرنیٹ تک رسائی</string>
+    <string name="permissions_internet_desc">گوگل سائن ان، فائر بیس سنک، فائر اسٹور، اور کلاؤڈ اسٹوریج کے لیے درکار ہے۔</string>
+    <string name="permissions_status_required">ضروری ہے</string>
+    <string name="permissions_google_account_title">گوگل اکاؤنٹ</string>
+    <string name="permissions_google_account_desc">گوگل سائن ان کے ذریعے نام، ای میل اور پروفائل تصویر کے ساتھ آپ کا MedBuddy پروفائل بنانے کے لیے استعمال کیا جاتا ہے۔</string>
+    <string name="permissions_status_on_sign_in">سائن ان کرنے پر</string>
+    <string name="permissions_privacy_matters_title">آپ کی پرائیویسی اہم ہے</string>
+    <string name="permissions_privacy_matters_desc">آپ ایپ کے اندر اپنے ہیلتھ ریکارڈز اور پروفائل کی معلومات دیکھ، اپ ڈیٹ یا ڈیلیٹ کر سکتے ہیں۔</string>
+    <string name="permissions_firebase_title">آپ کا ڈیٹا فائر بیس پر محفوظ ہے</string>
+    <string name="permissions_firebase_desc">اتھنٹیکیشن، فائر اسٹور، کلاؤڈ اسٹوریج، اور فائر بیس کلاؤڈ میسجنگ اکاؤنٹ سنک اور ریمائنڈرز کو چلاتے ہیں۔</string>
+    <string name="privacy_policy_banner_desc">آخری اپ ڈیٹ: 20 جون 2026۔ آن لائن مکمل پالیسی کھولنے کے لیے ٹیپ کریں۔</string>
+    <string name="privacy_policy_bullet_format">- %1$s</string>
+    <string name="privacy_collect_title">معلومات جو ہم جمع کرتے ہیں</string>
+    <string name="privacy_collect_account">اکاؤنٹ کی معلومات: گوگل سائن ان کے ذریعے نام، ای میل ایڈریس، اور پروفائل تصویر۔</string>
+    <string name="privacy_collect_health">صحت کا ڈیٹا: بلڈ گلوکوز ریڈنگز، کھانے کے اوقات، نوٹس، عمر، وزن، اور بلڈ گروپ۔</string>
+    <string name="privacy_collect_medical">طبی معلومات: ڈاکٹروں کے نام، تخصص (اسپیشلٹیز)، ہسپتال، اور اپائنٹمنٹ کی تاریخیں۔</string>
+    <string name="privacy_use_title">ہم معلومات کا استعمال کیسے کرتے ہیں</string>
+    <string name="privacy_use_services">MedBuddy خدمات فراہم کرنا، ان کو برقرار رکھنا اور ان میں بہتری لانا۔</string>
+    <string name="privacy_use_trends">صحت کے رجحانات کو ٹریک کرنا اور ڈیش بورڈ ویژولائزیشن دکھانا۔</string>
+    <string name="privacy_use_notifications">فائر بیس کلاؤڈ میسجنگ کے ذریعے لاگ ریمائنڈرز اور ہیلتھ الرٹس بھیجنا۔</string>
+    <string name="privacy_use_personalize">مبارکبادوں اور تھیم کی ترجیحات کو ذاتی بنانا।</string>
+    <string name="privacy_security_title">ڈیٹا اسٹوریج اور سیکیورٹی</string>
+    <string name="privacy_security_firebase">MedBuddy تمام ڈیوائسز پر ڈیٹا کو محفوظ طریقے سے اسٹور اور سنک کرنے کے لیے گوگل فائر بیس اتھنٹیکیشن، فائر اسٹور، اور کلاؤڈ اسٹوریج کا استعمال کرتا ہے۔</string>
+    <string name="privacy_security_limits">آپ کی معلومات کی حفاظت کے لیے مناسب سیکیورٹی اقدامات کیے گئے ہیں، حالانکہ کوئی بھی سیکیورٹی سسٹم مکمل طور پر ناقابل تسخیر نہیں ہوتا۔</string>
+    <string name="privacy_third_party_title">تھرڈ پارٹی سروسز</string>
+    <string name="privacy_third_party_services">MedBuddy بنیادی خصوصیات کے لیے گوگل پلے سروسز اور فائر بیس کا استعمال کرتا ہے۔</string>
+    <string name="privacy_third_party_collect">یہ سروسز ایسی معلومات جمع کر سکتی ہیں جو آپ کی شناخت کے لیے استعمال ہو سکتی ہیں۔</string>
+    <string name="privacy_rights_title">آپ کے حقوق</string>
+    <string name="privacy_rights_update">آپ ایپ کے اندر ہیلتھ ریکارڈز اور پروفائل کی معلومات دیکھ، اپ ڈیٹ یا حذف کر سکتے ہیں۔</string>
+    <string name="privacy_rights_sign_out">کلاؤڈ پر ڈیٹا سنک کرنا روکنے کے لیے آپ سائن آؤٹ کر سکتے ہیں۔</string>
+    <string name="privacy_contact_title">ہم سے رابطہ کریں</string>
+    <string name="privacy_contact_desc">پرائیویسی کے سوالات کے لیے، mohammadasifzafar000@gmail.com پر رابطہ کریں</string>
+    <string name="logout">لاگ آؤٹ</string>
+
+    <string name="next_visit">اگلا معائنہ</string>
+    <string name="no_doctor_info_available">ڈاکٹر کی معلومات دستیاب نہیں ہیں</string>
+    <string name="add_doctor_info_prompt">براہ کرم اپنے پرائمری کیئر فزیشن (ڈاکٹر) کی معلومات شامل کریں۔</string>
+    <string name="view_doctor_details">ڈاکٹر کی تفصیلات دیکھیں</string>
+    <string name="add_doctor_info_btn">ڈاکٹر کی معلومات شامل کریں</string>
+
+    <string name="condition_default">ٹائپ 2 ذیابیطس</string>
+    <string name="doctor_name_default">ڈاکٹر سمیت گُلا </string>
+    <string name="speciality_default">اینڈو کرائنولوجسٹ</string>
+    <string name="date_default">15 جون 2026</string>
+    <string name="patient_default">مریض</string>
+    <string name="no_clinical_insights">منتخب کردہ وقت کے لیے کوئی طبی انسائٹس دستیاب نہیں ہیں۔</string>
+
+    <!-- Theme Selection Dialog Strings -->
+    <string name="theme_dialog_title">تھیم منتخب کریں</string>
+    <string name="theme_dialog_subtitle">اپنے ایپ کے تجربے کو ذاتی بنائیں</string>
+    <string name="theme_light_title">لائٹ موڈ</string>
+    <string name="theme_light_desc">دن کے وقت استعمال کے لیے روشن اور واضح۔</string>
+    <string name="theme_dark_title">ڈارک موڈ</string>
+    <string name="theme_dark_desc">رات کے وقت آنکھوں کے لیے آرام دہ اور آسان۔</string>
+    <string name="theme_system_title">سسٹم ڈیفالٹ</string>
+    <string name="theme_system_desc">آپ کی ڈیوائس کی تھیم سیٹنگز کے مطابق ڈھل جاتا ہے۔</string>
+    <string name="action_close">بند کریں</string>
+    <!-- Accessibility Semantic Action Strings -->
+    <string name="accessibility_select_theme">%1$s کو منتخب کریں</string>
+
+    <string name="report_doctor_appointments">ڈاکٹر کے اپائنٹمنٹس</string>
+    <string name="report_blood_pressure">بلڈ پریشر</string>
+    <string name="report_weight">وزن</string>
+    <string name="report_bmi">BMI</string>
+    <string name="more_options">مزید اختیارات</string>
+    <string name="view_details">تفصیلات دیکھیں</string>
+    <string name="no_upcoming_appointments">آنے والا کوئی اپائنٹمنٹ نہیں ہے</string>
+    <string name="weight_kg_label">%1$s کلوگرام</string>
+    <string name="bmi_label">BMI: %1$s</string>
+    <string name="bp_label">BP: %1$d/%2$d mmHg</string>
+
+    <!-- Feature Cards Strings -->
+    <string name="title_ai_insights">AI انسائٹس اور اسمارٹ ٹرینڈز</string>
+    <string name="desc_ai_insights">AI آپ کے ڈیٹا کا تجزیہ کرتا ہے اور ذاتی نوعیت کی انسائٹس اور ٹپس فراہم کرتا ہے۔</string>
+    <string name="title_meal_tracking">اسمارٹ میل ٹریکنگ</string>
+    <string name="desc_meal_tracking">کھانے اور کاربوہائیڈریٹس کو ٹریک کریں اور دیکھیں کہ وہ آپ کے گلوکوز پر کیسے اثر انداز ہوتے ہیں۔</string>
+    <string name="title_medication">ادویات کی پابندی (Adherence)</string>
+    <string name="desc_medication">آپ کی ادویات کے لیے اسمارٹ ریمائنڈرز اور پابندی کی ٹریکنگ۔</string>
+    <string name="title_health_reports">صحت کی رپورٹس (PDF)</string>
+    <string name="desc_health_reports">ایک ہی ٹیپ میں اپنے ڈاکٹر کے لیے پروفیشنل رپورٹس ایکسپورٹ کریں۔</string>
+    <string name="title_family_care">فیملی کیئر اور شیئرنگ</string>
+    <string name="desc_family_care">مکمل کنٹرول کے ساتھ خاندان کے ارکان اور دیکھ بھال کرنے والوں کے ساتھ ڈیٹا شیئر کریں۔</string>
+    <string name="title_emergency_alerts">ایمرجنسی الرٹس</string>
+    <string name="desc_emergency_alerts">ہائی/لو گلوکوز یا چھوٹی ہوئی ادویات کے الرٹس حاصل کریں۔</string>
+    <string name="title_exercise">ورزش کی ٹریکنگ</string>
+    <string name="desc_exercise">سرگرمیوں کو ٹریک کریں اور دیکھیں کہ ورزش آپ کی صحت کو کس طرح بہتر بناتی ہے۔</string>
+    <string name="title_weight_bmi">وزن اور BMI کی ٹریکنگ</string>
+    <string name="desc_weight_bmi">اپنے وزن، BMI کی نگرانی کریں اور وقت کے ساتھ ساتھ بہتری دیکھیں۔</string>
+
+    <string name="title_blood_pressure">بلڈ پریشر ٹریکنگ</string>
+    <string name="desc_blood_pressure">صحت کی مکمل تصویر کے لیے گلوکوز کے ساتھ بلڈ پریشر کو بھی ٹریک کریں۔</string>
+    <string name="title_lab_results">لیب ٹیسٹ کے نتائج</string>
+    <string name="desc_lab_results">اہم لیب ٹیسٹ کے نتائج کو ایک جگہ اسٹور اور ٹریک کریں۔</string>
+    <string name="title_doctor_appointments">ڈاکٹر کے اپائنٹمنٹس</string>
+    <string name="desc_doctor_appointments">اپائنٹمنٹس کا انتظام کریں اور کبھی بھی کوئی فالو اپ نہ چھوڑیں۔</string>
+    <string name="title_dark_mode_feature">ڈارک موڈ فیچر</string>
+    <string name="desc_dark_mode_feature">رات کے وقت آرام دہ استعمال کے لیے خوبصورت ڈارک موڈ۔</string>
+
+    <string name="label_glucose_prediction">گلوکوز کی پیشگوئی</string>
+    <string name="label_next_24h">اگلے 24 گھنٹے</string>
+    <string name="label_carbs_today">آج کے کاربوہائیڈریٹس</string>
+    <string name="format_carbs">%1$d / %2$d گرام</string>
+    <string name="label_adherence">ادویات کی پابندی</string>
+    <string name="label_excellent">بہترین</string>
+    <string name="label_glucose_summary">گلوکوز کا خلاصہ</string>
+    <string name="action_add_member">ممبر شامل کریں</string>
+    <string name="label_steps_today">آج کے قدم</string>
+    <string name="label_weight_inner">وزن</string>
+    <string name="format_weight_change">اس مہینے %1$s کلوگرام</string>
+    <string name="label_blood_pressure_inner">بلڈ پریشر</string>
+    <string name="label_cholesterol">کولیسٹرول</string>
+    <string name="label_next_visit_inner">اگلا معائنہ</string>
+    <string name="label_high_glucose">ہائی گلوکوز</string>
+    <string name="label_low_glucose">لو گلوکوز</string>
+
+    <string name="list_title">طبی ریکارڈز</string>
+    <string name="action_back">واپس جائیں</string>
+
+    <string name="family_care_title">فیملی کیئر</string>
+    <string name="active_members_label">فعال ممبرز</string>
+    <string name="access_label">رسائی (ایکسیس)</string>
+    <string name="add_new_member_label">نیا ممبر شامل کریں</string>
+    <string name="share_my_data_label">میرا ڈیٹا شیئر کریں</string>
+    <string name="relationship_daughter">بیٹی</string>
+    <string name="relationship_son">بیٹا</string>
+
+    <!-- Lab Results Flow Detail -->
+    <string name="lab_results_title_main">لیب ٹیسٹ کے نتائج</string>
+    <string name="lab_results_subtitle">اپنے اہم لیب ٹیسٹ کے نتائج کو ایک جگہ اسٹور، ٹریک اور مینیج کریں۔</string>
+    <string name="lab_status_good">بہتر</string>
+    <string name="lab_status_normal">نارمل</string>
+    <string name="lab_status_high">زیادہ</string>
+    <string name="lab_status_low">کم</string>
+    <string name="lab_test_hba1c">HbA1c</string>
+    <string name="lab_test_cholesterol">کولیسٹرول</string>
+    <string name="lab_test_triglycerides">ٹرائی گلیسرائڈز</string>
+    <string name="lab_test_hdl">HDL</string>
+    <string name="lab_test_ldl">LDL</string>
+    <string name="lab_unit_percent">٪</string>
+    <string name="lab_unit_mg_dl">mg/dL</string>
+    <string name="lab_add_title">لیب کا نتیجہ شامل کریں</string>
+    <string name="lab_add_desc">آپ اپنا لیب کا نتیجہ کیسے شامل کرنا چاہیں گے؟</string>
+    <string name="lab_action_manual">دستی طور پر درج کریں</string>
+    <string name="lab_action_manual_desc">ٹائپ کر کے تفصیلات شامل کریں</string>
+    <string name="lab_action_upload">رپورٹ اپ لوڈ کریں</string>
+    <string name="lab_action_upload_desc">تصویر یا PDF اپ لوڈ کریں</string>
+    <string name="lab_action_import">ڈیوائس سے امپورٹ کریں</string>
+    <string name="lab_action_import_desc">طبی ڈیوائس سے امپورٹ کریں</string>
+    <string name="lab_action_ocr">رپورٹ اسکین کریں (OCR)</string>
+    <string name="lab_action_ocr_desc">اسکین کریں اور ڈیٹا حاصل کریں</string>
+    <string name="lab_form_test_details">ٹیسٹ کی تفصیلات</string>
+    <string name="lab_form_select_test">ٹیسٹ منتخب کریں</string>
+    <string name="lab_form_result_value">نتیجہ کی ویلیو</string>
+    <string name="lab_form_date">ٹیسٹ کی تاریخ</string>
+    <string name="lab_form_ref_range">ریفرنس رینج</string>
+    <string name="lab_form_notes">نوٹس (اختیاری)</string>
+    <string name="lab_form_save">نتیجہ محفوظ کریں</string>
+    <string name="lab_success_title">لیب کا نتیجہ محفوظ ہو گیا!</string>
+    <string name="lab_success_msg">اب آپ لیب ٹیسٹ کے نتائج کی فہرست میں اپنا نتیجہ دیکھ سکتے ہیں۔</string>
+    <string name="lab_action_view_results">نتائج دیکھیں</string>
+    <string name="lab_action_add_another">ایک اور شامل کریں</string>
+    <string name="lab_list_all">سب</string>
+    <string name="lab_list_blood">بلڈ ٹیسٹ</string>
+    <string name="lab_list_urine">یورین ٹیسٹ</string>
+    <string name="lab_list_other">دیگر</string>
+    <string name="lab_details_title">نتائج کی تفصیلات</string>
+    <string name="lab_details_report">اپ لوڈ کردہ رپورٹ</string>
+    <string name="lab_details_edit">ترمیم کریں</string>
+    <string name="lab_details_delete">حذف کریں</string>
+    <string name="lab_ocr_title">حاصل کردہ نتائج</string>
+    <string name="lab_ocr_desc">ہمیں آپ کی رپورٹ میں یہ نتائج ملے ہیں:</string>
+    <string name="lab_ocr_review">جائزہ لیں اور نتائج محفوظ کریں۔</string>
+    <string name="lab_ocr_save_all">سب محفوظ کریں</string>
+    <string name="lab_ocr_edit_manual">دستی طور پر ترمیم کریں</string>
+    <string name="lab_trends_title">HbA1c کے رجحانات</string>
+    <string name="lab_trends_7d">7 دن</string>
+    <string name="lab_trends_30d">30 دن</string>
+    <string name="lab_trends_3m">3 مہینے</string>
+    <string name="lab_trends_1y">1 سال</string>
+    <string name="lab_trends_latest">جدید ترین</string>
+    <string name="lab_trends_avg">اوسط</string>
+    <string name="lab_filter_title">فلٹرز</string>
+    <string name="lab_filter_search">ٹیسٹ تلاش کریں...</string>
+    <string name="lab_filter_test_type">ٹیسٹ کی قسم</string>
+    <string name="lab_filter_date_range">تاریخ کی رینج</string>
+    <string name="lab_filter_status">نتیجے کی صورتحال</string>
+    <string name="lab_filter_reset">ری سیٹ کریں</string>
+    <string name="lab_filter_apply">لاگو کریں</string>
+    <string name="lab_filter_sort">ترتیب دیں بحساب</string>
+    <string name="lab_export_title">لیب کے نتائج ایکسپورٹ کریں</string>
+    <string name="lab_export_format">فارمیٹ منتخب کریں</string>
+    <string name="lab_export_pdf">PDF دستاویز</string>
+    <string name="lab_export_csv">CSV فائل</string>
+    <string name="lab_export_include_images">رپورٹ کی تصاویر شامل کریں</string>
+    <string name="lab_export_btn">ایکسپورٹ کریں</string>
+    <string name="lab_share_title">لیب کے نتائج شیئر کریں</string>
+    <string name="lab_share_with">کس کے ساتھ شیئر کریں</string>
+    <string name="lab_share_msg">پیغام شامل کریں (اختیاری)</string>
+    <string name="lab_share_btn">ابھی شیئر کریں</string>
+    <string name="lab_insights_title">لیب انسائٹس</string>
+    <string name="lab_insights_overall">مجموعی صورتحال</string>
+    <string name="lab_insights_ai">AI انسائٹ</string>
+    <string name="lab_insights_recommendations">سفارشات</string>
+    <string name="lab_insights_helpful">کیا یہ معلوماتی تھا؟</string>
+    <string name="health_at_glance">صحت پر ایک نظر</string>
+    <string name="all_looks_good">سب ٹھیک لگ رہا ہے</string>
+    <string name="latest_results">تازہ ترین نتائج</string>
+
+    <!-- Notification Flow -->
+    <string name="alerts_title">الرٹس</string>
+    <string name="filter_all">سب</string>
+    <string name="filter_alerts">الرٹس</string>
+    <string name="filter_reminders">ریمائنڈرز</string>
+    <string name="filter_updates">اپ ڈیٹس</string>
+    <string name="mark_all_read">سب کو پڑھا ہوا نشان زد کریں</string>
+    <string name="settings_desc">سیٹنگز</string>
+    <string name="notification_action_view">دیکھیں</string>
+    <string name="notification_action_resolved">حل ہو گیا</string>
+    <string name="notification_action_snooze">تاخیر کریں (اسنوز)</string>
+    <string name="notification_action_taken">لے لی گئی</string>
+    <string name="notification_action_ok">ٹھیک ہے</string>
+    <string name="notification_timestamp_now">ابھی ابھی</string>
+    <string name="notification_timestamp_minutes_ago">%1$d منٹ پہلے</string>
+    <string name="notification_timestamp_hours_ago">%1$d گھنٹے پہلے</string>
+    <string name="notification_timestamp_days_ago">%1$d دن پہلے</string>
+
+    <string name="alert_details_title">الرٹ کی تفصیلات</string>
+</resources>

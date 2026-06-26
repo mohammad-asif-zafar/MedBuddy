@@ -8,11 +8,11 @@ import com.hathway.medbuddy.domain.repository.IDoctorRepository
 
 @Composable
 fun ProfileContent(
-    doctorRepository: IDoctorRepository? = null, onBack: () -> Unit
+    doctorRepository: IDoctorRepository? = null, onBack: () -> Unit , logout: () -> Unit
 ) {
     val profileViewModel: ProfileViewModel = viewModel {
         ProfileViewModel(doctorRepository)
     }
 
-    ProfileScreen(profileViewModel, onBack)
+    ProfileScreen(profileViewModel, onBack,logout)
 }
