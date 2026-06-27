@@ -37,7 +37,7 @@ data class DailyAverageReading(
 )
 
 data class RecentReading(
-    val date: String, val timePeriod: String, val value: Int, val time: String
+    val date: String, val timePeriod: String, val value: Int, val time: String, val notes: String = ""
 )
 
 class GetGlucoseDashboardUseCase(
@@ -133,13 +133,13 @@ class GetGlucoseDashboardUseCase(
     private fun getLast7Readings(records: List<GlucoseRecord>): List<RecentReading> {
         return records.sortedByDescending { it.createdAt }.flatMap { record ->
             listOfNotNull(
-                record.beforeBreakfast?.let { RecentReading(record.date, "Before Breakfast", it, record.time) },
-                record.afterBreakfast?.let { RecentReading(record.date, "After Breakfast", it, record.time) },
-                record.beforeLunch?.let { RecentReading(record.date, "Before Lunch", it, record.time) },
-                record.afterLunch?.let { RecentReading(record.date, "After Lunch", it, record.time) },
-                record.beforeDinner?.let { RecentReading(record.date, "Before Dinner", it, record.time) },
-                record.afterDinner?.let { RecentReading(record.date, "After Dinner", it, record.time) },
-                record.bedtime?.let { RecentReading(record.date, "Bedtime", it, record.time) }
+                record.beforeBreakfast?.let { RecentReading(record.date, "Before Breakfast", it, record.time, record.notes) },
+                record.afterBreakfast?.let { RecentReading(record.date, "After Breakfast", it, record.time, record.notes) },
+                record.beforeLunch?.let { RecentReading(record.date, "Before Lunch", it, record.time, record.notes) },
+                record.afterLunch?.let { RecentReading(record.date, "After Lunch", it, record.time, record.notes) },
+                record.beforeDinner?.let { RecentReading(record.date, "Before Dinner", it, record.time, record.notes) },
+                record.afterDinner?.let { RecentReading(record.date, "After Dinner", it, record.time, record.notes) },
+                record.bedtime?.let { RecentReading(record.date, "Bedtime", it, record.time, record.notes) }
             )
         }.take(7)
     }

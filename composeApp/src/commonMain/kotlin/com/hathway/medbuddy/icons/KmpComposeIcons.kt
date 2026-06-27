@@ -725,4 +725,455 @@ object KmpComposeIcons {
             }
         }.build()
     }
+
+    // ⏱️ 3. Heart Pulse Gauge Icon (Alternative Variant)
+    val HeartPulseGauge: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "HeartPulseGauge",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main Heart Shape Container
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(11.5f, 19.5f)
+                curveTo(11.5f, 19.5f, 2f, 13.5f, 2f, 7.5f)
+                curveTo(2f, 4.0f, 4.5f, 1.5f, 7.5f, 1.5f)
+                curveTo(9.5f, 1.5f, 10.8f, 2.8f, 11.5f, 4.0f)
+                curveTo(12.2f, 2.8f, 13.5f, 1.5f, 15.5f, 1.5f)
+                curveTo(18.5f, 1.5f, 21f, 4.0f, 21f, 7.5f)
+                curveTo(21f, 9.5f, 20.0f, 11.5f, 18.5f, 13.0f)
+            }
+            // Pulse Line running inside the heart container
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 1.8f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(3.5f, 8.0f)
+                lineTo(6.5f, 8.0f)
+                lineTo(8.0f, 4.5f)
+                lineTo(10.0f, 11.5f)
+                lineTo(11.5f, 6.5f)
+                lineTo(12.5f, 9.0f)
+                lineTo(14.0f, 8.0f)
+                lineTo(15.5f, 8.0f)
+            }
+            // Overlay Gauge Frame (Bottom-Right)
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(17f, 12f)
+                curveTo(19.76f, 12f, 22f, 14.24f, 22f, 17f)
+                curveTo(22f, 19.76f, 19.76f, 22f, 17f, 22f)
+                curveTo(14.24f, 22f, 12f, 19.76f, 12f, 17f)
+                curveTo(12f, 14.24f, 14.24f, 12f, 17f, 12f)
+                close()
+            }
+            // Gauge Circular Radial Ticks
+            path(
+                stroke = SolidColor(FirebaseAmber),
+                strokeLineWidth = 1f,
+                strokeLineCap = StrokeCap.Round
+            ) {
+                // Radial dot positions surrounding the dashboard dial plate
+                moveTo(17f, 13.5f); lineTo(17f, 14f)     // 12 o'clock
+                moveTo(19.5f, 14.5f); lineTo(19.1f, 14.9f) // 2 o'clock
+                moveTo(20.5f, 17f); lineTo(20f, 17f)     // 3 o'clock
+                moveTo(19.5f, 19.5f); lineTo(19.1f, 19.1f) // 4 o'clock
+                moveTo(17f, 20.5f); lineTo(17f, 20f)     // 6 o'clock
+                moveTo(14.5f, 19.5f); lineTo(14.9f, 19.1f) // 8 o'clock
+                moveTo(13.5f, 17f); lineTo(14f, 17f)     // 9 o'clock
+                moveTo(14.5f, 14.5f); lineTo(14.9f, 14.9f) // 10 o'clock
+            }
+            // Gauge Central Hub Pin & Diagonal Speedometer Needle Pointer
+            path(
+                stroke = SolidColor(IconColor), // Deep Teal to match the gauge selector needle accent
+                strokeLineWidth = 1.8f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // Central dial mounting pivot dot
+                moveTo(17f, 17f)
+                lineTo(17f, 17f)
+                // Diagonal indicator needle pointing to the upper-right (approx 2 o'clock position)
+                moveTo(17f, 17f)
+                lineTo(19.2f, 14.8f)
+            }
+        }.build()
+    }
+
+    // 📈 3. Trend Chart / Line Graph Icon
+    val TrendChart: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "TrendChart",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main zigzag trend line
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2.5f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(4f, 18f)
+                lineTo(10f, 11f)
+                lineTo(14f, 15f)
+                lineTo(19.5f, 7.5f)
+            }
+            // Fixed: Positional parameters bypass the missing named-parameter compilation error
+            path(
+                fill = SolidColor(IconColor), stroke = null
+            ) {
+                // Centers a 1.5f radius circle dot precisely at the trend peak (19.5, 7.5)
+                moveTo(19.5f, 6f)
+                arcToRelative(
+                    1.5f,  // horizontal radius (a)
+                    1.5f,  // vertical radius (b)
+                    0f,    // degrees rotation (theta)
+                    true,  // largeArcFlag (isMoreThanHalf)
+                    true,  // sweepFlag (isPositiveArc)
+                    0f,    // relative target end X offset (dx1)
+                    3f     // relative target end Y offset (dy1)
+                )
+                arcToRelative(
+                    1.5f, 1.5f, 0f, true, true, 0f, -3f
+                )
+                close()
+            }
+        }.build()
+    }
+
+    // 💡 4. Lightbulb / Idea Icon
+    val Lightbulb: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Lightbulb",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main bulb outline structure
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // Top circular dome curving into the tapered lower body neck
+                moveTo(12f, 2f)
+                curveTo(7.03f, 2f, 3f, 6.03f, 3f, 11f)
+                curveTo(3f, 14.04f, 4.51f, 16.73f, 6.83f, 18.39f)
+                lineTo(8f, 20f)
+                lineTo(16f, 20f)
+                lineTo(17.17f, 18.39f)
+                curveTo(19.49f, 16.73f, 21f, 14.04f, 21f, 11f)
+                curveTo(21f, 6.03f, 16.97f, 2f, 12f, 2f)
+                close()
+            }
+            // Bottom metal screw base contact lines
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(9f, 22f)
+                lineTo(15f, 22f)
+            }
+        }.build()
+    }
+
+    // 📅 5. Calendar Check Icon
+    val CalendarCheck: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "CalendarCheck",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main calendar frame boundary
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // Main outer bounding box with rounded corners
+                moveTo(5f, 4f)
+                lineTo(19f, 4f)
+                curveTo(20.1f, 4f, 21f, 4.9f, 21f, 6f)
+                lineTo(21f, 19f)
+                curveTo(21f, 20.1f, 20.1f, 21f, 19f, 21f)
+                lineTo(5f, 21f)
+                curveTo(3.9f, 21f, 3f, 20.1f, 3f, 19f)
+                lineTo(3f, 6f)
+                curveTo(3f, 4.9f, 3.9f, 4f, 5f, 4f)
+                close()
+
+                // Top binder header dividing line
+                moveTo(3f, 9f)
+                lineTo(21f, 9f)
+
+                // Left and right binder ring loops/pins at the top
+                moveTo(7f, 2f)
+                lineTo(7f, 5f)
+                moveTo(17f, 2f)
+                lineTo(17f, 5f)
+            }
+            // Central confirmation checkmark
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(9.5f, 14.5f)
+                lineTo(11.5f, 16.5f)
+                lineTo(15.5f, 12.5f)
+            }
+        }.build()
+    }
+
+    // 🏃‍♂️ 6. Running / Activity Icon (Top Image)
+    val RunningActivity: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "RunningActivity",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // Head node
+                moveTo(14.5f, 4.5f)
+                arcToRelative(1f, 1f, 0f, true, true, 0f, -2f)
+                arcToRelative(1f, 1f, 0f, true, true, 0f, 2f)
+                close()
+
+                // Torso and upper spine structure
+                moveTo(11.5f, 9f)
+                lineTo(14f, 6.5f)
+                lineTo(13f, 12f)
+                lineTo(9.5f, 16f)
+
+                // Arms movement paths
+                moveTo(9f, 6.5f)
+                lineTo(12f, 8f)
+                lineTo(15.5f, 7.5f)
+                lineTo(17.5f, 9.5f)
+
+                // Legs forward and backward running stride geometry
+                moveTo(13f, 12f)
+                lineTo(16f, 15f)
+                lineTo(18f, 18.5f)
+
+                moveTo(9.5f, 16f)
+                lineTo(7f, 16.5f)
+            }
+        }.build()
+    }
+
+    // 🧡 7. Heart Pulse Graph Icon (Middle Image)
+    val HeartPulseGraph: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "HeartPulseGraph",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main outer bounding heart silhouette
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(12f, 21.35f)
+                lineTo(10.55f, 20.03f)
+                curveTo(5.4f, 15.36f, 2f, 12.28f, 2f, 8.5f)
+                curveTo(2f, 5.42f, 4.42f, 3f, 7.5f, 3f)
+                curveTo(9.24f, 3f, 10.91f, 3.81f, 12f, 5.09f)
+                curveTo(13.09f, 3.81f, 14.76f, 3f, 16.5f, 3f)
+                curveTo(19.58f, 3f, 22f, 5.42f, 22f, 8.5f)
+                curveTo(22f, 12.28f, 18.6f, 15.36f, 13.45f, 20.04f)
+                close()
+            }
+            // Vertical bar chart graph layout running through the heart center
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 1.5f,
+                strokeLineCap = StrokeCap.Round
+            ) {
+                // Symmetrical multi-line vertical indicator meters
+                moveTo(8.5f, 10f); lineTo(8.5f, 12f)
+                moveTo(10.25f, 7.5f); lineTo(10.25f, 13.5f)
+                moveTo(12f, 6f); lineTo(12f, 15f)
+                moveTo(13.75f, 7.5f); lineTo(13.75f, 13.5f)
+                moveTo(15.5f, 10f); lineTo(15.5f, 12f)
+            }
+        }.build()
+    }
+
+    // 💡 8. Radiant Lightbulb / Insight Icon (Bottom Image)
+    val RadiantLightbulb: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "RadiantLightbulb",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main bulb outline shell template
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(12f, 3f)
+                curveTo(7.5f, 3f, 4f, 6.5f, 4f, 11f)
+                curveTo(4.0f, 13.8f, 5.5f, 16.3f, 7.5f, 17.8f)
+                lineTo(8.5f, 20f)
+                lineTo(15.5f, 20f)
+                lineTo(16.5f, 17.8f)
+                curveTo(18.5f, 16.3f, 20f, 13.8f, 20f, 11f)
+                curveTo(20f, 6.5f, 16.5f, 3f, 12f, 3f)
+                close()
+
+                // Base thread terminal contacts
+                moveTo(9.5f, 22f)
+                lineTo(14.5f, 22f)
+            }
+            // Outer shining radiation ray highlights
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round
+            ) {
+                moveTo(12f, 0.5f); lineTo(12f, 1.5f)  // Top center ray
+                moveTo(4.5f, 3.5f); lineTo(5.5f, 4.5f)  // Top left diagonal ray
+                moveTo(19.5f, 3.5f); lineTo(18.5f, 4.5f) // Top right diagonal ray
+                moveTo(1f, 11f); lineTo(2.5f, 11f)      // Left flank lateral ray
+                moveTo(23f, 11f); lineTo(21.5f, 11f)    // Right flank lateral ray
+            }
+        }.build()
+    }
+
+    // 🛡️ 9. Shield Heart / Health Protection Icon
+    val ShieldHeart: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "ShieldHeart",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Main outer shield/badge container body shell
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(12f, 2f)
+                curveTo(12f, 2f, 21f, 3f, 21f, 10.5f)
+                curveTo(21f, 16.5f, 16f, 20.5f, 12f, 22f)
+                curveTo(8f, 20.5f, 3f, 16.5f, 3f, 10.5f)
+                curveTo(3f, 3f, 12f, 2f, 12f, 2f)
+                close()
+            }
+            // Inner heart emblem centered inside the shield template boundaries
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 1.8f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(12f, 16.8f)
+                lineTo(11.1f, 16f)
+                curveTo(7.9f, 13.1f, 5.8f, 11.2f, 5.8f, 8.8f)
+                curveTo(5.8f, 6.8f, 7.3f, 5.2f, 9.3f, 5.2f)
+                curveTo(10.4f, 5.2f, 11.5f, 5.7f, 12f, 6.5f)
+                curveTo(12.5f, 5.7f, 13.6f, 5.2f, 14.7f, 5.2f)
+                curveTo(16.7f, 5.2f, 18.2f, 6.8f, 18.2f, 8.8f)
+                curveTo(18.2f, 11.2f, 16.1f, 13.1f, 12.9f, 16f)
+                close()
+            }
+        }.build()
+    }
+
+    // ℹ️ 10. Info / Details Icon
+    val InfoCircle: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "InfoCircle",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            // Outer circular frame boundary
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(12f, 22f)
+                curveTo(17.52f, 22f, 22f, 17.52f, 22f, 12f)
+                curveTo(22f, 6.48f, 17.52f, 2f, 12f, 2f)
+                curveTo(6.48f, 2f, 2f, 6.48f, 2f, 12f)
+                curveTo(2f, 17.52f, 6.48f, 22f, 12f, 22f)
+                close()
+            }
+            // Central lower vertical info post bar
+            path(
+                stroke = SolidColor(IconColor),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(12f, 11f)
+                lineTo(12f, 17f)
+            }
+            // Top information dot node component
+            path(
+                fill = SolidColor(IconColor), stroke = null
+            ) {
+                moveTo(12f, 7.5f)
+                arcToRelative(1f, 1f, 0f, true, true, 0f, 2f)
+                arcToRelative(1f, 1f, 0f, true, true, 0f, -2f)
+                close()
+            }
+        }.build()
+    }
 }
+
+
+
+
+
+
+
+
+

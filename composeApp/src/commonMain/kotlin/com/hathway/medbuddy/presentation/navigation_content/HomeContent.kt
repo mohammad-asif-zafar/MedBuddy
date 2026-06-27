@@ -11,11 +11,13 @@ fun HomeContent(
     repository: IGlucoseRepository,
     doctorRepository: IDoctorRepository,
     onOpenNotifications: () -> Unit,
-    onMenuClick: () -> Unit
+    onMenuClick: () -> Unit,
+    onViewAllHistory: () -> Unit
 ) {
     HomeScreen(
         viewModel = HomeViewModel(repository, doctorRepository),
         onOpenNotifications = onOpenNotifications,
-        onMenuClick = onMenuClick
+        onMenuClick = onMenuClick,
+        onViewAllHistory = onViewAllHistory
     )
 }

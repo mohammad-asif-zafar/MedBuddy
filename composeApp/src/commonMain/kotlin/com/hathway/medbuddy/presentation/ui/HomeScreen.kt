@@ -18,12 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.presentation.components.home_components.GlucoseAndPatientCardSection
 import com.hathway.medbuddy.presentation.components.home_components.HealthSummaryGrid
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.home_components.RecentRecordsCard
 import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.presentation.viewmodel.HomeUiState
 import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
 import com.hathway.medbuddy.util.calculateGlucoseTargets
 import medbuddy.composeapp.generated.resources.Res
@@ -34,7 +40,8 @@ import org.jetbrains.compose.resources.stringResource
 fun HomeScreen(
     viewModel: HomeViewModel,
     onOpenNotifications: () -> Unit,
-    onMenuClick: () -> Unit
+    onMenuClick: () -> Unit,
+    onViewAllHistory: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -101,7 +108,10 @@ fun HomeScreen(
 
                 // Section 6: Last 3 Records
                 item {
-                    RecentRecordsCard(recentRecords = uiState.last7Readings)
+                    RecentRecordsCard(
+                        recentRecords = uiState.last7Readings,
+                        onViewAllClick = onViewAllHistory
+                    )
                 }
 
                 // Section 7: bottom space
@@ -111,6 +121,59 @@ fun HomeScreen(
             }
         }
     }
-
 }
 
+
+// 1. Create a mock State block representing your HomeUiState data class
+// (Adjust properties below to exactly match your actual HomeUiState declaration)
+val MockHomeUiState = HomeUiState(
+    hasUnreadNotifications = true,
+    lastMealPeriod = TimePeriod.BEFORE_BREAKFAST,
+    lastReading = 120,
+    greeting = "Good Morning",
+    patientName = "John Doe",
+    lastMealType = "Breakfast",
+    glucoseStatusText = "Normal",
+    isToday = true,
+    dailyAverageReadings = emptyList(), // Pass some dummy points if needed
+    sevenDayAverage =  123,
+    hbA1cEstimate = 5.6,
+    highestGlucose = 140,
+    lowestGlucose = 90,
+    last7Readings = emptyList()
+)
+
+
+// 2. Light Mode Preview
+@Preview(showBackground = true, name = "Light Mode")
+@Composable
+fun HomeScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        HomeScreen(
+            viewModel =  HomeViewModel(
+                repository = TODO(),
+                doctorRepository = TODO()
+            ),
+            onOpenNotifications = {},
+            onMenuClick = {},
+            onViewAllHistory = {}
+        )
+    }
+}
+
+// 3. Dark Mode Preview
+@Preview(showBackground = true, name = "Dark Mode")
+@Composable
+fun HomeScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        HomeScreen(
+            viewModel =  HomeViewModel(
+                repository = TODO(),
+                doctorRepository = TODO()
+            ),
+            onOpenNotifications = {},
+            onMenuClick = {},
+            onViewAllHistory = {}
+        )
+    }
+}

@@ -410,6 +410,10 @@
     <string name="title_weight_bmi">Weight &amp; BMI Tracking</string>
     <string name="desc_weight_bmi">Monitor your weight, BMI and see progress over time.</string>
     <string name="title_blood_pressure">Blood Pressure Tracking</string>
+    <string name="title_add_blood_pressure_reading">Add BP Reading</string>
+    <string name="title_blood_pressure_saved_Reading">Reading Saved</string>
+    <string name="title_blood_pressure_history">History</string>
+    <string name="title_blood_pressure_calendar">Calendar</string>
     <string name="desc_blood_pressure">Track BP along with glucose for complete health picture.</string>
     <string name="title_lab_results">Lab Results</string>
     <string name="desc_lab_results">Store and track important lab test results in one place.</string>

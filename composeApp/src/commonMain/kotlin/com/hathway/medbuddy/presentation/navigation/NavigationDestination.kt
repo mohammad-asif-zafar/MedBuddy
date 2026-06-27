@@ -25,6 +25,8 @@ enum class NavigationDestination(
         icon = Res.drawable.ic_nav_profile
     ),
 
+    FULL_HISTORY(isVisibleInBottomBar = false),
+
     NOTIFICATIONS(
         icon = null, isVisibleInBottomBar = false
     ),
@@ -39,6 +41,25 @@ enum class NavigationDestination(
     EXERCISE_TRACKING(isVisibleInBottomBar = false),
     WEIGHT_BMI(isVisibleInBottomBar = false),
     BLOOD_PRESSURE(isVisibleInBottomBar = false),
+    //BpDashboardScreen
+    BLOOD_PRESSURE_DASHBOARD_SCREEN(isVisibleInBottomBar = false),
+
+    // BloodPressureAddReadingScreen
+    BLOOD_PRESSURE_ADD_READING_SCREEN(isVisibleInBottomBar = false),
+
+    //BloodPressureInsightsScreen
+    BLOOD_PRESSURE_INSIGHTS_SCREEN(isVisibleInBottomBar = false),
+
+    //BloodPressureHistoryScreen
+    BLOOD_PRESSURE_HISTORY_SCREEN(isVisibleInBottomBar = false),
+
+    //BloodPressureHistoryScreen
+    BLOOD_PRESSURE_CALENDAR_SCREEN(isVisibleInBottomBar = false),
+
+    //BloodPressureViewReadingScreen
+    BLOOD_PRESSURE_VIEW_READING_SCREEN(isVisibleInBottomBar = false),
+
+
     LAB_RESULTS(isVisibleInBottomBar = false),
     DOCTOR_APPOINTMENTS_DETAIL(isVisibleInBottomBar = false),
     FAMILY_MEMBER_MANAGEMENT(isVisibleInBottomBar = false),
