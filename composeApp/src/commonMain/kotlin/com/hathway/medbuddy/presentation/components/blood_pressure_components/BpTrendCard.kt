@@ -19,8 +19,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -134,6 +138,159 @@ fun BpTrendCardGraph(
     }
 }
 
+@Composable
+fun BpTrendCard(
+    points: List<BpDualTrendPoint>,
+    modifier: Modifier = Modifier,
+    onViewHistoryClick: () -> Unit
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+            Text(
+                text = "BP Trend (30 Days)",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                LegendItem(label = "Systolic", color = Info)
+                Spacer(modifier = Modifier.width(24.dp))
+                LegendItem(label = "Diastolic", color = StatusInRange)
+            }
+
+            Row(modifier = Modifier.fillMaxWidth().height(220.dp)) {
+                Column(
+                    modifier = Modifier.fillMaxHeight().padding(end = 12.dp, bottom = 4.dp),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.End
+                ) {
+                    val yLabelStyle = MaterialTheme.typography.bodySmall.copy(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text("140", style = yLabelStyle)
+                    Text("120", style = yLabelStyle)
+                    Text("100", style = yLabelStyle)
+                    Text("80", style = yLabelStyle)
+                    Text("60", style = yLabelStyle)
+                }
+
+                Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        val stepX = if (points.size > 1) size.width / (points.size - 1) else size.width
+                        val maxY = 140f
+                        val minY = 60f
+                        val heightRange = maxY - minY
+
+                        val gridLines = listOf(140f, 120f, 100f, 80f, 60f)
+                        gridLines.forEach { value ->
+                            val y = size.height - ((value - minY) / heightRange * size.height)
+                            drawLine(
+                                color = CardBorder.copy(alpha = 0.4f),
+                                start = Offset(0f, y),
+                                end = Offset(size.width, y),
+                                strokeWidth = 1.dp.toPx()
+                            )
+                        }
+
+                        for (i in 0 until points.size - 1) {
+                            val startX = i * stepX
+                            val nextX = (i + 1) * stepX
+
+                            val sysStartY = size.height - ((points[i].systolic - minY) / heightRange * size.height)
+                            val sysEndY = size.height - ((points[i + 1].systolic - minY) / heightRange * size.height)
+                            drawLine(
+                                color = Info,
+                                start = Offset(startX, sysStartY),
+                                end = Offset(nextX, sysEndY),
+                                strokeWidth = 3.dp.toPx(),
+                                cap = StrokeCap.Round
+                            )
+
+                            val diaStartY = size.height - ((points[i].diastolic - minY) / heightRange * size.height)
+                            val diaEndY = size.height - ((points[i + 1].diastolic - minY) / heightRange * size.height)
+                            drawLine(
+                                color = StatusInRange,
+                                start = Offset(startX, diaStartY),
+                                end = Offset(nextX, diaEndY),
+                                strokeWidth = 3.dp.toPx(),
+                                cap = StrokeCap.Round
+                            )
+                        }
+
+                        points.forEachIndexed { i, point ->
+                            val x = i * stepX
+                            val sysY = size.height - ((point.systolic - minY) / heightRange * size.height)
+                            drawCircle(Color.White, radius = 5.dp.toPx(), center = Offset(x, sysY))
+                            drawCircle(Info, radius = 3.5.dp.toPx(), center = Offset(x, sysY))
+
+                            val diaY = size.height - ((point.diastolic - minY) / heightRange * size.height)
+                            drawCircle(Color.White, radius = 5.dp.toPx(), center = Offset(x, diaY))
+                            drawCircle(StatusInRange, radius = 3.5.dp.toPx(), center = Offset(x, diaY))
+                        }
+                    }
+                }
+            }
+
+            // Finished X-Axis generation loop
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, start = 36.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                points.forEach { point ->
+                    Text(
+                        text = point.label,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 11.sp
+                        )
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            HorizontalDivider(color = CardBorder.copy(alpha = 0.3f))
+
+            // NEW: Integrated "View History" interactive element
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onViewHistoryClick() }
+                    .padding(vertical = 14.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "View History",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A73E8) // Visual matching accent blue text link
+                    )
+                )
+                Icon(
+                    imageVector = Icons.Filled.ChevronRight,
+                    contentDescription = "Navigate",
+                    tint = Color(0xFF1A73E8)
+                )
+            }
+        }
+    }
+}
+
+/*
 @Composable
 fun BpTrendCard(
     points: List<BpDualTrendPoint>, modifier: Modifier = Modifier, onViewHistoryClick: () -> Unit
@@ -275,6 +432,7 @@ fun BpTrendCard(
         }
     }
 }
+*/
 
 @Composable
 private fun LegendItem(label: String, color: Color) {

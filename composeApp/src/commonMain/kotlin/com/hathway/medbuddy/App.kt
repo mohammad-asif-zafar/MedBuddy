@@ -223,7 +223,6 @@ fun App(
                             currentDestination
                         )
 
-                        // BLOOD_PRESSURE_DASHBOARD_SCREEN
                         NavigationDestination.BLOOD_PRESSURE_DASHBOARD_SCREEN -> BpDashboardScreen(
                             onBack = {
                                 currentDestination.value = NavigationDestination.BLOOD_PRESSURE
@@ -236,13 +235,15 @@ fun App(
                                 currentDestination.value =
                                     NavigationDestination.BLOOD_PRESSURE_CALENDAR_SCREEN
                             },
+                            navigationToAddReading ={currentDestination.value =
+                                NavigationDestination.BLOOD_PRESSURE_ADD_READING_SCREEN},
                             viewModel = viewModel { BpDashboardViewModel() },
                             )
 
                         //
                         NavigationDestination.BLOOD_PRESSURE_ADD_READING_SCREEN -> BloodPressureAddReadingScreen(
                             onBack = {
-                                currentDestination.value = NavigationDestination.BLOOD_PRESSURE
+                                currentDestination.value = NavigationDestination.BLOOD_PRESSURE_DASHBOARD_SCREEN
                             },
                             viewReading = {
                                 currentDestination.value =
@@ -250,7 +251,6 @@ fun App(
                             })
 
                         // View BP Reading
-
                         NavigationDestination.BLOOD_PRESSURE_VIEW_READING_SCREEN -> BloodPressureViewReadingScreen(
                             navigateToHomeBP = {
                                 currentDestination.value =
@@ -271,11 +271,12 @@ fun App(
                                 currentDestination.value =
                                     NavigationDestination.BLOOD_PRESSURE_CALENDAR_SCREEN
                             })
+
                         // Insights
                         NavigationDestination.BLOOD_PRESSURE_INSIGHTS_SCREEN -> BloodPressureInsightsScreen(
                             back = {
                                 currentDestination.value =
-                                    NavigationDestination.BLOOD_PRESSURE_DASHBOARD_SCREEN
+                                    NavigationDestination.BLOOD_PRESSURE
                             },
                             navigateToCalendar = {
                                 currentDestination.value =
@@ -287,7 +288,9 @@ fun App(
                                 currentDestination.value =
                                     NavigationDestination.BLOOD_PRESSURE_DASHBOARD_SCREEN
                             })
+                        // End of Blood Pressure
 
+                        // Lab Reports
                         NavigationDestination.LAB_RESULTS -> LabReportsContent(
                             onBack = { currentDestination.value = NavigationDestination.HOME },
                             navigation = { /* Handle any external lab-related navigation */ })

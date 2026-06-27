@@ -18,6 +18,11 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+fun formatDate(date: LocalDate): String {
+    val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
+    return "${date.dayOfMonth} $month ${date.year}" // Note: changed from .day to .dayOfMonth to match kotlinx.datetime
+}
+
 fun getNowInstant(): Instant {
     return Instant.fromEpochMilliseconds(getNowEpochMillis())
 }

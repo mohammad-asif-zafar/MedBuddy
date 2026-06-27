@@ -46,21 +46,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.presentation.components.glucose_components.GlucoseInputField
 import com.hathway.medbuddy.presentation.components.glucose_components.NativeDatePickerDialog
 import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
 import com.hathway.medbuddy.presentation.components.glucose_components.TimePeriodSelector
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.presentation.ui_state.AddUiState
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 import com.hathway.medbuddy.util.clearFocusOnTapOutside
+import com.hathway.medbuddy.util.formatDate
 import com.hathway.medbuddy.util.getCurrentTime12Hour
 import com.hathway.medbuddy.util.getNowLocalDateTime
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.datetime.LocalDate
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.add_glucose_record_title
@@ -358,7 +366,36 @@ fun AddScreen(
     }
 }
 
-fun formatDate(date: LocalDate): String {
-    val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
-    return "${date.dayOfMonth} $month ${date.year}" // Note: changed from .day to .dayOfMonth to match kotlinx.datetime
+
+// 1. Standard Single Preview
+@Preview
+@Composable
+fun AddScreenPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        AddScreen(
+            viewModel = AddViewModel(),
+            onSaveSuccess = {},
+            onCancel = {}
+        )
+    }
+}
+
+// 2. Dual Light/Dark Mode Multiplatform Preview
+@Preview
+@Composable
+fun AddScreenInteractivePreview() {
+    // Renders the UI layout for light and dark viewports concurrently
+    Column {
+        Text("Light Mode View:", style = MaterialTheme.typography.labelLarge)
+        MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+            AddScreen(viewModel = AddViewModel())
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text("Dark Mode View:", style = MaterialTheme.typography.labelLarge)
+        MedBuddyTheme(themeMode = ThemeMode.DARK) {
+            AddScreen(viewModel = AddViewModel())
+        }
+    }
 }

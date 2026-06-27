@@ -22,8 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.glucose_target
 import medbuddy.composeapp.generated.resources.glucose_unit
@@ -142,3 +145,46 @@ fun GlucoseReadingCard(
         }
     }
 }
+
+
+
+@Preview
+@Composable
+fun GlucoseReadingCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Normal Range Sample",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            // Simulates a safe fasting glucose level
+            GlucoseReadingCard(
+                label = "Before Breakfast",
+                value = 95,
+                time = "08:15 AM"
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Elevated/Spike Range Sample",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            // Simulates an elevated post-meal glucose level to verify UI tint transformations
+            GlucoseReadingCard(
+                label = "After Dinner",
+                value = 165,
+                time = "09:30 PM"
+            )
+        }
+    }
+}
+

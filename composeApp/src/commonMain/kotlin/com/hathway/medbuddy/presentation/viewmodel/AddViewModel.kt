@@ -22,7 +22,7 @@ class AddViewModel(
     private val getGlucoseUseCase = repository?.let { GetGlucoseUseCase(it) }
 
     private val _uiState = MutableStateFlow(AddUiState())
-    val uiState: StateFlow<AddUiState> = _uiState.asStateFlow()
+    open val uiState: StateFlow<AddUiState> = _uiState.asStateFlow()
 
     init {
         loadRecords()

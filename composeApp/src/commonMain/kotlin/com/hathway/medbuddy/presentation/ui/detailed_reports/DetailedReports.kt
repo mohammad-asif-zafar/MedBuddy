@@ -117,8 +117,9 @@ fun DetailedReportWrapper(
             // Visual separator line directly beneath the TopAppBar
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outlineVariant,
-                thickness = 1.dp
+                thickness = 0.2.dp
             )
+            Spacer(modifier = Modifier.height(15.dp))
 
             // Reapply horizontal padding specifically to the content area
             Column(
