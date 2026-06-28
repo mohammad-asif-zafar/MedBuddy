@@ -4,6 +4,7 @@ import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import com.hathway.medbuddy.domain.usecase.RecentReading
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -46,8 +47,14 @@ object FakeLocalData {
         hospital = "Miracles Health",
         nextAppointment = "15 Jul 2026"
     )
-}
 
+}
+// ─── KMP COMPOSABLE VISUAL WORKSPACE PREVIEWS ───
+fun getFakeReadings(): List<RecentReading> = listOf(
+    RecentReading(value = 65, timePeriod = "Before Breakfast", time = "07:15 AM", date = "Today", notes = ""),
+    RecentReading(value = 110, timePeriod = "After Lunch", time = "01:30 PM", date = "Today", notes = ""),
+    RecentReading(value = 155, timePeriod = "Before Dinner", time = "06:45 PM", date = "Yesterday", notes = "")
+)
 // Safe mock data provider for compilation and previews
 class FakeGlucoseRepository : IGlucoseRepository {
     override val recordsFlow: Flow<List<GlucoseRecord>> = flowOf(FakeLocalData.mockRecords)
@@ -88,3 +95,4 @@ class FakeDoctorRepository : IDoctorRepository {
     override suspend fun getDoctorInfo(userId: String): DoctorInfo = FakeLocalData.mockDoctorInfo
     override suspend fun saveDoctorInfo(userId: String, doctorInfo: DoctorInfo) {}
 }
+

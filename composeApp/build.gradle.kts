@@ -45,6 +45,10 @@ kotlin {
             implementation(libs.firebase.messaging)
             implementation(libs.play.services.auth)
             implementation(libs.ktor.client.okhttp)
+
+            // Official Google Sign-In and Credential Manager button components
+            implementation("androidx.credentials:credentials:1.5.0")
+            implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)

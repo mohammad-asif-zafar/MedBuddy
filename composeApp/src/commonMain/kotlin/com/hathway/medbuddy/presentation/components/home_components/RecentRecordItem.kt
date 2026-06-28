@@ -24,11 +24,11 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecentRecordItem(record: RecentReading) {
-    // Standardize your clinical color alert statuses matching your custom scheme boundaries
+    // FIX: Replaced hardcoded Hex values with semantic M3 system color tokens for Dark Mode safety
     val statusColor = when {
-        record.value < 70 -> Color(0xFFDB4437)      // Status Low Red
-        record.value > 140 -> Color(0xFFE94235)     // Status High Dark Orange/Red
-        else -> Color(0xFF0F9D58)                   // Status In-Range Healthy Green
+        record.value < 70 -> MaterialTheme.colorScheme.error // Adaptive Low Red
+        record.value > 140 -> MaterialTheme.colorScheme.secondary // Adaptive High Contrast Accent
+        else -> MaterialTheme.colorScheme.primary // Adaptive In-Range Theme Teal
     }
 
     Row(
@@ -71,6 +71,7 @@ fun RecentRecordItem(record: RecentReading) {
         )
     }
 }
+
 
 @Preview
 @Composable

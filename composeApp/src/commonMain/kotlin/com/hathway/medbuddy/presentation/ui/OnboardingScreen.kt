@@ -44,7 +44,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
         OnboardingPage(
             Res.string.onboarding_title_1,
             Res.string.onboarding_desc_1,
-            Res.drawable.medbuddy_logo_theme_app
+            Res.drawable.splash_logo_light
         ),
         OnboardingPage(
             Res.string.onboarding_title_2,

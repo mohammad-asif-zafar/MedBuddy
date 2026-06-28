@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.presentation.components.app_theme.GoogleSignInButton
 import medbuddy.composeapp.generated.resources.Res
-import medbuddy.composeapp.generated.resources.continue_with_google
 import medbuddy.composeapp.generated.resources.medbuddy
-import medbuddy.composeapp.generated.resources.medbuddy_logo_theme_color
-import medbuddy.composeapp.generated.resources.splash_tagline
+import medbuddy.composeapp.generated.resources.medbuddy_logo
+import medbuddy.composeapp.generated.resources.smart_glucose_care
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -64,7 +64,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(Res.drawable.medbuddy_logo_theme_color),
+                painter = painterResource(Res.drawable.medbuddy_logo),
                 contentDescription = null,
                 modifier = Modifier.size(180.dp),
                 contentScale = ContentScale.Fit
@@ -93,7 +93,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = stringResource(Res.string.splash_tagline),
+                text = stringResource(Res.string.smart_glucose_care),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.Gray,
                 fontWeight = FontWeight.Medium,
@@ -120,45 +120,11 @@ fun LoginScreen(
                 }
             }
 
-            // Google Sign In Button
-            Button(
+            // Using the shared GoogleSignInButton component
+            GoogleSignInButton(
                 onClick = onGoogleSignInClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White
-                ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 2.dp,
-                    pressedElevation = 4.dp
-                ),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color.LightGray.copy(alpha = 0.5f))
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    // Manual Google 'G' Icon mock since we don't have the resource
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("G", fontWeight = FontWeight.Black, color = Color(0xFF4285F4), fontSize = 18.sp)
-                    }
-                    
-                    Spacer(modifier = Modifier.width(12.dp))
-                    
-                    Text(
-                        text = stringResource(Res.string.continue_with_google),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.DarkGray
-                    )
-                }
-            }
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

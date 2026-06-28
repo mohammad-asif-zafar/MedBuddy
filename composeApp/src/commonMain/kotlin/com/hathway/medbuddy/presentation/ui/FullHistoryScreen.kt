@@ -44,15 +44,15 @@ import kotlinx.datetime.minus
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun FullHistoryScreen(
-    viewModel: FullHistoryViewModel, onBack: () -> Unit
+    viewModel: FullHistoryViewModel,
+    onBack: () -> Unit
 ) {
     val readings by viewModel.readings.collectAsState()
     val summary by viewModel.summary.collectAsState()
 
-    // OPTIMIZATION: Memoize the grouping logic.
     val groupedReadings = remember(readings) {
         readings.groupBy { it.date }
     }
@@ -60,10 +60,10 @@ fun FullHistoryScreen(
     val today = remember { getNowLocalDateTime().date }
     val yesterday = remember { today.minus(1, DateTimeUnit.DAY) }
 
-    // Intercept hardware button or swipe back gesture
     BackHandler(enabled = true) {
         onBack()
     }
+
     Scaffold(
         topBar = {
             MedBuddyTopBar(
@@ -72,10 +72,13 @@ fun FullHistoryScreen(
                 onLeftClick = onBack,
                 titleColor = MaterialTheme.colorScheme.primary
             )
-        }) { padding ->
+        }
+    ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding)
-                .background(Color(0xFFF8F9FA)), // Light gray background
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .background(MaterialTheme.colorScheme.background), // FIX: Dynamic canvas background
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -84,7 +87,6 @@ fun FullHistoryScreen(
                     DateHeader(dateString, today, yesterday)
                 }
 
-                // OPTIMIZATION: Use a stable unique key for better scrolling performance
                 items(
                     items = dateReadings,
                     key = { "${it.date}_${it.timePeriod}_${it.value}_${it.time}" }
@@ -117,12 +119,13 @@ fun DateHeader(dateString: String, today: LocalDate, yesterday: LocalDate) {
     }
 
     Row(
-        verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 8.dp)
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 8.dp)
     ) {
         Icon(
             imageVector = Icons.Default.CalendarToday,
             contentDescription = null,
-            tint = Color(0xFF00796B),
+            tint = MaterialTheme.colorScheme.primary, // FIX: Dynamic brand tinting
             modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(12.dp))
@@ -130,42 +133,46 @@ fun DateHeader(dateString: String, today: LocalDate, yesterday: LocalDate) {
             text = displayTitle,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF00796B)
+            color = MaterialTheme.colorScheme.primary // FIX: Dynamic text contrast
         )
     }
 }
 
 @Composable
 fun HistoryReadingItem(reading: RecentReading) {
+    // FIX: Adaptive dynamic categorization styling for Morning, Afternoon, Evening & Night configurations
     val (icon, iconColor, bgColor) = remember(reading.category) {
         when (reading.category) {
-            "Morning" -> Triple(Icons.Outlined.LightMode, Color(0xFFFF9800), Color(0xFFFFF3E0))
-            "Afternoon" -> Triple(Icons.Outlined.WbSunny, Color(0xFFFFC107), Color(0xFFFFF8E1))
-            "Evening" -> Triple(Icons.Outlined.WbSunny, Color(0xFF673AB7), Color(0xFFEDE7F6))
-            else -> Triple(Icons.Outlined.Bedtime, Color(0xFF3F51B5), Color(0xFFE8EAF6))
+            "Morning" -> Triple(Icons.Outlined.LightMode, Color(0xFFFFA726), Color(0xFFFF9800).copy(alpha = 0.12f))
+            "Afternoon" -> Triple(Icons.Outlined.WbSunny, Color(0xFFFFB300), Color(0xFFFFC107).copy(alpha = 0.12f))
+            "Evening" -> Triple(Icons.Outlined.WbSunny, Color(0xFF7E57C2), Color(0xFF673AB7).copy(alpha = 0.12f))
+            else -> Triple(Icons.Outlined.Bedtime, Color(0xFF5C6BC0), Color(0xFF3F51B5).copy(alpha = 0.12f))
         }
     }
 
+    // FIX: Dynamic alert metrics binding utilizing M3 token variables
     val statusColor = remember(reading.status) {
         when (reading.status) {
-            "High" -> Color(0xFFEF5350)
-            "Low" -> Color(0xFF42A5F5)
-            else -> Color(0xFF66BB6A)
+            "High" -> Color(0xFFE57373) // High Alert Red (Safe for Dark/Light surfaces)
+            "Low" -> Color(0xFF64B5F6)  // Low Alert Blue
+            else -> Color(0xFF81C784)  // Normal Target Green
         }
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), // FIX: Dynamic token surface
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Leading Icon
             Surface(
-                modifier = Modifier.size(48.dp), shape = CircleShape, color = bgColor
+                modifier = Modifier.size(48.dp),
+                shape = CircleShape,
+                color = bgColor
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
@@ -179,23 +186,24 @@ fun HistoryReadingItem(reading: RecentReading) {
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Info Column
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = reading.abbreviatedPeriod,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface // FIX: Text contrast drops protection
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Surface(
-                        color = bgColor, shape = RoundedCornerShape(8.dp)
+                        color = bgColor,
+                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
                             text = reading.category,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = iconColor.copy(alpha = 0.8f)
+                            color = iconColor
                         )
                     }
                 }
@@ -203,34 +211,36 @@ fun HistoryReadingItem(reading: RecentReading) {
                 Text(
                     text = "${reading.time} • ${reading.mealTimingLabel}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: Adaptive metadata grey text token
                 )
 
                 if (reading.notes.isNotEmpty()) {
                     Text(
                         text = reading.notes,
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.DarkGray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                         maxLines = 1,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
             }
 
-            // Value Column
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = "${reading.value}",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF263238)
+                    color = MaterialTheme.colorScheme.onSurface // FIX: Clear visibility contrast matching
                 )
                 Text(
-                    text = "mg/dL", style = MaterialTheme.typography.labelSmall, color = Color.Gray
+                    text = "mg/dL",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Surface(
-                    color = statusColor.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)
+                    color = statusColor.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
                         text = reading.status,
@@ -247,7 +257,7 @@ fun HistoryReadingItem(reading: RecentReading) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = Color.LightGray
+                tint = MaterialTheme.colorScheme.outlineVariant // FIX: Dynamic arrow indicator styling
             )
         }
     }
@@ -255,68 +265,99 @@ fun HistoryReadingItem(reading: RecentReading) {
 
 @Composable
 fun HistorySummaryCard(summary: HistorySummary) {
+    // ADAPTIVE SURFACE THEMING SYSTEM
+    val containerBgColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f)
+    val iconContainerColor = MaterialTheme.colorScheme.primary
+    val iconTintColor = MaterialTheme.colorScheme.onPrimary
+
+    val primaryTextColor = MaterialTheme.colorScheme.onSurface
+    val secondaryTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val accentHighlightColor = MaterialTheme.colorScheme.primary
+    val dividerColor = MaterialTheme.colorScheme.outlineVariant
+
     Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 0.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F8F7)),
+        colors = CardDefaults.cardColors(containerColor = containerBgColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            // Trend Icon Ring Frame Block
             Surface(
-                modifier = Modifier.size(48.dp), shape = CircleShape, color = Color(0xFF009688)
+                modifier = Modifier.size(48.dp),
+                shape = CircleShape,
+                color = iconContainerColor
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.TrendingUp,
                         contentDescription = null,
-                        tint = Color.White
+                        tint = iconTintColor
                     )
                 }
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
+            // Average Value Text Information Node
             Column(modifier = Modifier.weight(1.2f)) {
                 Text(
                     text = "Average (30 Days)",
                     style = MaterialTheme.typography.labelSmall,
-                    color = Color.Gray
+                    color = secondaryTextColor
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
                     Text(
                         text = "${summary.averageValue}",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF00796B)
+                        color = accentHighlightColor
                     )
                     Text(
-                        text = " mg/dL",
+                        text = " " + stringResource(Res.string.glucose_unit),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color.Gray,
+                        color = secondaryTextColor,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                 }
             }
 
+            // Central Boundary Separator Line
             VerticalDivider(
-                modifier = Modifier.height(40.dp).padding(horizontal = 8.dp),
-                color = Color.LightGray.copy(alpha = 0.5f)
+                modifier = Modifier.height(40.dp).padding(horizontal = 4.dp),
+                color = dividerColor
             )
 
+            // Proportional Health Aggregates Distribution Row
             Row(
-                modifier = Modifier.weight(2f), horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.weight(2f),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                SummaryStatItem(summary.normalCount, "Normal", Color(0xFF4CAF50))
-                SummaryStatItem(summary.highCount, "High", Color(0xFFFF9800))
-                SummaryStatItem(summary.lowCount, "Low", Color(0xFFF44336))
+                // Adaptive health status profiles mapping directly to scheme parameters
+                SummaryStatItem(
+                    count = summary.normalCount,
+                    label = "Normal",
+                    color = Color(0xFF0F9D58) // Status In-Range Green
+                )
+                SummaryStatItem(
+                    count = summary.highCount,
+                    label = "High",
+                    color = MaterialTheme.colorScheme.error // Adaptive System High Red
+                )
+                SummaryStatItem(
+                    count = summary.lowCount,
+                    label = "Low",
+                    color = Color(0xFFF4B400) // Status Caution Yellow
+                )
             }
 
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = Color.Gray
+                tint = secondaryTextColor
             )
         }
     }
@@ -329,28 +370,36 @@ fun SummaryStatItem(count: Int, label: String, color: Color) {
             Box(
                 modifier = Modifier.size(8.dp).background(color, CircleShape)
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = "$count",
                 style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 10.sp
         )
     }
 }
 
-
-
 @Preview
 @Composable
 fun FullHistoryScreenPreview() {
     MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        FullHistoryScreen(
+            viewModel = FullHistoryViewModel(FakeGlucoseRepository()), onBack = {})
+    }
+}
+
+@Preview
+@Composable
+fun FullHistoryScreenPreviewDark() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
         FullHistoryScreen(
             viewModel = FullHistoryViewModel(FakeGlucoseRepository()), onBack = {})
     }

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.data.local.getFakeReadings
 import com.hathway.medbuddy.domain.usecase.RecentReading
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.Res
@@ -32,8 +33,7 @@ import medbuddy.composeapp.generated.resources.view_all
 
 @Composable
 fun RecentRecordsCard(
-    recentRecords: List<RecentReading>,
-    onViewAllClick: () -> Unit = {}
+    recentRecords: List<RecentReading>, onViewAllClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -65,13 +65,12 @@ fun RecentRecordsCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
             } else {
-                // Take only the top 3 items to show clean dashboard history constraints
                 recentRecords.take(3).forEachIndexed { index, record ->
                     RecentRecordItem(record)
 
                     if (index != minOf(recentRecords.lastIndex, 2)) {
                         Spacer(modifier = Modifier.height(12.dp))
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant) // FIX: Adaptive M3 line token
                         Spacer(modifier = Modifier.height(12.dp))
                     }
                 }
@@ -79,18 +78,23 @@ fun RecentRecordsCard(
         }
     }
 }
-/*
+
 @Preview
 @Composable
-fun RecentRecordsCardPreview() {
-    val mockRecords = listOf(
-        RecentReading(date = "12 May", timePeriod = "Before Breakfast", value = 115, time = "08:30 AM", abbreviatedPeriod = "B.Bf"),
-        RecentReading(date = "12 May", timePeriod = "After Lunch", value = 145, time = "01:30 PM", abbreviatedPeriod = "A.Ln"),
-        RecentReading(date = "11 May", timePeriod = "Before Dinner", value = 110, time = "08:30 PM", abbreviatedPeriod = "B.Dn")
-    )
+fun RecentRecordsCardLightPreview() {
     MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            RecentRecordsCard(recentRecords = mockRecords)
+        Column(modifier = Modifier.padding(16.dp)) {
+            RecentRecordsCard(recentRecords = getFakeReadings())
         }
     }
-}*/
+}
+
+@Preview
+@Composable
+fun RecentRecordsCardDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            RecentRecordsCard(recentRecords = getFakeReadings())
+        }
+    }
+}
