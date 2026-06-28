@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
-import kotlinx.coroutines.delay
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -31,17 +29,12 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
-    LaunchedEffect(Unit) {
-        delay(3000)
-        onLoadingFinished()
-    }
-
+fun LoadingScreen() {
     val backgroundColor = Color(0xFFF9FDFD)
     val primaryColor = Color(0xFF00897B)
 
     Scaffold(
-        containerColor = backgroundColor,
+        containerColor = backgroundColor
     ) { innerPadding ->
         Column(
             modifier = Modifier

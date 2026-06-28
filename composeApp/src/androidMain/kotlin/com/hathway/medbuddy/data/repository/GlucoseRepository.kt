@@ -10,28 +10,52 @@ import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.onStart
 
 class GlucoseRepository(context: Context) : IGlucoseRepository {
     private val databaseHelper = GlucoseDatabaseHelper(context)
     private val firebaseSyncService = FirebaseSyncService(context)
     private val syncManager = SyncManager(context)
+    private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    private val _recordsFlow = MutableSharedFlow<List<GlucoseRecord>>(replay = 1)
+    override val recordsFlow: Flow<List<GlucoseRecord>> = _recordsFlow.asSharedFlow()
+        .onStart {
+            // Emit current local records when first collected
+            val local = databaseHelper.getAllRecords()
+            emit(local)
+            // Also trigger background sync
+            repositoryScope.launch { syncWithFirebase() }
+        }
     
     override suspend fun getAllRecords(): List<GlucoseRecord> = withContext(Dispatchers.IO) {
         val localRecords = databaseHelper.getAllRecords()
         Log.d("GlucoseRepository", "Loaded ${localRecords.size} records from database")
 
-        // Fetch from Firebase and merge
+        // Trigger background sync
+        repositoryScope.launch {
+            syncWithFirebase()
+        }
+
+        localRecords
+    }
+
+    private suspend fun syncWithFirebase() {
         try {
+            val localRecords = databaseHelper.getAllRecords()
             val firebaseRecords = firebaseSyncService.fetchRecordsFromFirebase()
-            Log.d("GlucoseRepository", "Fetched ${firebaseRecords.size} records from Firebase")
+            Log.d("GlucoseRepository", "Fetched ${firebaseRecords.size} records from Firebase for sync")
 
-            // Merge records by date, preferring Firebase data if it exists
             val mergedRecords = mergeRecords(localRecords, firebaseRecords)
-            Log.d("GlucoseRepository", "Merged to ${mergedRecords.size} records")
-
-            // Update local database with merged records
+            
+            // Update local database with merged data
             mergedRecords.forEach { record ->
-                databaseHelper.updateRecord(
+                databaseHelper.insertRecord(
                     date = record.date,
                     beforeBreakfast = record.beforeBreakfast,
                     afterBreakfast = record.afterBreakfast,
@@ -45,11 +69,14 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
                     notes = record.notes,
                 )
             }
-
-            mergedRecords
+            
+            // Notify observers about updated data
+            val finalLocal = databaseHelper.getAllRecords()
+            _recordsFlow.emit(finalLocal)
+            Log.d("GlucoseRepository", "Sync finished and data emitted to flow: ${finalLocal.size} records")
+            
         } catch (e: Exception) {
-            Log.e("GlucoseRepository", "Failed to fetch from Firebase, using local data", e)
-            localRecords
+            Log.e("GlucoseRepository", "Sync failed", e)
         }
     }
 
@@ -66,29 +93,25 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
         mealType: String,
         notes: String
     ) = withContext(Dispatchers.IO) {
-        Log.d("GlucoseRepository", "Inserting record: $date, BBF: $beforeBreakfast, ABF: $afterBreakfast, BL: $beforeLunch, AL: $afterLunch, BD: $beforeDinner, AD: $afterDinner, NGT: $bedtime")
         databaseHelper.insertRecord(date, beforeBreakfast, afterBreakfast, beforeLunch, afterLunch, beforeDinner, afterDinner, bedtime, time, mealType, notes)
-        Log.d("GlucoseRepository", "Record inserted successfully")
+        
+        // Notify about change
+        _recordsFlow.emit(databaseHelper.getAllRecords())
 
-        // Sync to Firebase in background
-        launch {
-            val record = GlucoseRecord(
-                date = date,
-                beforeBreakfast = beforeBreakfast,
-                afterBreakfast = afterBreakfast,
-                beforeLunch = beforeLunch,
-                afterLunch = afterLunch,
-                beforeDinner = beforeDinner,
-                afterDinner = afterDinner,
-                bedtime = bedtime,
-                time = time,
-                mealType = mealType,
-                notes = notes
-            )
-            syncManager.addToSyncQueue(record)
-        }
-
-        Unit // Explicitly return Unit to match interface
+        val record = GlucoseRecord(
+            date = date,
+            beforeBreakfast = beforeBreakfast,
+            afterBreakfast = afterBreakfast,
+            beforeLunch = beforeLunch,
+            afterLunch = afterLunch,
+            beforeDinner = beforeDinner,
+            afterDinner = afterDinner,
+            bedtime = bedtime,
+            time = time,
+            mealType = mealType,
+            notes = notes
+        )
+        syncManager.addToSyncQueue(record)
     }
 
     override suspend fun updateRecord(
@@ -104,29 +127,25 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
         mealType: String,
         notes: String
     ) = withContext(Dispatchers.IO) {
-        Log.d("GlucoseRepository", "Updating record: $date, BBF: $beforeBreakfast, ABF: $afterBreakfast, BL: $beforeLunch, AL: $afterLunch, BD: $beforeDinner, AD: $afterDinner, NGT: $bedtime")
         databaseHelper.updateRecord(date, beforeBreakfast, afterBreakfast, beforeLunch, afterLunch, beforeDinner, afterDinner, bedtime, time, mealType, notes)
-        Log.d("GlucoseRepository", "Record updated successfully")
+        
+        // Notify about change
+        _recordsFlow.emit(databaseHelper.getAllRecords())
 
-        // Sync to Firebase in background
-        launch {
-            val record = GlucoseRecord(
-                date = date,
-                beforeBreakfast = beforeBreakfast,
-                afterBreakfast = afterBreakfast,
-                beforeLunch = beforeLunch,
-                afterLunch = afterLunch,
-                beforeDinner = beforeDinner,
-                afterDinner = afterDinner,
-                bedtime = bedtime,
-                time = time,
-                mealType = mealType,
-                notes = notes
-            )
-            syncManager.addToSyncQueue(record)
-        }
-
-        Unit // Explicitly return Unit to match interface
+        val record = GlucoseRecord(
+            date = date,
+            beforeBreakfast = beforeBreakfast,
+            afterBreakfast = afterBreakfast,
+            beforeLunch = beforeLunch,
+            afterLunch = afterLunch,
+            beforeDinner = beforeDinner,
+            afterDinner = afterDinner,
+            bedtime = bedtime,
+            time = time,
+            mealType = mealType,
+            notes = notes
+        )
+        syncManager.addToSyncQueue(record)
     }
 
     override suspend fun hasTimePeriodForDate(date: String, timePeriod: String): Boolean = withContext(Dispatchers.IO) {
@@ -150,14 +169,10 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
 
         fun combine(existing: GlucoseRecord?, new: GlucoseRecord): GlucoseRecord {
             if (existing == null) return new
-            
             val isNewer = new.createdAt >= existing.createdAt
-            
             return GlucoseRecord(
                 id = if (isNewer) new.id else existing.id,
                 date = existing.date,
-                // If new is newer, prefer its values if not null. 
-                // If new is older, only take its values if existing's values are null.
                 beforeBreakfast = if (isNewer) (new.beforeBreakfast ?: existing.beforeBreakfast) else (existing.beforeBreakfast ?: new.beforeBreakfast),
                 afterBreakfast = if (isNewer) (new.afterBreakfast ?: existing.afterBreakfast) else (existing.afterBreakfast ?: new.afterBreakfast),
                 beforeLunch = if (isNewer) (new.beforeLunch ?: existing.beforeLunch) else (existing.beforeLunch ?: new.beforeLunch),
@@ -172,16 +187,8 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
             )
         }
 
-        // Add local records
-        localRecords.forEach { record ->
-            mergedMap[record.date] = combine(mergedMap[record.date], record)
-        }
-
-        // Merge Firebase records
-        firebaseRecords.forEach { firebaseRecord ->
-            mergedMap[firebaseRecord.date] = combine(mergedMap[firebaseRecord.date], firebaseRecord)
-        }
-
+        localRecords.forEach { mergedMap[it.date] = combine(mergedMap[it.date], it) }
+        firebaseRecords.forEach { mergedMap[it.date] = combine(mergedMap[it.date], it) }
         return mergedMap.values.toList()
     }
 }

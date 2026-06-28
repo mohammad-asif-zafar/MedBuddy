@@ -6,6 +6,8 @@ import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 @Composable
 fun HomeContent(
     repository: IGlucoseRepository,
@@ -14,8 +16,10 @@ fun HomeContent(
     onMenuClick: () -> Unit,
     onViewAllHistory: () -> Unit
 ) {
+    val viewModel: HomeViewModel = viewModel { HomeViewModel(repository, doctorRepository) }
+
     HomeScreen(
-        viewModel = HomeViewModel(repository, doctorRepository),
+        viewModel = viewModel,
         onOpenNotifications = onOpenNotifications,
         onMenuClick = onMenuClick,
         onViewAllHistory = onViewAllHistory

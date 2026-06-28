@@ -3,6 +3,7 @@ package com.hathway.medbuddy.domain.usecase
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.FirebaseManager
+import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.util.getNowEpochMillis
 import com.hathway.medbuddy.util.getNowLocalDateTime
 import com.hathway.medbuddy.util.parseDisplayDate
@@ -26,10 +27,9 @@ class GetNotificationsUseCase(
     private val glucoseRepository: IGlucoseRepository,
     private val doctorRepository: IDoctorRepository
 ) {
-    suspend operator fun invoke(): List<MedBuddyNotification> {
+    suspend operator fun invoke(allRecords: List<GlucoseRecord>): List<MedBuddyNotification> {
         val notifications = mutableListOf<MedBuddyNotification>()
 
-        val allRecords = glucoseRepository.getAllRecords()
         val userId = FirebaseManager.currentUser?.uid ?: ""
         val doctorInfo = if (userId.isNotEmpty()) doctorRepository.getDoctorInfo(userId) else null
 

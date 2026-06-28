@@ -37,21 +37,31 @@ data class DailyAverageReading(
 )
 
 data class RecentReading(
-    val date: String, val timePeriod: String, val value: Int, val time: String, val notes: String = ""
+    val date: String,
+    val timePeriod: String,
+    val value: Int,
+    val time: String,
+    val notes: String = "",
+    val status: String = "Normal",
+    val category: String = "Morning",
+    val abbreviatedPeriod: String = "",
+    val mealTimingLabel: String = ""
 )
 
 class GetGlucoseDashboardUseCase(
     private val repository: IGlucoseRepository
 ) {
-    suspend operator fun invoke(): GlucoseDashboard {
-        val records = repository.getAllRecords()
+    suspend operator fun invoke(records: List<GlucoseRecord>): GlucoseDashboard {
         val today = getNowLocalDateTime().date
 
-        val todayRecords = records.filter {
-            try { parseDisplayDate(it.date) == today } catch (e: Exception) { false }
+        // Optimization: Parse dates once and group by date
+        val recordsByDate = records.groupBy {
+            try { parseDisplayDate(it.date) } catch (e: Exception) { null }
         }
 
+        val todayRecords = recordsByDate[today] ?: emptyList()
         val isToday = todayRecords.isNotEmpty()
+        
         val latestRecord = if (isToday) {
             todayRecords.maxByOrNull { it.createdAt }
         } else {
@@ -61,7 +71,6 @@ class GetGlucoseDashboardUseCase(
         val latestGlucoseValue = latestRecord?.let { getGlucoseValue(it) }
         val lastMealPeriod = TimePeriod.fromString(latestRecord?.mealType ?: "")
 
-        // ✅ Calculate accurate status based on meal period
         val targetData = latestGlucoseValue?.let {
             calculateGlucoseTargets(
                 valueMgMl = it.toDouble() / 100.0,
@@ -72,14 +81,9 @@ class GetGlucoseDashboardUseCase(
 
         val glucoseStatus = targetData?.statusText ?: getString(Res.string.normal)
 
-        val sevenDayRecords = records.filter {
-            try {
-                val recordDate = parseDisplayDate(it.date)
-                recordDate >= today.minus(7, DateTimeUnit.DAY) && recordDate <= today
-            } catch (e: Exception) {
-                false
-            }
-        }
+        // Optimization: Pre-calculate 7 day readings
+        val sevenDayRange = (0..6).map { today.minus(it, DateTimeUnit.DAY) }
+        val sevenDayRecords = sevenDayRange.flatMap { recordsByDate[it] ?: emptyList() }
 
         val sevenDayReadings = sevenDayRecords.flatMap {
             listOfNotNull(
@@ -91,26 +95,16 @@ class GetGlucoseDashboardUseCase(
         val sevenDayAverage = if (sevenDayReadings.isNotEmpty()) sevenDayReadings.average().toInt() else 0
         val hbA1cEstimate = if (sevenDayAverage > 0) (sevenDayAverage + 46.7) / 28.7 else 0.0
 
-        val chartReadings = (0..6).reversed().map { dayOffset ->
-            val date = today.minus(dayOffset, DateTimeUnit.DAY)
-            val dayReadings = records.filter {
-                try { parseDisplayDate(it.date) == date } catch (e: Exception) { false }
-            }.flatMap {
-                listOfNotNull(it.beforeBreakfast, it.afterBreakfast, it.beforeLunch, it.afterLunch, it.beforeDinner, it.afterDinner, it.bedtime)
-            }
-            if (dayReadings.isNotEmpty()) dayReadings.average().toFloat() else 0f
-        }
-
-        val dailyAverageReadings = (0..6).reversed().map { dayOffset ->
-            val date = today.minus(dayOffset, DateTimeUnit.DAY)
+        // Use the pre-grouped map for chart readings
+        val dailyAverageReadings = sevenDayRange.reversed().map { date ->
             val dateString = "${date.dayOfMonth} ${date.month.name.take(3).lowercase().replaceFirstChar { it.uppercase() }}"
-            val dayReadings = records.filter {
-                try { parseDisplayDate(it.date) == date } catch (e: Exception) { false }
-            }.flatMap {
+            val dayReadings = (recordsByDate[date] ?: emptyList()).flatMap {
                 listOfNotNull(it.beforeBreakfast, it.afterBreakfast, it.beforeLunch, it.afterLunch, it.beforeDinner, it.afterDinner, it.bedtime)
             }
             DailyAverageReading(dateString, if (dayReadings.isNotEmpty()) dayReadings.average().toFloat() else 0f)
         }
+
+        val chartReadings = dailyAverageReadings.map { it.averageValue }
 
         return GlucoseDashboard(
             todayGlucose = latestGlucoseValue,

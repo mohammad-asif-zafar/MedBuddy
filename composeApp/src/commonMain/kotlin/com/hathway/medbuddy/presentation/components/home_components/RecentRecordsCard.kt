@@ -79,7 +79,7 @@ fun RecentRecordsCard(
         }
     }
 }
-
+/*
 @Preview
 @Composable
 fun RecentRecordsCardPreview() {
@@ -93,4 +93,4 @@ fun RecentRecordsCardPreview() {
             RecentRecordsCard(recentRecords = mockRecords)
         }
     }
-}
+}*/

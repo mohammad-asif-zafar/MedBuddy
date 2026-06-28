@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,18 +19,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.medbuddy.data.local.FakeDoctorRepository
 import com.hathway.medbuddy.data.local.FakeGlucoseRepository
 import com.hathway.medbuddy.ThemeMode
-import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.presentation.components.home_components.GlucoseAndPatientCardSection
 import com.hathway.medbuddy.presentation.components.home_components.HealthSummaryGrid
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
 import com.hathway.medbuddy.presentation.components.home_components.RecentRecordsCard
 import com.hathway.medbuddy.presentation.components.home_components.TrendChartCard
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
-import com.hathway.medbuddy.presentation.viewmodel.HomeUiState
 import com.hathway.medbuddy.presentation.viewmodel.HomeViewModel
 import com.hathway.medbuddy.util.calculateGlucoseTargets
 import medbuddy.composeapp.generated.resources.Res
@@ -52,80 +48,77 @@ fun HomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // Pinned Top Bar with its own unique padding/spacing if needed
-            MedBuddyTopBar(
-                title = stringResource(Res.string.medbuddy),
-                leftIcon = Icons.Default.Menu,
-                rightIcon = Icons.Outlined.Notifications,
-                onLeftClick = onMenuClick,
-                onRightClick = { onOpenNotifications() },
-                titleColor = MaterialTheme.colorScheme.primary,
-                showBadge = uiState.hasUnreadNotifications,
-                modifier = Modifier.padding(horizontal = 12.dp) // Match the side padding
-            )
+        if (uiState.isLoading && uiState.todayGlucose == null) {
+            LoadingScreen()
+        } else {
+            Column(modifier = Modifier.fillMaxSize()) {
+                MedBuddyTopBar(
+                    title = stringResource(Res.string.medbuddy),
+                    leftIcon = Icons.Default.Menu,
+                    rightIcon = Icons.Outlined.Notifications,
+                    onLeftClick = onMenuClick,
+                    onRightClick = { onOpenNotifications() },
+                    titleColor = MaterialTheme.colorScheme.primary,
+                    showBadge = uiState.hasUnreadNotifications,
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 12.dp, end = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Section 1 & 2: Today's Glucose (Now becomes the very first item)
-                item {
-                    val currentPeriod = uiState.lastMealPeriod
-                    val targetData = calculateGlucoseTargets(
-                        valueMgMl = uiState.lastReading.toDouble() / 100.0,
-                        mealType = currentPeriod,
-                        hasDiabetes = true
-                    )
-                    GlucoseAndPatientCardSection(
-                        greeting = uiState.greeting,
-                        patientName = uiState.patientName,
-                        glucoseValue = uiState.lastReading,
-                        mealType = uiState.lastMealType,
-                        status = uiState.glucoseStatusText,
-                        minTarget = (targetData.minTarget * 100).toInt().toString(),
-                        maxTarget = (targetData.maxTarget * 100).toInt().toString(),
-                        isToday = uiState.isToday
-                    )
-                }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 12.dp, end = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item {
+                        val currentPeriod = uiState.lastMealPeriod
+                        val targetData = calculateGlucoseTargets(
+                            valueMgMl = uiState.lastReading.toDouble() / 100.0,
+                            mealType = currentPeriod,
+                            hasDiabetes = true
+                        )
+                        GlucoseAndPatientCardSection(
+                            greeting = uiState.greeting,
+                            patientName = uiState.patientName,
+                            glucoseValue = uiState.lastReading,
+                            mealType = uiState.lastMealType,
+                            status = uiState.glucoseStatusText,
+                            minTarget = (targetData.minTarget * 100).toInt().toString(),
+                            maxTarget = (targetData.maxTarget * 100).toInt().toString(),
+                            isToday = uiState.isToday
+                        )
+                    }
 
-                // Section 3: Doctor Information
-                item {
-                    TrendChartCard(readings = uiState.dailyAverageReadings, selectedFilterDays = "7 Days")
-                }
+                    item {
+                        TrendChartCard(readings = uiState.dailyAverageReadings, selectedFilterDays = "7 Days")
+                    }
 
-                // Section 4: Health Summary
-                item {
-                    HealthSummaryGrid(
-                        average = uiState.sevenDayAverage,
-                        hbA1c = uiState.hbA1cEstimate,
-                        highest = uiState.highestGlucose,
-                        lowest = uiState.lowestGlucose
-                    )
-                }
+                    item {
+                        HealthSummaryGrid(
+                            average = uiState.sevenDayAverage,
+                            hbA1c = uiState.hbA1cEstimate,
+                            highest = uiState.highestGlucose,
+                            lowest = uiState.lowestGlucose
+                        )
+                    }
 
-                // Section 6: Last 3 Records
-                item {
-                    RecentRecordsCard(
-                        recentRecords = uiState.last7Readings,
-                        onViewAllClick = onViewAllHistory
-                    )
-                }
+                    item {
+                        RecentRecordsCard(
+                            recentRecords = uiState.last7Readings,
+                            onViewAllClick = onViewAllHistory
+                        )
+                    }
 
-                // Section 7: bottom space
-                item {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    item {
+                        Spacer(modifier = Modifier.height(6.dp))
+                    }
                 }
             }
         }
     }
 }
 
-// 2. Light Mode Preview
 @Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun HomeScreenLightPreview() {
@@ -142,7 +135,6 @@ fun HomeScreenLightPreview() {
     }
 }
 
-// 3. Dark Mode Preview
 @Preview(showBackground = true, name = "Dark Mode")
 @Composable
 fun HomeScreenDarkPreview() {

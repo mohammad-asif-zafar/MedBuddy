@@ -81,8 +81,7 @@ fun RecentRecordItemPreview() {
                 date = "24 Oct 2024",
                 timePeriod = "Before Breakfast",
                 value = 95,
-                time = "08:30 AM",
-                status = "Normal"
+                time = "08:30 AM"
             )
         )
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.model.TimePeriod
+import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.domain.usecase.GetGlucoseDashboardUseCase
 import com.hathway.medbuddy.domain.usecase.GetNotificationsUseCase
@@ -15,7 +16,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.getString
 
@@ -95,70 +99,90 @@ class HomeViewModel(
 
     init {
         loadCurrentUser()
-        loadData()
+        observeRecords()
     }
 
-    private fun loadData() {
+    private fun observeRecords() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            repository.recordsFlow.collectLatest { records ->
+                refreshDashboard(records)
+            }
+        }
+    }
+
+    private fun refreshDashboard(records: List<GlucoseRecord>) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = it.todayGlucose == null) } // Only show full loader on first load
 
             try {
-                val dashboard = getGlucoseDashboardUseCase()
-                val greeting = getGreeting()
-                val notifications = getNotificationsUseCase()
+                coroutineScope {
+                    val dashboardDeferred = async { getGlucoseDashboardUseCase(records) }
+                    val greetingDeferred = async { getGreeting() }
+                    val notificationsDeferred = async { getNotificationsUseCase(records) }
 
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        todayGlucose = dashboard.todayGlucose,
-                        glucoseStatusText = dashboard.glucoseStatus,
-                        recordedTime = dashboard.recordedTime,
-                        sevenDayAverage = dashboard.sevenDayAverage,
-                        hbA1cEstimate = dashboard.hbA1cEstimate,
-                        greeting = greeting,
-                        condition = getString(Res.string.condition_default),
-                        doctorName = getString(Res.string.doctor_name_default),
-                        doctorSpecialty = getString(Res.string.speciality_default),
-                        nextVisitDate = getString(Res.string.date_default),
-                        highestGlucose = dashboard.highestGlucose,
-                        lowestGlucose = dashboard.lowestGlucose,
-                        chartReadings = dashboard.chartReadings,
-                        recentRecords = dashboard.recentRecords.map {
-                            RecentRecord(it.date, it.timePeriod, it.value, it.time)
-                        },
-                        // Medications remains same for now
-                        medications = listOf(
-                            Medication(
-                                id = 1,
-                                name = "Metformin",
-                                dosage = "500mg",
-                                time = "8:00 AM",
-                                isTaken = true,
-                                mealType = "BBF"
-                            ), Medication(
-                                id = 2,
-                                name = "Bisoprolol",
-                                time = "9:00 PM",
-                                dosage = "500mg",
-                                isTaken = false,
-                                mealType = "BDT"
-                            )
-                        ),
-                        insight = getString(Res.string.insight_lower),
-                        insightEmoji = "📈",
-                        averageGlucose = dashboard.sevenDayAverage.toDouble(), // Or actual average
-                        lastReading = dashboard.todayGlucose ?: 0,
-                        lastReadingTime = dashboard.recordedTime,
-                        lastMealType = dashboard.mealType,
-                        isToday = dashboard.isToday,
-                        lastMealPeriod = dashboard.lastMealPeriod,
-                        dailyAverageReadings = dashboard.dailyAverageReadings,
-                        last7Readings = dashboard.last7Readings,
-                        hasUnreadNotifications = notifications.isNotEmpty()
-                    )
+                    val dashboard = dashboardDeferred.await()
+                    val greeting = greetingDeferred.await()
+                    val notifications = notificationsDeferred.await()
+
+                    // Pre-fetch localized strings outside the update lambda
+                    val conditionStr = getString(Res.string.condition_default)
+                    val doctorNameStr = getString(Res.string.doctor_name_default)
+                    val doctorSpecialtyStr = getString(Res.string.speciality_default)
+                    val nextVisitDateStr = getString(Res.string.date_default)
+                    val insightStr = getString(Res.string.insight_lower)
+
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            todayGlucose = dashboard.todayGlucose,
+                            glucoseStatusText = dashboard.glucoseStatus,
+                            recordedTime = dashboard.recordedTime,
+                            sevenDayAverage = dashboard.sevenDayAverage,
+                            hbA1cEstimate = dashboard.hbA1cEstimate,
+                            greeting = greeting,
+                            condition = conditionStr,
+                            doctorName = doctorNameStr,
+                            doctorSpecialty = doctorSpecialtyStr,
+                            nextVisitDate = nextVisitDateStr,
+                            highestGlucose = dashboard.highestGlucose,
+                            lowestGlucose = dashboard.lowestGlucose,
+                            chartReadings = dashboard.chartReadings,
+                            recentRecords = dashboard.recentRecords.map { r ->
+                                RecentRecord(r.date, r.timePeriod, r.value, r.time)
+                            },
+                            medications = listOf(
+                                Medication(
+                                    id = 1,
+                                    name = "Metformin",
+                                    dosage = "500mg",
+                                    time = "8:00 AM",
+                                    isTaken = true,
+                                    mealType = "BBF"
+                                ), Medication(
+                                    id = 2,
+                                    name = "Bisoprolol",
+                                    time = "9:00 PM",
+                                    dosage = "500mg",
+                                    isTaken = false,
+                                    mealType = "BDT"
+                                )
+                            ),
+                            insight = insightStr,
+                            insightEmoji = "📈",
+                            averageGlucose = dashboard.sevenDayAverage.toDouble(),
+                            lastReading = dashboard.todayGlucose ?: 0,
+                            lastReadingTime = dashboard.recordedTime,
+                            lastMealType = dashboard.mealType,
+                            isToday = dashboard.isToday,
+                            lastMealPeriod = dashboard.lastMealPeriod,
+                            dailyAverageReadings = dashboard.dailyAverageReadings,
+                            last7Readings = dashboard.last7Readings,
+                            hasUnreadNotifications = notifications.isNotEmpty()
+                        )
+                    }
                 }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(isLoading = false)
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
@@ -176,9 +200,10 @@ class HomeViewModel(
         val user = FirebaseManager.currentUser
 
         viewModelScope.launch {
+            val defaultPatientName = getString(Res.string.patient)
             _uiState.update {
                 it.copy(
-                    patientName = user?.displayName ?: getString(Res.string.patient),
+                    patientName = user?.displayName ?: defaultPatientName,
                     patientEmail = user?.email ?: "",
                     patientPhotoUrl = user?.photoUrl ?: ""
                 )
@@ -186,4 +211,3 @@ class HomeViewModel(
         }
     }
 }
-

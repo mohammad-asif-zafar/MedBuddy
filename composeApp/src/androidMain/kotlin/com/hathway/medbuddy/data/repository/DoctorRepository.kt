@@ -9,24 +9,34 @@ import kotlinx.coroutines.tasks.await
 class DoctorRepository : IDoctorRepository {
     private val firestore = FirebaseFirestore.getInstance()
     private val USERS_COLLECTION = "MedBuddy_users"
+    private var cachedDoctorInfo: DoctorInfo? = null
 
     override suspend fun getDoctorInfo(userId: String): DoctorInfo {
-        val snapshot = firestore
-            .collection(USERS_COLLECTION)
-            .document(userId)
-            .get()
-            .await()
+        if (cachedDoctorInfo != null) return cachedDoctorInfo!!
 
-        return DoctorInfo(
-            doctorName = snapshot.getString("doctorName") ?: "",
-            doctorType = snapshot.getString("doctorType") ?: "",
-            speciality = snapshot.getString("speciality") ?: "",
-            hospital = snapshot.getString("hospital") ?: "",
-            nextAppointment = snapshot.getString("nextAppointment") ?: ""
-        )
+        try {
+            val snapshot = firestore
+                .collection(USERS_COLLECTION)
+                .document(userId)
+                .get()
+                .await()
+
+            val info = DoctorInfo(
+                doctorName = snapshot.getString("doctorName") ?: "",
+                doctorType = snapshot.getString("doctorType") ?: "",
+                speciality = snapshot.getString("speciality") ?: "",
+                hospital = snapshot.getString("hospital") ?: "",
+                nextAppointment = snapshot.getString("nextAppointment") ?: ""
+            )
+            cachedDoctorInfo = info
+            return info
+        } catch (e: Exception) {
+            return DoctorInfo("", "", "", "", "")
+        }
     }
 
     override suspend fun saveDoctorInfo(userId: String, doctorInfo: DoctorInfo) {
+        cachedDoctorInfo = doctorInfo
         firestore
             .collection(USERS_COLLECTION)
             .document(userId)

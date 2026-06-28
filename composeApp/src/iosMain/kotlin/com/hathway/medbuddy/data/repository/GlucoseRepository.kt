@@ -2,9 +2,14 @@ package com.hathway.medbuddy.data.repository
 
 import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class GlucoseRepository : IGlucoseRepository {
     private val records = mutableListOf<GlucoseRecord>()
+    private val _recordsFlow = MutableStateFlow<List<GlucoseRecord>>(emptyList())
+    override val recordsFlow: Flow<List<GlucoseRecord>> = _recordsFlow.asStateFlow()
 
     override suspend fun getAllRecords(): List<GlucoseRecord> {
         return records
@@ -23,21 +28,21 @@ class GlucoseRepository : IGlucoseRepository {
         mealType: String,
         notes: String
     ) {
-        records.add(
-            GlucoseRecord(
-                date = date,
-                beforeBreakfast = beforeBreakfast,
-                afterBreakfast = afterBreakfast,
-                beforeLunch = beforeLunch,
-                afterLunch = afterLunch,
-                beforeDinner = beforeDinner,
-                afterDinner = afterDinner,
-                bedtime = bedtime,
-                time = time,
-                mealType = mealType,
-                notes = notes
-            )
+        val newRecord = GlucoseRecord(
+            date = date,
+            beforeBreakfast = beforeBreakfast,
+            afterBreakfast = afterBreakfast,
+            beforeLunch = beforeLunch,
+            afterLunch = afterLunch,
+            beforeDinner = beforeDinner,
+            afterDinner = afterDinner,
+            bedtime = bedtime,
+            time = time,
+            mealType = mealType,
+            notes = notes
         )
+        records.add(newRecord)
+        _recordsFlow.value = records.toList()
     }
 
     override suspend fun updateRecord(
@@ -72,6 +77,7 @@ class GlucoseRepository : IGlucoseRepository {
         } else {
             records.add(updatedRecord)
         }
+        _recordsFlow.value = records.toList()
     }
 
     override suspend fun hasTimePeriodForDate(date: String, timePeriod: String): Boolean {
