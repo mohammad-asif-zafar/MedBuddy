@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MedBuddy helps track glucose readings, trends, reports, reminders, and care information in one simple app.">
     <title>MedBuddy - Smart Glucose Care</title>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-green: #2E7D4F;
@@ -14,281 +14,431 @@
             --white: #FFFFFF;
             --text-dark: #1D1D1B;
             --text-gray: #6B7280;
+            --border-soft: #E7E2D8;
+            --shadow: 0 22px 50px rgba(29, 29, 27, 0.14);
         }
-/* ===========================
-Demo Video Section
-=========================== */
-
-.video-showcase {
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-.phone-frame {
-width: 340px;
-padding: 10px;
-background: #111;
-border-radius: 40px;
-box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-position: relative;
-}
-
-.phone-frame::before {
-content: "";
-width: 120px;
-height: 6px;
-background: #444;
-border-radius: 999px;
-position: absolute;
-top: 12px;
-left: 50%;
-transform: translateX(-50%);
-}
-
-.phone-frame video {
-width: 100%;
-display: block;
-border-radius: 32px;
-}
-
-@media (max-width:768px){
-
-```
-.phone-frame{
-    width: 280px;
-}
-```
-
-}
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; color: var(--text-dark); background-color: var(--white); line-height: 1.6; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-dark);
+            background: var(--white);
+            line-height: 1.6;
+        }
+        img { max-width: 100%; display: block; }
 
-        /* Navigation */
-        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: var(--white); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; color: var(--brand-green); text-decoration: none; }
-        .logo img { width: 40px; height: 40px; border-radius: 10px; }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s; }
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 18px 5%;
+            background: rgba(255, 255, 255, 0.94);
+            border-bottom: 1px solid rgba(231, 226, 216, 0.8);
+            backdrop-filter: blur(14px);
+        }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--brand-green);
+            font-size: 1.45rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .logo img { width: 42px; height: 42px; border-radius: 12px; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a {
+            color: var(--text-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
         .nav-links a:hover { color: var(--primary-green); }
 
-        /* Hero Section */
-        .hero { padding: 80px 5%; background: linear-gradient(135deg, var(--cream-bg) 0%, #fff 100%); display: flex; align-items: center; min-height: 80vh; }
-        .hero-content { flex: 1; }
-        .hero-image { flex: 1; text-align: center; }
-        .hero-image img { width: 300px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); border-radius: 30px; }
-        h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; color: var(--brand-green); }
-        .hero p { font-size: 1.25rem; color: var(--text-gray); margin-bottom: 40px; max-width: 500px; }
-        .cta-btn { padding: 16px 32px; background: var(--primary-green); color: white; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.3s, box-shadow 0.3s; }
-        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(46, 125, 79, 0.2); }
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 460px);
+            align-items: center;
+            gap: 56px;
+            min-height: calc(100vh - 78px);
+            padding: 56px 5% 86px;
+            background: linear-gradient(135deg, var(--cream-bg) 0%, #FFFFFF 74%);
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            color: var(--primary-green);
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+        h1 {
+            max-width: 700px;
+            margin-bottom: 20px;
+            color: var(--brand-green);
+            font-size: clamp(2.4rem, 5vw, 4.8rem);
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+        .hero p {
+            max-width: 590px;
+            margin-bottom: 34px;
+            color: var(--text-gray);
+            font-size: 1.17rem;
+        }
+        .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 14px 24px;
+            border-radius: 12px;
+            background: var(--primary-green);
+            color: var(--white);
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-btn.secondary { background: #1D1D1B; }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(46, 125, 79, 0.2);
+        }
+        .phone-frame {
+            width: min(100%, 370px);
+            margin-inline: auto;
+            padding: 12px;
+            background: #111111;
+            border-radius: 42px;
+            box-shadow: var(--shadow);
+        }
+        .phone-frame img {
+            width: 100%;
+            aspect-ratio: 803 / 1673;
+            object-fit: cover;
+            border-radius: 31px;
+        }
 
-        /* Features */
-        .section { padding: 100px 5%; }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-size: 2.5rem; color: var(--brand-green); }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .feature-card { padding: 40px; background: var(--cream-bg); border-radius: 24px; text-align: center; transition: transform 0.3s; }
-        .feature-card:hover { transform: translateY(-10px); }
-        .feature-card i { font-size: 2.5rem; color: var(--primary-green); margin-bottom: 20px; }
-        .feature-card h3 { margin-bottom: 15px; font-size: 1.5rem; }
+        .section { padding: 84px 5%; }
+        .section-title {
+            max-width: 760px;
+            margin: 0 auto 44px;
+            text-align: center;
+        }
+        .section-title h2 {
+            color: var(--brand-green);
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+        .section-title p {
+            margin-top: 12px;
+            color: var(--text-gray);
+            font-size: 1.05rem;
+        }
 
-        /* Screenshots */
-        .screenshots { background: var(--text-dark); color: white; overflow: hidden; }
-        .screenshots-track { display: flex; gap: 20px; padding: 40px 0; animation: scroll 40s linear infinite; }
-        .screenshots-track img { height: 500px; border-radius: 20px; border: 4px solid #333; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+        .feature-card {
+            min-height: 230px;
+            padding: 30px;
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            background: var(--cream-bg);
+        }
+        .feature-card i {
+            margin-bottom: 18px;
+            color: var(--primary-green);
+            font-size: 2rem;
+        }
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+        .feature-card p { color: var(--text-gray); }
+
+        .screenshots {
+            overflow: hidden;
+            background: #1D1D1B;
+            color: var(--white);
+        }
+        .screenshots .section-title h2,
+        .screenshots .section-title p { color: var(--white); }
+        .screenshots-track {
+            display: flex;
+            gap: 18px;
+            width: max-content;
+            padding-block: 10px 20px;
+            animation: scroll 44s linear infinite;
+        }
+        .screenshots-track img {
+            width: 238px;
+            aspect-ratio: 803 / 1673;
+            object-fit: cover;
+            border: 4px solid #333333;
+            border-radius: 24px;
+            background: #111111;
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.22);
+        }
         @keyframes scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
-        /* AI Insights */
-        .ai-insights { display: flex; align-items: center; gap: 50px; background: var(--cream-bg); border-radius: 40px; margin: 0 5%; }
-        .ai-content { padding: 60px; flex: 1; }
-        .ai-viz { flex: 1; padding: 60px; text-align: center; }
-        .ai-viz img { width: 100%; max-width: 400px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .analytics {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+            gap: 44px;
+            align-items: center;
+            margin-inline: 5%;
+            padding: 56px;
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            background: var(--cream-bg);
+        }
+        .analytics h2 {
+            margin-bottom: 16px;
+            color: var(--brand-green);
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+        .analytics p { color: var(--text-gray); }
+        .analytics ul {
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+            list-style: none;
+        }
+        .analytics li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: var(--text-dark);
+        }
+        .analytics li i { margin-top: 4px; color: var(--primary-green); }
+        .analytics img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 14px 34px rgba(29, 29, 27, 0.13);
+        }
 
-        /* Footer */
-        footer { padding: 60px 5%; background: var(--white); border-top: 1px solid #eee; text-align: center; }
-        .footer-links { margin: 20px 0; display: flex; justify-content: center; gap: 30px; }
-        .footer-links a { color: var(--text-gray); text-decoration: none; font-size: 0.9rem; }
-        .copyright { color: var(--text-gray); font-size: 0.85rem; margin-top: 40px; }
+        .video-showcase {
+            display: grid;
+            place-items: center;
+            margin-bottom: 32px;
+        }
+        .video-showcase video {
+            width: min(100%, 360px);
+            aspect-ratio: 803 / 1673;
+            object-fit: cover;
+            border: 12px solid #111111;
+            border-radius: 42px;
+            background: #111111;
+            box-shadow: var(--shadow);
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+        .demo-grid img {
+            width: 100%;
+            aspect-ratio: 803 / 1673;
+            object-fit: cover;
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            box-shadow: 0 10px 28px rgba(29, 29, 27, 0.12);
+        }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .hero { flex-direction: column; text-align: center; padding-top: 40px; }
-            .hero-content { margin-bottom: 50px; }
+        footer {
+            padding: 64px 5%;
+            border-top: 1px solid #EEEEEE;
+            background: var(--white);
+            text-align: center;
+        }
+        footer .logo { justify-content: center; margin-bottom: 22px; }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 22px;
+            margin: 28px 0;
+        }
+        .footer-links a {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+        .copyright {
+            color: var(--text-gray);
+            font-size: 0.86rem;
+        }
+
+        @media (max-width: 900px) {
+            .hero,
+            .analytics {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                min-height: auto;
+                text-align: center;
+            }
+            .hero p,
+            h1 { margin-inline: auto; }
+            .cta-row { justify-content: center; }
+            .features-grid,
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            .analytics { margin-inline: 5%; padding: 32px; }
+        }
+        @media (max-width: 700px) {
+            nav { align-items: flex-start; }
             .nav-links { display: none; }
-            .ai-insights { flex-direction: column; }
+            .section { padding: 64px 5%; }
+            .screenshots-track img { width: 190px; }
+            .cta-btn { width: 100%; }
         }
     </style>
 </head>
 <body>
-
 <nav>
-    <a href="#" class="logo">
-        <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
+    <a href="index.html" class="logo">
+        <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy logo">
         MedBuddy
     </a>
     <ul class="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#screenshots">Screenshots</a></li>
+        <li><a href="#reports">Reports</a></li>
         <li><a href="#download">Download</a></li>
         <li><a href="privacy-policy.html">Privacy</a></li>
     </ul>
 </nav>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Smart Glucose Care, Simplified.</h1>
-        <p>Track your levels, analyze trends with AI-powered insights, and take control of your
-            health with MedBuddy. Built with Kotlin Multiplatform for a seamless experience.</p>
-        <a href="#download" class="cta-btn">
-            <i class="fab fa-google-play"></i> Get Started
-        </a>
-    </div>
-    <div class="hero-image">
-        <!-- Hero image using one of the main screenshots -->
-        <img src="Screenshots/Screenshot_20260621_010051.png" alt="App Dashboard">
-    </div>
-</section>
-
-<section id="features" class="section">
-    <div class="section-title">
-        <h2>Why MedBuddy?</h2>
-    </div>
-    <div class="features-grid">
-        <div class="feature-card">
-            <i class="fas fa-chart-line"></i>
-            <h3>Intelligent Dashboard</h3>
-            <p>Real-time overview of your latest readings, 7-day averages, and estimated HbA1c at a
-                glance.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-robot"></i>
-            <h3>AI-Driven Insights</h3>
-            <p>Context-aware feedback that helps you understand spikes and celebrate stability in
-                your glucose levels.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-sync"></i>
-            <h3>Cloud Sync</h3>
-            <p>Seamlessly sync your health data across devices using secure Firebase
-                integration.</p>
-        </div>
-    </div>
-</section>
-
-<section id="screenshots" class="screenshots section">
-    <div class="section-title">
-        <h2 style="color: white;">App in Action</h2>
-    </div>
-    <div class="screenshots-track">
-        <!-- Duplicated images for smooth infinite loop -->
-        <img src="Screenshots/Screenshot_20260621_010051.png" alt="Screen">
-        <img src="Screenshots/app_design_flow.PNG" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010136.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010126.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010155.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010209.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010242.png" alt="Screen">
-        <!-- Repeat -->
-        <img src="Screenshots/Screenshot_20260621_010242.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010532.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010456.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010508.png" alt="Screen">
-        <img src="Screenshots/Screenshot_20260621_010446.png" alt="Screen">
-    </div>
-</section>
-
-<section class="section">
-    <div class="ai-insights">
-        <div class="ai-content">
-            <h2>Advanced Analytics</h2>
-            <p>Understand your health patterns with interactive Cubic Bezier charts and "Time In
-                Range" donut visualizations. MedBuddy doesn't just show numbers; it shows your
-                progress.</p>
-            <br>
-            <ul style="list-style: none;">
-                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle"
-                                                    style="color: var(--primary-green);"></i> 7, 30,
-                    and 90-day trend analysis
-                </li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle"
-                                                    style="color: var(--primary-green);"></i>
-                    Meal-segment breakdown (Before/After)
-                </li>
-                <li><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> Best &
-                    Worst days tracking
-                </li>
-            </ul>
-        </div>
-        <div class="ai-viz">
-            <img src="Screenshots/Screenshot_20260621_010051.png" alt="Report Analysis">
-        </div>
-        <!-- App Demo Video Section -->
-
-        <section class="section" id="demo">
-            <div class="section-title">
-                <h2>See MedBuddy in Action</h2>
-                <p style="margin-top:12px;color:var(--text-gray);">
-                    Watch how MedBuddy helps track glucose readings,
-                    monitor trends and generate health insights.
-                </p>
+<main>
+    <section class="hero">
+        <div>
+            <div class="eyebrow"><i class="fas fa-heart-pulse"></i> Smart glucose companion</div>
+            <h1>MedBuddy</h1>
+            <p>Track glucose readings, review health trends, manage reminders, and keep useful reports ready for everyday diabetes care.</p>
+            <div class="cta-row">
+                <a href="#download" class="cta-btn"><i class="fab fa-google-play"></i> Download for Android</a>
+                <a href="#screenshots" class="cta-btn secondary"><i class="fas fa-images"></i> View Screenshots</a>
             </div>
+        </div>
+        <div class="phone-frame">
+            <img src="Screenshots/web/home_light.jpg" alt="MedBuddy home dashboard screenshot">
+        </div>
+    </section>
 
-            ```
-            <div class="video-showcase">
+    <section id="features" class="section">
+        <div class="section-title">
+            <h2>Built For Daily Care</h2>
+            <p>Everything you need to log readings, understand patterns, and stay prepared for doctor visits.</p>
+        </div>
+        <div class="features-grid">
+            <article class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Glucose Dashboard</h3>
+                <p>See latest readings, target status, recent records, and trends in a calm dashboard.</p>
+            </article>
+            <article class="feature-card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>History Calendar</h3>
+                <p>Review readings by date and spot days that need more attention.</p>
+            </article>
+            <article class="feature-card">
+                <i class="fas fa-file-medical"></i>
+                <h3>Reports</h3>
+                <p>Track 7-day and 90-day views with summaries designed for useful check-ins.</p>
+            </article>
+        </div>
+    </section>
 
-                <div class="phone-frame">
+    <section id="screenshots" class="screenshots section">
+        <div class="section-title">
+            <h2>Fresh App Screenshots</h2>
+            <p>Compressed web images from the latest Screenshots folder.</p>
+        </div>
+        <div class="screenshots-track" aria-label="MedBuddy screenshots">
+            <img src="Screenshots/web/splash_light.jpg" alt="MedBuddy splash screen">
+            <img src="Screenshots/web/onboarding_first.jpg" alt="MedBuddy onboarding screen">
+            <img src="Screenshots/web/home_light.jpg" alt="MedBuddy home screen">
+            <img src="Screenshots/web/add_glucose_light.jpg" alt="MedBuddy add glucose screen">
+            <img src="Screenshots/web/view_calendar_light.jpg" alt="MedBuddy calendar screen">
+            <img src="Screenshots/web/report_90_days_light.jpg" alt="MedBuddy report screen">
+            <img src="Screenshots/web/profile_light.jpg" alt="MedBuddy profile screen">
+            <img src="Screenshots/web/onboarding_first.jpg" alt="MedBuddy onboarding screen">
+            <img src="Screenshots/web/home_light.jpg" alt="MedBuddy home screen">
+            <img src="Screenshots/web/add_glucose_light.jpg" alt="MedBuddy add glucose screen">
+            <img src="Screenshots/web/view_calendar_light.jpg" alt="MedBuddy calendar screen">
+            <img src="Screenshots/web/report_90_days_light.jpg" alt="MedBuddy report screen">
+            <img src="Screenshots/web/profile_light.jpg" alt="MedBuddy profile screen">
+        </div>
+    </section>
 
-                    <video
-                            autoplay
-                            muted
-                            loop
-                            controls
-                            playsinline
-                            poster="Screenshots/Screenshot_20260621_010051.png">
-
-                        <source src="Screenshots/VIDEO-2026-06-21-00-58-59.mp4" type="video/mp4">
-
-                        Your browser does not support video playback.
-                    </video>
-
-                </div>
-
+    <section id="reports" class="section">
+        <div class="analytics">
+            <div>
+                <h2>Reports And Insights</h2>
+                <p>MedBuddy turns daily readings into clear summaries so patterns are easier to discuss and act on.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> 7-day and 90-day report screens</li>
+                    <li><i class="fas fa-check-circle"></i> Calendar-based reading review</li>
+                    <li><i class="fas fa-check-circle"></i> Profile and doctor information in one place</li>
+                </ul>
             </div>
+            <img src="Screenshots/web/report_7days_light.jpg" alt="MedBuddy 7-day report screenshot">
+        </div>
+    </section>
 
-        </section>
-
-    </div>
-</section>
+    <section class="section" id="demo">
+        <div class="section-title">
+            <h2>More Of The App</h2>
+            <p>The demo video is compressed for GitHub Pages and paired with lightweight screenshots.</p>
+        </div>
+        <div class="video-showcase">
+            <video controls playsinline preload="metadata" poster="Screenshots/web/home_light.jpg">
+                <source src="Screenshots/medbuddy_demo_compressed.mp4" type="video/mp4">
+                Your browser does not support video playback.
+            </video>
+        </div>
+        <div class="demo-grid">
+            <img src="Screenshots/web/notification_permission_request.jpg" alt="Notification permission request screen">
+            <img src="Screenshots/web/language_light.jpg" alt="Language selection screen">
+            <img src="Screenshots/web/profile_dark.jpg" alt="Dark profile screen">
+        </div>
+    </section>
+</main>
 
 <footer id="download">
-    <div class="logo" style="justify-content: center; margin-bottom: 30px;">
-        <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy Logo">
+    <a href="index.html" class="logo">
+        <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy logo">
         MedBuddy
+    </a>
+    <p>Ready to make glucose tracking easier?</p>
+    <div class="cta-row" style="justify-content:center; margin-top: 22px;">
+        <a href="#" class="cta-btn"><i class="fab fa-google-play"></i> Download for Android</a>
+        <a href="#" class="cta-btn secondary"><i class="fab fa-apple"></i> iOS coming soon</a>
     </div>
-    <p>Ready to transform your health tracking?</p>
-    <br>
-    <a href="#" class="cta-btn">
-        <i class="fab fa-google-play"></i> Download for Android
-    </a>
-    &nbsp;
-    <a href="#" class="cta-btn" style="background: #000;">
-        <i class="fab fa-apple"></i> Coming soon to iOS
-    </a>
-
     <div class="footer-links">
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="mailto:mohammadasifzafar000@gmail.com">Contact Support</a>
-        <a href="#">Release Notes</a>
+        <a href="https://github.com/mohammad-asif-zafar/MedBuddy">GitHub</a>
     </div>
-
-    <p class="copyright">&copy; 2026 MedBuddy - Smart Glucose Care. Developed with ❤️ for better
-        health.</p>
-
+    <p class="copyright">&copy; 2026 MedBuddy - Smart Glucose Care. Always consult your clinician before changing your treatment plan.</p>
 </footer>
-
 </body>
 </html>

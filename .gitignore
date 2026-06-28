@@ -17,3 +17,6 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+Screenshots/*.mov
+Screenshots/*.mp4
+!Screenshots/medbuddy_demo_compressed.mp4
