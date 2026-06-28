@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 data class NotificationUiState(
@@ -20,7 +21,7 @@ data class NotificationUiState(
 )
 
 class NotificationViewModel(
-    glucoseRepository: IGlucoseRepository,
+    private val glucoseRepository: IGlucoseRepository,
     doctorRepository: IDoctorRepository
 ) : ViewModel() {
 
@@ -30,14 +31,22 @@ class NotificationViewModel(
     val uiState: StateFlow<NotificationUiState> = _uiState.asStateFlow()
 
     init {
-        loadNotifications()
+        observeRecords()
     }
 
-    fun loadNotifications() {
+    private fun observeRecords() {
+        viewModelScope.launch {
+            glucoseRepository.recordsFlow.collectLatest { records ->
+                loadNotifications(records)
+            }
+        }
+    }
+
+    private fun loadNotifications(records: List<com.hathway.medbuddy.domain.model.GlucoseRecord>) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val notifications = getNotificationsUseCase()
+                val notifications = getNotificationsUseCase(records)
                 _uiState.update { it.copy(isLoading = false, notifications = notifications) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.message) }

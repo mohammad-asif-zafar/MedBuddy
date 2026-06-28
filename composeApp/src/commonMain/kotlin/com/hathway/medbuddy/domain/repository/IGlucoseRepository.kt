@@ -1,8 +1,11 @@
 package com.hathway.medbuddy.domain.repository
 
 import com.hathway.medbuddy.domain.model.GlucoseRecord
+import kotlinx.coroutines.flow.Flow
 
 interface IGlucoseRepository {
+
+    val recordsFlow: Flow<List<GlucoseRecord>>
 
     suspend fun getAllRecords(): List<GlucoseRecord>
 

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AddViewModel(
@@ -25,26 +26,22 @@ class AddViewModel(
     open val uiState: StateFlow<AddUiState> = _uiState.asStateFlow()
 
     init {
-        loadRecords()
+        observeRecords()
+    }
+
+    private fun observeRecords() {
+        if (repository == null) return
+        viewModelScope.launch {
+            repository.recordsFlow.collectLatest { records ->
+                val domainRecords = getGlucoseUseCase?.invoke(records) ?: emptyList()
+                _uiState.update { it.copy(records = domainRecords, isLoading = false) }
+            }
+        }
     }
 
     fun resetSuccess() {
         _uiState.update {
             it.copy(saveSuccess = false)
-        }
-    }
-
-    fun loadRecords() {
-        if (repository == null) return
-
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            try {
-                val records = getGlucoseUseCase?.invoke() ?: emptyList()
-                _uiState.update { it.copy(records = records, isLoading = false) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false) }
-            }
         }
     }
 
@@ -54,8 +51,8 @@ class AddViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true, saveSuccess = false) }
             try {
-                // 1. Look for an existing day's record to prevent overwriting other meals with null
-                val existingRecords = getGlucoseUseCase?.invoke() ?: emptyList()
+                // 1. Get current latest records from state
+                val existingRecords = _uiState.value.records
                 val existingDayRecord = existingRecords.find { it.date == newRecord.date }
 
                 // 2. Safely merge the new reading value with existing daily fields
@@ -71,17 +68,12 @@ class AddViewModel(
                     time = newRecord.time,
                     mealType = newRecord.timePeriod,
                     notes = newRecord.notes
-                // Keep old notes if new ones are blank
                 )
-
-                // 3. Re-load the updated list state to refresh UI
-                val updatedRecords = getGlucoseUseCase?.invoke() ?: emptyList()
 
                 _uiState.update {
                     it.copy(
-                        records = updatedRecords,
                         isSaving = false,
-                        saveSuccess = true // This will trigger your Composable's LaunchedEffect
+                        saveSuccess = true
                     )
                 }
             } catch (e: Exception) {
@@ -89,5 +81,4 @@ class AddViewModel(
             }
         }
     }
-
 }

@@ -6,7 +6,7 @@ import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 class GetGlucoseUseCase(
     private val repository: IGlucoseRepository
 ) {
-    suspend operator fun invoke(): List<GlucoseRecord> {
-        return repository.getAllRecords()
+    operator fun invoke(records: List<GlucoseRecord>): List<GlucoseRecord> {
+        return records
     }
 }

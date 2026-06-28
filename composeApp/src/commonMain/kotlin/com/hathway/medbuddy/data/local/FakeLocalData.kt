@@ -4,6 +4,8 @@ import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 object FakeLocalData {
     val mockRecords = listOf(
@@ -48,6 +50,7 @@ object FakeLocalData {
 
 // Safe mock data provider for compilation and previews
 class FakeGlucoseRepository : IGlucoseRepository {
+    override val recordsFlow: Flow<List<GlucoseRecord>> = flowOf(FakeLocalData.mockRecords)
     override suspend fun getAllRecords(): List<GlucoseRecord> = FakeLocalData.mockRecords
     
     override suspend fun insertRecord(
