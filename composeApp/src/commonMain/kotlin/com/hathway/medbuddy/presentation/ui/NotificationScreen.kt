@@ -29,6 +29,11 @@ import com.hathway.medbuddy.presentation.components.notification_components.Empt
 import com.hathway.medbuddy.presentation.components.notification_components.NotificationAction
 import com.hathway.medbuddy.presentation.components.notification_components.NotificationCard
 import com.hathway.medbuddy.presentation.viewmodel.NotificationViewModel
+import com.hathway.medbuddy.data.local.FakeDoctorRepository
+import com.hathway.medbuddy.data.local.FakeGlucoseRepository
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -177,5 +182,23 @@ fun MedBuddyNotification(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun NotificationScreenPreview() {
+    val fakeRepo = FakeGlucoseRepository()
+    val fakeDoctorRepo = FakeDoctorRepository()
+    val viewModel = NotificationViewModel(fakeRepo, fakeDoctorRepo)
+
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        MedBuddyNotification(
+            viewModel = viewModel,
+            onBackClick = {},
+            onNotificationClick = {},
+            onSettingsClick = {},
+            onSnoozeClick = {}
+        )
     }
 }
