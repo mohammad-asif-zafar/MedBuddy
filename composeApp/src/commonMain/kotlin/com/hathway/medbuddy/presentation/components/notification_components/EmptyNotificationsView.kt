@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.notifications_empty_desc
 import medbuddy.composeapp.generated.resources.notifications_empty_title
@@ -53,5 +57,15 @@ import org.jetbrains.compose.resources.stringResource
             textAlign = TextAlign.Center,
             lineHeight = 18.sp
         )
+    }
+}
+
+@Preview
+@Composable
+fun EmptyNotificationsViewPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Surface {
+            EmptyNotificationsView()
+        }
     }
 }

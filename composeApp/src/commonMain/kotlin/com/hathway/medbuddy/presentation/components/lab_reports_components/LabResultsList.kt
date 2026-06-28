@@ -27,6 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.LabResultData
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import medbuddy.composeapp.generated.resources.Res
@@ -90,5 +93,17 @@ fun LabResultsList(onResultClick: (LabResultData) -> Unit, onAddClick: () -> Uni
             Spacer(Modifier.width(8.dp))
             Text(stringResource(Res.string.lab_add_title))
         }
+    }
+}
+
+@Preview
+@Composable
+fun LabResultsListPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LabResultsList(
+            onResultClick = {},
+            onAddClick = {},
+            onFilterClick = {}
+        )
     }
 }

@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.best_and_worst_days_title
 import medbuddy.composeapp.generated.resources.ic_calendar_check
@@ -141,5 +144,18 @@ fun BestAndWorstDaysSection(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun BestAndWorstDaysSectionPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        BestAndWorstDaysSection(
+            bestDate = "12 May 2026",
+            bestAvg = 95,
+            worstDate = "15 May 2026",
+            worstAvg = 185
+        )
     }
 }

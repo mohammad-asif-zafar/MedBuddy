@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun SummaryCard(
@@ -78,5 +81,17 @@ fun SummaryCard(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun SummaryCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        SummaryCard(
+            title = "Average",
+            value = "120",
+            unit = "mg/dL"
+        )
     }
 }

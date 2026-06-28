@@ -20,6 +20,9 @@ playServicesAuth = "21.6.0"
 firebaseBom = "34.14.0"
 
 [libraries]
+# Explicitly syncs the backhandler dependency with your core Compose Multiplatform version reference
+compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "composeMultiplatform" }
+
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }

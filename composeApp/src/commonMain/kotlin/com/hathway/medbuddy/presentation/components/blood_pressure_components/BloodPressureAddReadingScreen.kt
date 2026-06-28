@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.components.blood_pressure_components
 
 import androidx.compose.foundation.BorderStroke
@@ -12,12 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.Button
@@ -33,28 +33,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hathway.medbuddy.presentation.theme.StatusInRange
-import com.hathway.medbuddy.presentation.theme.SuccessContainer
-import com.hathway.medbuddy.presentation.theme.TextSecondaryMuted
-import com.hathway.medbuddy.presentation.theme.TwilightIconDeep
 import com.hathway.medbuddy.presentation.ui.detailed_reports.DetailedReportWrapper
-import com.hathway.medbuddy.presentation.ui_state.AddBPReadingUiEvent
-import com.hathway.medbuddy.presentation.ui_state.AddBPReadingUiState
 import com.hathway.medbuddy.presentation.viewmodel.BloodPressureHomeViewModel
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.title_add_blood_pressure_reading
-import medbuddy.composeapp.generated.resources.title_blood_pressure
 import org.jetbrains.compose.resources.stringResource
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BloodPressureAddReadingScreen(
     onBack: () -> Unit, viewReading: () -> Unit
 ) {
+    BackHandler(enabled = true) {
+        onBack()
+    }
     val bpViewModel: BloodPressureHomeViewModel = viewModel { BloodPressureHomeViewModel() }
     val state by bpViewModel.uiState.collectAsState()
     DetailedReportWrapper(stringResource(Res.string.title_add_blood_pressure_reading), onBack) {

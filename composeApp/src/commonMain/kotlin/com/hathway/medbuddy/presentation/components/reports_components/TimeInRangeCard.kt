@@ -18,6 +18,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.TimeInRangeData
 import com.hathway.medbuddy.presentation.theme.*
 import medbuddy.composeapp.generated.resources.*
@@ -150,5 +153,19 @@ fun TimeInRangeCard(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun TimeInRangeCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        TimeInRangeCard(
+            data = TimeInRangeData(
+                inRangePct = 70f,
+                highPct = 20f,
+                lowPct = 10f
+            )
+        )
     }
 }

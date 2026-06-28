@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.medbuddy.data.local.FakeDoctorRepository
+import com.hathway.medbuddy.data.local.FakeGlucoseRepository
 import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.presentation.components.home_components.GlucoseAndPatientCardSection
@@ -93,7 +95,7 @@ fun HomeScreen(
 
                 // Section 3: Doctor Information
                 item {
-                    TrendChartCard(readings = uiState.dailyAverageReadings)
+                    TrendChartCard(readings = uiState.dailyAverageReadings, selectedFilterDays = "7 Days")
                 }
 
                 // Section 4: Health Summary
@@ -123,27 +125,6 @@ fun HomeScreen(
     }
 }
 
-
-// 1. Create a mock State block representing your HomeUiState data class
-// (Adjust properties below to exactly match your actual HomeUiState declaration)
-val MockHomeUiState = HomeUiState(
-    hasUnreadNotifications = true,
-    lastMealPeriod = TimePeriod.BEFORE_BREAKFAST,
-    lastReading = 120,
-    greeting = "Good Morning",
-    patientName = "John Doe",
-    lastMealType = "Breakfast",
-    glucoseStatusText = "Normal",
-    isToday = true,
-    dailyAverageReadings = emptyList(), // Pass some dummy points if needed
-    sevenDayAverage =  123,
-    hbA1cEstimate = 5.6,
-    highestGlucose = 140,
-    lowestGlucose = 90,
-    last7Readings = emptyList()
-)
-
-
 // 2. Light Mode Preview
 @Preview(showBackground = true, name = "Light Mode")
 @Composable
@@ -151,8 +132,8 @@ fun HomeScreenLightPreview() {
     MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
         HomeScreen(
             viewModel =  HomeViewModel(
-                repository = TODO(),
-                doctorRepository = TODO()
+                repository = FakeGlucoseRepository(),
+                doctorRepository = FakeDoctorRepository()
             ),
             onOpenNotifications = {},
             onMenuClick = {},
@@ -168,8 +149,8 @@ fun HomeScreenDarkPreview() {
     MedBuddyTheme(themeMode = ThemeMode.DARK) {
         HomeScreen(
             viewModel =  HomeViewModel(
-                repository = TODO(),
-                doctorRepository = TODO()
+                repository = FakeGlucoseRepository(),
+                doctorRepository = FakeDoctorRepository()
             ),
             onOpenNotifications = {},
             onMenuClick = {},

@@ -2,6 +2,7 @@ package com.hathway.medbuddy.presentation.components.reports_components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.Success
 import com.hathway.medbuddy.presentation.theme.Danger
 
@@ -93,6 +97,22 @@ fun SummaryMiniCard(
                 maxLines = 1,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SummaryMiniCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Row(modifier = Modifier.padding(16.dp)) {
+            SummaryMiniCard(
+                title = "Avg Glucose",
+                value = "115",
+                subValue = "mg/dL",
+                valueColor = Color.Blue,
+                icon = Icons.Default.Favorite
             )
         }
     }

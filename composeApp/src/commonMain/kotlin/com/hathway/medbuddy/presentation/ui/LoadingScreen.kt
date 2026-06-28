@@ -1,21 +1,34 @@
 package com.hathway.medbuddy.presentation.ui
 
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import kotlinx.coroutines.delay
 import medbuddy.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
@@ -24,64 +37,97 @@ fun LoadingScreen(onLoadingFinished: () -> Unit = {}) {
         onLoadingFinished()
     }
 
+    val backgroundColor = Color(0xFFF9FDFD)
+    val primaryColor = Color(0xFF00897B)
+
     Scaffold(
-        // Integrates edge-to-edge drawing safely for both Android and iOS
-        contentWindowInsets = WindowInsets.safeDrawing,
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = backgroundColor,
     ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize()
-                .padding(innerPadding), // Offsets layout content from status and navigation areas
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // App Logo Assembly (Uses dynamic theme color parameters)
-            Surface(
-                modifier = Modifier.size(100.dp),
-                shape = CircleShape,
-                color = MaterialTheme.colorScheme.primaryContainer
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(50.dp)
-                    )
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primaryContainer,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(48.dp))
-
-            CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary, // Themed progress accent
-                strokeWidth = 4.dp, modifier = Modifier.size(40.dp)
+            Image(
+                painter = painterResource(Res.drawable.medbuddy_logo_theme_color),
+                contentDescription = null,
+                modifier = Modifier.size(160.dp),
+                contentScale = ContentScale.Fit
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = stringResource(Res.string.loading_medbuddy),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+                color = primaryColor,
+                fontSize = 40.sp
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = stringResource(Res.string.preparing_dashboard),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 48.dp)
+                text = stringResource(Res.string.preparing_health_data),
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(60.dp))
+
+            DottedCircularLoader(color = primaryColor)
+        }
+    }
+}
+
+@Composable
+fun DottedCircularLoader(
+    modifier: Modifier = Modifier,
+    color: Color = Color(0xFF00897B),
+    dotCount: Int = 12
+) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+
+    Box(
+        modifier = modifier
+            .size(80.dp)
+            .graphicsLayer { rotationZ = rotation },
+        contentAlignment = Alignment.Center
+    ) {
+        val radius = 30.dp
+        for (i in 0 until dotCount) {
+            val angle = ((i * 2 * PI) / dotCount).toFloat()
+            val alpha = (i + 1).toFloat() / dotCount
+            
+            Box(
+                modifier = Modifier
+                    .offset(
+                        x = (radius.value * cos(angle)).dp,
+                        y = (radius.value * sin(angle)).dp
+                    )
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(color.copy(alpha = alpha))
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun LoadingScreenPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LoadingScreen()
     }
 }

@@ -22,6 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.action_back
@@ -68,5 +71,13 @@ fun SimpleListScreen(
                 })
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun SimpleListScreenPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        SimpleListScreen(onBackClick = {})
     }
 }

@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.*
 import kotlinx.coroutines.delay
 import medbuddy.composeapp.generated.resources.*
@@ -115,5 +118,19 @@ fun SummaryMetricsSection(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun SummaryMetricsSectionPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        SummaryMetricsSection(
+            avgGlucose = 115,
+            hba1c = 5.7,
+            timeInRange = 78,
+            totalReadings = 120,
+            selectedFilterDays = "7 Days"
+        )
     }
 }

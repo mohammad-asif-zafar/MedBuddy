@@ -27,6 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 
 @Composable
@@ -92,6 +95,16 @@ fun OverallSummaryCard() {
                 MetricColumn(value = "82%", label = "Normal Readings", valueColor = Color(0xFF2E7D32), modifier = Modifier.weight(1.2f))
                 MetricColumn(value = "3", label = "Elevated", valueColor = Color(0xFFE65100), modifier = Modifier.weight(1f))
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun OverallSummaryCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            OverallSummaryCard()
         }
     }
 }

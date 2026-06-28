@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.ui.notification_flow
 
 import androidx.compose.foundation.clickable
@@ -32,7 +34,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,7 +57,7 @@ import medbuddy.composeapp.generated.resources.save_action_btn
 import medbuddy.composeapp.generated.resources.take_action_title
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TakeActionScreen(
     title: String,
@@ -62,7 +66,9 @@ fun TakeActionScreen(
 ) {
     var selectedAction by remember { mutableStateOf("") }
     var notes by remember { mutableStateOf("") }
-
+    BackHandler(enabled = true) {
+        onBack()
+    }
     val actions = listOf(
         stringResource(Res.string.action_medication),
         stringResource(Res.string.action_recheck),

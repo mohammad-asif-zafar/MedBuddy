@@ -13,8 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.presentation.theme.*
 import com.hathway.medbuddy.presentation.viewmodel.GlucoseStatus
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -61,5 +63,21 @@ fun StatusChip(text: String) {
             fontWeight = FontWeight.SemiBold,
             fontSize = 12.sp
         )
+    }
+}
+
+@Preview
+@Composable
+fun StatusIndicatorPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        StatusIndicator(status = GlucoseStatus.Normal)
+    }
+}
+
+@Preview
+@Composable
+fun StatusChipPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        StatusChip(text = "Normal")
     }
 }

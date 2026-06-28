@@ -33,6 +33,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -189,7 +192,7 @@ fun ProfileInfoCard(
     ) {
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -210,5 +213,20 @@ fun ProfileInfoCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun ProfileHeaderCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        ProfileHeaderCard(
+            name = "John Doe",
+            email = "john.doe@example.com",
+            photoUrl = "",
+            age = "25",
+            weight = "72",
+            bloodType = "A+"
+        )
     }
 }

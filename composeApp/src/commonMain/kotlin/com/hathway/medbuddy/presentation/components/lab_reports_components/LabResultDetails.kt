@@ -39,6 +39,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.domain.model.LabResultData
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import medbuddy.composeapp.generated.resources.Res
@@ -137,5 +140,23 @@ fun LabResultDetails(result: LabResultData?, onShareClick: () -> Unit, onInsight
                 Text(stringResource(Res.string.lab_details_delete))
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun LabResultDetailsPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LabResultDetails(
+            result = LabResultData(
+                name = "HbA1c",
+                value = "5.8 %",
+                status = "Normal",
+                statusColor = Color(0xFF0F9D58),
+                date = "12 May 2026"
+            ),
+            onShareClick = {},
+            onInsightsClick = {}
+        )
     }
 }

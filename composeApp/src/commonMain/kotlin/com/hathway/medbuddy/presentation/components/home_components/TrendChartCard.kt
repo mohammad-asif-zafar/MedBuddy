@@ -15,13 +15,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.glucose_trend
@@ -29,7 +34,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TrendChartCard(
-    readings: List<DailyAverageReading>
+    readings: List<DailyAverageReading>, selectedFilterDays: String
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -39,7 +44,7 @@ fun TrendChartCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(Res.string.glucose_trend),
+                text = stringResource(Res.string.glucose_trend, selectedFilterDays),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -57,15 +62,23 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
     if (readings.isEmpty()) return
 
     val textMeasurer = rememberTextMeasurer()
-    val yAxisTextStyle = TextStyle(
-        color = MaterialTheme.colorScheme.onSurfaceVariant, 
-        fontSize = 10.sp, 
+    val axisTextStyle = TextStyle(
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        fontSize = 10.sp,
         fontWeight = FontWeight.Medium
     )
 
     val chartLineColor = MaterialTheme.colorScheme.primary
     val gridLineColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     val circleInnerColor = MaterialTheme.colorScheme.surface
+
+    // DYNAMIC FILTERING STEP: Compute label skip interval based on list size
+    // 1-7 days: show all. 30 days: show roughly every 5th day. 90 days: show roughly every 15th day.
+    val labelStep = when {
+        readings.size <= 7 -> 1
+        readings.size <= 31 -> 5
+        else -> 15
+    }
 
     Column {
         Box(
@@ -86,7 +99,7 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                     val y = mapY(value)
 
                     val textLayoutResult = textMeasurer.measure(
-                        text = value.toInt().toString(), style = yAxisTextStyle
+                        text = value.toInt().toString(), style = axisTextStyle
                     )
                     drawText(
                         textLayoutResult = textLayoutResult, topLeft = Offset(
@@ -167,14 +180,12 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
                         style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                     )
 
-                    // 6. Anchor Dot Highlights
-                    connectionPointsList.forEach { point ->
-                        drawCircle(
-                            color = chartLineColor, radius = 5.dp.toPx(), center = point
-                        )
-                        drawCircle(
-                            color = circleInnerColor, radius = 2.5.dp.toPx(), center = point
-                        )
+                    // 6. Anchor Dot Highlights (Hide them on high data counts to prevent visual clutter)
+                    if (readings.size <= 15) {
+                        connectionPointsList.forEach { point ->
+                            drawCircle(color = chartLineColor, radius = 4.dp.toPx(), center = point)
+                            drawCircle(color = circleInnerColor, radius = 2.dp.toPx(), center = point)
+                        }
                     }
                 }
             }
@@ -182,19 +193,61 @@ fun GlucoseLineChart(readings: List<DailyAverageReading>) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // 7. Horizontal X-Axis Text Date Label Row
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+        // 7. FIXED X-AXIS: Uses a single Box layout to place filtered elements by exact X coordinate
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp, end = 12.dp)
         ) {
-            readings.forEach { reading ->
-                Text(
-                    text = reading.date,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            readings.forEachIndexed { index, reading ->
+                // Always show first, last, and items falling exactly on the calculated step interval
+                if (index == 0 || index == readings.lastIndex || index % labelStep == 0) {
+
+                    Layout(
+                        content = {
+                            Text(
+                                text = reading.date,
+                                fontSize = 8.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1
+                            )
+                        }
+                    ) { measurables, constraints ->
+                        val placeable = measurables.first().measure(constraints)
+
+                        // Calculate X placement based on total available width matching the canvas
+                        layout(constraints.maxWidth, placeable.height) {
+                            val xPosition = (index.toFloat() / (readings.size - 1)) * constraints.maxWidth
+
+                            // Center the text bounding box right over its actual data point coordinate
+                            val centeredX = (xPosition - (placeable.width / 2f))
+                                .coerceIn(0f, (constraints.maxWidth - placeable.width).toFloat())
+
+                            placeable.placeRelative(x = centeredX.toInt(), y = 0)
+                        }
+                    }
+                }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun TrendChartCardPreview() {
+    val mockReadings = listOf(
+        DailyAverageReading("Mon", 110f),
+        DailyAverageReading("Tue", 125f),
+        DailyAverageReading("Wed", 115f),
+        DailyAverageReading("Thu", 140f),
+        DailyAverageReading("Fri", 130f),
+        DailyAverageReading("Sat", 110f),
+        DailyAverageReading("Sun", 120f)
+    )
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            TrendChartCard(readings = mockReadings, selectedFilterDays = "7 Days")
         }
     }
 }

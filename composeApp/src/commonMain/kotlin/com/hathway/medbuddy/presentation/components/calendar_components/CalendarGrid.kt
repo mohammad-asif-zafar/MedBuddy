@@ -16,6 +16,10 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.util.getNowLocalDateTime
 
 @Composable
 fun CalendarGridBloodPressure(
@@ -77,5 +81,19 @@ fun CalendarGridBloodPressure(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun CalendarGridBloodPressurePreview() {
+    val today = getNowLocalDateTime().date
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        CalendarGridBloodPressure(
+            currentMonth = today,
+            selectedDate = today,
+            dayStatuses = emptyMap(),
+            onDateSelected = {}
+        )
     }
 }

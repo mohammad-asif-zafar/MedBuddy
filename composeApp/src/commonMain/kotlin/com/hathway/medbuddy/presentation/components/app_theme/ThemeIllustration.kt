@@ -24,7 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 
 @Composable
@@ -105,5 +107,21 @@ fun ThemeIllustration(mode: ThemeMode) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun ThemeIllustrationLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        ThemeIllustration(mode = ThemeMode.LIGHT)
+    }
+}
+
+@Preview
+@Composable
+fun ThemeIllustrationDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        ThemeIllustration(mode = ThemeMode.DARK)
     }
 }

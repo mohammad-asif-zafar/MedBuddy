@@ -12,6 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.theme.CardBorder
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import com.hathway.medbuddy.presentation.theme.Info
@@ -64,6 +67,21 @@ private fun OverviewMetricColumn(
             text = value, style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold, color = color, fontSize = 22.sp
             )
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BpOverviewCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        BpOverviewCard(
+            avgSys = 120,
+            avgDia = 80,
+            minSys = 110,
+            minDia = 70,
+            maxSys = 140,
+            maxDia = 90
         )
     }
 }

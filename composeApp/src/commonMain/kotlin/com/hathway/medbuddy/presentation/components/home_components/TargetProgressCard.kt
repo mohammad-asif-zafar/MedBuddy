@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -99,9 +101,7 @@ private fun getTargetMessage(progress: Int): String {
 @Preview(showBackground = true)
 @Composable
 fun TargetProgressCardPreview() {
-
-    MaterialTheme {
-
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
         TargetProgressCard(
             targetProgress = 78, targetReadings = 18, totalTargetReadings = 23
         )

@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.DangerContainer
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.calendar_emoji
@@ -46,5 +49,13 @@ fun EmptyDayContent() {
                 Res.string.no_glucose_records_day
             ), color = DangerContainer
         )
+    }
+}
+
+@Preview
+@Composable
+fun EmptyDayContentPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        EmptyDayContent()
     }
 }

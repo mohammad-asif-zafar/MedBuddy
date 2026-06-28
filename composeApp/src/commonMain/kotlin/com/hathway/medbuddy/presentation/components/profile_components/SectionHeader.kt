@@ -18,6 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun SectionHeader(
@@ -51,6 +56,17 @@ fun SectionHeader(
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+@Preview
+@Composable
+fun SectionHeaderPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        SectionHeader(
+            title = "Personal Details",
+            icon = Icons.Default.Person
         )
     }
 }

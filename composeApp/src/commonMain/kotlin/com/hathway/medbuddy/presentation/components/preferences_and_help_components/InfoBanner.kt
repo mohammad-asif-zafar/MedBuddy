@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -20,6 +21,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun InfoBanner(
@@ -78,6 +82,23 @@ fun InfoBanner(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun InfoBannerPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            InfoBanner(
+                title = "Smart Glucose Care",
+                subtitle = "Track readings, analyze trends, and take control.",
+                icon = Icons.Default.Info,
+                iconBackgroundColor = Color.Blue,
+                bannerColor = Color.LightGray.copy(alpha = 0.2f),
+                showRightArrow = true
+            )
         }
     }
 }

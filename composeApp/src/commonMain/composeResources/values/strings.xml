@@ -20,7 +20,7 @@
 
     <string name="reading_value">%1$s mg/dL</string>
     <string name="reading_details">%1$s • %2$s</string>
-    <string name="glucose_trend">📈 Glucose Trend</string>
+    <string name="glucose_trend">📈 Glucose Trend (%1$s)</string>/
     <string name="last_7_days">Last 7 Days</string>
 
     <string name="average_short">Avg</string>
@@ -150,12 +150,12 @@
     <string name="above_target">Above Target</string>
 
     <!-- Loading Screen -->
-    <string name="loading_medbuddy">Loading MedBuddy</string>
-    <string name="preparing_dashboard">Preparing your glucose dashboard</string>
+    <string name="loading_medbuddy">MedBuddy</string>
+    <string name="preparing_health_data">Preparing your health data...</string>
 
     <!-- Login Screen -->
     <string name="medbuddy">MedBuddy</string>
-    <string name="smart_glucose_care">Smart Glucose Care</string>
+    <string name="smart_glucose_care">Smart Glucose Care</string>//zaf
     <string name="login_description">Track glucose levels, monitor trends and stay in control of your health.</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="secure_signin_powered_by_google">Secure sign-in powered by Google</string>
@@ -608,8 +608,16 @@
     <string name="channel_summary">You will receive alerts on the selected channels.</string>
 
     <!-- Splash & Onboarding -->
-    <string name="splash_tagline">Your Health Companion</string>
-    <string name="onboarding_title">Track. Manage. Improve.</string>
-    <string name="onboarding_desc">All your health data in one place.</string>
+    <string name="splash_tagline">Track. Understand. Take Control.</string>
+    <string name="loading">Loading...</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_title_1">Track Your Glucose</string>
+    <string name="onboarding_desc_1">Easily log and monitor your blood glucose levels in one place.</string>
+    <string name="onboarding_title_2">Understand Your Trends</string>
+    <string name="onboarding_desc_2">Get insights and trends to understand your health better.</string>
+    <string name="onboarding_title_3">Stay on Track</string>
+    <string name="onboarding_desc_3">Set reminders and never miss a reading again.</string>
     <string name="next">Next</string>
 </resources>

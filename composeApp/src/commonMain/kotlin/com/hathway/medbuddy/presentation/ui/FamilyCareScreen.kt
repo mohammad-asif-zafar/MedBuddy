@@ -34,6 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.ui.detailed_reports.DetailedReportWrapper
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.title_family_care
@@ -158,5 +161,21 @@ fun FamilyCareScreen(onBack: () -> Unit, navigation: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun FamilyCareScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        FamilyCareScreen(onBack = {}, navigation = {})
+    }
+}
+
+@Preview
+@Composable
+fun FamilyCareScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        FamilyCareScreen(onBack = {}, navigation = {})
     }
 }

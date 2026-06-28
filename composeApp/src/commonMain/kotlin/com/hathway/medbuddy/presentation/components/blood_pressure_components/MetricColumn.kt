@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.DirectionsRun
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Lightbulb
@@ -66,7 +68,7 @@ fun BpTrendCard() {
             )
             // Upward trend arrow graphic placeholder
             Icon(
-                imageVector = Icons.Default.TrendingUp,
+                imageVector = Icons.AutoMirrored.Filled.TrendingUp,
                 contentDescription = null,
                 tint = Color(0xFF00B0FF),
                 modifier = Modifier.size(32.dp)
@@ -92,7 +94,7 @@ fun RecommendationsCard() {
             Spacer(modifier = Modifier.height(16.dp))
 
             RecommendationItem(
-                imageVector = Icons.Default.DirectionsRun,
+                imageVector = Icons.AutoMirrored.Filled.DirectionsRun,
                 iconColor = Color(0xFF2E7D32),
                 iconBg = Color(0xFFE8F5E9),
                 title = "Stay active",
@@ -143,6 +145,26 @@ fun RecommendationItem(
     }
 }
 
+
+@Preview(showBackground = true)
+@Composable
+fun MetricColumnPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Row(modifier = Modifier.padding(16.dp)) {
+            MetricColumn(value = "120", label = "Systolic", valueColor = Color.Blue)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BpTrendCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            BpTrendCard()
+        }
+    }
+}
 
 // 1. Full Screen Preview - Light Mode
 @Preview(name = "Insights Screen Light", showBackground = true)

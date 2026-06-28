@@ -30,7 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.domain.model.LabResultData
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.all_looks_good
@@ -127,5 +130,17 @@ fun LabResultsHome(onAddClick: () -> Unit, onViewAllClick: () -> Unit, onTrendsC
             Spacer(Modifier.width(8.dp))
             Text(stringResource(Res.string.lab_add_title), fontWeight = FontWeight.Bold)
         }
+    }
+}
+
+@Preview
+@Composable
+fun LabResultsHomePreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LabResultsHome(
+            onAddClick = {},
+            onViewAllClick = {},
+            onTrendsClick = {}
+        )
     }
 }

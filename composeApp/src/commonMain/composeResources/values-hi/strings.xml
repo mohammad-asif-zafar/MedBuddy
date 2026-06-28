@@ -152,8 +152,8 @@
     <string name="above_target">लक्ष्य से ऊपर</string>
 
     <!-- Loading Screen -->
-    <string name="loading_medbuddy">MedBuddy लोड हो रहा है</string>
-    <string name="preparing_dashboard">आपका ग्लूकोज डैशबोर्ड तैयार किया जा रहा है</string>
+    <string name="loading_medbuddy">MedBuddy</string>
+    <string name="preparing_health_data">आपका स्वास्थ्य डेटा तैयार किया जा रहा है...</string>
 
     <!-- Login Screen -->
     <string name="medbuddy">MedBuddy</string>
@@ -573,4 +573,15 @@
     <string name="medication_reminders_section">दवा के रिमाइंडर</string>
     <string name="other_alerts_section">अन्य अलर्ट</string>
 
+    <string name="splash_tagline">ट्रैक। समझें। नियंत्रण करें।</string>
+    <string name="loading">लोड हो रहा है...</string>
+    <string name="onboarding_skip">छोड़ें</string>
+    <string name="onboarding_next">अगला</string>
+    <string name="onboarding_get_started">शुरू करें</string>
+    <string name="onboarding_title_1">अपना ग्लूकोज ट्रैक करें</string>
+    <string name="onboarding_desc_1">एक ही स्थान पर अपने ब्लड ग्लूकोज के स्तर को आसानी से लॉग और मॉनिटर करें।</string>
+    <string name="onboarding_title_2">अपने रुझानों को समझें</string>
+    <string name="onboarding_desc_2">अपने स्वास्थ्य को बेहतर ढंग से समझने के लिए इनसाइट्स और रुझान प्राप्त करें।</string>
+    <string name="onboarding_title_3">ट्रैक पर रहें</string>
+    <string name="onboarding_desc_3">रिमाइंडर सेट करें और फिर कभी रीडिंग न चूकें।</string>
 </resources>

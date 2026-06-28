@@ -22,6 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.util.getDisplayName
 import com.hathway.medbuddy.util.icon
@@ -109,5 +112,16 @@ fun TimePeriodSelector(
 
             Spacer(Modifier.height(12.dp))
         }
+    }
+}
+
+@Preview
+@Composable
+fun TimePeriodSelectorPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        TimePeriodSelector(
+            selected = TimePeriod.BEFORE_BREAKFAST,
+            onSelected = {}
+        )
     }
 }

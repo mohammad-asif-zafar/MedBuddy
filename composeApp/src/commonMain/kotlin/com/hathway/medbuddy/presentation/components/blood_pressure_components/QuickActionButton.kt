@@ -20,6 +20,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun QuickActionButton(
@@ -57,6 +62,20 @@ fun QuickActionButton(
             ),
             textAlign = TextAlign.Center,
             maxLines = 2
+        )
+    }
+}
+
+@Preview
+@Composable
+fun QuickActionButtonPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        QuickActionButton(
+            label = "Add",
+            icon = Icons.Default.Add,
+            containerColor = Color.LightGray,
+            iconColor = Color.Blue,
+            onClick = {}
         )
     }
 }

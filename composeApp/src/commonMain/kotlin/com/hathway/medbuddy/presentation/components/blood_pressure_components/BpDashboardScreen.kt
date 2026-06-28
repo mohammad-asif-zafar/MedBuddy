@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.components.blood_pressure_components
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +21,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +37,7 @@ import com.hathway.medbuddy.presentation.theme.SuccessContainer
 import com.hathway.medbuddy.presentation.ui.detailed_reports.DetailedReportWrapper
 import com.hathway.medbuddy.presentation.viewmodel.BpDashboardViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BpDashboardScreen(
     onBack: () -> Unit,
@@ -44,6 +49,9 @@ fun BpDashboardScreen(
     val state = viewModel.uiState.collectAsState().value
     val bp_state = viewModel.uiBpState.collectAsState().value
 
+    BackHandler(enabled = true) {
+        onBack()
+    }
     DetailedReportWrapper(
         "BP Dashboard",
         onBack,

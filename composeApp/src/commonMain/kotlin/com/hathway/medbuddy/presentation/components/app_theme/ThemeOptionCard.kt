@@ -125,4 +125,38 @@ fun ThemeOptionCard(
     }
 }
 
+@Preview
+@Composable
+fun ThemeOptionCardLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        ThemeOptionCard(
+            option = ThemeOptionData(
+                mode = ThemeMode.LIGHT,
+                title = "Light Mode",
+                description = "Bright and clear for daytime use.",
+                icon = Icons.Outlined.LightMode
+            ),
+            isSelected = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ThemeOptionCardDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        ThemeOptionCard(
+            option = ThemeOptionData(
+                mode = ThemeMode.DARK,
+                title = "Dark Mode",
+                description = "Comfortable and easy on the eyes at night.",
+                icon = Icons.Outlined.Bedtime
+            ),
+            isSelected = false,
+            onClick = {}
+        )
+    }
+}
+
 

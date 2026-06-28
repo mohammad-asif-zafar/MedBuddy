@@ -13,6 +13,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.StatusLow
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import com.hathway.medbuddy.presentation.theme.StatusHigh
@@ -75,5 +78,13 @@ fun GlucoseMeter(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun GlucoseMeterPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        GlucoseMeter(value = 120)
     }
 }

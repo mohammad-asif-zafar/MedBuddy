@@ -18,6 +18,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -257,4 +260,16 @@ fun DrawerMenuItem(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.height(50.dp)
     )
+}
+
+@Preview
+@Composable
+fun NavigationDrawerContentPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        NavigationDrawerContent(
+            currentDestination = NavigationDestination.HOME,
+            onDestinationSelected = {},
+            onLogout = {}
+        )
+    }
 }

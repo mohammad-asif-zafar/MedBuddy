@@ -11,6 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.*
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.DrawableResource
@@ -87,5 +90,17 @@ fun InsightsAndActionsFooter(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun InsightsAndActionsFooterPreview() {
+    val mockInsights = listOf(
+        Res.drawable.ic_circle_check to Res.string.insight_within_range,
+        Res.drawable.ic_circle_arrow_up to Res.string.insight_lunch_spike
+    )
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        InsightsAndActionsFooter(insights = mockInsights)
     }
 }

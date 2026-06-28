@@ -1,8 +1,6 @@
 package com.hathway.medbuddy.icons
 
-import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -14,6 +12,96 @@ object KmpComposeIcons {
 
     // Default icon color (Deep Teal to match your image)
     private val IconColor = Color(0xFF00796B)
+
+    // Official Firebase Color Palette
+    private val FirebaseAmber = Color(0xFFFFCA28)
+    private val FirebaseOrange = Color(0xFFF57C00)
+    private val FirebaseDeepOrange = Color(0xFFE65100)
+
+    // 📋 Medical Report Clipboard Icon
+    val MedicalReport: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "MedicalReport",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).path(
+            stroke = SolidColor(IconColor),
+            strokeLineWidth = 2f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round
+        ) {
+            // Main Board Structure
+            moveTo(16f, 4f)
+            lineTo(19f, 4f)
+            curveTo(20.1f, 4f, 21f, 4.9f, 21f, 6f)
+            lineTo(21f, 20f)
+            curveTo(21f, 21.1f, 20.1f, 22f, 19f, 22f)
+            lineTo(5f, 22f)
+            curveTo(3.9f, 22f, 3f, 21.1f, 3f, 20f)
+            lineTo(3f, 6f)
+            curveTo(3f, 4.9f, 3.9f, 4f, 5f, 4f)
+            lineTo(8f, 4f)
+
+            // Clipboard Top Binder Clip
+            moveTo(9f, 2f)
+            lineTo(15f, 2f)
+            curveTo(15.55f, 2f, 16f, 2.45f, 16f, 3f)
+            lineTo(16f, 5f)
+            curveTo(16f, 5.55f, 15.55f, 6f, 15f, 6f)
+            lineTo(9f, 6f)
+            curveTo(8.45f, 6f, 8f, 5.55f, 8f, 5f)
+            lineTo(8f, 3f)
+            curveTo(8f, 2.45f, 8.45f, 2f, 9f, 2f)
+            close()
+
+            // Chart / Report Inner Visual Analytics Lines
+            moveTo(7f, 10f)
+            lineTo(12f, 10f)
+            moveTo(7f, 14f)
+            lineTo(17f, 14f)
+            moveTo(7f, 18f)
+            lineTo(14f, 18f)
+        }.build()
+    }
+
+    // ❤️ Heart with Heartbeat Pulse EKG Line Icon
+    val HeartPulse: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "HeartPulse",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).path(
+            stroke = SolidColor(IconColor),
+            strokeLineWidth = 2f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round
+        ) {
+            // Outer Heart Outline Shape
+            moveTo(12f, 21.35f)
+            lineTo(10.55f, 20.03f)
+            curveTo(5.4f, 15.36f, 2f, 12.28f, 2f, 8.5f)
+            curveTo(2f, 5.42f, 4.42f, 3f, 7.5f, 3f)
+            curveTo(9.24f, 3f, 10.91f, 3.81f, 12f, 5.09f)
+            curveTo(13.09f, 3.81f, 14.76f, 3f, 16.5f, 3f)
+            curveTo(19.58f, 3f, 22f, 5.42f, 22f, 8.5f)
+            curveTo(22f, 12.28f, 18.6f, 15.36f, 13.45f, 20.04f)
+            lineTo(12f, 21.35f)
+            close()
+
+            // Interior EKG / Pulse Line overlay
+            moveTo(2f, 8.5f)
+            lineTo(6f, 8.5f)
+            lineTo(9f, 13f)
+            lineTo(13f, 4f)
+            lineTo(16f, 11f)
+            lineTo(18f, 8.5f)
+            lineTo(22f, 8.5f)
+        }.build()
+    }
 
     // 📦 1. Box / 3D Cube Icon
     val Box3D: ImageVector by lazy {
@@ -569,11 +657,6 @@ object KmpComposeIcons {
             close()
         }.build()
     }
-
-    // Official Firebase Color Palette
-    private val FirebaseAmber = Color(0xFFFFCA28)
-    private val FirebaseOrange = Color(0xFFF57C00)
-    private val FirebaseDeepOrange = Color(0xFFE65100)
 
     // 🔥 Firebase Logo Icon
     val Firebase: ImageVector by lazy {

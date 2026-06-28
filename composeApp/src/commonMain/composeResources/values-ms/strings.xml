@@ -150,8 +150,8 @@
     <string name="above_target">Melebihi Sasaran</string>
 
     <!-- Loading Screen -->
-    <string name="loading_medbuddy">Memuatkan MedBuddy</string>
-    <string name="preparing_dashboard">Menyediakan papan pemuka glukosa anda</string>
+    <string name="loading_medbuddy">MedBuddy</string>
+    <string name="preparing_health_data">Menyediakan data kesihatan anda...</string>
 
     <!-- Login Screen -->
     <string name="medbuddy">MedBuddy</string>
@@ -568,4 +568,16 @@
     <string name="action_none">Tiada</string>
     <string name="notes_optional_label">Nota (Pilihan)</string>
     <string name="notes_placeholder">Mengambil insulin seperti nasihat doktor.</string>
+
+    <string name="splash_tagline">Jejak. Faham. Kawal.</string>
+    <string name="loading">Memuatkan...</string>
+    <string name="onboarding_skip">Langkau</string>
+    <string name="onboarding_next">Seterusnya</string>
+    <string name="onboarding_get_started">Mula Sekarang</string>
+    <string name="onboarding_title_1">Jejak Glukosa Anda</string>
+    <string name="onboarding_desc_1">Log dan pantau tahap glukosa darah anda dengan mudah di satu tempat.</string>
+    <string name="onboarding_title_2">Fahami Trend Anda</string>
+    <string name="onboarding_desc_2">Dapatkan wawasan dan trend untuk memahami kesihatan anda dengan lebih baik.</string>
+    <string name="onboarding_title_3">Kekal di Landasan</string>
+    <string name="onboarding_desc_3">Tetapkan peringatan dan jangan terlepas bacaan lagi.</string>
 </resources>

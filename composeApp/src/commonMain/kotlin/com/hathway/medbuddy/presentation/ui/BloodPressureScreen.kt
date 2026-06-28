@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +26,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +45,7 @@ import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.title_blood_pressure
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun BloodPressureHomeScreen(
     onBack: () -> Unit,
@@ -52,7 +56,9 @@ fun BloodPressureHomeScreen(
     viewModel: BloodPressureHomeViewModel = viewModel { BloodPressureHomeViewModel() }
 ) {
     val state = viewModel.uiState.collectAsState().value
-
+    BackHandler(enabled = true) {
+        onBack()
+    }
     // FIX: Removed "paddingValues ->" since DetailedReportWrapper only exposes ColumnScope
     DetailedReportWrapper(stringResource(Res.string.title_blood_pressure), onBack) {
 

@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.dp
 import com.hathway.medbuddy.presentation.theme.*
 import org.jetbrains.compose.resources.stringResource
 import medbuddy.composeapp.generated.resources.*
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun HealthSummaryGrid(
@@ -64,5 +66,18 @@ fun HealthSummaryGrid(
                 modifier = Modifier.weight(1f)
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun HealthSummaryGridPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        HealthSummaryGrid(
+            average = 115,
+            hbA1c = 5.7,
+            highest = 145,
+            lowest = 85
+        )
     }
 }

@@ -26,6 +26,10 @@ import com.hathway.medbuddy.presentation.components.home_components.TrendChartCa
 import com.hathway.medbuddy.presentation.components.reports_components.*
 import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import com.hathway.medbuddy.presentation.viewmodel.ReportsViewModel
+import com.hathway.medbuddy.data.local.FakeGlucoseRepository
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.ic_circle_arrow_up
 import medbuddy.composeapp.generated.resources.ic_circle_check
@@ -88,13 +92,13 @@ fun ReportsScreen(
                             hba1c = data.hba1c,
                             timeInRange = data.timeInRange,
                             totalReadings = data.totalReadings,
-                            selectedFilterDays = uiState.selectedFilter,
+                            selectedFilterDays = uiState.selectedFilter
                         )
                     }
 
                     // 2. Custom Canvas Donut Time In Range Breakdown Card
                     item {
-                        TimeInRangeCard(data = data.timeInRangeData)
+                        TimeInRangeCard(data = data.timeInRangeData,)
                     }
 
                     // 3. Meal Segment Time of Day Analysis Matrix Block
@@ -112,7 +116,10 @@ fun ReportsScreen(
 
                     // 3. Chart Segment TrendChartCard
                     item {
-                        TrendChartCard(readings = data.trendChartReadings)
+                        TrendChartCard(
+                            readings = data.trendChartReadings,
+                            selectedFilterDays = uiState.selectedFilter
+                        )
                     }
 
                     // 5. High & Low Extremes Performance Highlights Block
@@ -138,6 +145,28 @@ fun ReportsScreen(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun ReportsScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        ReportsScreen(
+            viewModel = ReportsViewModel(FakeGlucoseRepository()),
+            onMenuClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ReportsScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        ReportsScreen(
+            viewModel = ReportsViewModel(FakeGlucoseRepository()),
+            onMenuClick = {}
+        )
     }
 }
 

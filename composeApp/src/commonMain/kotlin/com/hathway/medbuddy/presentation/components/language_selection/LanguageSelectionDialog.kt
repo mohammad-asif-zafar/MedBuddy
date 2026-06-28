@@ -29,6 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.Language
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.action_close
@@ -129,5 +132,17 @@ fun LanguageOptionRow(
                 modifier = Modifier.size(24.dp)
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun LanguageSelectionDialogPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LanguageSelectionDialog(
+            currentLanguage = Language.ENGLISH,
+            onDismiss = {},
+            onSelect = {}
+        )
     }
 }

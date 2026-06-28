@@ -15,6 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun SummaryStatCard(
@@ -46,5 +49,18 @@ fun SummaryStatCard(
                 fontSize = 12.sp
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun SummaryStatCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        SummaryStatCard(
+            value = "120",
+            label = "Systolic",
+            backgroundColor = Color.LightGray.copy(alpha = 0.2f),
+            textColor = Color.Blue
+        )
     }
 }

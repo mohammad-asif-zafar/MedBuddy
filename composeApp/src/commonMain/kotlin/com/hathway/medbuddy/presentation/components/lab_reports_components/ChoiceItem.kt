@@ -22,6 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun ChoiceItem(title: String, desc: String, icon: ImageVector, onClick: () -> Unit) {
@@ -48,6 +53,21 @@ fun ChoiceItem(title: String, desc: String, icon: ImageVector, onClick: () -> Un
                 Text(title, fontWeight = FontWeight.Bold)
                 Text(desc, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ChoiceItemPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            ChoiceItem(
+                title = "Manual Entry",
+                desc = "Add details by typing",
+                icon = Icons.Default.Add,
+                onClick = {}
+            )
         }
     }
 }

@@ -6,6 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun TrendMetric(
@@ -28,5 +31,13 @@ fun TrendMetric(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+@Preview
+@Composable
+fun TrendMetricPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        TrendMetric(title = "Avg", value = "120")
     }
 }

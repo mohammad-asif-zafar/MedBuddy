@@ -43,6 +43,9 @@ import medbuddy.composeapp.generated.resources.lab_results_title_main
 import medbuddy.composeapp.generated.resources.lab_share_title
 import medbuddy.composeapp.generated.resources.lab_trends_title
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 
 @Composable
@@ -154,6 +157,22 @@ fun LabResultsScreen(onBack: () -> Unit, navigation: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun LabResultsScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LabResultsScreen(onBack = {}, navigation = {})
+    }
+}
+
+@Preview
+@Composable
+fun LabResultsScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        LabResultsScreen(onBack = {}, navigation = {})
     }
 }
 

@@ -22,6 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.data.local.FakeGlucoseRepository
+import com.hathway.medbuddy.data.local.FakeLocalData
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.domain.model.GlucoseRecord
 import com.hathway.medbuddy.presentation.components.history_components.DateNavigationHeader
 import com.hathway.medbuddy.presentation.components.history_components.EmptyDayContent
@@ -176,5 +181,18 @@ fun LazyListScope.glucoseItem(
                 label = label, value = value, time = selectedDateTime
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun GlucoseRecordHistoryPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        GlucoseRecordHistory(
+            records = FakeLocalData.mockRecords,
+            viewModel = AddViewModel(FakeGlucoseRepository()),
+            onNavigateToAdd = {},
+            onMenuClick = {}
+        )
     }
 }

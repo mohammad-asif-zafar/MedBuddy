@@ -14,6 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.util.getNowLocalDateTime
 import kotlinx.datetime.LocalDate
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.next_symbol
@@ -81,5 +85,18 @@ fun DateNavigationHeader(
                 color = MaterialTheme.colorScheme.primary
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun DateNavigationHeaderPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        DateNavigationHeader(
+            selectedDate = getNowLocalDateTime().date,
+            onPreviousDay = {},
+            onNextDay = {},
+            onDateClick = {}
+        )
     }
 }

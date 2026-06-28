@@ -37,6 +37,9 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.usecase.DailyAverageReading
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -240,6 +243,25 @@ fun GlucoseTrendCard(
                     }
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun GlucoseTrendCardPreview() {
+    val mockReadings = listOf(
+        DailyAverageReading("Mon", 110f),
+        DailyAverageReading("Tue", 125f),
+        DailyAverageReading("Wed", 115f),
+        DailyAverageReading("Thu", 140f),
+        DailyAverageReading("Fri", 130f),
+        DailyAverageReading("Sat", 110f),
+        DailyAverageReading("Sun", 120f)
+    )
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            GlucoseTrendCard(readings = mockReadings)
         }
     }
 }

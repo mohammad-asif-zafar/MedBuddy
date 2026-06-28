@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 @Composable
 fun ProfileStatCard(
@@ -42,5 +45,16 @@ fun ProfileStatCard(
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun ProfileStatCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        ProfileStatCard(
+            title = "Age",
+            value = "25"
+        )
     }
 }

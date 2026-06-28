@@ -35,6 +35,9 @@ import medbuddy.composeapp.generated.resources.lab_success_msg
 import medbuddy.composeapp.generated.resources.lab_success_title
 import medbuddy.composeapp.generated.resources.lab_test_hba1c
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 
 
 @Composable
@@ -90,6 +93,14 @@ fun LabResultSuccess(onViewResults: () -> Unit, onAddAnother: () -> Unit) {
         TextButton(onClick = onAddAnother) {
             Text(stringResource(Res.string.lab_action_add_another))
         }
+    }
+}
+
+@Preview
+@Composable
+fun LabResultSuccessPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        LabResultSuccess(onViewResults = {}, onAddAnother = {})
     }
 }
 

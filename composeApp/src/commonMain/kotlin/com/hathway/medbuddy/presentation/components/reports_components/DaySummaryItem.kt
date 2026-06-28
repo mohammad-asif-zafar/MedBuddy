@@ -13,10 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.average
 import medbuddy.composeapp.generated.resources.glucose_unit_mg_dl
 import medbuddy.composeapp.generated.resources.glucose_value_format
+import medbuddy.composeapp.generated.resources.ic_calendar_check
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -86,6 +90,21 @@ fun DaySummaryItem(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun DaySummaryItemPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            DaySummaryItem(
+                title = "Best Day",
+                date = "June 25, 2026",
+                value = 110,
+                icon = Res.drawable.ic_calendar_check
+            )
         }
     }
 }

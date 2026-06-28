@@ -152,8 +152,8 @@
     <string name="above_target">ٹارگٹ سے اوپر</string>
 
     <!-- Loading Screen -->
-    <string name="loading_medbuddy">MedBuddy لوڈ ہو رہا ہے</string>
-    <string name="preparing_dashboard">آپ کا گلوکوز ڈیش بورڈ تیار کیا جا رہا ہے</string>
+    <string name="loading_medbuddy">MedBuddy</string>
+    <string name="preparing_health_data">آپ کی صحت کا ڈیٹا تیار کیا جا رہا ہے...</string>
 
     <!-- Login Screen -->
     <string name="medbuddy">MedBuddy</string>
@@ -546,4 +546,16 @@
     <string name="notification_timestamp_days_ago">%1$d دن پہلے</string>
 
     <string name="alert_details_title">الرٹ کی تفصیلات</string>
+
+    <string name="splash_tagline">ٹریک کریں۔ سمجھیں۔ کنٹرول کریں۔</string>
+    <string name="loading">لوڈ ہو رہا ہے...</string>
+    <string name="onboarding_skip">چھوڑیں</string>
+    <string name="onboarding_next">اگلا</string>
+    <string name="onboarding_get_started">شروع کریں</string>
+    <string name="onboarding_title_1">اپنے گلوکوز کو ٹریک کریں</string>
+    <string name="onboarding_desc_1">اپنے بلڈ گلوکوز کی سطح کو ایک ہی جگہ پر آسانی سے لاگ اور مانیٹر کریں۔</string>
+    <string name="onboarding_title_2">اپنے رجحانات کو سمجھیں</string>
+    <string name="onboarding_desc_2">اپنی صحت کو بہتر طور پر سمجھنے کے لیے بصیرت اور رجحانات حاصل کریں۔</string>
+    <string name="onboarding_title_3">ٹریک پر رہیں</string>
+    <string name="onboarding_desc_3">ریمائنڈرز سیٹ کریں اور کبھی بھی ریڈنگ مِس نہ کریں۔</string>
 </resources>

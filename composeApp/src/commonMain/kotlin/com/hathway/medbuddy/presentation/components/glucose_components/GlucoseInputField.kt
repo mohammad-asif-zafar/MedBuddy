@@ -14,6 +14,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.getGlucoseRange
 import com.hathway.medbuddy.presentation.theme.Danger
@@ -127,4 +130,16 @@ fun GlucoseInputField(
                 }
             }
         })
+}
+
+@Preview
+@Composable
+fun GlucoseInputFieldPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        GlucoseInputField(
+            value = "120",
+            onValueChange = {},
+            timePeriod = TimePeriod.BEFORE_BREAKFAST
+        )
+    }
 }

@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 
 enum class InsightType {
     POSITIVE, WARNING, ALERT
@@ -87,9 +89,7 @@ fun QuickInsightsCard(
 @Preview(showBackground = true)
 @Composable
 fun QuickInsightsCardPositivePreview() {
-
-    MaterialTheme {
-
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -107,9 +107,7 @@ fun QuickInsightsCardPositivePreview() {
 @Preview(showBackground = true)
 @Composable
 fun QuickInsightsCardWarningPreview() {
-
-    MaterialTheme {
-
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -127,9 +125,7 @@ fun QuickInsightsCardWarningPreview() {
 @Preview(showBackground = true)
 @Composable
 fun QuickInsightsCardAlertPreview() {
-
-    MaterialTheme {
-
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -139,25 +135,6 @@ fun QuickInsightsCardAlertPreview() {
                 insight = "You recorded 2 low glucose events in the last 24 hours.",
                 insightEmoji = "🚨",
                 insightType = InsightType.ALERT
-            )
-        }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun QuickInsightsCardPreview() {
-
-    MaterialTheme {
-
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-
-            QuickInsightsCard(
-                insightTitle = "Glucose Stable",
-                insight = "Your average glucose decreased by 12% compared to last week.",
-                insightEmoji = "📈",
-                insightType = InsightType.POSITIVE
             )
         }
     }

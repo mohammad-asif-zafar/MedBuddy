@@ -3,6 +3,7 @@ package com.hathway.medbuddy.presentation.components.lab_reports_components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.model.LabResultData
 
 @Composable
@@ -47,6 +52,25 @@ fun LabResultItem(data: LabResultData, onClick: () -> Unit) {
                     Text(data.status, modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp), fontSize = 10.sp, color = data.statusColor, fontWeight = FontWeight.Bold)
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun LabResultItemPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            LabResultItem(
+                data = LabResultData(
+                    name = "HbA1c",
+                    value = "5.8 %",
+                    status = "Normal",
+                    statusColor = Color(0xFF0F9D58),
+                    date = "12 May 2026"
+                ),
+                onClick = {}
+            )
         }
     }
 }

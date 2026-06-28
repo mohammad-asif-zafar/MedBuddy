@@ -11,16 +11,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 
 
 @Composable
-fun MetricCard(label: String, value: String, date: String, modifier: Modifier) {
+fun MetricCard(label: String, value: String, date: String, modifier: Modifier = Modifier) {
     Card(modifier = modifier, shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(label, style = MaterialTheme.typography.labelSmall)
             Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = StatusInRange)
             if (date.isNotEmpty()) Text(date, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
         }
+    }
+}
+
+@Preview
+@Composable
+fun MetricCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        MetricCard(
+            label = "Avg Glucose",
+            value = "115 mg/dL",
+            date = "Last 30 Days"
+        )
     }
 }

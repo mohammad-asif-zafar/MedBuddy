@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.components.profile_components
 
 import androidx.compose.foundation.BorderStroke
@@ -31,154 +33,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.add_doctor_info_btn
 import medbuddy.composeapp.generated.resources.view_doctor_details
 import org.jetbrains.compose.resources.stringResource
-
-/*@Composable
-fun DoctorInformationCard(
-    doctorName: String,
-    doctorType: String,
-    speciality: String,
-    hospital: String,
-    nextAppointment: String,
-    onDetailsClick: () -> Unit
-) {
-    val hasDoctorInfo = doctorName.isNotBlank()
-
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
-        shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        border = BorderStroke(
-            width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            if (hasDoctorInfo) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Surface(
-                            modifier = Modifier.size(64.dp).clip(CircleShape), 
-                            color = MaterialTheme.colorScheme.surfaceVariant
-                        ) {
-                        }
-
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(2.dp)
-                        ) {
-                            Text(
-                                text = doctorName,
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    fontSize = 18.sp
-                                )
-                            )
-                            if (doctorType.isNotBlank() || speciality.isNotBlank()) {
-                                val credentials =
-                                    listOf(doctorType, speciality).filter { it.isNotBlank() }
-                                        .joinToString(", ")
-
-                                Text(
-                                    text = credentials,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            if (hospital.isNotBlank()) {
-                                Text(
-                                    text = hospital,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    }
-
-                    if (nextAppointment.isNotBlank()) {
-                        Column(
-                            horizontalAlignment = Alignment.End,
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text(
-                                text = stringResource(Res.string.next_visit),
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontWeight = FontWeight.Medium,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            Text(
-                                text = nextAppointment,
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.SemiBold, 
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            )
-                        }
-                    }
-                }
-            } else {
-                Column {
-                    Text(
-                        text = stringResource(Res.string.no_doctor_info_available),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = stringResource(Res.string.add_doctor_info_prompt),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedButton(
-                onClick = onDetailsClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                border = ButtonDefaults.outlinedButtonBorder.copy(
-                    width = 1.dp
-                ),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = if (hasDoctorInfo) stringResource(Res.string.view_doctor_details) else stringResource(Res.string.add_doctor_info_btn),
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium
-                        )
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.align(Alignment.CenterEnd)
-                    )
-                }
-            }
-        }
-    }
-}*/
 
 @Composable
 fun DoctorInformationCard(
@@ -339,5 +200,20 @@ fun DoctorInformationCard(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun DoctorInformationCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        DoctorInformationCard(
+            doctorName = "Dr. Sumit Gulla",
+            doctorType = "Specialist",
+            speciality = "Endocrinologist",
+            hospital = "Miracles Health",
+            nextAppointment = "15 Jul 2026",
+            onDetailsClick = {}
+        )
     }
 }

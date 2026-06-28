@@ -27,23 +27,9 @@ import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +38,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.insight_glucose_improved
@@ -87,8 +75,6 @@ fun DetailedReportWrapper(
                         IconButton(onClick = onBack) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
-                    } else {
-                        Spacer(modifier = Modifier.size(48.dp))
                     }
                 },
                 actions = {
@@ -108,20 +94,17 @@ fun DetailedReportWrapper(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
-        // Use a standard Modifier without horizontal padding here so the divider spans full-width
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Visual separator line directly beneath the TopAppBar
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outlineVariant,
                 thickness = 0.2.dp
             )
             Spacer(modifier = Modifier.height(15.dp))
 
-            // Reapply horizontal padding specifically to the content area
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -133,8 +116,6 @@ fun DetailedReportWrapper(
     }
 }
 
-
-
 @Composable
 fun AIInsightsScreen(onBack: () -> Unit) {
     DetailedReportWrapper(stringResource(Res.string.title_ai_insights), onBack) {
@@ -144,9 +125,7 @@ fun AIInsightsScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                            alpha = 0.3f
-                        )
+                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
                     )
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
@@ -392,7 +371,6 @@ fun ExerciseTrackingScreen(onBack: () -> Unit) {
         }
         Spacer(Modifier.height(24.dp))
         Text("Weekly Progress", fontWeight = FontWeight.Bold)
-        // Mock bar chart would go here
     }
 }
 
@@ -441,4 +419,52 @@ fun DoctorAppointmentsDetailScreen(onBack: () -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun AIInsightsScreenPreview() {
+    MedBuddyTheme { AIInsightsScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun MealTrackingScreenPreview() {
+    MedBuddyTheme { MealTrackingScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun MedicationAdherenceScreenPreview() {
+    MedBuddyTheme { MedicationAdherenceScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun HealthReportsDetailScreenPreview() {
+    MedBuddyTheme { HealthReportsDetailScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun EmergencyAlertsScreenPreview() {
+    MedBuddyTheme { EmergencyAlertsScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun ExerciseTrackingScreenPreview() {
+    MedBuddyTheme { ExerciseTrackingScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun WeightBMIScreenPreview() {
+    MedBuddyTheme { WeightBMIScreen(onBack = {}) }
+}
+
+@Preview
+@Composable
+fun DoctorAppointmentsDetailScreenPreview() {
+    MedBuddyTheme { DoctorAppointmentsDetailScreen(onBack = {}) }
 }

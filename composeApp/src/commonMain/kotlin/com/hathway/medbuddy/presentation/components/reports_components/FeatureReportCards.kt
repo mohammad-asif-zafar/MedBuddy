@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.automirrored.outlined.*
@@ -22,7 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.presentation.theme.*
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -347,24 +351,6 @@ fun BloodPressureTrackingCard(onClick: () -> Unit) {
     }
 }
 
-
-@Composable
-fun LabItem(label: String, value: String, status: String, color: Color) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            Text(label, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-            Text(value, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, color = color)
-        }
-        Surface(color = color.copy(alpha = 0.1f), shape = RoundedCornerShape(4.dp)) {
-            Text(status, modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp), fontSize = 8.sp, color = color, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
 // 11. Doctor Appointments
 @Composable
 fun DoctorAppointmentsCard(onClick: () -> Unit) {
@@ -416,6 +402,31 @@ fun DarkModeFeatureCard(onClick: () -> Unit) {
                     Box(modifier = Modifier.padding(2.dp).size(16.dp).clip(CircleShape).background(Color.White))
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun FeatureReportCardsPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
+        ) {
+            AIInsightsCard(onClick = {})
+            MealTrackingCard(onClick = {})
+            MedicationAdherenceCard(onClick = {})
+            HealthReportsCard(onClick = {})
+            FamilyCareCard(onClick = {})
+            EmergencyAlertsCard(onClick = {})
+            ExerciseTrackingCard(onClick = {})
+            WeightBMICard(onClick = {})
+            BloodPressureTrackingCard(onClick = {})
+            DoctorAppointmentsCard(onClick = {})
+            DarkModeFeatureCard(onClick = {})
         }
     }
 }

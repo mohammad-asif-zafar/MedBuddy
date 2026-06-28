@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.components.family_share_components
 
 import androidx.compose.foundation.clickable
@@ -16,12 +18,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.ui.detailed_reports.DetailedReportWrapper
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -32,6 +39,7 @@ data class FamilyMemberData(
     val imageUrl: String? = null
 )
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FamilyMemberManagement(
     members: List<FamilyMemberData>,
@@ -39,6 +47,9 @@ fun FamilyMemberManagement(
     onAddNewMember: () -> Unit,
     onMemberClick: (FamilyMemberData) -> Unit
 ) {
+    BackHandler(enabled = true) {
+        onBack()
+    }
     var shareMyData by remember { mutableStateOf(true) }
 
     DetailedReportWrapper(
@@ -178,6 +189,23 @@ fun FamilyMemberItem(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FamilyMemberManagementPreview() {
+    val mockMembers = listOf(
+        FamilyMemberData("Sara Zafar", "Daughter"),
+        FamilyMemberData("Ali Zafar", "Son")
+    )
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        FamilyMemberManagement(
+            members = mockMembers,
+            onBack = {},
+            onAddNewMember = {},
+            onMemberClick = {}
         )
     }
 }

@@ -15,6 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.save_reading
 import medbuddy.composeapp.generated.resources.saving
@@ -73,31 +76,25 @@ fun PrimaryButton(
 
 }
 
-/*@Composable
-fun PrimaryButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    isSaving: Boolean = false
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled && !isSaving,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        if (isSaving) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(16.dp),
-                strokeWidth = 2.dp
-            )
-        } else {
-            Text(text)
-        }
+@Preview
+@Composable
+fun PrimaryButtonPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        PrimaryButton(
+            text = "Save Reading",
+            onClick = {}
+        )
     }
-}*/
+}
+
+@Preview
+@Composable
+fun PrimaryButtonSavingPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        PrimaryButton(
+            text = "Save Reading",
+            onClick = {},
+            saving = true
+        )
+    }
+}

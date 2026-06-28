@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.background
@@ -34,6 +36,10 @@ import com.hathway.medbuddy.presentation.components.profile_components.SectionHe
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
 import com.hathway.medbuddy.presentation.navigation.NavigationDestination
 import com.hathway.medbuddy.presentation.viewmodel.ProfileViewModel
+import com.hathway.medbuddy.data.local.FakeDoctorRepository
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.nav_profile
 import medbuddy.composeapp.generated.resources.personal_health_details
@@ -183,5 +189,29 @@ fun ProfileScreen(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun ProfileScreenLightPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        ProfileScreen(
+            viewModel = ProfileViewModel(FakeDoctorRepository()),
+            onBack = {},
+            naviToLogScreen = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ProfileScreenDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
+        ProfileScreen(
+            viewModel = ProfileViewModel(FakeDoctorRepository()),
+            onBack = {},
+            naviToLogScreen = {}
+        )
     }
 }

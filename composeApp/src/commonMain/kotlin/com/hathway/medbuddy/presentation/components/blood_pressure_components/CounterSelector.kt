@@ -75,29 +75,14 @@ fun CounterSelector(
             }
         }
     }
-}/*
-
-// 2. Fixed Preview Block targeting your state container configuration
-@Preview(showBackground = true, name = "BP Entry Screen Preview")
+}@Preview(showBackground = true)
 @Composable
-fun BloodPressureScreenPreview() {
-    // Modify this constructor instantly if your local AddBPReadingUiState parameters differ
-    val mockState = AddBPReadingUiState(
-        date = "May 20, 2024",
-        time = "8:30 AM",
-        systolic = 120,
-        diastolic = 80,
-        pulse = 72,
-        feeling = "Normal",
-        notes = ""
-    )
-
-    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
-        BloodPressureAddReadingContent(
-            state = mockState,
-            onBack = {},
-            onEvent = {}
+fun CounterSelectorPreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        CounterSelector(
+            label = "Systolic",
+            value = 120,
+            onValueChange = {}
         )
     }
 }
-*/

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hathway.medbuddy.presentation.navigation_content
 
 import androidx.compose.animation.AnimatedContent
@@ -10,6 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
 import com.hathway.medbuddy.domain.repository.IGlucoseRepository
@@ -29,6 +33,7 @@ enum class NotificationFlowState {
     LIST, DETAILS, TAKE_ACTION, SETTINGS, SNOOZE, CHANNELS
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun NotificationContent(
     repository: IGlucoseRepository? = null,
@@ -43,7 +48,9 @@ fun NotificationContent(
 
     val uiState by viewModel.uiState.collectAsState()
     var flowState by remember { mutableStateOf(NotificationFlowState.LIST) }
-
+    BackHandler(enabled = true) {
+        onBack()
+    }
     AnimatedContent(
         targetState = flowState,
         transitionSpec = { fadeIn() togetherWith fadeOut() }

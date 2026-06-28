@@ -31,6 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.domain.usecase.NotificationType
 import com.hathway.medbuddy.presentation.theme.BrandGreen
 import com.hathway.medbuddy.presentation.theme.CardBorder
@@ -257,5 +260,28 @@ private fun formatNotificationTimestamp(timestamp: Long): String {
         elapsedMinutes < 60 -> stringResource(Res.string.notification_timestamp_minutes_ago, elapsedMinutes)
         elapsedMinutes < 1_440 -> stringResource(Res.string.notification_timestamp_hours_ago, elapsedMinutes / 60)
         else -> stringResource(Res.string.notification_timestamp_days_ago, elapsedMinutes / 1_440)
+    }
+}
+
+@Preview
+@Composable
+fun NotificationCardPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            NotificationCard(
+                title = "High Glucose Alert",
+                message = "Your last reading was 210 mg/dL. Consider contacting your doctor.",
+                timestamp = getNowEpochMillis(),
+                type = NotificationType.HIGH_GLUCOSE,
+                onActionClick = {}
+            )
+            NotificationCard(
+                title = "Medication Reminder",
+                message = "Time to take your Metformin (1 tablet).",
+                timestamp = getNowEpochMillis() - 600000,
+                type = NotificationType.MEDICATION_REMINDER,
+                onActionClick = {}
+            )
+        }
     }
 }

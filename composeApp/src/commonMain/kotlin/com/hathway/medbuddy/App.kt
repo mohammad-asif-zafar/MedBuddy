@@ -94,7 +94,7 @@ fun App(
                             }
                         })
 
-                        NavigationDestination.ONBOARDING -> OnboardingScreen(onNext = {
+                        NavigationDestination.ONBOARDING -> OnboardingScreen(onFinished = {
                             currentDestination.value = NavigationDestination.LOGIN
                         })
 

@@ -22,9 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.StatusLow
 import com.hathway.medbuddy.presentation.theme.StatusInRange
 import medbuddy.composeapp.generated.resources.Res
@@ -83,6 +85,21 @@ fun TimeOfDayItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun TimeOfDayItemPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        Row(modifier = Modifier.padding(16.dp)) {
+            TimeOfDayItem(
+                label = "Before Breakfast",
+                value = 115,
+                icon = Icons.Outlined.LightMode,
+                iconColor = Color.Yellow
+            )
         }
     }
 }

@@ -53,6 +53,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hathway.medbuddy.ThemeMode
+import com.hathway.medbuddy.data.local.FakeGlucoseRepository
 import com.hathway.medbuddy.domain.model.TimePeriod
 import com.hathway.medbuddy.domain.model.UserGlucoseRecord
 import com.hathway.medbuddy.presentation.components.glucose_components.GlucoseInputField
@@ -60,16 +61,11 @@ import com.hathway.medbuddy.presentation.components.glucose_components.NativeDat
 import com.hathway.medbuddy.presentation.components.glucose_components.PrimaryButton
 import com.hathway.medbuddy.presentation.components.glucose_components.TimePeriodSelector
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
-import com.hathway.medbuddy.presentation.ui_state.AddUiState
 import com.hathway.medbuddy.presentation.viewmodel.AddViewModel
 import com.hathway.medbuddy.util.clearFocusOnTapOutside
 import com.hathway.medbuddy.util.formatDate
 import com.hathway.medbuddy.util.getCurrentTime12Hour
 import com.hathway.medbuddy.util.getNowLocalDateTime
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.datetime.LocalDate
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.add_glucose_record_title
 import medbuddy.composeapp.generated.resources.calendar_emoji
@@ -373,7 +369,7 @@ fun AddScreen(
 fun AddScreenPreview() {
     MedBuddyTheme(themeMode = ThemeMode.DARK) {
         AddScreen(
-            viewModel = AddViewModel(),
+            viewModel = AddViewModel(FakeGlucoseRepository()),
             onSaveSuccess = {},
             onCancel = {}
         )
@@ -388,14 +384,14 @@ fun AddScreenInteractivePreview() {
     Column {
         Text("Light Mode View:", style = MaterialTheme.typography.labelLarge)
         MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
-            AddScreen(viewModel = AddViewModel())
+            AddScreen(viewModel = AddViewModel(FakeGlucoseRepository()))
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Text("Dark Mode View:", style = MaterialTheme.typography.labelLarge)
         MedBuddyTheme(themeMode = ThemeMode.DARK) {
-            AddScreen(viewModel = AddViewModel())
+            AddScreen(viewModel = AddViewModel(FakeGlucoseRepository()))
         }
     }
 }

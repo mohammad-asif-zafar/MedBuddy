@@ -21,7 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.Res
 import medbuddy.composeapp.generated.resources.medbuddy_privacy_url
 import medbuddy.composeapp.generated.resources.medbuddy_website_url
@@ -82,5 +85,13 @@ fun PreferencesAndHelpScreen(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreferencesAndHelpScreenPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        PreferencesAndHelpScreen(onBackClick = {})
     }
 }

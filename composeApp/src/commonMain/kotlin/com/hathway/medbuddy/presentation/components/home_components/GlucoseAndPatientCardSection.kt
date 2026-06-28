@@ -23,6 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.presentation.theme.Primary
 import com.hathway.medbuddy.util.displayName
 import com.hathway.medbuddy.util.formatDisplayDate
@@ -159,5 +162,21 @@ fun GlucoseAndPatientCardSection(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun GlucoseAndPatientCardSectionPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        GlucoseAndPatientCardSection(
+            greeting = "Good Morning",
+            patientName = "Asif",
+            glucoseValue = 120,
+            mealType = "Before Breakfast",
+            status = "Normal",
+            minTarget = "70",
+            maxTarget = "100"
+        )
     }
 }

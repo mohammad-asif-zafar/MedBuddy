@@ -18,6 +18,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
+import com.hathway.medbuddy.ThemeMode
 import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -90,5 +93,18 @@ fun SettingsSection(
                 isDestructive = true
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun SettingsSectionPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        SettingsSection(
+            onPreferencesClick = {},
+            onHelpClick = {},
+            onLogoutClick = {},
+            onLanguage = {}
+        )
     }
 }
