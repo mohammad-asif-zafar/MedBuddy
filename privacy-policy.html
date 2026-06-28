@@ -1,210 +1,379 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Privacy Policy for MedBuddy, a glucose tracking and health reports app.">
+    <meta name="description" content="Privacy Policy for MedBuddy">
     <title>Privacy Policy - MedBuddy</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        :root {
-            --primary-green: #2E7D4F;
-            --brand-green: #4F6B35;
-            --cream-bg: #FEF9F0;
-            --white: #FFFFFF;
-            --text-dark: #1D1D1B;
-            --text-gray: #6B7280;
-            --danger: #D32F2F;
+        :root{
+            --primary-green:#2E7D4F;
+            --brand-green:#4F6B35;
+            --cream-bg:#FEF9F0;
+            --white:#FFFFFF;
+            --text-dark:#1D1D1B;
+            --text-gray:#6B7280;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--cream-bg);
-            padding: 0;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: var(--white);
-            padding: 60px;
-            border-radius: 32px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        body{
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            background:var(--cream-bg);
+            color:var(--text-dark);
+            line-height:1.7;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 50px;
+        .container{
+            max-width:900px;
+            margin:40px auto;
+            background:#fff;
+            padding:60px;
+            border-radius:30px;
+            box-shadow:0 10px 40px rgba(0,0,0,.06);
         }
 
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            font-size: 1.8rem;
-            color: var(--brand-green);
-            text-decoration: none;
-            margin-bottom: 20px;
+        .back-home{
+            text-decoration:none;
+            color:var(--primary-green);
+            font-weight:600;
+            display:inline-flex;
+            gap:8px;
+            align-items:center;
+            margin-bottom:30px;
         }
 
-        .logo i {
-            font-size: 2.2rem;
-            color: var(--primary-green);
+        .back-home:hover{
+            opacity:.8;
         }
 
-        .logo img {
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
+        header{
+            text-align:center;
+            margin-bottom:40px;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            color: var(--brand-green);
-            margin-bottom: 10px;
+        .logo{
+            display:inline-flex;
+            align-items:center;
+            gap:12px;
+            font-size:30px;
+            font-weight:800;
+            color:var(--brand-green);
+            margin-bottom:20px;
         }
 
-        .last-updated {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin-bottom: 30px;
+        .logo img{
+            width:52px;
+            height:52px;
+            border-radius:14px;
         }
 
-        h2 {
-            color: var(--primary-green);
-            margin-top: 40px;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        h1{
+            color:var(--brand-green);
+            font-size:42px;
+            margin-bottom:10px;
         }
 
-        h2 i {
-            font-size: 1.2rem;
+        .last-updated{
+            color:var(--text-gray);
+            font-size:14px;
         }
 
-        p, li {
-            margin-bottom: 15px;
-            color: var(--text-dark);
-            font-size: 1.05rem;
+        h2{
+            margin-top:40px;
+            margin-bottom:15px;
+            color:var(--primary-green);
+            display:flex;
+            gap:10px;
+            align-items:center;
         }
 
-        ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
+        p{
+            margin-bottom:16px;
         }
 
-        .highlight-box {
-            background: var(--cream-bg);
-            padding: 20px;
-            border-radius: 16px;
-            border-left: 4px solid var(--primary-green);
-            margin: 20px 0;
+        ul{
+            margin-left:22px;
+            margin-bottom:25px;
         }
 
-        footer {
-            margin-top: 60px;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            text-align: center;
-            border-top: 1px solid #eee;
-            padding-top: 30px;
+        li{
+            margin-bottom:12px;
         }
 
-        .back-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--primary-green);
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 30px;
-            transition: transform 0.2s;
+        .highlight{
+            background:#F7FBF8;
+            border-left:5px solid var(--primary-green);
+            padding:22px;
+            border-radius:14px;
+            margin:30px 0;
         }
 
-        .back-home:hover {
-            transform: translateX(-5px);
+        a{
+            color:var(--primary-green);
         }
 
-        @media (max-width: 768px) {
-            .container {
-                margin: 0;
-                padding: 30px 20px;
-                border-radius: 0;
+        footer{
+            margin-top:60px;
+            border-top:1px solid #ececec;
+            padding-top:25px;
+            text-align:center;
+            color:var(--text-gray);
+            font-size:14px;
+        }
+
+        @media(max-width:768px){
+
+            .container{
+                margin:0;
+                padding:28px 20px;
+                border-radius:0;
             }
-            h1 { font-size: 2rem; }
+
+            h1{
+                font-size:32px;
+            }
+
+            .logo{
+                font-size:24px;
+            }
+
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
 
-        <header>
-            <div class="logo">
-                <img src="composeApp/src/androidMain/ic_launcher-playstore.png" alt="MedBuddy logo">
-                MedBuddy
-            </div>
-            <h1>Privacy Policy</h1>
-            <p class="last-updated">Last Updated: June 28, 2026</p>
-        </header>
+<div class="container">
 
-        <p>MedBuddy ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share information about you when you use our mobile application and related services.</p>
+    <a href="index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
 
-        <div class="highlight-box">
-            <strong>Your Data, Your Control:</strong> MedBuddy is designed with privacy at its core. We use industry-standard encryption to ensure your sensitive medical data remains private and secure.
+    <header>
+
+        <div class="logo">
+            <img src="composeApp/src/androidMain/res/mipmap-xxxhdpi/ic_launcher_round.webp"
+                 alt="MedBuddy Logo">
+            MedBuddy
         </div>
 
-        <h2><i class="fas fa-database"></i> 1. Information We Collect</h2>
-        <p>To provide you with the best glucose management experience, we collect the following types of information:</p>
-        <ul>
-            <li><strong>Personal Identity:</strong> Name, email address, and profile picture provided through Google Sign-In.</li>
-            <li><strong>Diabetes Metrics:</strong> Blood glucose levels, meal-specific timing (Before/After Breakfast, etc.), and carbohydrate intake.</li>
-            <li><strong>Vital Health Stats:</strong> Blood pressure readings, weight logs, BMI calculations, and exercise/step data.</li>
-            <li><strong>Medical Records:</strong> Lab result values (HbA1c, Cholesterol, etc.) extracted via manual entry or OCR scanning of your reports.</li>
-            <li><strong>Care Network:</strong> Contact details for your primary care physician and caregivers you choose to share data with.</li>
-        </ul>
+        <h1>Privacy Policy</h1>
 
-        <h2><i class="fas fa-microchip"></i> 2. How We Use Your Data</h2>
-        <p>Your information is used strictly to power the following features:</p>
-        <ul>
-            <li><strong>Smart Dashboards:</strong> Generating real-time trends and Cubic Bezier charts of your health history.</li>
-            <li><strong>AI Insights:</strong> Analyzing your data to provide personalized tips, such as identifying meal-time spikes.</li>
-            <li><strong>Emergency Alerts:</strong> Triggering notifications for critically high or low glucose levels.</li>
-            <li><strong>Family Sharing:</strong> Enabling your authorized family members to monitor your logs for your safety.</li>
-            <li><strong>Clinical Reporting:</strong> Generating professional PDF summaries for you to share with your doctor.</li>
-        </ul>
+        <p class="last-updated">
+            Last Updated: June 28, 2026
+        </p>
 
-        <h2><i class="fas fa-shield-alt"></i> 3. Data Storage & Security</h2>
-        <p>We utilize <strong>Google Firebase</strong> for secure data handling:</p>
-        <ul>
-            <li><strong>Firestore:</strong> Your health records are stored in a secure cloud database, synchronized in real-time across your devices.</li>
-            <li><strong>Authentication:</strong> We use Google Firebase Auth to manage secure access to your account.</li>
-            <li><strong>Storage:</strong> Medical PDF reports and profile photos are stored in encrypted cloud buckets.</li>
-        </ul>
+    </header>
 
-        <h2><i class="fas fa-user-check"></i> 4. Your Privacy Choices</h2>
-        <p>You have full control over your data within the app settings:</p>
-        <ul>
-            <li><strong>Data Portability:</strong> You can export your full health history into PDF or CSV formats at any time.</li>
-            <li><strong>Right to Erasure:</strong> You may delete specific logs or your entire account and associated data directly from the profile settings.</li>
-            <li><strong>Sharing Control:</strong> You can revoke access to family members or caregivers instantly through the Family Care dashboard.</li>
-        </ul>
+    <p>
+        MedBuddy ("we", "our", or "us") values your privacy.
+        This Privacy Policy explains what information we collect,
+        how we use it, and how we protect your information when you use
+        the MedBuddy mobile application.
+    </p>
 
-        <h2><i class="fas fa-envelope"></i> 5. Contact Us</h2>
-        <p>If you have any questions regarding this policy or your data privacy, please reach out to our support team:</p>
-        <p style="font-weight: 600;">Email: mohammadasifzafar000@gmail.com</p>
-        <p>Website: <a href="https://mohammad-asif-zafar.github.io/MedBuddy/index.html" style="color: var(--primary-green);">MedBuddy website</a></p>
+    <div class="highlight">
+        <strong>Your Privacy Matters</strong><br><br>
 
-        <footer>
-            <p>&copy; 2026 MedBuddy - Smart Glucose Care. All rights reserved.</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">MedBuddy is not a replacement for professional medical advice. Always consult with your doctor before making changes to your treatment plan.</p>
-        </footer>
+        MedBuddy securely stores your glucose records using Google Firebase.
+        Your information is transmitted using encrypted connections and is
+        accessible only after signing in with your Google account.
     </div>
+
+
+    <h2>
+        <i class="fas fa-database"></i>
+        1. Information We Collect
+    </h2>
+
+    <p>
+        We collect only the information required to provide MedBuddy's
+        glucose tracking features.
+    </p>
+
+    <ul>
+
+        <li>
+            <strong>Google Account Information</strong><br>
+            Your name, email address and profile picture when you sign in
+            using Google Sign-In.
+        </li>
+
+        <li>
+            <strong>Blood Glucose Records</strong><br>
+            Blood glucose readings, reading date, reading time,
+            meal period (such as Before Breakfast or After Dinner),
+            and optional notes entered by you.
+        </li>
+
+        <li>
+            <strong>Diagnostic Information</strong><br>
+            Basic crash logs and performance information that help us improve
+            app stability.
+        </li>
+
+    </ul>
+
+
+    <h2>
+        <i class="fas fa-cogs"></i>
+        2. How We Use Your Information
+    </h2>
+
+    <p>Your information is used only to provide MedBuddy's core features.</p>
+
+    <ul>
+
+        <li>Securely authenticate your account using Google Sign-In.</li>
+
+        <li>Store and synchronize your glucose records across your devices.</li>
+
+        <li>Display glucose history, trends and charts.</li>
+
+        <li>Generate PDF reports that you choose to export or share.</li>
+
+        <li>Maintain and improve the reliability and performance of the app.</li>
+
+    </ul>
+
+
+    <h2>
+        <i class="fas fa-shield-alt"></i>
+        3. Data Storage & Security
+    </h2>
+
+    <p>
+        We use Google Firebase services to securely store your data.
+    </p>
+
+    <ul>
+
+        <li>
+            <strong>Firebase Authentication</strong> is used to securely sign
+            you into your account.
+        </li>
+
+        <li>
+            <strong>Cloud Firestore</strong> stores your glucose records
+            securely in the cloud so they remain available on your signed-in
+            devices.
+        </li>
+
+        <li>
+            Data is transmitted using encrypted HTTPS/TLS connections.
+        </li>
+
+        <li>
+            We take reasonable measures to protect your personal information
+            from unauthorized access, alteration or disclosure.
+        </li>
+
+    </ul>
+
+
+    <h2>
+        <i class="fas fa-user-check"></i>
+        4. Your Choices
+    </h2>
+
+    <ul>
+
+        <li>You may edit or delete your glucose records at any time.</li>
+
+        <li>You may sign out of your Google account whenever you wish.</li>
+
+        <li>You may stop using the application at any time.</li>
+
+        <li>
+            If you would like your account and associated data permanently
+            removed, please contact us using the email address below.
+        </li>
+
+    </ul>
+
+
+    <h2>
+        <i class="fas fa-share-alt"></i>
+        5. Data Sharing
+    </h2>
+
+    <p>
+        We do not sell, rent or trade your personal information.
+    </p>
+
+    <p>
+        Your data is only shared with Google Firebase services that are
+        required to operate the application securely.
+    </p>
+
+
+    <h2>
+        <i class="fas fa-sync-alt"></i>
+        6. Changes to this Privacy Policy
+    </h2>
+
+    <p>
+        We may update this Privacy Policy from time to time.
+        Any updates will be posted on this page with a revised
+        "Last Updated" date.
+    </p>
+
+
+    <h2>
+        <i class="fas fa-envelope"></i>
+        7. Contact Us
+    </h2>
+
+    <p>
+        If you have any questions regarding this Privacy Policy,
+        please contact us.
+    </p>
+
+    <p>
+        <strong>Email:</strong><br>
+        mohammadasifzafar000@gmail.com
+    </p>
+
+    <p>
+        <strong>Website:</strong><br>
+
+        <a href="https://mohammad-asif-zafar.github.io/MedBuddy/">
+            https://mohammad-asif-zafar.github.io/MedBuddy/
+        </a>
+
+    </p>
+
+
+    <footer>
+
+        <p>
+            &copy; 2026 MedBuddy. All Rights Reserved.
+        </p>
+
+        <br>
+
+        <p>
+            MedBuddy is intended to help users record and monitor blood glucose
+            readings. It is not a medical device and should not be considered a
+            substitute for professional medical advice, diagnosis, or treatment.
+            Always consult your healthcare provider regarding any medical
+            decisions.
+        </p>
+
+    </footer>
+
+</div>
+
 </body>
 </html>
+```
