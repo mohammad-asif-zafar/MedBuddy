@@ -1,48 +1,56 @@
 @file:Suppress("DEPRECATION")
-
 package com.hathway.medbuddy.presentation.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.automirrored.outlined.TrendingUp
-import androidx.compose.material.icons.outlined.Bedtime
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.WbSunny
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.hathway.medbuddy.ThemeMode
 import com.hathway.medbuddy.data.local.FakeGlucoseRepository
-import com.hathway.medbuddy.domain.model.GlucoseRecord
-import com.hathway.medbuddy.domain.repository.IGlucoseRepository
-import com.hathway.medbuddy.domain.usecase.RecentReading
-import com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar
+import com.hathway.medbuddy.presentation.components.all_add_reading_components.DateHeader
+import com.hathway.medbuddy.presentation.components.all_add_reading_components.HistoryReadingItem
+import com.hathway.medbuddy.presentation.components.all_add_reading_components.HistorySummaryCard
 import com.hathway.medbuddy.presentation.theme.MedBuddyTheme
 import com.hathway.medbuddy.presentation.viewmodel.FullHistoryViewModel
-import com.hathway.medbuddy.presentation.viewmodel.HistorySummary
 import com.hathway.medbuddy.util.getNowLocalDateTime
-import com.hathway.medbuddy.util.parseDisplayDate
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
-import medbuddy.composeapp.generated.resources.*
+import medbuddy.composeapp.generated.resources.Res
+import medbuddy.composeapp.generated.resources.recent_readings
 import org.jetbrains.compose.resources.stringResource
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -53,8 +61,18 @@ fun FullHistoryScreen(
     val readings by viewModel.readings.collectAsState()
     val summary by viewModel.summary.collectAsState()
 
-    val groupedReadings = remember(readings) {
-        readings.groupBy { it.date }
+    // 1. Local state to track the active filter selection
+    var selectedStatusFilter by remember { mutableStateOf("All") }
+    val filters = remember { listOf("All", "Normal", "High", "Low") }
+
+    // 2. Filter readings first, then group them chronologically
+    val groupedReadings = remember(readings, selectedStatusFilter) {
+        val filteredList = if (selectedStatusFilter == "All") {
+            readings
+        } else {
+            readings.filter { it.status.equals(selectedStatusFilter, ignoreCase = true) }
+        }
+        filteredList.groupBy { it.date }
     }
 
     val today = remember { getNowLocalDateTime().date }
@@ -66,7 +84,8 @@ fun FullHistoryScreen(
 
     Scaffold(
         topBar = {
-            MedBuddyTopBar(
+            // Reused your project top bar component cleanly
+            com.hathway.medbuddy.presentation.components.home_components.MedBuddyTopBar(
                 title = stringResource(Res.string.recent_readings),
                 leftIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onLeftClick = onBack,
@@ -78,25 +97,83 @@ fun FullHistoryScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(MaterialTheme.colorScheme.background), // FIX: Dynamic canvas background
+                .background(MaterialTheme.colorScheme.background),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            groupedReadings.forEach { (dateString, dateReadings) ->
-                item(key = dateString) {
-                    DateHeader(dateString, today, yesterday)
-                }
+            // Dashboard Summary Card stays pinned at the top
+            item(key = "summary_card") {
+                HistorySummaryCard(summary)
+            }
 
-                items(
-                    items = dateReadings,
-                    key = { "${it.date}_${it.timePeriod}_${it.value}_${it.time}" }
-                ) { reading ->
-                    HistoryReadingItem(reading)
+            // 3. Dynamic Material 3 Filter Chips Row Container
+            item(key = "status_filters") {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "Filter by Status",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(filters) { filterText ->
+                            val isSelected = selectedStatusFilter == filterText
+                            FilterChip(
+                                selected = isSelected,
+                                onClick = { selectedStatusFilter = filterText },
+                                label = { Text(text = filterText) },
+                                leadingIcon = if (isSelected) {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Default.Done,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                        )
+                                    }
+                                } else null,
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            )
+                        }
+                    }
                 }
             }
 
-            item(key = "summary_card") {
-                HistorySummaryCard(summary)
+            // 4. Handle empty state gracefully if filtered results are blank
+            if (groupedReadings.isEmpty()) {
+                item(key = "empty_state") {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No $selectedStatusFilter readings found.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                // Render your map listings based on filter state
+                groupedReadings.forEach { (dateString, dateReadings) ->
+                    item(key = "header_$dateString") {
+                        DateHeader(dateString, today, yesterday)
+                    }
+
+                    items(
+                        items = dateReadings,
+                        key = { "${it.date}_${it.timePeriod}_${it.value}_${it.time}" }
+                    ) { reading ->
+                        HistoryReadingItem(reading)
+                    }
+                }
             }
 
             item {
@@ -106,286 +183,9 @@ fun FullHistoryScreen(
     }
 }
 
-@Composable
-fun DateHeader(dateString: String, today: LocalDate, yesterday: LocalDate) {
-    val date = remember(dateString) {
-        try { parseDisplayDate(dateString) } catch (e: Exception) { null }
-    }
-
-    val displayTitle = when (date) {
-        today -> "Today, $dateString"
-        yesterday -> "Yesterday, $dateString"
-        else -> dateString
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 8.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.CalendarToday,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary, // FIX: Dynamic brand tinting
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = displayTitle,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary // FIX: Dynamic text contrast
-        )
-    }
-}
-
-@Composable
-fun HistoryReadingItem(reading: RecentReading) {
-    // FIX: Adaptive dynamic categorization styling for Morning, Afternoon, Evening & Night configurations
-    val (icon, iconColor, bgColor) = remember(reading.category) {
-        when (reading.category) {
-            "Morning" -> Triple(Icons.Outlined.LightMode, Color(0xFFFFA726), Color(0xFFFF9800).copy(alpha = 0.12f))
-            "Afternoon" -> Triple(Icons.Outlined.WbSunny, Color(0xFFFFB300), Color(0xFFFFC107).copy(alpha = 0.12f))
-            "Evening" -> Triple(Icons.Outlined.WbSunny, Color(0xFF7E57C2), Color(0xFF673AB7).copy(alpha = 0.12f))
-            else -> Triple(Icons.Outlined.Bedtime, Color(0xFF5C6BC0), Color(0xFF3F51B5).copy(alpha = 0.12f))
-        }
-    }
-
-    // FIX: Dynamic alert metrics binding utilizing M3 token variables
-    val statusColor = remember(reading.status) {
-        when (reading.status) {
-            "High" -> Color(0xFFE57373) // High Alert Red (Safe for Dark/Light surfaces)
-            "Low" -> Color(0xFF64B5F6)  // Low Alert Blue
-            else -> Color(0xFF81C784)  // Normal Target Green
-        }
-    }
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), // FIX: Dynamic token surface
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Surface(
-                modifier = Modifier.size(48.dp),
-                shape = CircleShape,
-                color = bgColor
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = iconColor,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = reading.abbreviatedPeriod,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface // FIX: Text contrast drops protection
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Surface(
-                        color = bgColor,
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Text(
-                            text = reading.category,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = iconColor
-                        )
-                    }
-                }
-
-                Text(
-                    text = "${reading.time} • ${reading.mealTimingLabel}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: Adaptive metadata grey text token
-                )
-
-                if (reading.notes.isNotEmpty()) {
-                    Text(
-                        text = reading.notes,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                        maxLines = 1,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-            }
-
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = "${reading.value}",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface // FIX: Clear visibility contrast matching
-                )
-                Text(
-                    text = "mg/dL",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Surface(
-                    color = statusColor.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = reading.status,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = statusColor,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.outlineVariant // FIX: Dynamic arrow indicator styling
-            )
-        }
-    }
-}
-
-@Composable
-fun HistorySummaryCard(summary: HistorySummary) {
-    // ADAPTIVE SURFACE THEMING SYSTEM
-    val containerBgColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f)
-    val iconContainerColor = MaterialTheme.colorScheme.primary
-    val iconTintColor = MaterialTheme.colorScheme.onPrimary
-
-    val primaryTextColor = MaterialTheme.colorScheme.onSurface
-    val secondaryTextColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val accentHighlightColor = MaterialTheme.colorScheme.primary
-    val dividerColor = MaterialTheme.colorScheme.outlineVariant
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = containerBgColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Trend Icon Ring Frame Block
-            Surface(
-                modifier = Modifier.size(48.dp),
-                shape = CircleShape,
-                color = iconContainerColor
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.TrendingUp,
-                        contentDescription = null,
-                        tint = iconTintColor
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            // Average Value Text Information Node
-            Column(modifier = Modifier.weight(1.2f)) {
-                Text(
-                    text = "Average (30 Days)",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = secondaryTextColor
-                )
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Text(
-                        text = "${summary.averageValue}",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = accentHighlightColor
-                    )
-                    Text(
-                        text = " " + stringResource(Res.string.glucose_unit),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = secondaryTextColor,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                }
-            }
-
-            // Central Boundary Separator Line
-            VerticalDivider(
-                modifier = Modifier.height(40.dp).padding(horizontal = 4.dp),
-                color = dividerColor
-            )
-
-            // Proportional Health Aggregates Distribution Row
-            Row(
-                modifier = Modifier.weight(2f),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                // Adaptive health status profiles mapping directly to scheme parameters
-                SummaryStatItem(
-                    count = summary.normalCount,
-                    label = "Normal",
-                    color = Color(0xFF0F9D58) // Status In-Range Green
-                )
-                SummaryStatItem(
-                    count = summary.highCount,
-                    label = "High",
-                    color = MaterialTheme.colorScheme.error // Adaptive System High Red
-                )
-                SummaryStatItem(
-                    count = summary.lowCount,
-                    label = "Low",
-                    color = Color(0xFFF4B400) // Status Caution Yellow
-                )
-            }
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = secondaryTextColor
-            )
-        }
-    }
-}
-
-@Composable
-fun SummaryStatItem(count: Int, label: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier.size(8.dp).background(color, CircleShape)
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = "$count",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 10.sp
-        )
-    }
-}
+// ========================
+// Previews Block
+// ========================
 
 @Preview
 @Composable
