@@ -1,6 +1,5 @@
 package com.hathway.medbuddy
 
-import android.annotation.SuppressLint
 import android.content.Context
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -13,34 +12,44 @@ import com.google.firebase.firestore.SetOptions
 
 actual object FirebaseManager {
 
-    val auth = FirebaseAuth.getInstance()
-    @SuppressLint("StaticFieldLeak")
-    val firestore = FirebaseFirestore.getInstance()
-    val storage = FirebaseStorage.getInstance("gs://medbuddy-4873d.firebasestorage.app")
+    val auth by lazy { FirebaseAuth.getInstance() }
+    val firestore by lazy { FirebaseFirestore.getInstance() }
+    val storage by lazy { FirebaseStorage.getInstance("gs://medbuddy-4873d.firebasestorage.app") }
 
-    private val context: Context
-        get() = FirebaseApp.getInstance().applicationContext
+    private val context: Context?
+        get() = try {
+            FirebaseApp.getInstance().applicationContext
+        } catch (e: Exception) {
+            null
+        }
 
     private val prefs by lazy {
-        context.getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+        context?.getSharedPreferences("user_profile", Context.MODE_PRIVATE)
     }
 
     actual val currentUser: CurrentUser?
-        get() = auth.currentUser?.let {
-            CurrentUser(
-                uid = it.uid,
-                displayName = prefs.getString("name", it.displayName),
-                email = it.email,
-                photoUrl = prefs.getString("photoUrl", it.photoUrl?.toString()),
-                age = prefs.getString("age", null),
-                weight = prefs.getString("weight", null),
-                bloodType = prefs.getString("bloodType", null)
-            )
+        get() = try {
+            auth.currentUser?.let {
+                CurrentUser(
+                    uid = it.uid,
+                    displayName = prefs?.getString("name", it.displayName),
+                    email = it.email,
+                    photoUrl = prefs?.getString("photoUrl", it.photoUrl?.toString()),
+                    age = prefs?.getString("age", null),
+                    weight = prefs?.getString("weight", null),
+                    bloodType = prefs?.getString("bloodType", null)
+                )
+            }
+        } catch (e: Exception) {
+            null
         }
 
     actual fun signOut() {
-        auth.signOut()
-        prefs.edit().clear().apply()
+        try {
+            auth.signOut()
+            prefs?.edit()?.clear()?.apply()
+        } catch (e: Exception) {
+        }
     }
 
     actual suspend fun getDoctorInfo(userId: String): DoctorInfo {
@@ -93,7 +102,7 @@ actual object FirebaseManager {
             val photoUrl = snapshot.getString("photoUrl")
 
             // Save locally
-            prefs.edit().apply {
+            prefs?.edit()?.apply {
                 putString("name", name)
                 putString("age", age)
                 putString("weight", weight)
@@ -141,7 +150,7 @@ actual object FirebaseManager {
             .await()
 
         // Save locally
-        prefs.edit().apply {
+        prefs?.edit()?.apply {
             putString("name", name)
             putString("age", age)
             putString("weight", weight)
@@ -161,7 +170,7 @@ actual object FirebaseManager {
                 .update("photoUrl", downloadUrl).await()
 
             // Update Local
-            prefs.edit().putString("photoUrl", downloadUrl).apply()
+            prefs?.edit()?.putString("photoUrl", downloadUrl)?.apply()
 
             downloadUrl
         } catch (e: Exception) {
@@ -181,24 +190,24 @@ actual object FirebaseManager {
     }
 
     actual fun getThemeMode(): ThemeMode {
-        val mode = prefs.getString("theme_mode", ThemeMode.SYSTEM.name)
+        val mode = prefs?.getString("theme_mode", ThemeMode.SYSTEM.name) ?: ThemeMode.SYSTEM.name
         return try {
-            ThemeMode.valueOf(mode!!)
+            ThemeMode.valueOf(mode)
         } catch (e: Exception) {
             ThemeMode.SYSTEM
         }
     }
 
     actual fun setThemeMode(mode: ThemeMode) {
-        prefs.edit().putString("theme_mode", mode.name).apply()
+        prefs?.edit()?.putString("theme_mode", mode.name)?.apply()
     }
 
     actual fun getLanguage(): Language {
-        val code = prefs.getString("language_code", Language.ENGLISH.code)
+        val code = prefs?.getString("language_code", Language.ENGLISH.code) ?: Language.ENGLISH.code
         return Language.entries.find { it.code == code } ?: Language.ENGLISH
     }
 
     actual fun setLanguage(language: Language) {
-        prefs.edit().putString("language_code", language.code).apply()
+        prefs?.edit()?.putString("language_code", language.code)?.apply()
     }
 }

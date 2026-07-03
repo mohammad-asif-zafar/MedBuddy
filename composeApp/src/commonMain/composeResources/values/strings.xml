@@ -20,7 +20,7 @@
 
     <string name="reading_value">%1$s mg/dL</string>
     <string name="reading_details">%1$s • %2$s</string>
-    <string name="glucose_trend">📈 Glucose Trend (%1$s)</string>/
+    <string name="glucose_trend">📈 Glucose Trend (%1$s)</string>
     <string name="last_7_days">Last 7 Days</string>
 
     <string name="average_short">Avg</string>
@@ -155,7 +155,7 @@
 
     <!-- Login Screen -->
     <string name="medbuddy">MedBuddy</string>
-    <string name="smart_glucose_care">Smart Glucose Care</string>//zaf
+    <string name="smart_glucose_care">Smart Glucose Care</string>
     <string name="login_description">Track glucose levels, monitor trends and stay in control of your health.</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="secure_signin_powered_by_google">Secure sign-in powered by Google</string>
