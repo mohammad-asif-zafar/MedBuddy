@@ -21,3 +21,7 @@
 
 # Ktor rules
 -keep class io.ktor.** { *; }
+
+# Missing classes for R8
+-dontwarn java.lang.management.ManagementFactory
+-dontwarn java.lang.management.RuntimeMXBean

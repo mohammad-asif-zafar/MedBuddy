@@ -77,8 +77,8 @@ fun NavigationDrawerContent(
                 Spacer(modifier = Modifier.height(24.dp))
                 
                 // Section: Health Tracking
-                DrawerSectionLabel(text = "Health tracking")
-                DrawerMenuItem(
+              //  DrawerSectionLabel(text = "Health tracking")
+                /*DrawerMenuItem(
                     label = stringResource(Res.string.title_ai_insights),
                     icon = Icons.Outlined.Psychology,
                     isSelected = currentDestination == NavigationDestination.AI_INSIGHTS,
@@ -132,18 +132,18 @@ fun NavigationDrawerContent(
                     isSelected = currentDestination == NavigationDestination.DOCTOR_APPOINTMENTS_DETAIL,
                     onClick = { onDestinationSelected(NavigationDestination.DOCTOR_APPOINTMENTS_DETAIL) }
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
+*/
+               // Spacer(modifier = Modifier.height(24.dp))
 
                 // Section: Account
-                DrawerSectionLabel(text = "Account")
+              //  DrawerSectionLabel(text = "Account")
                 DrawerMenuItem(
                     label = stringResource(Res.string.nav_profile),
                     icon = Icons.Outlined.Person,
                     isSelected = currentDestination == NavigationDestination.PROFILE,
                     onClick = { onDestinationSelected(NavigationDestination.PROFILE) }
                 )
-                DrawerMenuItem(
+              /*  DrawerMenuItem(
                     label = stringResource(Res.string.title_family_care),
                     icon = Icons.Outlined.Groups,
                     isSelected = currentDestination == NavigationDestination.FAMILY_CARE,
@@ -154,7 +154,7 @@ fun NavigationDrawerContent(
                     icon = Icons.Outlined.NotificationsActive,
                     isSelected = currentDestination == NavigationDestination.EMERGENCY_ALERTS,
                     onClick = { onDestinationSelected(NavigationDestination.EMERGENCY_ALERTS) }
-                )
+                )*/
             }
 
             // Bottom Section (Logout)
@@ -266,6 +266,19 @@ fun DrawerMenuItem(
 @Composable
 fun NavigationDrawerContentPreview() {
     MedBuddyTheme(themeMode = ThemeMode.LIGHT) {
+        NavigationDrawerContent(
+            currentDestination = NavigationDestination.HOME,
+            onDestinationSelected = {},
+            onLogout = {}
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun NavigationDrawerContentDarkPreview() {
+    MedBuddyTheme(themeMode = ThemeMode.DARK) {
         NavigationDrawerContent(
             currentDestination = NavigationDestination.HOME,
             onDestinationSelected = {},

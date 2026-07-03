@@ -311,7 +311,7 @@
     <string name="preferences_kmp_title">Built With Kotlin Multiplatform</string>
     <string name="preferences_kmp_desc">Designed for a seamless Android experience with iOS support planned.</string>
     <string name="preferences_version_title">Version</string>
-    <string name="preferences_version_desc">Current version 1.0.0</string>
+    <string name="preferences_version_desc">Current version 2.1.0</string>
     <string name="preferences_data_api_title">Data &amp; API Use</string>
     <string name="preferences_data_api_desc">Uses Google Sign-In, Firebase Authentication, Firestore, Cloud Storage, and FCM.</string>
     <string name="preferences_banner_title">Smart Glucose Care, Simplified</string>
