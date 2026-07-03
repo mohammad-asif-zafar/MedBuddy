@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Card
@@ -29,6 +30,7 @@ fun SettingsSection(
     onPreferencesClick: () -> Unit,
     onHelpClick: () -> Unit,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
     onLanguage: () -> Unit
 ) {
     Column(
@@ -86,12 +88,25 @@ fun SettingsSection(
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
-            SettingsActionRow(
-                icon = Icons.AutoMirrored.Filled.Logout,
-                label = stringResource(Res.string.logout),
-                onClick = onLogoutClick,
-                isDestructive = true
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                SettingsActionRow(
+                    icon = Icons.AutoMirrored.Filled.Logout,
+                    label = stringResource(Res.string.logout),
+                    onClick = onLogoutClick,
+                    isDestructive = true
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
+                    thickness = 1.dp
+                )
+                SettingsActionRow(
+                    icon = Icons.Default.Delete,
+                    label = stringResource(Res.string.delete_account),
+                    onClick = onDeleteAccountClick,
+                    isDestructive = true
+                )
+            }
         }
     }
 }
@@ -104,6 +119,7 @@ fun SettingsSectionPreview() {
             onPreferencesClick = {},
             onHelpClick = {},
             onLogoutClick = {},
+            onDeleteAccountClick = {},
             onLanguage = {}
         )
     }

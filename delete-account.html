@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Account Deletion Instructions for MedBuddy">
+    <title>Delete Account - MedBuddy</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root{
+            --primary-green:#2E7D4F;
+            --brand-green:#4F6B35;
+            --cream-bg:#FEF9F0;
+            --white:#FFFFFF;
+            --text-dark:#1D1D1B;
+            --text-gray:#6B7280;
+            --error-red:#D32F2F;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            background:var(--cream-bg);
+            color:var(--text-dark);
+            line-height:1.7;
+        }
+
+        .container{
+            max-width:800px;
+            margin:40px auto;
+            background:#fff;
+            padding:60px;
+            border-radius:30px;
+            box-shadow:0 10px 40px rgba(0,0,0,.06);
+        }
+
+        .back-home{
+            text-decoration:none;
+            color:var(--primary-green);
+            font-weight:600;
+            display:inline-flex;
+            gap:8px;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        header{
+            text-align:center;
+            margin-bottom:40px;
+        }
+
+        .logo{
+            display:inline-flex;
+            align-items:center;
+            gap:12px;
+            font-size:24px;
+            font-weight:800;
+            color:var(--brand-green);
+            margin-bottom:15px;
+        }
+
+        .logo img{
+            width:44px;
+            height:44px;
+            border-radius:10px;
+        }
+
+        h1{
+            color:var(--brand-green);
+            font-size:36px;
+            margin-bottom:10px;
+        }
+
+        h2{
+            margin-top:35px;
+            margin-bottom:15px;
+            color:var(--primary-green);
+            display:flex;
+            gap:10px;
+            align-items:center;
+            font-size:22px;
+        }
+
+        .steps{
+            list-style:none;
+            counter-reset:step-counter;
+            margin:20px 0;
+        }
+
+        .steps li{
+            counter-increment:step-counter;
+            margin-bottom:20px;
+            display:flex;
+            gap:15px;
+            align-items:flex-start;
+        }
+
+        .steps li::before{
+            content:counter(step-counter);
+            background:var(--primary-green);
+            color:#fff;
+            width:28px;
+            height:28px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-shrink:0;
+            font-weight:bold;
+            font-size:14px;
+        }
+
+        .data-list{
+            margin-left:20px;
+            margin-bottom:25px;
+        }
+
+        .data-list li{
+            margin-bottom:10px;
+        }
+
+        .warning-box{
+            background:#FFF5F5;
+            border-left:5px solid var(--error-red);
+            padding:22px;
+            border-radius:14px;
+            margin:30px 0;
+            color:#852626;
+        }
+
+        footer{
+            margin-top:50px;
+            border-top:1px solid #ececec;
+            padding-top:25px;
+            text-align:center;
+            color:var(--text-gray);
+            font-size:14px;
+        }
+
+        @media(max-width:768px){
+            .container{ margin:0; padding:30px 20px; border-radius:0; }
+            h1{ font-size:28px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <header>
+        <div class="logo">
+            <img src="composeApp/src/androidMain/res/mipmap-xxxhdpi/ic_launcher_round.webp" alt="MedBuddy Logo">
+            MedBuddy
+        </div>
+        <h1>Delete Your Account</h1>
+        <p>Follow the steps below to permanently delete your MedBuddy account and all your health data.</p>
+    </header>
+
+    <div class="warning-box">
+        <strong><i class="fas fa-exclamation-triangle"></i> Important Note:</strong><br>
+        Account deletion is permanent. Once your account is deleted, all your glucose readings,
+        health trends, profile information, and doctor details will be wiped from our servers
+        and cannot be recovered.
+    </div>
+
+    <h2><i class="fas fa-list-ol"></i> How to delete your account</h2>
+    <ul class="steps">
+        <li>
+            <div>
+                <strong>Open the MedBuddy App</strong><br>
+                Ensure you are logged in to the account you wish to delete.
+            </div>
+        </li>
+        <li>
+            <div>
+                <strong>Navigate to Profile</strong><br>
+                Tap on the <strong>Profile</strong> icon in the bottom navigation bar.
+            </div>
+        </li>
+        <li>
+            <div>
+                <strong>Find Account Settings</strong><br>
+                Scroll down to the <strong>Settings</strong> section at the bottom of the Profile screen.
+            </div>
+        </li>
+        <li>
+            <div>
+                <strong>Tap Delete Account</strong><br>
+                Select the <strong>Delete Account</strong> option (highlighted in red).
+            </div>
+        </li>
+        <li>
+            <div>
+                <strong>Confirm Deletion</strong><br>
+                A confirmation dialog will appear. Tap <strong>Delete</strong> to permanently remove your data.
+            </div>
+        </li>
+    </ul>
+
+    <h2><i class="fas fa-trash-alt"></i> What data is deleted?</h2>
+    <ul class="data-list">
+        <li><strong>Authentication:</strong> Your Google Sign-In linked account.</li>
+        <li><strong>Health Data:</strong> All logged blood glucose readings and meal period notes.</li>
+        <li><strong>Profile Info:</strong> Your name, age, weight, and blood type records.</li>
+        <li><strong>Doctor Info:</strong> Hospital names, doctor specialties, and appointment dates.</li>
+        <li><strong>Media:</strong> Your uploaded profile picture.</li>
+    </ul>
+
+    <h2><i class="fas fa-question-circle"></i> Need Help?</h2>
+    <p>
+        If you are unable to access your account or encounter issues during the deletion process,
+        please contact us for manual assistance.
+    </p>
+    <p>
+        <strong>Email:</strong> mohammadasifzafar000@gmail.com
+    </p>
+
+    <footer>
+        <p>&copy; 2026 MedBuddy. All Rights Reserved.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

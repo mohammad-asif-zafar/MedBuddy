@@ -13,6 +13,7 @@ actual object FirebaseManager {
     actual suspend fun saveUserProfile(userId: String, name: String, age: String, weight: String, bloodType: String) {}
     actual suspend fun updateProfilePicture(userId: String, imageBytes: ByteArray): String? = null
     actual suspend fun updateFcmToken(userId: String, token: String) {}
+    actual suspend fun deleteAccount() {}
 
     actual fun getThemeMode(): ThemeMode {
         val mode = NSUserDefaults.standardUserDefaults.stringForKey("theme_mode") ?: ThemeMode.SYSTEM.name

@@ -354,6 +354,10 @@
     <string name="privacy_contact_title">Contact Us</string>
     <string name="privacy_contact_desc">For privacy questions, contact mohammadasifzafar000@gmail.com </string>
     <string name="logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_dialog_title">Delete Account?</string>
+    <string name="delete_account_dialog_message">Are you sure you want to delete your account? This action cannot be undone and all your health data will be permanently deleted.</string>
+    <string name="delete_account_confirm">Delete</string>
 
     <string name="next_visit">Next Visit</string>
     <string name="no_doctor_info_available">No Doctor Info Available</string>

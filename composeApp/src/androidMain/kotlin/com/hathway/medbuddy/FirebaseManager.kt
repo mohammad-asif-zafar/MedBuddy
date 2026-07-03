@@ -189,6 +189,31 @@ actual object FirebaseManager {
         }
     }
 
+    actual suspend fun deleteAccount() {
+        val user = auth.currentUser ?: return
+        val userId = user.uid
+
+        try {
+            // 1. Delete Firestore data
+            firestore.collection("MedBuddy_users").document(userId).delete().await()
+
+            // 2. Delete Storage data (profile picture if exists)
+            try {
+                storage.reference.child("profile_pictures/$userId.jpg").delete().await()
+            } catch (e: Exception) {
+                // Ignore if file doesn't exist
+            }
+
+            // 3. Delete user from Firebase Auth
+            user.delete().await()
+
+            // 4. Clear local preferences
+            prefs?.edit()?.clear()?.apply()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
     actual fun getThemeMode(): ThemeMode {
         val mode = prefs?.getString("theme_mode", ThemeMode.SYSTEM.name) ?: ThemeMode.SYSTEM.name
         return try {

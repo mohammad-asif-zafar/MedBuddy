@@ -193,6 +193,32 @@ class ProfileViewModel(
         FirebaseManager.signOut()
     }
 
+    fun showDeleteAccountDialog() {
+        _uiState.update { it.copy(showDeleteAccountDialog = true) }
+    }
+
+    fun hideDeleteAccountDialog() {
+        _uiState.update { it.copy(showDeleteAccountDialog = false) }
+    }
+
+    fun deleteAccount(onDeleted: () -> Unit) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                FirebaseManager.deleteAccount()
+                _uiState.update { it.copy(isLoading = false, showDeleteAccountDialog = false) }
+                onDeleted()
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = e.message
+                    )
+                }
+            }
+        }
+    }
+
     fun showProfileDialog() {
         _uiState.update {
             it.copy(showProfileDialog = true)

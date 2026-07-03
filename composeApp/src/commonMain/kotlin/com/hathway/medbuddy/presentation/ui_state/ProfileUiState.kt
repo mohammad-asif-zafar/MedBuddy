@@ -28,5 +28,6 @@ data class ProfileUiState(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val showThemeDialog: Boolean = false,
     val language: Language = Language.ENGLISH,
-    val showLanguageDialog: Boolean = false
+    val showLanguageDialog: Boolean = false,
+    val showDeleteAccountDialog: Boolean = false
 )

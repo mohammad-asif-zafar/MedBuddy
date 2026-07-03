@@ -31,6 +31,7 @@ import com.hathway.medbuddy.presentation.components.language_selection.LanguageS
 import com.hathway.medbuddy.presentation.components.preferences_and_help_components.PreferencesAndHelpScreen
 import com.hathway.medbuddy.presentation.components.profile_components.DoctorInformationCard
 import com.hathway.medbuddy.presentation.components.profile_components.EditProfileDialog
+import com.hathway.medbuddy.presentation.components.profile_components.DeleteAccountDialog
 import com.hathway.medbuddy.presentation.components.profile_components.ProfileHeaderCard
 import com.hathway.medbuddy.presentation.components.profile_components.SectionHeader
 import com.hathway.medbuddy.presentation.components.profile_components.SettingsSection
@@ -139,6 +140,9 @@ fun ProfileScreen(
                                 viewModel.logout()
                                 naviToLogScreen()
                             },
+                            onDeleteAccountClick = {
+                                viewModel.showDeleteAccountDialog()
+                            },
                             onLanguage = { viewModel.showLanguageDialog() }
                         )
                     }
@@ -186,6 +190,15 @@ fun ProfileScreen(
                             viewModel.setLanguage(it)
                             viewModel.hideLanguageDialog()
                         })
+                }
+
+                if (uiState.showDeleteAccountDialog) {
+                    DeleteAccountDialog(
+                        onDismiss = { viewModel.hideDeleteAccountDialog() },
+                        onConfirm = {
+                            viewModel.deleteAccount(onDeleted = naviToLogScreen)
+                        }
+                    )
                 }
             }
         }
