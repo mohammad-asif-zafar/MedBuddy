@@ -164,6 +164,10 @@ class GlucoseRepository(context: Context) : IGlucoseRepository {
         }
     }
 
+    override fun close() {
+        databaseHelper.close()
+    }
+
     private fun mergeRecords(localRecords: List<GlucoseRecord>, firebaseRecords: List<GlucoseRecord>): List<GlucoseRecord> {
         val mergedMap = mutableMapOf<String, GlucoseRecord>()
 

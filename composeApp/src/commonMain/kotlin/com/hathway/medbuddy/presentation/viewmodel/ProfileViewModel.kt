@@ -11,6 +11,7 @@ import com.hathway.medbuddy.presentation.ui_state.ProfileUiState
 import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.model.Language
 import com.hathway.medbuddy.domain.repository.IDoctorRepository
+import com.hathway.medbuddy.domain.repository.IGlucoseRepository
 import com.hathway.medbuddy.domain.usecase.GetDoctorUseCase
 import com.hathway.medbuddy.domain.usecase.SaveDoctorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,8 @@ import medbuddy.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.getString
 
 class ProfileViewModel(
-    private val doctorRepository: IDoctorRepository? = null
+    private val doctorRepository: IDoctorRepository? = null,
+    private val glucoseRepository: IGlucoseRepository? = null
 ) : ViewModel() {
 
     private val getDoctorUseCase = doctorRepository?.let { GetDoctorUseCase(it) }
@@ -205,6 +207,9 @@ class ProfileViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
+                // Ensure local connections are closed before deletion
+                glucoseRepository?.close()
+
                 FirebaseManager.deleteAccount()
                 _uiState.update { it.copy(isLoading = false, showDeleteAccountDialog = false) }
                 onDeleted()

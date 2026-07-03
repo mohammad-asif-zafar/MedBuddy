@@ -150,6 +150,7 @@ fun App(
                             })
 
                         NavigationDestination.PROFILE -> ProfileContent(
+                            repository = repository,
                             doctorRepository = doctorRepository,
                             onBack = {
                                 currentDestination.value = NavigationDestination.HOME

@@ -48,6 +48,16 @@ class MainActivity : ComponentActivity() {
 
         googleAuthUiClient = GoogleAuthUiClient(this)
 
+        // Listen for Auth State changes
+        FirebaseManager.auth.addAuthStateListener { auth ->
+            if (auth.currentUser == null) {
+                repository.value?.close()
+                repository.value = null
+                doctorRepository.value = null
+                Log.d(TAG, "Auth state changed: User is null, clearing repositories")
+            }
+        }
+
         // Auto Login and Repository Initialization
         if (FirebaseManager.auth.currentUser != null) {
             initRepositories()

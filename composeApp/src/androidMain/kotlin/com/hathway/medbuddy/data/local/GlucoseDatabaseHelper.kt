@@ -204,4 +204,9 @@ class GlucoseDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
             db.execSQL(sql, args.toTypedArray())
         }
     }
+
+    fun clearAllData() {
+        val db = writableDatabase
+        db.delete(TABLE_GLUCOSE_RECORDS, null, null)
+    }
 }

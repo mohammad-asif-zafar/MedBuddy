@@ -89,6 +89,7 @@ class FakeGlucoseRepository : IGlucoseRepository {
     ) {}
 
     override suspend fun hasTimePeriodForDate(date: String, timePeriod: String): Boolean = false
+    override fun close() {}
 }
 
 class FakeDoctorRepository : IDoctorRepository {

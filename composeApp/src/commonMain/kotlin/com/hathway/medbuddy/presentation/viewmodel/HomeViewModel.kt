@@ -42,10 +42,10 @@ data class HomeUiState(
     val doctorName: String = "",
     val doctorSpecialty: String = "",
     val nextVisitDate: String = "",
-    val daysUntilVisit: Int = 12,
-    val targetProgress: Int = 60,
-    val targetReadings: Int = 18,
-    val totalTargetReadings: Int = 30,
+    val daysUntilVisit: Int = 0,
+    val targetProgress: Int = 0,
+    val targetReadings: Int = 0,
+    val totalTargetReadings: Int = 0,
     val highestGlucose: Int = 0,
     val lowestGlucose: Int = 0,
     val recentRecords: List<RecentRecord> = emptyList(),
@@ -150,25 +150,9 @@ class HomeViewModel(
                             recentRecords = dashboard.recentRecords.map { r ->
                                 RecentRecord(r.date, r.timePeriod, r.value, r.time)
                             },
-                            medications = listOf(
-                                Medication(
-                                    id = 1,
-                                    name = "Metformin",
-                                    dosage = "500mg",
-                                    time = "8:00 AM",
-                                    isTaken = true,
-                                    mealType = "BBF"
-                                ), Medication(
-                                    id = 2,
-                                    name = "Bisoprolol",
-                                    time = "9:00 PM",
-                                    dosage = "500mg",
-                                    isTaken = false,
-                                    mealType = "BDT"
-                                )
-                            ),
-                            insight = insightStr,
-                            insightEmoji = "📈",
+                            medications = emptyList(), // Remove hardcoded medications
+                            insight = if (records.isNotEmpty()) insightStr else "",
+                            insightEmoji = if (records.isNotEmpty()) "📈" else "",
                             averageGlucose = dashboard.sevenDayAverage.toDouble(),
                             lastReading = dashboard.todayGlucose ?: 0,
                             lastReadingTime = dashboard.recordedTime,

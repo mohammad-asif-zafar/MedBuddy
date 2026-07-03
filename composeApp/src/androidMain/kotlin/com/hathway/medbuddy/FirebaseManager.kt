@@ -1,12 +1,14 @@
 package com.hathway.medbuddy
 
 import android.content.Context
+import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.hathway.medbuddy.domain.model.DoctorInfo
 import com.hathway.medbuddy.domain.model.Language
+import com.hathway.medbuddy.data.local.GlucoseDatabaseHelper
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.SetOptions
 
@@ -194,21 +196,89 @@ actual object FirebaseManager {
         val userId = user.uid
 
         try {
-            // 1. Delete Firestore data
-            firestore.collection("MedBuddy_users").document(userId).delete().await()
+            // 1. Delete Remote Firestore data (Sub-collections first)
+            try {
+                val glucoseRecords = firestore.collection("MedBuddy_users").document(userId)
+                    .collection("glucose_records").get().await()
+                for (doc in glucoseRecords.documents) {
+                    doc.reference.delete().await()
+                }
+                firestore.collection("MedBuddy_users").document(userId).delete().await()
+            } catch (e: Exception) {
+                Log.e("FirebaseManager", "Error deleting Firestore data", e)
+            }
 
-            // 2. Delete Storage data (profile picture if exists)
+            // 2. Delete Remote Storage data (profile picture if exists)
             try {
                 storage.reference.child("profile_pictures/$userId.jpg").delete().await()
             } catch (e: Exception) {
-                // Ignore if file doesn't exist
+                // Ignore 404 or other storage errors
+                Log.d("FirebaseManager", "Storage deletion skipped or failed: ${e.message}")
             }
 
-            // 3. Delete user from Firebase Auth
-            user.delete().await()
+            // 3. IMPORTANT: Terminate Firestore to release local DB locks
+            try {
+                firestore.terminate().await()
+                firestore.clearPersistence().await()
+            } catch (e: Exception) {
+                Log.e("FirebaseManager", "Error terminating Firestore", e)
+            }
 
-            // 4. Clear local preferences
-            prefs?.edit()?.clear()?.apply()
+            // 4. Delete user from Firebase Auth (Do this before local wipe in case it fails)
+            try {
+                user.delete().await()
+            } catch (e: Exception) {
+                Log.e("FirebaseManager", "Error deleting Auth user", e)
+                // If this fails (e.g. requires recent login), we might want to throw to notify user
+                throw e
+            }
+
+            // 5. Clear all local data safely
+            context?.let { ctx ->
+                // Clear all SharedPreferences
+                try {
+                    val root = ctx.filesDir.parentFile
+                    val sharedPrefsDir = java.io.File(root, "shared_prefs")
+                    if (sharedPrefsDir.exists() && sharedPrefsDir.isDirectory) {
+                        sharedPrefsDir.list()?.forEach { fileName ->
+                            val prefName = fileName.replace(".xml", "")
+                            ctx.getSharedPreferences(prefName, Context.MODE_PRIVATE).edit().clear().apply()
+                        }
+                    }
+                } catch (e: Exception) {
+                    prefs?.edit()?.clear()?.apply()
+                }
+
+                // Clear all local databases
+                try {
+                    // Close our app's specific helper first
+                    GlucoseDatabaseHelper(ctx).close()
+                    
+                    val root = ctx.filesDir.parentFile
+                    val databasesDir = java.io.File(root, "databases")
+                    if (databasesDir.exists() && databasesDir.isDirectory) {
+                        val files = databasesDir.listFiles()
+                        files?.forEach { file ->
+                            // Use deleteDatabase for safety
+                            ctx.deleteDatabase(file.name)
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("FirebaseManager", "Error clearing databases", e)
+                }
+
+                // Clear Cache
+                try {
+                    ctx.cacheDir.deleteRecursively()
+                } catch (e: Exception) {
+                }
+                
+                // Clear Internal Files
+                try {
+                    ctx.filesDir.deleteRecursively()
+                } catch (e: Exception) {
+                }
+            }
         } catch (e: Exception) {
             throw e
         }

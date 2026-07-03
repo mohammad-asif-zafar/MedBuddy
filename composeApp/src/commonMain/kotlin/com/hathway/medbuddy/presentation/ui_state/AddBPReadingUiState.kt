@@ -2,15 +2,15 @@ package com.hathway.medbuddy.presentation.ui_state
 
 // UI State representing the data on screen
 data class AddBPReadingUiState(
-    val date: String = "May 20, 2024",
-    val time: String = "8:30 AM",
-    val systolic: Int = 120,
-    val diastolic: Int = 80,
-    val pulse: Int = 72,
+    val date: String = "",
+    val time: String = "",
+    val systolic: Int = 0,
+    val diastolic: Int = 0,
+    val pulse: Int = 0,
     val notes: String = "",
     val isSaving: Boolean = false,
     val saveSuccess: Boolean = false,
-    val feeling: String = "happy"
+    val feeling: String = ""
 )
 
 // UI Events from User Interactions

@@ -37,4 +37,5 @@ interface IGlucoseRepository {
         notes: String = ""
     )
     suspend fun hasTimePeriodForDate(date: String, timePeriod: String): Boolean
+    fun close()
 }
